@@ -1,4 +1,4 @@
-# Raw MRI Data Starter Kit
+# Raw MRI Data Starter Kit {#sec-raw-mri}
 
 This page describes how to work with the raw MRI data from A2CPS, which is provided in a format called "BIDS" (for a generic introduction to BIDS, see: [Unsure how to get started using BIDS with your current data? - The Brain Imaging Data Structure](https://bids-website.readthedocs.io/en/latest/getting_started/index.html)). The raw data are most useful when you need to run custom preprocessing pipelines. If you do not need custom pipelines, please review [the preface](index.qmd#sec-preface) for a list of imaging products that have already been calculated.
 
@@ -167,8 +167,7 @@ Each scanner's manufacturer-specific algorithms and software are used for the re
 
 All mri pipeline code is available through github: https://github.com/a2cps/mri_imaging_pipeline Restricted content. Note that the code used to generate the BIDS derivatives has been updated several times (e.g., the same version of dcm2niix was not used to convert all participants). The specific version of the conversion code is stored in the `GeneratedBy` field of the `dataset_description.json`, with entries like
 
-```{json}
-#| eval: false
+```json
 {
   "CodeUrl": "https://github.com/a2cps/mri_imaging_pipeline",
   "Container": {
