@@ -1,0 +1,29 @@
+project:
+  type: book
+
+engine: knitr
+
+book:
+  title: "A2CPS Starter Kits"
+  author: "A2CPS Consortium"
+  date: today
+  chapters:
+    - index.qmd
+    - raw-mri.qmd
+    - freesurfer.qmd
+    - faq.qmd
+    - references.qmd
+  appendices:
+    - bids-qc-joining.qmd
+
+bibliography: references.bib
+csl: apa.csl
+
+format:
+  html:
+    theme: cosmo
+    df-print: kable
+    citation-location: margin
+    reference-location: margin
+
+

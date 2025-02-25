@@ -1,0 +1,7 @@
+# Preface {#sec-preface .unnumbered}
+
+Starter kits are brief tutorials that are designed to help guide internal A2CPS projects. The kits target researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data). They assume that researchers will access internal A2CPS releases (that is, on TACC rather than from the NDA). 
+
+Each kit has three sections, information to consider before starting a project, information about how to access the relevant data, and an overview of related work by the DIRC. 
+
+Kits correspond to the individual modalities that can be requested in the [Data Request Form](https://a2cps.atlassian.net/wiki/spaces/WG/pages/5080456/Data+Sharing+Committee+Proposal+Meetings+Forms?preview=/5080456/5106943/Data%20Request%20Form_2023.pdf). See below for a status of each kit.

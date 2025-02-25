@@ -1,0 +1,230 @@
+# Neural Pain Signatures (Primary task fMRI biomarkers)
+
+## Before Proposing Project
+
+### Confirm Sample Size
+
+Not all participants in a release have imaging, and not all MRIs are of good quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 1.1 has 440 participants with the primary task fMRI biomarkers ([NPS](https://doi.org/10.1056/NEJMoa1204471) and [SIIPS-1](https://doi.org/10.1038/ncomms14211)).
+
+## Starting Project
+
+### Locate data
+
+On TACC, the neuroimaging data are stored underneath the releases. For example, data release v1.#.# is underneath
+
+```{bash}
+#| eval: false
+/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris
+```
+
+The signature response are underneath `derivatives/signatures`
+
+```{bash}
+#| eval: false
+$ ls derivatives/signatures/
+signature-bold     signature-by-part.json  signature-by-run.json  signature-by-tr.json  signature-confounds       signature-labels       signature-rawdata
+signature-by-part  signature-by-run        signature-by-tr        signature-cleaned     signature-confounds.json  signature-labels.json  signature-rawdata.json
+```
+
+Signature responses are stored either "by-run" (that is, one response per scan), "by-part" (three responses per run corresponding to the three parts for which participants provided pain ratings), or "by-tr" (one response for every volume). The biomarker corresponds to the values that are "by-run".
+
+Each of the folders contain a table of values, and `*.json` sidecars are [data dictionaries that conform to BIDS ](https://bids-specification.readthedocs.io/en/v1.9.0/common-principles.html#tabular-files).
+
+```{bash}
+#| eval: FALSE
+{
+    "signature": {
+        "LongName": "Signature",
+        "Description": "Index for of Signature. See signature_labels.json"
+    },
+    "correlation": {
+        "LongName": "Correlation",
+        "Description": "Signature as Estimated by Correlation"
+    },
+    "dot": {
+        "LongName": "Dot Product",
+        "Description": "Signature as Estimated by Dot Product"
+    },
+    "cosine": {
+        "LongName": "Cosine Similarity",
+        "Description": "Signature as Estimated by Cosine Similarity"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, BIDS Session ID",
+        "Levels": {
+            "V1": "Baseline Visit",
+            "V3": "3 Month Followup Visit"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    },
+    "task": {
+        "LongName": "Task",
+        "Description": "Functional MRI Task, BIDS Task ID",
+        "Levels": {
+            "cuff": "cuff pressure scan",
+            "rest": "resting state scan"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#task"
+    },
+    "run": {
+        "LongName": "Run",
+        "Description": "Task Run Number, BIDS Run ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#run"
+    }
+}
+```
+
+Note: the table mentions "session", but in this release only V1 (baseline) results are available.
+
+### Extract data
+
+The tabular data comprise parquet files that have been partitioned in a hive style. That is, subfolders names contain column information -- in this case subject ID (REDCap Record ID), task, and run.
+
+```{bash}
+#| eval: FALSE
+$ tree signature-by-run
+signature-by-run
+├── sub=10003
+│  └── ses=V1
+│     ├── task=cuff
+│     │  └── run=1
+│     │     └── part-0.parquet
+│     └── task=rest
+│        ├── run=1
+│        │  └── part-0.parquet
+│        └── run=2
+│           └── part-0.parquet
+├── sub=10008
+│  └── ses=V1
+│     ├── task=cuff
+│     │  └── run=1
+│     │     └── part-0.parquet
+│     └── task=rest
+│        ├── run=1
+│        │  └── part-0.parquet
+│        └── run=2
+```
+
+The biomarker is based on the CUFF1 (task=cuff/run=1) scan. The other scans are available for secondary analyses, but please note that not all participants have all tasks and runs available. 
+
+To load the whole dataset, the parquet files may be read individually or using a tool that is aware of the hive-partitioning structure. In `R`, a good choice is the [`arrow`](https://arrow.apache.org/docs/r/index.html) library.
+
+```{r}
+#| eval: FALSE
+library(arrow)
+library(dplyr)
+library(tidyr)
+
+open_dataset("data/signature-by-run") |> 
+  filter(signature %in% c("grouppred_cvpcr", "137subjmap_weighted_mean")) |>
+  filter(task=="cuff", run==1) |>
+  select(signature, value=correlation, sub, ses) |>
+  collect() |>
+  pivot_wider(names_from = signature) |>
+  rename(
+    SIIPS1=`137subjmap_weighted_mean`,
+    NPS=`grouppred_cvpcr`)
+
+```
+
+```{bash}
+#| eval: FALSE
+# A tibble: 440 × 4
+     sub ses    SIIPS1       NPS
+   <int> <chr>   <dbl>     <dbl>
+ 1 10008 V1    -0.0797 -0.000435
+ 2 10003 V1    -0.0260  0.0142  
+ 3 10011 V1    -0.0381 -0.00112 
+ 4 10010 V1    -0.0630  0.00221 
+ 5 10013 V1    -0.0422  0.00809 
+ 6 10014 V1    -0.0377  0.00990 
+ 7 10017 V1    -0.0390  0.0237  
+ 8 10015 V1    -0.0701  0.00553 
+ 9 10020 V1    -0.0509 -0.000624
+10 10023 V1    -0.0160  0.00820 
+# ℹ 430 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+
+
+In python, a good choice is the [`polars`](https://docs.pola.rs/) library
+
+```{python}
+#| eval: FALSE
+import polars as pl
+
+pl.read_parquet("data/signature-by-run").filter(
+    pl.col("signature").is_in(["grouppred_cvpcr", "137subjmap_weighted_mean"])
+).filter(pl.col("task") == "cuff", pl.col("run") == 1).rename(
+    {"correlation": "value"}
+).select(
+    "signature",
+    "value",
+    "sub",
+    "ses",
+).pivot(
+    on="signature", index=["sub", "ses"]
+).rename(
+    {"grouppred_cvpcr": "NPS", "137subjmap_weighted_mean": "SIIPS1"}
+)
+
+```
+
+
+```{bash}
+#| eval: FALSE
+shape: (440, 4)
+┌───────┬─────┬───────────┬───────────┐
+│ sub   ┆ ses ┆ SIIPS1    ┆ NPS       │
+│ ---   ┆ --- ┆ ---       ┆ ---       │
+│ i64   ┆ str ┆ f64       ┆ f64       │
+╞═══════╪═════╪═══════════╪═══════════╡
+│ 10003 ┆ V1  ┆ -0.025985 ┆ 0.014206  │
+│ 10008 ┆ V1  ┆ -0.079689 ┆ -0.000435 │
+│ 10010 ┆ V1  ┆ -0.062953 ┆ 0.002212  │
+│ 10011 ┆ V1  ┆ -0.038073 ┆ -0.001121 │
+│ 10013 ┆ V1  ┆ -0.042161 ┆ 0.008091  │
+│ …     ┆ …   ┆ …         ┆ …         │
+│ 25081 ┆ V1  ┆ -0.070675 ┆ -0.022013 │
+│ 25090 ┆ V1  ┆ -0.034116 ┆ -0.005581 │
+│ 25091 ┆ V1  ┆ -0.062637 ┆ -0.00005  │
+│ 25094 ┆ V1  ┆ -0.053041 ┆ -0.007981 │
+│ 25095 ┆ V1  ┆ -0.0281   ┆ -0.004837 │
+└───────┴─────┴───────────┴───────────┘
+```
+
+### Associate data with A2CPS Record IDs and NDA Globally-Unique ID
+
+Links between the participant record IDs and the biospecimen IDs are not yet available. If these are needed, please contact Patrick Sadil.
+
+## Considerations While Working on the Project
+
+### Variability Across Scanners
+
+Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. The imaging DIRC is quantifying and mitigating this variability. For an ongoing review of the issue, please see https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization. 
+
+### Signature Response Measure
+
+The signature responses were extracted using best-practices, but the imaging DIRC is currently exploring alternative ways of calculating signature responses in the CUFF tasks. For details and progress, please see https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406923/Imaging+Analysis+Ideas#NPS%2BSIIPS1-on-ToPS-or-SpaceTop-Data.
+
+### Intermediate Outputs
+
+The other folders contain intermediate outputs that may be useful for digging into a participant's results
+
+- signature-rawdata
+  - Parquet dataset of minimally preprocessed (post-fMRIPrep) functional MRI (cuff and rest).
+- signature-confounds
+  - The nuisance timeseries that were used during denoising
+- signature-cleaned
+  - The NifTI files of functional MRI after denoising (e.g., temporal filter, nuisance regression)
+- signature-bold
+  - Parquet dataset of denoised fMRI
+- signature-labels
+  - Anatomical labels associated with the individual voxels (brain, FreeSurfer Segmentations, FAST Parcellations)
+
