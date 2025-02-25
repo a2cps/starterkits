@@ -1,0 +1,222 @@
+# Raw MRI Data Starter Kit
+
+This page describes how to work with the raw MRI data from A2CPS, which is provided in a format called "BIDS" (for a generic introduction to BIDS, see: [Unsure how to get started using BIDS with your current data? - The Brain Imaging Data Structure](https://bids-website.readthedocs.io/en/latest/getting_started/index.html)). The raw data are most useful when you need to run custom preprocessing pipelines. If you do not need custom pipelines, please review [the preface](index.qmd#sec-preface) for a list of imaging products that have already been calculated.
+
+## Before Proposing a Project
+
+### Confirm that the sample size will be adequate
+
+First Data Release: Up to 595 participants have imaging data (varying by scan: T1, DWI, etc.), and fewer have all images/derivatives. Also, note that this count includes participants with all levels of image quality (see below).
+
+For the most up-to-date counts of images and their quality, see the [Imaging Overview Report](https://a2cps.org/reports/imaging-overview/).[^imaging-report-help]
+
+[^imaging-report-help]: Note that by default it includes all collected scans, but you can select subsets like "Release 1" using a menu at the top of the page.
+
+### Availability of Imaging Modalities
+
+The raw imaging data contains five kinds of images across four modalities (listed here with their BIDS type labels, which are also the folders they are found in, in parentheses).
+
+* Anatomical (anat)
+* Structural MRI (sMRI) provides information related to the anatomic layout of the brain, and allows calculations of cortical and subcortical volumes and morphology. It provides a stable reference for cross-subject and cross-modality alignments, and is thus an essential component.
+
+* Diffusion (dwi) 
+* Diffusion-Weighted MRI (dMRI) captures microstructural information through the hindering effect of the structures on the natural diffusion of water molecules, which slows the rate at which MRI signal is lost in the direction aligned with a probing gradient.
+
+* Functional (func)
+* fMRI measures hemodynamically driven signal changes that result from localized changes in oxygen uptake and blood flow as a result of neural activity, and is typically analyzed by looking for signal variations associated with scan conditions (often controlled with a “task”) or at how spontaneous intrinsic variations in signal are coordinated across brain regions ("functional connectivity" of those areas). Note that in BIDS “resting state” is labeled as another type of task (task-rest).
+* Resting-state functional MRI (rfMRI; task-rest) are six minutes long and are done with a cuff worn but uninflated. A REST1 scan precedes cuff inflation, and (assuming that occurs) a REST2 occurs at the end.
+*Task-based functional MRI (tfMRI; task-cuff) are also six minutes long and have a user calibrated inflation of the cuff (CUFF1) followed by a cuff inflation to a standard pressure (CUFF2). Not all subjects have either, but if at least one is present the protocol calls for a REST2 scan following them.
+
+* Fieldmap (fmap)
+* Susceptibility-weighted MRI (swMRI) enables susceptibility distortion correction. The A2CPS project acquires spin echo B0 images with opposite phase encoding direction, which can be combined to create fieldmaps. In general, the A2CPS B0 scans match the geometry of the target scans (i.e., the field of view and shimming of the scans to be corrected), though in some cases the geometry is slightly different. 
+
+For details on the scan acquisition parameters see the [A2CPS Tech Manual](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406812). 
+
+## On Starting Project
+
+### Locate Data
+
+Data is stored at TACC, and access will be required. See[ How do I download Consortium data?](https://a2cps.atlassian.net/wiki/spaces/DAS/pages/5080606/How+do+I+download+Consortium+data?search_id=baa90168-3f2b-43a5-899f-fa35e483016a&additional_analytics=queryHash---8044aae1f86875d993f20d7fe3815306b640d6e039c4512cd7a2f8453207b4cd) for more information. Within the A2CPS data on TACC, this is where the BIDS data are stored:
+
+```{bash}
+#| eval: false
+/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/bids/
+```
+
+### Extract Data
+
+The raw MRI data are organized according to [v1.9.0](https://bids-specification.readthedocs.io/en/v1.9.0/) of the Brain Imaging Dataset Structure (BIDS) standard. 
+
+
+In BIDS data for individual subjects are stored in folders named "sub-[ID]". For an example A2CPS session this format results in the following, with the study `record_id` used as the ID[^tree]:
+
+[^tree]: The `tree` command is just used here to display the folder structure, and is not required for you to have)
+
+```{bash}
+#| eval: false
+$ tree sub-10003
+sub-10003
+├── ses-V1
+│   ├── anat
+│   │   ├── sub-10003_ses-V1_T1w.json
+│   │   └── sub-10003_ses-V1_T1w.nii.gz
+│   ├── dwi
+│   │   ├── sub-10003_ses-V1_dwi.bval
+│   │   ├── sub-10003_ses-V1_dwi.bvec
+│   │   ├── sub-10003_ses-V1_dwi.json
+│   │   └── sub-10003_ses-V1_dwi.nii.gz
+│   ├── fmap
+│   │   ├── sub-10003_ses-V1_acq-dwib0_dir-AP_epi.json
+│   │   ├── sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz
+│   │   ├── sub-10003_ses-V1_acq-dwib0_dir-PA_epi.json
+│   │   ├── sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz
+│   │   ├── sub-10003_ses-V1_acq-dwib0_epi.bval
+│   │   ├── sub-10003_ses-V1_acq-dwib0_epi.bvec
+│   │   ├── sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.json
+│   │   ├── sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.nii.gz
+│   │   ├── sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.json
+│   │   └── sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.nii.gz
+│   ├── func
+│   │   ├── sub-10003_ses-V1_task-cuff_run-01_bold.json
+│   │   ├── sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz
+│   │   ├── sub-10003_ses-V1_task-cuff_run-01_events.tsv
+│   │   ├── sub-10003_ses-V1_task-rest_run-01_bold.json
+│   │   ├── sub-10003_ses-V1_task-rest_run-01_bold.nii.gz
+│   │   ├── sub-10003_ses-V1_task-rest_run-02_bold.json
+│   │   └── sub-10003_ses-V1_task-rest_run-02_bold.nii.gz
+│   └── sub-10003_ses-V1_scans.tsv
+└── sub-10003_sessions.tsv
+5 directories, 25 files
+```
+
+
+The raw imaging data are in the (`gzip` compressed) [NIfTi](https://nifti.nimh.nih.gov/) files, and each image is associated with a `.json` sidecar containing metadata about the scan (metadata that subsumes the NIfTi header). 
+
+The "session" refers to the visit. Currently only the baseline, pre-surgery data is included, and all sessions have the label "V1". Information about each participant's visit is stored in the `sub-[record_id]/sub-[record_id]_sessions.tsv` file.
+
+The pressures that were applied during the CUFF scans are recorded in the [`sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv` tables](https://bids-specification.readthedocs.io/en/v1.9.0/modality-specific-files/task-events.html).
+
+BIDS requires that the diffusion gradient information is stored according to the FSL format, in `*bval` and `*bvec` files in the `/dwi` directory. For details see: [Magnetic Resonance Imaging - Brain Imaging Data Structure](https://bids-specification.readthedocs.io/en/v1.9.0/modality-specific-files/magnetic-resonance-imaging-data.html#required-gradient-orientation-information).
+
+Files at the top level of the bids folder contain information that applies to multiple participants. This includes
+
+```{r}
+#| echo: false
+
+tibble::tribble(
+  ~File, ~Documentation,
+  "README ([A2CPS file](https://github.com/a2cps/snapshot/blob/v1.1.0/src/snapshot/data/README.md))", "[modality agnostic files](https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html)",
+  "participants.tsv ([dictionary](https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/participants.json))", "[participants file](https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html#participants-file )",
+  "sub-[record_id]_ses-[ses_id]_scans.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/scans.json))", "[scans file](https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html#scans-file)",
+  "sub-[record_id]_sessions.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/sessions.json))","[sessions file](https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html#sessions-file)",
+  "sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/task-cuff_events.json))","[task events](https://bids-specification.readthedocs.io/en/v1.9.0/modality-specific-files/task-events.html)",
+  "dataset_description.json ([A2CPS file](https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/dataset_description.json))","[dataset descriptions](https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html#dataset_descriptionjson)"
+) 
+
+```
+
+
+### Data Quality
+
+All raw data have undergone quality review. For details on the review process see [A2CPS Imaging Quality Assurance](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406780).
+
+The resulting overall quality ratings (red/yellow/green) are included in the `*scans.tsv` files. For example
+
+```{bash}
+#| eval: false
+$ cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv 
+filename	rating
+func/sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz	green
+dwi/sub-10003_ses-V1_dwi.nii.gz	green
+func/sub-10003_ses-V1_task-rest_run-01_bold.nii.gz	green
+func/sub-10003_ses-V1_task-rest_run-02_bold.nii.gz	green
+anat/sub-10003_ses-V1_T1w.nii.gz	green
+fmap/sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.nii.gz	n/a
+fmap/sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.nii.gz	n/a
+fmap/sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz	n/a
+fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz	n/a
+```
+
+For a description of the reviews, see the [scans.json data dictionary](https://github.com/a2cps/snapshot/blob/v1.1.0/src/snapshot/data/scans.json). Re-evaluation of quality and inclusion/exclusion criteria in the context of a specific analysis is always reasonable, but we would advise against including scans labeled "red" in most analyses.
+
+Note that some "cuff" scans were collected without cuff inflation. These scans can be identified by the "applied_pressure" column of the `*events.tsv` file. For example
+
+```{bash}
+#| eval: false
+$ grep -b1 -HP "0\t450\t0" sub-*/ses-V1/func/*events.tsv | head -n 9
+sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv-0-onset	duration	applied_pressure
+sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv:32:0	450	0
+--
+sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv-0-onset	duration	applied_pressure
+sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv:32:0	450	0
+--
+sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv-0-onset	duration	applied_pressure
+sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv:32:0	450	0
+```
+
+
+### Cross-Modality Links
+
+Participants are identified in all imaging products according to their “record_id“, aka “A2CPS ID”. Each record ID is also associated with both a Globally-Unique ID (GUID) that was assigned by the NDA and a REDCap GUID that can be used to associate imaging data with modalities that are not labeled by record ID. The GUIDs are not stored in Release 1.1 but can be made available upon request (see @sec-contacts).
+
+## Considerations While Working on Project
+
+### Data Generation
+
+Each scanner's manufacturer-specific algorithms and software are used for the reconstruction of image data from k-space (k-space data were not saved). The reconstructed images are exported in the Digital Imaging and Communications in Medicine (DICOM) format and sent electronically from participating sites to the Texas Advanced Computing Center (TACC). Following the Organization for Human Brain Mapping Committee on Best Practices in Data Analysis and Sharing report [@nichols_best_2017], the DICOM files are converted into the Neuroimaging Informatics Technology Initiative (NIfTI) 1 format [@cox_sort_2004] and organized according to the BIDS specification [@gorgolewski_brain_2016]. For this conversion, the pipeline uses HeuDiConv [@halchenko_heudiconv_2024], which in turn uses `dcm2niix` [@li_first_2016]. Conversion relies on the ReproIn heuristic file [@visconti_di_oleggio_castello_repronimreproin_2023], modified to encode the sequence and file naming conventions developed for the A2CPS project. The original DICOMs are stored for posterity but are not included in data releases.
+
+All mri pipeline code is available through github: https://github.com/a2cps/mri_imaging_pipeline Restricted content. Note that the code used to generate the BIDS derivatives has been updated several times (e.g., the same version of dcm2niix was not used to convert all participants). The specific version of the conversion code is stored in the `GeneratedBy` field of the `dataset_description.json`, with entries like
+
+```{json}
+#| eval: false
+{
+  "CodeUrl": "https://github.com/a2cps/mri_imaging_pipeline",
+  "Container": {
+    "Tag": "221121",
+    "Type": "Docker",
+    "URI": "docker://psadil/heudiconv:221121"
+  },
+  "Description": "WS20207V1",
+  "Name": "heudiconv_app",
+  "Version": "urrutia-heudiconv-0.11.6"
+} 
+
+```
+
+This indicates that the presurgery scan session for participant 20207 (who happens to have been collected at Wayne State) was converted with the heudiconv_app version 0.11.6. That version is recorded [here](https://github.com/a2cps/mri_imaging_pipeline/blob/c6dd760501b142de34b988be10cc663311a3ceee/heudiconv_app/app.ini). This app used the docker image [psadil/heudiconv:221121](https://hub.docker.com/layers/psadil/heudiconv/221121/images/sha256-13982ccab36adb26d4439d3673bfc4ee4ad9a7c86b0de4896298a029a1eeb7c3?context=explore).
+
+### Skull-Stripping for Privacy
+
+Prior to release, all T1w images are skull-stripped using brain masks from the fMRIPrep pipeline (note that all DIRC processing is carried out using unmodified raw images, which is recommended for many measures like cortical thickness).
+
+### Acquisition Protocol Variation
+
+Over the course of the project, individual scanners have occasionally needed upgrading. For a timeline of acquisition changes, see: [Timeline of Imaging Acquisition Changes](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406851). 
+
+Occasionally, scans were collected with acquisition parameters that differed from the standards listed in the [A2CPS Tech Manual](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406812). For a review of the kinds of deviations that have been observed, see [Imaging Log - Problem Cases](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406735). In general, preprocessing pipelines should not assume that there is consistency in the acquisition parameters across participants (even in participants from the same site), and in all cases, the metadata within the json sidecars should be referenced as the best source of information on these parameters.
+
+### Additions Planned for Later Releases
+
+Release 2.0.0 (expected by Winter 2025) will include 1017 participants with at least a T1w image. For planned updates, please see the table [Release v2.0](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/177209345) with `Product == bids`.
+
+### Software Packages for Working with BIDS
+
+
+Several packages in multiple languages have been developed to simplify interacting with BIDS. For a complete list, see: [Benefits](https://bids.neuroimaging.io/benefits.html#other-tools), a subset of which is copied below
+
+* [bids-matlab](https://github.com/bids-standard/bids-matlab): MATLAB/Octave tools to interact with datasets conforming to the BIDS format
+* [bidser](https://github.com/bbuchsbaum/bidser): Working with Brain Imaging Data Structure in R
+* [PyBIDS](https://github.com/bids-standard/pybids): Python package to quickly parse / search the components of a BIDS dataset. It also contains functionality for running analyses on your data.
+
+### Citations
+
+If you use the imaging data in your research, please cite the imaging pipeline preprint [@sadil_acute_2024].
+
+### Contacts {#sec-contacts}
+
+* slack: [#help-imaging](https://a2cps-pain.slack.com/archives/C07SBJJLFMG) 
+* email: 
+  * [James Ford](https://a2cps.atlassian.net/wiki/people/712020:b74bac07-188d-4937-94b0-e97a7d5ea96e?ref=confluence)
+  * [Patrick Sadil](https://a2cps.atlassian.net/wiki/people/712020:9b1f0b7e-3a1b-4955-856b-f0b1a07e458e?ref=confluence)
+
+

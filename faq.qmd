@@ -1,0 +1,6 @@
+
+# FAQ {.unnumbered}
+
+* Q: After reviewing the kit, I still have questions. Who should I contact?
+  * A: Each kit is maintained by a different member of the DIRC, and their contact information is listed at the end of the kit. Please use the channels listed in the kit
+

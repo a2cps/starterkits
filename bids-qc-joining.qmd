@@ -1,0 +1,90 @@
+---
+format:
+  html:
+    df-print: tibble
+---
+
+# Exclude Scans with "Red" Quality
+
+For each MRI product, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products are known to have poor quality--rated "red" or incomparable. This kit walks through one way to incorporate those outputs for [FreeSurfer products](freesurfer.qmd). For details on how the ratings were generated, see https://a2cps.atlassian.net/wiki/spaces/DIRC/pages/303857665/Raw+MRI+Data+Starter+Kit.
+
+```{r setup}
+library(fs)
+library(readr)
+library(dplyr)
+library(stringr)
+```
+
+First, start by loading the table of FreeSurfer outputs. In this example, the cortical parcellations will be used.
+
+```{r}
+aparc <- read_tsv("data/aparc.tsv")
+aparc
+```
+
+
+The overall quality ratings (red/yellow/green) for the rawdata are included in the *scans.tsv files. For example
+
+```{bash}
+#| eval: false
+$ cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv 
+filename	rating
+func/sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz	green
+dwi/sub-10003_ses-V1_dwi.nii.gz	green
+func/sub-10003_ses-V1_task-rest_run-01_bold.nii.gz	green
+func/sub-10003_ses-V1_task-rest_run-02_bold.nii.gz	green
+anat/sub-10003_ses-V1_T1w.nii.gz	green
+fmap/sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.nii.gz	n/a
+fmap/sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.nii.gz	n/a
+fmap/sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz	n/a
+fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz	n/a
+```
+
+To load the files, first list them all with [`fs::dir_ls`](https://fs.r-lib.org/reference/dir_ls.html).
+
+```{r}
+scan_files <- dir_ls("data/scans", glob = "*tsv")
+head(scan_files)
+```
+
+They can be read and bound together using [`readr::read_tsv`](https://readr.tidyverse.org/reference/read_delim.html). Note that the BIDS way to represent null values is with `'n/a'`.  
+
+```{r}
+scans <- read_tsv(scan_files, na = "n/a")
+scans
+```
+
+Ratings will be used to exclude some FreeSurfer products, and so we only need the ratings for the T1w scans.
+
+```{r}
+t1w_ratings <- scans |>
+  filter(str_detect(filename, "T1w"))
+```
+
+In this example, all scans with a rating "red" will be excluded, so filter for those scans.
+
+```{r}
+red_t1w <- t1w_ratings |>
+  filter(rating=="red")
+red_t1w
+```
+
+The FreeSurfer rows are defined by the entities sub and ses, so extract these from the `filename` column.
+
+```{r}
+red_t1w_w_entities <- red_t1w |>
+  mutate(
+    sub = str_extract(filename, "(?<=sub-)[[:digit:]]{5}") |>
+      as.integer(),
+    ses = str_extract(filename, "V[13]")
+  )
+```
+
+Finally, this table with red ratings can be used to exclude participants with a low quality T1w scan.
+
+```{r}
+aparc_wo_red <- aparc |>
+  anti_join(red_t1w_w_entities, by = join_by(sub, ses))
+aparc_wo_red
+```
+
