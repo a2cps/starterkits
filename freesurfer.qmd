@@ -1,5 +1,7 @@
 ---
-engine: knitr
+format:
+  html:
+    df-print: tibble
 ---
 
 # FreeSurfer Measures
