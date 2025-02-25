@@ -19,6 +19,10 @@ book:
 bibliography: references.bib
 csl: apa.csl
 
+execute:
+  freeze: auto  # re-render only when source changes
+  cache: true
+
 format:
   html:
     theme: cosmo
