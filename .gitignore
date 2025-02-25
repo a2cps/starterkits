@@ -5,3 +5,5 @@
 
 /.quarto/
 data/
+*cache/*
+*files/*
