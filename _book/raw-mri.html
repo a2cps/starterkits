@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.41">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Raw MRI Data Starter Kit – A2CPS Starter Kits</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./freesurfer.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-48ffa3e5b9d089919c6712c39e5b00f2.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./raw-mri.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Raw MRI Data Starter Kit</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A2CPS Starter Kits</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./raw-mri.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Raw MRI Data Starter Kit</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./freesurfer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">FreeSurfer Measures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FAQ</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bids-qc-joining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exclude Scans with “Red” Quality</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#before-proposing-a-project" id="toc-before-proposing-a-project" class="nav-link active" data-scroll-target="#before-proposing-a-project"><span class="header-section-number">1.1</span> Before Proposing a Project</a>
+  <ul class="collapse">
+  <li><a href="#confirm-that-the-sample-size-will-be-adequate" id="toc-confirm-that-the-sample-size-will-be-adequate" class="nav-link" data-scroll-target="#confirm-that-the-sample-size-will-be-adequate"><span class="header-section-number">1.1.1</span> Confirm that the sample size will be adequate</a></li>
+  <li><a href="#availability-of-imaging-modalities" id="toc-availability-of-imaging-modalities" class="nav-link" data-scroll-target="#availability-of-imaging-modalities"><span class="header-section-number">1.1.2</span> Availability of Imaging Modalities</a></li>
+  </ul></li>
+  <li><a href="#on-starting-project" id="toc-on-starting-project" class="nav-link" data-scroll-target="#on-starting-project"><span class="header-section-number">1.2</span> On Starting Project</a>
+  <ul class="collapse">
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">1.2.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">1.2.2</span> Extract Data</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">1.2.3</span> Data Quality</a></li>
+  <li><a href="#cross-modality-links" id="toc-cross-modality-links" class="nav-link" data-scroll-target="#cross-modality-links"><span class="header-section-number">1.2.4</span> Cross-Modality Links</a></li>
+  </ul></li>
+  <li><a href="#considerations-while-working-on-project" id="toc-considerations-while-working-on-project" class="nav-link" data-scroll-target="#considerations-while-working-on-project"><span class="header-section-number">1.3</span> Considerations While Working on Project</a>
+  <ul class="collapse">
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">1.3.1</span> Data Generation</a></li>
+  <li><a href="#skull-stripping-for-privacy" id="toc-skull-stripping-for-privacy" class="nav-link" data-scroll-target="#skull-stripping-for-privacy"><span class="header-section-number">1.3.2</span> Skull-Stripping for Privacy</a></li>
+  <li><a href="#acquisition-protocol-variation" id="toc-acquisition-protocol-variation" class="nav-link" data-scroll-target="#acquisition-protocol-variation"><span class="header-section-number">1.3.3</span> Acquisition Protocol Variation</a></li>
+  <li><a href="#additions-planned-for-later-releases" id="toc-additions-planned-for-later-releases" class="nav-link" data-scroll-target="#additions-planned-for-later-releases"><span class="header-section-number">1.3.4</span> Additions Planned for Later Releases</a></li>
+  <li><a href="#software-packages-for-working-with-bids" id="toc-software-packages-for-working-with-bids" class="nav-link" data-scroll-target="#software-packages-for-working-with-bids"><span class="header-section-number">1.3.5</span> Software Packages for Working with BIDS</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">1.3.6</span> Citations</a></li>
+  <li><a href="#sec-contacts" id="toc-sec-contacts" class="nav-link" data-scroll-target="#sec-contacts"><span class="header-section-number">1.3.7</span> Contacts</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Raw MRI Data Starter Kit</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This page describes how to work with the raw MRI data from A2CPS, which is provided in a format called “BIDS” (for a generic introduction to BIDS, see: <a href="https://bids-website.readthedocs.io/en/latest/getting_started/index.html">Unsure how to get started using BIDS with your current data? - The Brain Imaging Data Structure</a>). The raw data are most useful when you need to run custom preprocessing pipelines. If you do not need custom pipelines, please review <a href="./index.html#sec-preface">the preface</a> for a list of imaging products that have already been calculated.</p>
+<section id="before-proposing-a-project" class="level2 page-columns page-full" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="before-proposing-a-project"><span class="header-section-number">1.1</span> Before Proposing a Project</h2>
+<section id="confirm-that-the-sample-size-will-be-adequate" class="level3 page-columns page-full" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="confirm-that-the-sample-size-will-be-adequate"><span class="header-section-number">1.1.1</span> Confirm that the sample size will be adequate</h3>
+<p>First Data Release: Up to 595 participants have imaging data (varying by scan: T1, DWI, etc.), and fewer have all images/derivatives. Also, note that this count includes participants with all levels of image quality (see below).</p>
+<p>For the most up-to-date counts of images and their quality, see the <a href="https://a2cps.org/reports/imaging-overview/">Imaging Overview Report</a>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Note that by default it includes all collected scans, but you can select subsets like “Release 1” using a menu at the top of the page.</p></div></div></section>
+<section id="availability-of-imaging-modalities" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="availability-of-imaging-modalities"><span class="header-section-number">1.1.2</span> Availability of Imaging Modalities</h3>
+<p>The raw imaging data contains five kinds of images across four modalities (listed here with their BIDS type labels, which are also the folders they are found in, in parentheses).</p>
+<ul>
+<li><p>Anatomical (anat)</p></li>
+<li><p>Structural MRI (sMRI) provides information related to the anatomic layout of the brain, and allows calculations of cortical and subcortical volumes and morphology. It provides a stable reference for cross-subject and cross-modality alignments, and is thus an essential component.</p></li>
+<li><p>Diffusion (dwi)</p></li>
+<li><p>Diffusion-Weighted MRI (dMRI) captures microstructural information through the hindering effect of the structures on the natural diffusion of water molecules, which slows the rate at which MRI signal is lost in the direction aligned with a probing gradient.</p></li>
+<li><p>Functional (func)</p></li>
+<li><p>fMRI measures hemodynamically driven signal changes that result from localized changes in oxygen uptake and blood flow as a result of neural activity, and is typically analyzed by looking for signal variations associated with scan conditions (often controlled with a “task”) or at how spontaneous intrinsic variations in signal are coordinated across brain regions (“functional connectivity” of those areas). Note that in BIDS “resting state” is labeled as another type of task (task-rest).</p></li>
+<li><p>Resting-state functional MRI (rfMRI; task-rest) are six minutes long and are done with a cuff worn but uninflated. A REST1 scan precedes cuff inflation, and (assuming that occurs) a REST2 occurs at the end. *Task-based functional MRI (tfMRI; task-cuff) are also six minutes long and have a user calibrated inflation of the cuff (CUFF1) followed by a cuff inflation to a standard pressure (CUFF2). Not all subjects have either, but if at least one is present the protocol calls for a REST2 scan following them.</p></li>
+<li><p>Fieldmap (fmap)</p></li>
+<li><p>Susceptibility-weighted MRI (swMRI) enables susceptibility distortion correction. The A2CPS project acquires spin echo B0 images with opposite phase encoding direction, which can be combined to create fieldmaps. In general, the A2CPS B0 scans match the geometry of the target scans (i.e., the field of view and shimming of the scans to be corrected), though in some cases the geometry is slightly different.</p></li>
+</ul>
+<p>For details on the scan acquisition parameters see the <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406812">A2CPS Tech Manual</a>.</p>
+</section>
+</section>
+<section id="on-starting-project" class="level2 page-columns page-full" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="on-starting-project"><span class="header-section-number">1.2</span> On Starting Project</h2>
+<section id="locate-data" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">1.2.1</span> Locate Data</h3>
+<p>Data is stored at TACC, and access will be required. See<a href="https://a2cps.atlassian.net/wiki/spaces/DAS/pages/5080606/How+do+I+download+Consortium+data?search_id=baa90168-3f2b-43a5-899f-fa35e483016a&amp;additional_analytics=queryHash---8044aae1f86875d993f20d7fe3815306b640d6e039c4512cd7a2f8453207b4cd">How do I download Consortium data?</a> for more information. Within the A2CPS data on TACC, this is where the BIDS data are stored:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/bids/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="extract-data" class="level3 page-columns page-full" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">1.2.2</span> Extract Data</h3>
+<p>The raw MRI data are organized according to <a href="https://bids-specification.readthedocs.io/en/v1.9.0/">v1.9.0</a> of the Brain Imaging Dataset Structure (BIDS) standard.</p>
+<p>In BIDS data for individual subjects are stored in folders named “sub-[ID]”. For an example A2CPS session this format results in the following, with the study <code>record_id</code> used as the ID<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The <code>tree</code> command is just used here to display the folder structure, and is not required for you to have)</p></div></div><div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree sub-10003</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> ses-V1</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── anat</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_T1w.json</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   └── sub-10003_ses-V1_T1w.nii.gz</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── dwi</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_dwi.bval</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_dwi.bvec</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_dwi.json</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   └── sub-10003_ses-V1_dwi.nii.gz</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── fmap</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_acq-dwib0_dir-AP_epi.json</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_acq-dwib0_dir-PA_epi.json</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_acq-dwib0_epi.bval</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_acq-dwib0_epi.bvec</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.json</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.nii.gz</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.json</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   └── sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.nii.gz</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── func</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_task-cuff_run-01_bold.json</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_task-cuff_run-01_events.tsv</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_task-rest_run-01_bold.json</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_task-rest_run-01_bold.nii.gz</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── sub-10003_ses-V1_task-rest_run-02_bold.json</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   └── sub-10003_ses-V1_task-rest_run-02_bold.nii.gz</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── sub-10003_ses-V1_scans.tsv</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> sub-10003_sessions.tsv</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> directories, 25 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The raw imaging data are in the (<code>gzip</code> compressed) <a href="https://nifti.nimh.nih.gov/">NIfTi</a> files, and each image is associated with a <code>.json</code> sidecar containing metadata about the scan (metadata that subsumes the NIfTi header).</p>
+<p>The “session” refers to the visit. Currently only the baseline, pre-surgery data is included, and all sessions have the label “V1”. Information about each participant’s visit is stored in the <code>sub-[record_id]/sub-[record_id]_sessions.tsv</code> file.</p>
+<p>The pressures that were applied during the CUFF scans are recorded in the <a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-specific-files/task-events.html"><code>sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv</code> tables</a>.</p>
+<p>BIDS requires that the diffusion gradient information is stored according to the FSL format, in <code>*bval</code> and <code>*bvec</code> files in the <code>/dwi</code> directory. For details see: <a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-specific-files/magnetic-resonance-imaging-data.html#required-gradient-orientation-information">Magnetic Resonance Imaging - Brain Imaging Data Structure</a>.</p>
+<p>Files at the top level of the bids folder contain information that applies to multiple participants. This includes</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">File</th>
+<th style="text-align: left;">Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">README (<a href="https://github.com/a2cps/snapshot/blob/v1.1.0/src/snapshot/data/README.md">A2CPS file</a>)</td>
+<td style="text-align: left;"><a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html">modality agnostic files</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">participants.tsv (<a href="https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/participants.json">dictionary</a>)</td>
+<td style="text-align: left;"><a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html#participants-file">participants file</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sub-[record_id]_ses-[ses_id]_scans.tsv tables (<a href="https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/scans.json">dictionary</a>)</td>
+<td style="text-align: left;"><a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html#scans-file">scans file</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sub-[record_id]_sessions.tsv tables (<a href="https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/sessions.json">dictionary</a>)</td>
+<td style="text-align: left;"><a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html#sessions-file">sessions file</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv tables (<a href="https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/task-cuff_events.json">dictionary</a>)</td>
+<td style="text-align: left;"><a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-specific-files/task-events.html">task events</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dataset_description.json (<a href="https://github.com/a2cps/snapshot/blob/f025c754ed77f7fd62ae609224f89d1bc5298fd2/src/snapshot/data/dataset_description.json">A2CPS file</a>)</td>
+<td style="text-align: left;"><a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-agnostic-files.html#dataset_descriptionjson">dataset descriptions</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="data-quality" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">1.2.3</span> Data Quality</h3>
+<p>All raw data have undergone quality review. For details on the review process see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406780">A2CPS Imaging Quality Assurance</a>.</p>
+<p>The resulting overall quality ratings (red/yellow/green) are included in the <code>*scans.tsv</code> files. For example</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">filename</span>    rating</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz</span>  green</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">dwi/sub-10003_ses-V1_dwi.nii.gz</span> green</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10003_ses-V1_task-rest_run-01_bold.nii.gz</span>  green</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10003_ses-V1_task-rest_run-02_bold.nii.gz</span>  green</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">anat/sub-10003_ses-V1_T1w.nii.gz</span>    green</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.nii.gz</span>  n/a</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.nii.gz</span>  n/a</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz</span>   n/a</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz</span>   n/a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For a description of the reviews, see the <a href="https://github.com/a2cps/snapshot/blob/v1.1.0/src/snapshot/data/scans.json">scans.json data dictionary</a>. Re-evaluation of quality and inclusion/exclusion criteria in the context of a specific analysis is always reasonable, but we would advise against including scans labeled “red” in most analyses.</p>
+<p>Note that some “cuff” scans were collected without cuff inflation. These scans can be identified by the “applied_pressure” column of the <code>*events.tsv</code> file. For example</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> grep <span class="at">-b1</span> <span class="at">-HP</span> <span class="st">"0\t450\t0"</span> sub-<span class="pp">*</span>/ses-V1/func/<span class="pp">*</span>events.tsv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 9</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv-0-onset</span>  duration    applied_pressure</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv:32:0</span> 450 0</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">--</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv-0-onset</span>  duration    applied_pressure</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv:32:0</span> 450 0</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">--</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv-0-onset</span>  duration    applied_pressure</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv:32:0</span> 450 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="cross-modality-links" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="cross-modality-links"><span class="header-section-number">1.2.4</span> Cross-Modality Links</h3>
+<p>Participants are identified in all imaging products according to their “record_id“, aka “A2CPS ID”. Each record ID is also associated with both a Globally-Unique ID (GUID) that was assigned by the NDA and a REDCap GUID that can be used to associate imaging data with modalities that are not labeled by record ID. The GUIDs are not stored in Release 1.1 but can be made available upon request (see <a href="#sec-contacts" class="quarto-xref"><span>Section 1.3.7</span></a>).</p>
+</section>
+</section>
+<section id="considerations-while-working-on-project" class="level2 page-columns page-full" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="considerations-while-working-on-project"><span class="header-section-number">1.3</span> Considerations While Working on Project</h2>
+<section id="data-generation" class="level3 page-columns page-full" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">1.3.1</span> Data Generation</h3>
+<p>Each scanner’s manufacturer-specific algorithms and software are used for the reconstruction of image data from k-space (k-space data were not saved). The reconstructed images are exported in the Digital Imaging and Communications in Medicine (DICOM) format and sent electronically from participating sites to the Texas Advanced Computing Center (TACC). Following the Organization for Human Brain Mapping Committee on Best Practices in Data Analysis and Sharing report <span class="citation" data-cites="nichols_best_2017">(<a href="references.html#ref-nichols_best_2017" role="doc-biblioref">Nichols et al., 2017</a>)</span>, the DICOM files are converted into the Neuroimaging Informatics Technology Initiative (NIfTI) 1 format <span class="citation" data-cites="cox_sort_2004">(<a href="references.html#ref-cox_sort_2004" role="doc-biblioref">Cox et al., 2004</a>)</span> and organized according to the BIDS specification <span class="citation" data-cites="gorgolewski_brain_2016">(<a href="references.html#ref-gorgolewski_brain_2016" role="doc-biblioref">Gorgolewski et al., 2016</a>)</span>. For this conversion, the pipeline uses HeuDiConv <span class="citation" data-cites="halchenko_heudiconv_2024">(<a href="references.html#ref-halchenko_heudiconv_2024" role="doc-biblioref">Halchenko et al., 2024</a>)</span>, which in turn uses <code>dcm2niix</code> <span class="citation" data-cites="li_first_2016">(<a href="references.html#ref-li_first_2016" role="doc-biblioref">Li et al., 2016</a>)</span>. Conversion relies on the ReproIn heuristic file <span class="citation" data-cites="visconti_di_oleggio_castello_repronimreproin_2023">(<a href="references.html#ref-visconti_di_oleggio_castello_repronimreproin_2023" role="doc-biblioref">Visconti di Oleggio Castello et al., 2023</a>)</span>, modified to encode the sequence and file naming conventions developed for the A2CPS project. The original DICOMs are stored for posterity but are not included in data releases.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-nichols_best_2017" class="csl-entry" role="listitem">
+Nichols, T. E., Das, S., Eickhoff, S. B., Evans, A. C., Glatard, T., Hanke, M., Kriegeskorte, N., Milham, M. P., Poldrack, R. A., Poline, J.-B., et al. (2017). Best practices in data analysis and sharing in neuroimaging using MRI. <em>Nature Neuroscience</em>, <em>20</em>(3), 299–303. <a href="https://doi.org/10.1038/nn.4500">https://doi.org/10.1038/nn.4500</a>
+</div><div id="ref-cox_sort_2004" class="csl-entry" role="listitem">
+Cox, R. W., Ashburner, J., Breman, H., Fissell, K., Haselgrove, C., Holmes, C. J., Lancaster, J. L., Rex, D. E., Smith, S. M., Woodward, J. B., et al. (2004). A (sort of) new image data format standard: NiFTI-1. <em>10th Annual Meeting of the Organization for Human Brain Mapping</em>, <em>22</em>, 01. <a href="https://nifti.nimh.nih.gov/pub/dist/doc/hbm_nifti_2004.pdf">https://nifti.nimh.nih.gov/pub/dist/doc/hbm_nifti_2004.pdf</a>
+</div><div id="ref-gorgolewski_brain_2016" class="csl-entry" role="listitem">
+Gorgolewski, K. J., Auer, T., Calhoun, V. D., Craddock, R. C., Das, S., Duff, E. P., Flandin, G., Ghosh, S. S., Glatard, T., Halchenko, Y. O., et al. (2016). The brain imaging data structure, a format for organizing and describing outputs of neuroimaging experiments. <em>Scientific Data</em>, <em>3</em>(1), 1–9. <a href="https://doi.org/10.1038/sdata.2016.44">https://doi.org/10.1038/sdata.2016.44</a>
+</div><div id="ref-halchenko_heudiconv_2024" class="csl-entry" role="listitem">
+Halchenko, Y. O., Goncalves, M., Ghosh, S., Velasco, P., Oleggio Castello, M. V. di, Salo, T., Wodder, J. T., Hanke, M., Sadil, P., Gorgolewski, K. J., et al. (2024). HeuDiConv—flexible DICOM conversion into structured directory layouts. <em>Journal of Open Source Software</em>, <em>9</em>(99), 5839. <a href="https://doi.org/10.21105/joss.05839">https://doi.org/10.21105/joss.05839</a>
+</div><div id="ref-li_first_2016" class="csl-entry" role="listitem">
+Li, X., Morgan, P. S., Ashburner, J., Smith, J., &amp; Rorden, C. (2016). The first step for neuroimaging data analysis: DICOM to NIfTI conversion. <em>Journal of Neuroscience Methods</em>, <em>264</em>, 47–56. <a href="https://doi.org/10.1016/j.jneumeth.2016.03.001">https://doi.org/10.1016/j.jneumeth.2016.03.001</a>
+</div><div id="ref-visconti_di_oleggio_castello_repronimreproin_2023" class="csl-entry" role="listitem">
+Visconti di Oleggio Castello, M., Dobson, J. E., Sackett, T., Kodiweera, C., Haxby, J. V., Goncalves, M., Ghosh, S., &amp; Halchenko, Y. O. (2023). <em><span>ReproNim</span>/reproin: 0.11.6.2</em>. Zenodo. <a href="https://doi.org/10.5281/ZENODO.7975330">https://doi.org/10.5281/ZENODO.7975330</a>
+</div></div><p>All mri pipeline code is available through github: https://github.com/a2cps/mri_imaging_pipeline Restricted content. Note that the code used to generate the BIDS derivatives has been updated several times (e.g., the same version of dcm2niix was not used to convert all participants). The specific version of the conversion code is stored in the <code>GeneratedBy</code> field of the <code>dataset_description.json</code>, with entries like</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"CodeUrl"</span><span class="fu">:</span> <span class="st">"https://github.com/a2cps/mri_imaging_pipeline"</span><span class="fu">,</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Container"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"Tag"</span><span class="fu">:</span> <span class="st">"221121"</span><span class="fu">,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"Type"</span><span class="fu">:</span> <span class="st">"Docker"</span><span class="fu">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"URI"</span><span class="fu">:</span> <span class="st">"docker://psadil/heudiconv:221121"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"WS20207V1"</span><span class="fu">,</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Name"</span><span class="fu">:</span> <span class="st">"heudiconv_app"</span><span class="fu">,</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Version"</span><span class="fu">:</span> <span class="st">"urrutia-heudiconv-0.11.6"</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This indicates that the presurgery scan session for participant 20207 (who happens to have been collected at Wayne State) was converted with the heudiconv_app version 0.11.6. That version is recorded <a href="https://github.com/a2cps/mri_imaging_pipeline/blob/c6dd760501b142de34b988be10cc663311a3ceee/heudiconv_app/app.ini">here</a>. This app used the docker image <a href="https://hub.docker.com/layers/psadil/heudiconv/221121/images/sha256-13982ccab36adb26d4439d3673bfc4ee4ad9a7c86b0de4896298a029a1eeb7c3?context=explore">psadil/heudiconv:221121</a>.</p>
+</section>
+<section id="skull-stripping-for-privacy" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="skull-stripping-for-privacy"><span class="header-section-number">1.3.2</span> Skull-Stripping for Privacy</h3>
+<p>Prior to release, all T1w images are skull-stripped using brain masks from the fMRIPrep pipeline (note that all DIRC processing is carried out using unmodified raw images, which is recommended for many measures like cortical thickness).</p>
+</section>
+<section id="acquisition-protocol-variation" class="level3" data-number="1.3.3">
+<h3 data-number="1.3.3" class="anchored" data-anchor-id="acquisition-protocol-variation"><span class="header-section-number">1.3.3</span> Acquisition Protocol Variation</h3>
+<p>Over the course of the project, individual scanners have occasionally needed upgrading. For a timeline of acquisition changes, see: <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406851">Timeline of Imaging Acquisition Changes</a>.</p>
+<p>Occasionally, scans were collected with acquisition parameters that differed from the standards listed in the <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406812">A2CPS Tech Manual</a>. For a review of the kinds of deviations that have been observed, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406735">Imaging Log - Problem Cases</a>. In general, preprocessing pipelines should not assume that there is consistency in the acquisition parameters across participants (even in participants from the same site), and in all cases, the metadata within the json sidecars should be referenced as the best source of information on these parameters.</p>
+</section>
+<section id="additions-planned-for-later-releases" class="level3" data-number="1.3.4">
+<h3 data-number="1.3.4" class="anchored" data-anchor-id="additions-planned-for-later-releases"><span class="header-section-number">1.3.4</span> Additions Planned for Later Releases</h3>
+<p>Release 2.0.0 (expected by Winter 2025) will include 1017 participants with at least a T1w image. For planned updates, please see the table <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/177209345">Release v2.0</a> with <code>Product == bids</code>.</p>
+</section>
+<section id="software-packages-for-working-with-bids" class="level3" data-number="1.3.5">
+<h3 data-number="1.3.5" class="anchored" data-anchor-id="software-packages-for-working-with-bids"><span class="header-section-number">1.3.5</span> Software Packages for Working with BIDS</h3>
+<p>Several packages in multiple languages have been developed to simplify interacting with BIDS. For a complete list, see: <a href="https://bids.neuroimaging.io/benefits.html#other-tools">Benefits</a>, a subset of which is copied below</p>
+<ul>
+<li><a href="https://github.com/bids-standard/bids-matlab">bids-matlab</a>: MATLAB/Octave tools to interact with datasets conforming to the BIDS format</li>
+<li><a href="https://github.com/bbuchsbaum/bidser">bidser</a>: Working with Brain Imaging Data Structure in R</li>
+<li><a href="https://github.com/bids-standard/pybids">PyBIDS</a>: Python package to quickly parse / search the components of a BIDS dataset. It also contains functionality for running analyses on your data.</li>
+</ul>
+</section>
+<section id="citations" class="level3 page-columns page-full" data-number="1.3.6">
+<h3 data-number="1.3.6" class="anchored" data-anchor-id="citations"><span class="header-section-number">1.3.6</span> Citations</h3>
+<p>If you use the imaging data in your research, please cite the imaging pipeline preprint <span class="citation" data-cites="sadil_acute_2024">(<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">Sadil et al., 2024</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-sadil_acute_2024" class="csl-entry" role="listitem">
+Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J., DeLano, M. C., Ford, J. C., Gattu, R., Guo, X., Harris, R. E., Ichesco, E., Johnson, M. A., Jung, H., Kahn, A. B., Kaplan, C. M., Leloudas, N., Lindquist, M. A., Luo, Q., … Chronic Pain Signatures Consortium, T. A. to. (2024). Image processing in the acute to chronic pain signatures (A2CPS) project. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2024.12.19.627509">https://doi.org/10.1101/2024.12.19.627509</a>
+</div></div></section>
+<section id="sec-contacts" class="level3" data-number="1.3.7">
+<h3 data-number="1.3.7" class="anchored" data-anchor-id="sec-contacts"><span class="header-section-number">1.3.7</span> Contacts</h3>
+<ul>
+<li>slack: <a href="https://a2cps-pain.slack.com/archives/C07SBJJLFMG">#help-imaging</a></li>
+<li>email:
+<ul>
+<li><a href="https://a2cps.atlassian.net/wiki/people/712020:b74bac07-188d-4937-94b0-e97a7d5ea96e?ref=confluence">James Ford</a></li>
+<li><a href="https://a2cps.atlassian.net/wiki/people/712020:9b1f0b7e-3a1b-4955-856b-f0b1a07e458e?ref=confluence">Patrick Sadil</a></li>
+</ul></li>
+</ul>
+
+
+
+</section>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./freesurfer.html" class="pagination-link" aria-label="FreeSurfer Measures">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">FreeSurfer Measures</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
