@@ -5,3 +5,28 @@ Starter kits are brief tutorials that are designed to help guide internal A2CPS 
 Each kit has three sections, information to consider before starting a project, information about how to access the relevant data, and an overview of related work by the DIRC. 
 
 Kits correspond to the individual modalities that can be requested in the [Data Request Form](https://a2cps.atlassian.net/wiki/spaces/WG/pages/5080456/Data+Sharing+Committee+Proposal+Meetings+Forms?preview=/5080456/5106943/Data%20Request%20Form_2023.pdf). See below for a status of each kit.
+
+## Kit Availability
+
+- [x] NDA Download -> TACC-like kit: NDA Starter Kit, MRI Example
+- [ ] QST
+- [ ] EHR
+- [ ] Blood Draw Details
+- [ ] Psychosocial Variables
+- [ ] Functional Testing
+- [ ] Demographics
+- [ ] Data (Omics)-Please Specify:
+  - [x] gene_variants: @sec-snps
+  - [ ] proteomics
+- [ ] Data (Imaging)-Please Specify:
+  - [x] Raw Data: @sec-raw-mri
+  - [ ] brainager
+  - [ ] CAT12
+  - [ ] Functional Connectivity
+  - [ ] fMRIPrep
+  - [ ] FreeSurfer @sec-freesurfer
+  - [ ] GIFT
+  - [ ] MRIQC
+  - [ ] QSIprep
+  - [ ] Prior Neural Pain Signatures @sec-neural-pain-signatures
+  

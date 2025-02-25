@@ -4,7 +4,7 @@ format:
     df-print: tibble
 ---
 
-# FreeSurfer Measures
+# FreeSurfer Measures {#sec-freesurfer}
 
 ## Before Proposing Project
 

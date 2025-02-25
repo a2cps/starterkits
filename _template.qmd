@@ -1,0 +1,72 @@
+# A2CPS Starter Kit [Template]
+
+This template is for a new A2CPS Starter Kit, which is a brief tutorial that provides considerations about starting a project with A2CPS data. The kits are aimed at researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data). They assume that researchers will access internal A2CPS releases (that is, on TACC rather than from the NDA). Starter kits are expected to be useful during the planning stage of an internal project (see [Approved Projects](https://a2cps.atlassian.net/wiki/spaces/WG/pages/22675472) list), and while first accessing the data (see [How do I download Consortium data?](https://a2cps.atlassian.net/wiki/spaces/DAS/pages/5080606)).
+
+Please include the following three major sections: "*Before Proposing Project*", "*Starting Project*", and "*Considerations While Working on the Project*". Descriptions of these sections are provided below, including suggestions for subheaders.
+
+The scope of each kit is expected to roughly correspond to the individual modalities that can be requested in the Data Request Form ([Data Sharing Committee Proposal Meetings & Forms](https://a2cps.atlassian.net/wiki/spaces/WG/pages/5080456/Data+Sharing+Committee+Proposal+Meetings+Forms?preview=/5080456/5106943/Data%20Request%20Form_2023.pdf)). 
+
+## Before Proposing Project
+
+List "non-obvious" issues that can help inform whether a project is proposed and how to propose it. Sample issues include
+
+- Availability of modality by release
+  - In which releases is the modality available?
+- Availability of modality measures
+  - Are all fields within the modality going to be available? For example,
+    - If a project plans to use neural pattern signatures (from imaging fMRI), are they already calculated? If not, can they be calculated from the existing data types?
+    - Are the relevant rsIDs present in the sampled genetic variants?
+    - How can people find information about which specific questions were asked in a measure (e.g., https://a2cps.org/researchers/)
+- Sample size 
+  - Are substantial numbers of participants missing from the release? 
+    - If so, will they be included in subsequent releases?
+
+## Before Proposing Project
+
+### Locate Data
+
+Where are the relevant files?
+
+```bash
+$ # [/corral-secure/projects/A2CPS/products/consortium-data/rest_of_path]
+```
+
+### Extract Data
+
+Brief script to read the files (e.g., suggestions of relevant packages, links to documentation about datatype)
+
+
+### Data Quality
+
+Describe any necessary preprocessing (e.g., known bad samples to exclude).
+
+### Cross-Modality Links
+
+How can records in this modality be linked to others (e.g., what are the relevant IDs that will be available in other modalities)?
+
+## Considerations While Working on the Project
+
+### Data Generation
+
+Provide links to documentation on how the data were generated (e.g., relevant pipelines, scripts)
+
+### Other
+
+Provide details about any difficulties that are expected during a finalized analysis, or substantial augmentation to the modality that are forthcoming. Possible topics include
+
+- Batch effects
+  - Have they been measured? Are they severe? Are there recommended ways to mitigate them?
+- Quality Control
+  - Have all the pipelines that produced the derivatives been thoroughly checked? Could there be errors? Where or how can people verify the existing quality procedures?
+- Forthcoming Additions
+  - Is the DIRC working on something that will substantially change or add to the modality in upcoming releases?
+
+
+### Citations
+
+Are there any A2CPS publications that should be cited?
+
+### Contacts
+
+List the preferred means of contacting members of the DIRC for help with data (e.g., relevant channels in Slack, email addresses, recurring meetings).
+

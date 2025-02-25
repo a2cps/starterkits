@@ -1,0 +1,181 @@
+# ID Information {#sec-ids}
+
+A2CPS relies on several different schemes for labeling and describing metadata entities. This appendix describes those schemes to facilitate linking entities across data modalities. 
+
+## Location
+
+Location refers to where the data were collected.
+
+```{=html}
+<table>
+<caption>Terminology Mapping</caption>
+<thead>
+<tr>
+<th>Terminology</th>
+<th>Venue</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>site (code)</td>
+<td rowspan=2>Imaging</td>
+<td rowspan=2>In Imaging, the code is a two-letter acronym set when the project began. Sites changed their name, and so the acronym may not obviously correspond to the longer name. The mapping is always one-to-one. <a href="https://github.com/a2cps/snapshot/blob/6e21d4ff3cd65a0df4aaaf7d8a47b9217b7e7887/src/snapshot/data/participants.json#L7-L20">participants.tsv</a>
+</td>
+</tr>
+<tr>
+<td>site (LongName)</td>
+</tr>
+<tr>
+<td>collection site</td>
+<td>VBR</td>
+<td><a href="https://vbr-api.a2cps.cloud/docs#/locations">locations table</a></td>
+</tr>
+</tbody>
+</table>
+```
+
+The following table may be used for mapping across datatypes. 
+
+```{r}
+#| echo: false
+
+tibble::tribble(
+  ~`location (VBR)`, ~`Site Code: LongName (Imaging)`,
+  "Default", "",
+  "Receiving: University of California San Diego", "",
+  "Shipping: In Transit", "",
+  "MCC1: Institute for Translational Medicine", '"UI": "University of Illinois at Chicago"',
+  "MCC1: Rush University Medical Center", '"RU": "Rush University"',
+  "MCC1: The University of Chicago Medical Center", '"UC": "University of Chicago"',
+  "MCC1: NorthShore University HealthSystem", '"NS": "Endeavor Health"',
+  "MCC2: University of Michigan", '"UM": "University of Michigan"',
+  "ODGC-Proteomics: Pacific Northwest National Laboratory", "",
+  "ODGC-Lipidomics: Wake Forest University", "",
+  "ODGC-Metabolomics: Wake Forest University", "",
+  "ODGC-exRNA: University of California San Diego", "",
+  "ODGC-GV: University of California San Diego", "",
+  "CCC: University of Iowa", "",
+  "DIRC: Johns Hopkins University", "",
+  "DIRC: Dartmouth College", "",
+  "DIRC: Texas Advanced Computing Center", "",
+  "MCC2: Spectrum Health", '"SH": "Corewell Health"',
+  "ODGC-Proteomics: University of Pittsburgh Medical Center", "",
+  "ODGC-Metabolomics/Lipidomics: University of California Davis", "",
+  "MCC2: Wayne State", '"WS": "Wayne State University"'
+) |>
+  DT::datatable(
+    extensions = "Buttons",
+    options = list(
+      buttons = c("copy", "csv", "excel", "pdf"),
+      paging = FALSE,
+      searching = FALSE,
+      dom = 'Bfrtip'
+      ),
+    caption = "Location Entity Mapping"
+  )
+```
+
+## Participants
+
+```{r participants}
+#| echo: false
+#| tbl-cap: "Terminology Mapping"
+tibble::tribble(
+  ~Terminology, ~Venue, ~Notes,
+  "subject", "Imaging", 'In Imaging, “subject” is used interchangeably with “participant“ and both are equivalent to “record”',
+  "participant", "Imaging", 'In Imaging, “participant” is used interchangeably with “subject“ and both are equivalent to “record”',
+  "subject_guid", "VBR", 'In the VBR, “subject_guid” refers to the same entity as “NDA GUID” in Imaging, but the format is a UUID',
+  "record", "REDCap", "10000-14999: MCC1 TKA; 15000-19999: MCC1 Thoracic; 20000-24999: MCC2 Thoracic; 25000-29999: MCC2 TKA",
+  "Individual ID", "Genetics", "@sec-snps",
+  "Globally Unique ID (GUID*)", "NDA", "The GUIDs used in A2CPS are not typical GUIDs but “pseudo-GUIDs“. A decision to upload to the NDA was made partway through the project, at which time it was too late to collect the information that would be required to make typical GUIDs. In practice, this means that the GUIDs used by A2CPS cannot be used to link these participants to other studies within the NDA. https://nda.nih.gov/nda/using-the-nda-guid"
+)
+  
+```
+
+## Visits
+
+```{r visits}
+#| echo: false
+#| tbl-cap: "Terminology Mapping"
+
+tibble::tribble(
+  ~Terminology, ~Venue, ~Notes,
+  "session", "Imaging", '',
+  "visit", "NDA, Imaging", '[image03](https://nda.nih.gov/data-structure/image03)',
+  "visnum", "NDA", '[image03](https://nda.nih.gov/data-structure/image03)',
+  "session_det", "NDA", '[image03](https://nda.nih.gov/data-structure/image03), [fmriresults01](https://nda.nih.gov/data-structure/fmriresults01)',
+  "protocol_name", "VBR", "protocol table"
+)
+
+```
+
+
+The following table may be used for mapping across datatypes.
+
+
+```{r visitsmapping}
+#| echo: false
+
+tibble::tribble(
+  ~`Protocol (VBR)`, ~`visit,session (NDA, Imaging)`,
+  "undefined_protocol", "",
+  "screening", "",
+  "informed_consent", "",
+  "baseline_visit", "V1",
+  "3_days_preop", "",
+  "day_4_postop", "",
+  "day_5_postop", "",
+  "day_6_postop", "",
+  "day_7_postop", "",
+  "day_8_postop", "",
+  "day_9_postop", "",
+  "day_10_postop", "",
+  "day_11_postop", "",
+  "day_12_postop", "",
+  "day_13_postop", "",
+  "day_14_postop", "",
+  "day_15_postop", "",
+  "day_16_postop", "",
+  "day_17_postop", "",
+  "day_18_postop", "",
+  "day_19_postop", "",
+  "day_20_postop", "",
+  "day_21_postop", "",
+  "day_22_postop", "",
+  "day_23_postop", "",
+  "day_24_postop", "",
+  "day_25_postop", "",
+  "day_26_postop", "",
+  "day_27_postop", "",
+  "day_28_postop", "",
+  "6wks_postop", "",
+  "3mo_postop", "V3",
+  "6mo_postop", "",
+  "12mo_postop", "",
+  "event_reporting", "",
+  "econsent", "",
+  "consent_collection_form", "",
+  "consent_process_form", "",
+  "shipping", "",
+  "receiving", "",
+  "quality_control", "",
+  "processing", ""
+) |>
+  DT::datatable(
+    extensions = "Buttons",
+    options = list(
+      buttons = c("copy", "csv", "excel", "pdf"),
+      paging = FALSE,
+      searching = FALSE,
+      dom = 'Bfrtip'
+      ),
+    caption = "Visit Entity Mapping"
+  )
+```
+
+## Contacts
+
+- [Joshua Urrutia](https://a2cps.atlassian.net/wiki/people/5bce32cb2bfc57158b2faeb7?ref=confluence)
+- [James Ford](https://a2cps.atlassian.net/wiki/people/712020:b74bac07-188d-4937-94b0-e97a7d5ea96e?ref=confluence)
+- [Margaret Taub](https://a2cps.atlassian.net/wiki/people/70121:329569fc-80ac-4431-9df6-d7ef32c69789?ref=confluence)

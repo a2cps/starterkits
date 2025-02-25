@@ -9,12 +9,20 @@ book:
   date: today
   chapters:
     - index.qmd
-    - raw-mri.qmd
-    - freesurfer.qmd
+    - part: "Omics"
+      chapters:
+        - snps.qmd
+    - part: "MRI"
+      chapters:
+        - raw-mri.qmd
+        - freesurfer.qmd
+        - neural-pain-signatures.qmd
     - faq.qmd
     - references.qmd
   appendices:
     - bids-qc-joining.qmd
+    - ids.qmd
+    - nda-mri.qmd
 
 bibliography: references.bib
 csl: apa.csl
@@ -25,9 +33,10 @@ execute:
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      light: cosmo
+      dark: darkly
     df-print: kable
     citation-location: margin
     reference-location: margin
-
 
