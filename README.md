@@ -34,6 +34,10 @@ $ git push
 
 ## Tips
 
+### Quarto
+
+To view changes, use `quarto preview`, which renders the `qmd` files into `html`, opens up a copy of the starter kits in a browser, and automatically re-renders files when changes are saved.
+
 ### Template
 
 This repo comes with a template for new kits: [_template.qmd](_template.qmd).
