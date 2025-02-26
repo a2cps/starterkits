@@ -50,7 +50,7 @@ By default, all tables are rendered into markdown with [`knitr::kable`](https://
 - Print only a part of of the table
   - For example, `head(df)` instead of `df`
 
-[^kable]: The default table formating configured in [_quarto.yml](starterkits/_quarto.yml).
+[^kable]: The default table formatting configured in [_quarto.yml](starterkits/_quarto.yml).
 
 ## Resources
 
