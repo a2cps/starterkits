@@ -1,4 +1,4 @@
-# NDA Download Example, MRI
+# NDA Download Example, MRI {#sec-nda-mri}
 
 This page describes the A2CPS rawdata as downloaded from the NDA. 
 
