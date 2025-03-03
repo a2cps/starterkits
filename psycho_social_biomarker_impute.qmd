@@ -12,7 +12,7 @@ This document goes over score calculation and missing data imputation for each p
 
 ### Load Libraries
 
-```{r include=FALSE}
+```{r}
 
 library(shiny)
 library(tidyverse)
