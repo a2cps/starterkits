@@ -1,3 +1,9 @@
+---
+authors:
+  - name: Martin A. Lindquist
+  - name: Briha Ansari
+---
+
 # Psychosocial Data Imputation and Biomarker calculations {#sec-psychosocial}
 
 This document goes over score calculation and missing data imputation for each psychosocial form. The headings in the sidebar help the user navigate to their desired content. The code chunks for each form can be run independently after running @sec-psychosocial-reading in its entirety.
