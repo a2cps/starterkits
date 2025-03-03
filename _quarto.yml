@@ -9,20 +9,17 @@ book:
   date: today
   chapters:
     - index.qmd
-    - part: "Omics"
-      chapters:
-        - snps.qmd
-    - part: "MRI"
-      chapters:
-        - raw-mri.qmd
-        - freesurfer.qmd
-        - neural-pain-signatures.qmd
+    - snps.qmd
+    - raw-mri.qmd
+    - freesurfer.qmd
+    - neural-pain-signatures.qmd
     - faq.qmd
     - references.qmd
   appendices:
     - bids-qc-joining.qmd
     - ids.qmd
     - nda-mri.qmd
+    - psycho_social_biomarker_impute.qmd
 
 bibliography: references.bib
 csl: apa.csl
