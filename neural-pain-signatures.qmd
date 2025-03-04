@@ -219,7 +219,11 @@ Links between the participant record IDs and the biospecimen IDs are not yet ava
 
 ### Variability Across Scanners
 
-Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. The imaging DIRC is quantifying and mitigating this variability. For an ongoing review of the issue, please see [Imaging Harmonization](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539).
+{{< include _snippets/mri-scanner-variability.qmd >}}
+
+### Data Quality
+
+{{< include _snippets/mri-qc.qmd >}}
 
 ### Signature Response Measure
 
