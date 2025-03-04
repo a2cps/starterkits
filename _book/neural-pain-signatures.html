@@ -84,7 +84,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./faq.html" rel="next">
+<link href="./brainager.html" rel="next">
 <link href="./freesurfer.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -197,6 +197,12 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./brainager.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Brain Age</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./faq.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">FAQ</span></a>
   </div>
@@ -266,8 +272,9 @@ div.csl-indent {
   <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">4.3</span> Considerations While Working on the Project</a>
   <ul class="collapse">
   <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">4.3.1</span> Variability Across Scanners</a></li>
-  <li><a href="#signature-response-measure" id="toc-signature-response-measure" class="nav-link" data-scroll-target="#signature-response-measure"><span class="header-section-number">4.3.2</span> Signature Response Measure</a></li>
-  <li><a href="#intermediate-outputs" id="toc-intermediate-outputs" class="nav-link" data-scroll-target="#intermediate-outputs"><span class="header-section-number">4.3.3</span> Intermediate Outputs</a></li>
+  <li><a href="#data-quality-1" id="toc-data-quality-1" class="nav-link" data-scroll-target="#data-quality-1"><span class="header-section-number">4.3.2</span> Data Quality</a></li>
+  <li><a href="#signature-response-measure" id="toc-signature-response-measure" class="nav-link" data-scroll-target="#signature-response-measure"><span class="header-section-number">4.3.3</span> Signature Response Measure</a></li>
+  <li><a href="#intermediate-outputs" id="toc-intermediate-outputs" class="nav-link" data-scroll-target="#intermediate-outputs"><span class="header-section-number">4.3.4</span> Intermediate Outputs</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -482,14 +489,19 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 <h2 data-number="4.3" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">4.3</span> Considerations While Working on the Project</h2>
 <section id="variability-across-scanners" class="level3" data-number="4.3.1">
 <h3 data-number="4.3.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">4.3.1</span> Variability Across Scanners</h3>
-<p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. The imaging DIRC is quantifying and mitigating this variability. For an ongoing review of the issue, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539">Imaging Harmonization</a>.</p>
+<p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. The imaging DIRC is quantifying and mitigating this variability. For an ongoing review of the issue, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
-<section id="signature-response-measure" class="level3" data-number="4.3.2">
-<h3 data-number="4.3.2" class="anchored" data-anchor-id="signature-response-measure"><span class="header-section-number">4.3.2</span> Signature Response Measure</h3>
+<section id="data-quality-1" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="data-quality-1"><span class="header-section-number">4.3.2</span> Data Quality</h3>
+<p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products are known to have poor quality–rated “red” or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>.</p>
+<p>Currently, no QC has been performed on the underlying segmentations and parcellations. With adequate sample sizes, results based on whole-atlas FreeSurfer measurements are generally robust, although there are individual regions that may warrant close inspection (e.g., <a href="http://dx.doi.org/10.3389/fnins.2015.00379">McCarthy et al.&nbsp;2015</a>, <a href="https://doi.org/10.1016/j.neuroimage.2023.120306">Vahermaa et al.&nbsp;2023</a>). Moreover, it remains unclear the extent to which FreeSurfer’s accuracy persists over the wide range of demographics found in the A2CPS dataset. The Imaging DIRC is actively exploring these aspects of quality.</p>
+</section>
+<section id="signature-response-measure" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="signature-response-measure"><span class="header-section-number">4.3.3</span> Signature Response Measure</h3>
 <p>The signature responses were extracted using best-practices, but the imaging DIRC is currently exploring alternative ways of calculating signature responses in the CUFF tasks. For details and progress, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406923/Imaging+Analysis+Ideas#NPS%2BSIIPS1-on-ToPS-or-SpaceTop-Data">Imaging Analysis Ideas | NPS+SIIPS1 on ToPS or SpaceTop Data</a>.</p>
 </section>
-<section id="intermediate-outputs" class="level3" data-number="4.3.3">
-<h3 data-number="4.3.3" class="anchored" data-anchor-id="intermediate-outputs"><span class="header-section-number">4.3.3</span> Intermediate Outputs</h3>
+<section id="intermediate-outputs" class="level3" data-number="4.3.4">
+<h3 data-number="4.3.4" class="anchored" data-anchor-id="intermediate-outputs"><span class="header-section-number">4.3.4</span> Intermediate Outputs</h3>
 <p>The other folders contain intermediate outputs that may be useful for digging into a participant’s results</p>
 <ul>
 <li>signature-rawdata
@@ -1088,8 +1100,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./faq.html" class="pagination-link" aria-label="FAQ">
-        <span class="nav-page-text">FAQ</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./brainager.html" class="pagination-link" aria-label="Brain Age">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Brain Age</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -10,7 +10,6 @@ Each kit provides examples of how to explore the data and run simple analyses. T
 
 ## Kit Availability
 
-- [x] NDA Download @sec-nda-mri
 - [ ] QST
 - [ ] EHR
 - [ ] Blood Draw Details
@@ -22,13 +21,13 @@ Each kit provides examples of how to explore the data and run simple analyses. T
   - [ ] proteomics
 - [ ] Data (Imaging)-Please Specify:
   - [x] Raw Data: @sec-raw-mri
-  - [ ] brainager
+  - [ ] brainager: @sec-brainager
   - [ ] CAT12
   - [ ] Functional Connectivity
   - [ ] fMRIPrep
-  - [ ] FreeSurfer @sec-freesurfer
+  - [x] FreeSurfer @sec-freesurfer
   - [ ] GIFT
   - [ ] MRIQC
   - [ ] QSIprep
-  - [ ] Prior Neural Pain Signatures @sec-neural-pain-signatures
+  - [x] Prior Neural Pain Signatures @sec-neural-pain-signatures
   

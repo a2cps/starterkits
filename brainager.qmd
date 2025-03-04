@@ -1,0 +1,167 @@
+---
+format:
+  html:
+    df-print: tibble
+---
+
+# Brain Age {#sec-brainager}
+
+This starter kit walk through the "Brain Age" outputs that have been derived from the anatomical scans. The examples in the kit relies on `bash` and `R`. 
+
+```{r}
+library(readr)
+library(ggplot2)
+library(dplyr)
+```
+
+
+## Before Proposing Project
+
+### Confirm Sample Size
+
+Not all participants in a release have imaging, and not all MRIs are of good quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0.0 has `{r} fs::dir_ls("data/brainager", glob = "*T1w.tsv", recurse = TRUE) |> length()` participants with for which Brain Age data have been extracted. 
+
+## Starting Project
+
+### Locate data
+
+In the release folder, data are stored underneath the `mris/derivatives` folder:
+
+```bash
+/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/brainager
+```
+
+### Extract data
+
+Data for each participant is stored in a sub-directory.
+
+```bash
+$ ls | head
+sub-10003
+sub-10005
+sub-10008
+sub-10010
+sub-10011
+sub-10013
+sub-10014
+sub-10015
+sub-10017
+sub-10020
+```
+
+For example[^tree]:
+
+[^tree]: The `tree` command is just used here to display the folder structure, and is not required for you to have.
+
+```bash
+$ tree sub-10319
+sub-10319
+└── ses-V1
+├── slicesdir_sub-10319_ses-V1_T1w.nii
+│   ├── index.html
+│   ├── _tmp_tmph17ksnl8_c1sub-10319_ses-V1_T1w.png
+│   ├── _tmp_tmph17ksnl8_c2sub-10319_ses-V1_T1w.png
+│   ├── _tmp_tmph17ksnl8_c3sub-10319_ses-V1_T1w.png
+│   ├── _tmp_tmph17ksnl8_smwc1sub-10319_ses-V1_T1w.png
+│   ├── _tmp_tmph17ksnl8_smwc2sub-10319_ses-V1_T1w.png
+│   └── _tmp_tmph17ksnl8_smwc3sub-10319_ses-V1_T1w.png
+├── sub-10319_ses-V1_T1w.m
+├── sub-10319_ses-V1_T1w_tissue_volumes.tsv
+└── sub-10319_ses-V1_T1w.tsv
+
+2 directories, 10 files
+
+```
+
+
+Most users will be interested in the predicted ages, which can be found in `sub-[recordid]/ses-[protocolid]/sub-[recordid]_ses-[protocolid]_T1w.tsv`. For example
+
+
+```bash
+$ cat sub-10003/ses-V1/sub-10003_ses-V1_T1w.tsv 
+File	brain.predicted_age	lower.CI	upper.CI
+sub-10003_ses-V1_T1w	73.6037	72.9683	74.2392
+```
+
+Here is an example of how these files could be loaded using `R`.
+
+```{r}
+# list all files
+files <- fs::dir_ls("data/brainager", glob = "*T1w.tsv", recurse = TRUE)
+
+# read in all tsvs
+ages <- readr::read_tsv(files)
+ages
+```
+
+The column `File` identifies the anatomical image that was used for to make the prediction. When working with other A2CPS data, it may be helpful to extract the subject ID.
+
+```{r}
+ages_with_sub <- ages |>
+  dplyr::mutate(
+    sub = stringr::str_extract(File, "[[:digit:]]{5}") |> as.integer(),
+  )
+ages_with_sub
+```
+
+
+## Considerations While Working on the Project
+
+### Variability Across Scanners
+
+{{< include _snippets/mri-scanner-variability.qmd >}}
+
+### Data Quality
+
+{{< include _snippets/mri-qc.qmd >}}
+
+### Calculating the Brain Age Gap
+
+Predicted ages are neat, but these values are most useful when compared against a participant's chronological age. These can be found in the `demographics` portion of the release.
+
+```{r}
+baseline_ages <- read_csv(
+  "data/demographics/demographics-2025-01-10.csv",
+  col_select = c("record_id", "age"))
+
+brainage <- ages_with_sub |>
+  left_join(baseline_ages, by = join_by(sub==record_id)) |>
+  mutate(
+    brain_age_gap = brain.predicted_age - age
+  ) |>
+  filter(!is.na(age)) # age not available for all participants
+brainage
+```
+
+
+By plotting the predicted ages against the true ages, we can review the accuracy of the predictions.
+
+```{r}
+#| caption: "Predicted and Chronological Age. Each point corresponds to a participant."
+
+lm_eqn <- function(fit){
+  eq <- substitute(
+    italic(y) == a + b %.% italic(age)*","~~italic(r)^2~"="~r2,
+    list(
+      a = format(unname(coef(fit)[1]), digits = 2),
+      b = format(unname(coef(fit)[2]), digits = 2),
+      r2 = format(summary(fit)$r.squared, digits = 3)))
+  as.character(as.expression(eq))
+}
+
+fit <- lm(brain.predicted_age ~ age, data=brainage)
+
+brainage |>
+  ggplot(aes(x=age, y=brain.predicted_age)) +
+  geom_abline() +
+  geom_point(alpha=0.5) + 
+  geom_smooth(method="lm", formula = y~x) +
+  coord_fixed() + 
+  geom_text(x = 40, y = 80, label = lm_eqn(fit), parse = TRUE) 
+```
+
+Note that, in a final analysis, the raw Brain Age Gap may be problematic, and it is typical to calculate a derivative that has been "corrected". See @smith_estimation_2019.
+
+### Methods, Citations
+
+For additional documentation on the files and a detailed description of the methods, please see the official [brainageR repo](https://github.com/james-cole/brainageR). 

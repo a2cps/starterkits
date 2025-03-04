@@ -65,13 +65,11 @@ readr::read_tsv("data/aparc.tsv", show_col_types = FALSE) |>
 
 ### Variability Across Scanners
 
-Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. The imaging DIRC is quantifying and mitigating this variability. For an ongoing review of the issue, please see [Confluence](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization). 
+{{< include _snippets/mri-scanner-variability.qmd >}}
 
 ### Data Quality
 
-As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products are known to have poor quality--rated "red" or incomparable. For details on the ratings and how to exclude them, see @sec-rawdata-mri-qc-joining.
-
-Currently, no QC has been performed on the underlying segmentations and parcellations. With adequate sample sizes, results based on whole-atlas FreeSurfer measurements are generally robust, although there are individual regions that may warrant close inspection (e.g., [McCarthy et al. 2015](http://dx.doi.org/10.3389/fnins.2015.00379), [Vahermaa et al. 2023](https://doi.org/10.1016/j.neuroimage.2023.120306)). Moreover, it remains unclear the extent to which FreeSurfer's accuracy persists over the wide range of demographics found in the A2CPS dataset. The Imaging DIRC is actively exploring these aspects of quality. 
+{{< include _snippets/mri-qc.qmd >}}
 
 ### Methods
 
