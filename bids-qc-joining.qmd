@@ -4,7 +4,7 @@ format:
     df-print: tibble
 ---
 
-# Exclude Scans with "Red" Quality
+# Exclude Scans with "Red" Quality {#sec-rawdata-mri-qc-joining}
 
 For each MRI product, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products are known to have poor quality--rated "red" or incomparable. This kit walks through one way to incorporate those outputs for [FreeSurfer products](freesurfer.qmd). For details on how the ratings were generated, see https://a2cps.atlassian.net/wiki/spaces/DIRC/pages/303857665/Raw+MRI+Data+Starter+Kit.
 

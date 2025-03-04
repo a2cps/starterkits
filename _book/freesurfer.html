@@ -276,7 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="3.1" class="anchored" data-anchor-id="before-proposing-project"><span class="header-section-number">3.1</span> Before Proposing Project</h2>
 <section id="confirm-sample-size" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="confirm-sample-size"><span class="header-section-number">3.1.1</span> Confirm Sample Size</h3>
-<p>Not all participants in a release have imaging, and not all MRIs are of good quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0 has 996 participants with for which FreeSurfer data have been extracted.</p>
+<p>Not all participants in a release have imaging, and not all MRIs are of good quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0.0 has 995 participants with for which FreeSurfer data have been extracted.</p>
 </section>
 </section>
 <section id="starting-project" class="level2" data-number="3.2">
@@ -290,11 +290,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This folder contains all of the FreeSurfer outputs for every participant (e.g., this is the directory that could correspond to the FreeSurfer environment variable <code>$SUBJECTS_DIR</code>), which subject folders of the form <code>sub-[recordid]_ses-[protocolid]</code>.</p>
 <p>Most users will not need the raw FreeSurfer outputs and can instead rely on tables in which the morphological measures have been aggregated. There are three relevant tables</p>
 <ul>
-<li>aparc.tsv has the outputs of https://surfer.nmr.mgh.harvard.edu/fswiki/aparcstats2table (this is measurements derived from parcellations of the cortical surface, like cortical thickness)</li>
-<li>aseg.tsv has the outputs of https://surfer.nmr.mgh.harvard.edu/fswiki/asegstats2table (that is, measurements derived from segmentations of the 3d structural image, like regional gray matter volumes)</li>
+<li>aparc.tsv has the outputs of <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/aparcstats2table"><code>aparcstats2table</code></a> (this is measurements derived from parcellations of the cortical surface, like cortical thickness)</li>
+<li>aseg.tsv has the outputs of <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/asegstats2table"><code>asegstats2table</code></a> (that is, measurements derived from segmentations of the 3d structural image, like regional gray matter volumes)</li>
 <li>headers.tsv has some other information about the brain as a whole (e.g., estimated Total Intracranial Volume)</li>
 </ul>
-<p>For each of these, there are data dictionaries that details the contents (e.g., aparc.json explains the columns of aparc.tsv).</p>
+<p>For each of these, there are data dictionaries that details the contents (e.g., <code>aparc.json</code> explains the columns of <code>aparc.tsv</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/<span class="pp">*</span><span class="dt">{json</span><span class="op">,</span><span class="dt">tsv}</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aparc.json</span>  /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/gm_morph.tsv</span>
@@ -356,16 +356,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="3.3" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">3.3</span> Considerations While Working on the Project</h2>
 <section id="variability-across-scanners" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">3.3.1</span> Variability Across Scanners</h3>
-<p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. The imaging DIRC is quantifying and mitigating this variability. For an ongoing review of the issue, please see https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization.</p>
+<p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. The imaging DIRC is quantifying and mitigating this variability. For an ongoing review of the issue, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
 <section id="data-quality" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">3.3.2</span> Data Quality</h3>
-<p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products are known to have poor quality–rated “red” or incomparable. For details on the ratings and how to exclude them, see <a href="./bids-qc-joining.html">bids-qc-joining</a>.</p>
+<p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products are known to have poor quality–rated “red” or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>.</p>
 <p>Currently, no QC has been performed on the underlying segmentations and parcellations. With adequate sample sizes, results based on whole-atlas FreeSurfer measurements are generally robust, although there are individual regions that may warrant close inspection (e.g., <a href="http://dx.doi.org/10.3389/fnins.2015.00379">McCarthy et al.&nbsp;2015</a>, <a href="https://doi.org/10.1016/j.neuroimage.2023.120306">Vahermaa et al.&nbsp;2023</a>). Moreover, it remains unclear the extent to which FreeSurfer’s accuracy persists over the wide range of demographics found in the A2CPS dataset. The Imaging DIRC is actively exploring these aspects of quality.</p>
 </section>
 <section id="methods" class="level3" data-number="3.3.3">
 <h3 data-number="3.3.3" class="anchored" data-anchor-id="methods"><span class="header-section-number">3.3.3</span> Methods</h3>
-<p>FreeSurfer outputs were generated by the fMRIPrep pipeline (https://fmriprep.org/en/stable/workflows.html#surface-preprocessing). The fMRIPrep pipeline is similar to a typical call to FreeSurfer’s <code>recon-all</code>, with a majority of changes aiming to parallelize more parts of <code>recon-all</code>. However, there are differences, such as in how the brain is masked. The A2CPS use of fMRIPrep is even more different because it entails replacing the fMRIPrep masking procedure with <a href="https://surfer.nmr.mgh.harvard.edu/docs/synthstrip/"><code>SynthStrip</code></a>. In general, these changes are expected to only improve the quality of the FreeSurfer outputs. However, they may hinder some comparisons between results derived from A2CPS and those in other studies.</p>
+<p>FreeSurfer outputs were generated by the <a href="https://fmriprep.org/en/stable/workflows.html#surface-preprocessing">fMRIPrep pipeline</a>. The fMRIPrep pipeline is similar to a typical call to FreeSurfer’s <code>recon-all</code>, with a majority of changes aiming to parallelize more parts of <code>recon-all</code>. However, there are differences, such as in how the brain is masked. The A2CPS use of fMRIPrep is even more different because it entails replacing the fMRIPrep masking procedure with <a href="https://surfer.nmr.mgh.harvard.edu/docs/synthstrip/"><code>SynthStrip</code></a>. In general, these changes are expected to only improve the quality of the FreeSurfer outputs. However, they may hinder some comparisons between results derived from A2CPS and those in other studies.</p>
 
 
 </section>
