@@ -272,7 +272,8 @@ div.csl-indent {
   <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">5.3.1</span> Variability Across Scanners</a></li>
   <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">5.3.2</span> Data Quality</a></li>
   <li><a href="#calculating-the-brain-age-gap" id="toc-calculating-the-brain-age-gap" class="nav-link" data-scroll-target="#calculating-the-brain-age-gap"><span class="header-section-number">5.3.3</span> Calculating the Brain Age Gap</a></li>
-  <li><a href="#methods-citations" id="toc-methods-citations" class="nav-link" data-scroll-target="#methods-citations"><span class="header-section-number">5.3.4</span> Methods, Citations</a></li>
+  <li><a href="#correction" id="toc-correction" class="nav-link" data-scroll-target="#correction"><span class="header-section-number">5.3.4</span> Correction</a></li>
+  <li><a href="#methods-citations" id="toc-methods-citations" class="nav-link" data-scroll-target="#methods-citations"><span class="header-section-number">5.3.5</span> Methods, Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -303,13 +304,14 @@ div.csl-indent {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="before-proposing-project" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="before-proposing-project"><span class="header-section-number">5.1</span> Before Proposing Project</h2>
 <section id="confirm-sample-size" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="confirm-sample-size"><span class="header-section-number">5.1.1</span> Confirm Sample Size</h3>
-<p>Not all participants in a release have imaging, and not all MRIs are of good quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0.0 has 1017 participants with for which Brain Age data have been extracted.</p>
+<p>Not all participants in a release have imaging, and not all MRIs are of good quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0.0 has 1017 participants for which Brain Age data have been extracted.</p>
 </section>
 </section>
 <section id="starting-project" class="level2 page-columns page-full" data-number="5.2">
@@ -425,7 +427,7 @@ dbl (3): brain.predicted_age, lower.CI, upper.CI
 <h3 data-number="5.3.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">5.3.2</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality–rated “red” or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
-<section id="calculating-the-brain-age-gap" class="level3 page-columns page-full" data-number="5.3.3">
+<section id="calculating-the-brain-age-gap" class="level3" data-number="5.3.3">
 <h3 data-number="5.3.3" class="anchored" data-anchor-id="calculating-the-brain-age-gap"><span class="header-section-number">5.3.3</span> Calculating the Brain Age Gap</h3>
 <p>Predicted ages are neat, but these values are most useful when compared against a participant’s chronological age. These can be found in the <code>demographics</code> portion of the release.</p>
 <div class="cell">
@@ -494,12 +496,67 @@ dbl (2): record_id, age
 </div>
 </div>
 </div>
-<p>Note that using the raw Brain Age Gap can be problematic, and it is typical to calculate a derivative that has been “corrected”. See <span class="citation" data-cites="smith_estimation_2019">Smith et al. (<a href="references.html#ref-smith_estimation_2019" role="doc-biblioref">2019</a>)</span>.</p>
+<p>The “brain age gap” is the difference between predicted and true age. Positive gaps indicate “older” brains, and younger gaps indicate “younger” brains.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>brainage <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>brain_age_gap)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"(&lt;-- Younger) Brain Age Gap (Older --&gt;)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="brainager_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="correction" class="level3 page-columns page-full" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="correction"><span class="header-section-number">5.3.4</span> Correction</h3>
+<p>Note that using the raw Brain Age Gap can be problematic, and, for final analyses, it is typical to calculate a derivative that has been “corrected”. The issue is that the predictions tend to be worse for the youngest and oldest people – and so the gap is related to age (e.g., a relationship with larger raw gaps partly reflects a relationship with true age).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>brainage <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>age, <span class="at">y=</span>brain_age_gap)) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="brainager_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Corrections aim to make them independent, by, for example, residualizing. See <span class="citation" data-cites="smith_estimation_2019">Smith et al. (<a href="references.html#ref-smith_estimation_2019" role="doc-biblioref">2019</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-smith_estimation_2019" class="csl-entry" role="listitem">
 Smith, S. M., Vidaurre, D., Alfaro-Almagro, F., Nichols, T. E., &amp; Miller, K. L. (2019). Estimation of brain age delta from brain imaging. <em>Neuroimage</em>, <em>200</em>, 528–539. <a href="https://doi.org/10.1016/j.neuroimage.2019.06.017">https://doi.org/10.1016/j.neuroimage.2019.06.017</a>
-</div></div></section>
-<section id="methods-citations" class="level3" data-number="5.3.4">
-<h3 data-number="5.3.4" class="anchored" data-anchor-id="methods-citations"><span class="header-section-number">5.3.4</span> Methods, Citations</h3>
+</div></div><div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>bag_age_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(brain_age_gap <span class="sc">~</span> age, <span class="at">data=</span>brainage)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>brainage <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">brain_age_gap_corrected =</span> <span class="fu">residuals</span>(bag_age_fit),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">brain_age_gap =</span> <span class="fu">scale</span>(brain_age_gap, <span class="at">scale =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, brain_age_gap, brain_age_gap_corrected) <span class="sc">|&gt;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>brain_age_gap, <span class="at">y=</span>brain_age_gap_corrected)) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>() <span class="sc">+</span> </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="brainager_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="methods-citations" class="level3" data-number="5.3.5">
+<h3 data-number="5.3.5" class="anchored" data-anchor-id="methods-citations"><span class="header-section-number">5.3.5</span> Methods, Citations</h3>
 <p>For additional documentation on the files and a detailed description of the methods, please see the official <a href="https://github.com/james-cole/brainageR">brainageR repo</a>.</p>
 
 
