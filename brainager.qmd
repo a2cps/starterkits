@@ -160,7 +160,7 @@ brainage |>
   geom_text(x = 40, y = 80, label = lm_eqn(fit), parse = TRUE) 
 ```
 
-Note that, in a final analysis, the raw Brain Age Gap may be problematic, and it is typical to calculate a derivative that has been "corrected". See @smith_estimation_2019.
+Note that using the raw Brain Age Gap can be problematic, and it is typical to calculate a derivative that has been "corrected". See @smith_estimation_2019.
 
 ### Methods, Citations
 

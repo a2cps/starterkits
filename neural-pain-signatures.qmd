@@ -211,9 +211,6 @@ func/sub-10050_ses-V1_task-rest_run-01_bold.nii.gz	green
 func/sub-10050_ses-V1_task-rest_run-02_bold.nii.gz	green
 ```
 
-### Associate data with A2CPS Record IDs and NDA Globally-Unique ID
-
-Links between the participant record IDs and the biospecimen IDs are not yet available. If these are needed, please contact [Patrick Sadil](https://a2cps.atlassian.net/wiki/people/712020:9b1f0b7e-3a1b-4955-856b-f0b1a07e458e?ref=confluence).
 
 ## Considerations While Working on the Project
 

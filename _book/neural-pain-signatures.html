@@ -267,7 +267,6 @@ div.csl-indent {
   <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">4.2.1</span> Locate data</a></li>
   <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">4.2.2</span> Extract data</a></li>
   <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">4.2.3</span> Data Quality</a></li>
-  <li><a href="#associate-data-with-a2cps-record-ids-and-nda-globally-unique-id" id="toc-associate-data-with-a2cps-record-ids-and-nda-globally-unique-id" class="nav-link" data-scroll-target="#associate-data-with-a2cps-record-ids-and-nda-globally-unique-id"><span class="header-section-number">4.2.4</span> Associate data with A2CPS Record IDs and NDA Globally-Unique ID</a></li>
   </ul></li>
   <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">4.3</span> Considerations While Working on the Project</a>
   <ul class="collapse">
@@ -480,10 +479,6 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10050_ses-V1_task-rest_run-01_bold.nii.gz</span>  green</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10050_ses-V1_task-rest_run-02_bold.nii.gz</span>  green</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="associate-data-with-a2cps-record-ids-and-nda-globally-unique-id" class="level3" data-number="4.2.4">
-<h3 data-number="4.2.4" class="anchored" data-anchor-id="associate-data-with-a2cps-record-ids-and-nda-globally-unique-id"><span class="header-section-number">4.2.4</span> Associate data with A2CPS Record IDs and NDA Globally-Unique ID</h3>
-<p>Links between the participant record IDs and the biospecimen IDs are not yet available. If these are needed, please contact <a href="https://a2cps.atlassian.net/wiki/people/712020:9b1f0b7e-3a1b-4955-856b-f0b1a07e458e?ref=confluence">Patrick Sadil</a>.</p>
-</section>
 </section>
 <section id="considerations-while-working-on-the-project" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">4.3</span> Considerations While Working on the Project</h2>
@@ -493,8 +488,7 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 </section>
 <section id="data-quality-1" class="level3" data-number="4.3.2">
 <h3 data-number="4.3.2" class="anchored" data-anchor-id="data-quality-1"><span class="header-section-number">4.3.2</span> Data Quality</h3>
-<p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products are known to have poor quality–rated “red” or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>.</p>
-<p>Currently, no QC has been performed on the underlying segmentations and parcellations. With adequate sample sizes, results based on whole-atlas FreeSurfer measurements are generally robust, although there are individual regions that may warrant close inspection (e.g., <a href="http://dx.doi.org/10.3389/fnins.2015.00379">McCarthy et al.&nbsp;2015</a>, <a href="https://doi.org/10.1016/j.neuroimage.2023.120306">Vahermaa et al.&nbsp;2023</a>). Moreover, it remains unclear the extent to which FreeSurfer’s accuracy persists over the wide range of demographics found in the A2CPS dataset. The Imaging DIRC is actively exploring these aspects of quality.</p>
+<p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality–rated “red” or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
 <section id="signature-response-measure" class="level3" data-number="4.3.3">
 <h3 data-number="4.3.3" class="anchored" data-anchor-id="signature-response-measure"><span class="header-section-number">4.3.3</span> Signature Response Measure</h3>

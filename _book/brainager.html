@@ -423,8 +423,7 @@ dbl (3): brain.predicted_age, lower.CI, upper.CI
 </section>
 <section id="data-quality" class="level3" data-number="5.3.2">
 <h3 data-number="5.3.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">5.3.2</span> Data Quality</h3>
-<p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products are known to have poor quality–rated “red” or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>.</p>
-<p>Currently, no QC has been performed on the underlying segmentations and parcellations. With adequate sample sizes, results based on whole-atlas FreeSurfer measurements are generally robust, although there are individual regions that may warrant close inspection (e.g., <a href="http://dx.doi.org/10.3389/fnins.2015.00379">McCarthy et al.&nbsp;2015</a>, <a href="https://doi.org/10.1016/j.neuroimage.2023.120306">Vahermaa et al.&nbsp;2023</a>). Moreover, it remains unclear the extent to which FreeSurfer’s accuracy persists over the wide range of demographics found in the A2CPS dataset. The Imaging DIRC is actively exploring these aspects of quality.</p>
+<p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality–rated “red” or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
 <section id="calculating-the-brain-age-gap" class="level3 page-columns page-full" data-number="5.3.3">
 <h3 data-number="5.3.3" class="anchored" data-anchor-id="calculating-the-brain-age-gap"><span class="header-section-number">5.3.3</span> Calculating the Brain Age Gap</h3>
@@ -495,7 +494,7 @@ dbl (2): record_id, age
 </div>
 </div>
 </div>
-<p>Note that, in a final analysis, the raw Brain Age Gap may be problematic, and it is typical to calculate a derivative that has been “corrected”. See <span class="citation" data-cites="smith_estimation_2019">Smith et al. (<a href="references.html#ref-smith_estimation_2019" role="doc-biblioref">2019</a>)</span>.</p>
+<p>Note that using the raw Brain Age Gap can be problematic, and it is typical to calculate a derivative that has been “corrected”. See <span class="citation" data-cites="smith_estimation_2019">Smith et al. (<a href="references.html#ref-smith_estimation_2019" role="doc-biblioref">2019</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-smith_estimation_2019" class="csl-entry" role="listitem">
 Smith, S. M., Vidaurre, D., Alfaro-Almagro, F., Nichols, T. E., &amp; Miller, K. L. (2019). Estimation of brain age delta from brain imaging. <em>Neuroimage</em>, <em>200</em>, 528–539. <a href="https://doi.org/10.1016/j.neuroimage.2019.06.017">https://doi.org/10.1016/j.neuroimage.2019.06.017</a>
 </div></div></section>
