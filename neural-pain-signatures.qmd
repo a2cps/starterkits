@@ -4,30 +4,23 @@
 
 ### Confirm Sample Size
 
-Not all participants in a release have imaging, and depending on the application not all MRIs may be of sufficient quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 1.1 has 440 participants with the primary task fMRI biomarker: NPS [@wager_fmri-based_2013] and SIIPS-1 [@woo_quantifying_2017].
-
-Note also that these participants have been collected at several different scanners, and there is [variability in the measures across scanners](https://a2cps.atlassian.net/wiki/spaces/DIRC/pages/edit-v2/274137090#Variability-Across-Scanners). In Release 1.1, some scanners were used to collect only a few participants (for example, only five participants were collected on the Wayne State scanner). 
+Not all participants in a release have imaging, and depending on the application not all MRIs may be of sufficient quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0 has 716 participants with the primary task fMRI biomarker: NPS [@wager_fmri-based_2013] and SIIPS-1 [@woo_quantifying_2017]. 
 
 ## Starting Project
 
 ### Locate data
 
-On TACC, the neuroimaging data are stored underneath the releases. For example, data release v1.#.# is underneath
-
-```{bash}
-#| eval: false
-/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris
-```
+{{< include _snippets/mri-location.qmd >}}
 
 The signature response are underneath `derivatives/signatures`
 
 ```bash
 $ ls derivatives/signatures/
-signature-bold     signature-by-part.json  signature-by-run.json  signature-by-tr.json  signature-confounds       signature-labels       signature-rawdata
-signature-by-part  signature-by-run        signature-by-tr        signature-cleaned     signature-confounds.json  signature-labels.json  signature-rawdata.json
+cleaned    confounds.json      signatures-by-part-diff       signatures-by-part.json  signatures-by-run-diff       signatures-by-run.json  signatures-by-tr-diff       signatures-by-tr.json
+confounds  signatures-by-part  signatures-by-part-diff.json  signatures-by-run        signatures-by-run-diff.json  signatures-by-tr        signatures-by-tr-diff.json
 ```
 
-Signature responses are stored either "by-run" (that is, one response per scan), "by-part" (three responses per run corresponding to the three parts for which participants provided pain ratings), or "by-tr" (one response for every volume). The biomarker corresponds to the values that are "by-run".
+Signature responses are stored either "by-run" (that is, one response per scan), "by-part" (three responses per run corresponding to the three parts for which participants provided pain ratings), or "by-tr" (one response for every volume). The biomarker corresponds to the values that are "by-run". Additionally, responses may be calculated with only the data from a single run (e.g., a "by-run" response for REST1, CUFF1, CUFF2, and REST2), or they may be calculated as a difference ("diff") between one of the CUFF scans and one of the REST scans. 
 
 Each signature response folder contains a table of values, and `*.json` sidecars are [data dictionaries that conform to BIDS ](https://bids-specification.readthedocs.io/en/v1.9.0/common-principles.html#tabular-files). The data dictionary for responses "by-run" is copied below.
 
@@ -56,10 +49,10 @@ Each signature response folder contains a table of values, and `*.json` sidecars
     },
     "ses": {
         "LongName": "Session",
-        "Description": "Visit, BIDS Session ID",
+        "Description": "Visit, Protocol, BIDS Session ID",
         "Levels": {
-            "V1": "Baseline Visit",
-            "V3": "3 Month Followup Visit"
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
         },
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
     },
@@ -84,7 +77,7 @@ Note: the table mentions "session", but in this release only V1 (baseline) resul
 
 ### Extract data
 
-The tabular data comprise parquet files that have been partitioned in a hive style. That is, subfolders names contain column information – in this case subject ID (REDCap Record ID), task, and run.
+The tabular data comprise parquet files that have been partitioned in a [hive-style](https://hive.apache.org/). That is, subfolders names contain column information – in this case subject ID (REDCap Record ID), task, and run. 
 
 ```bash
 $ tree signature-by-run
@@ -120,7 +113,7 @@ library(arrow)
 library(dplyr)
 library(tidyr)
 
-open_dataset("data/signature-by-run") |> 
+open_dataset("data/signatures-by-run") |> 
   filter(signature %in% c("grouppred_cvpcr", "137subjmap_weighted_mean")) |>
   filter(task=="cuff", run==1) |>
   select(signature, value=correlation, sub, ses) |>
@@ -129,24 +122,23 @@ open_dataset("data/signature-by-run") |>
   rename(
     SIIPS1=`137subjmap_weighted_mean`,
     NPS=`grouppred_cvpcr`)
-
 ```
 
 ```bash
-# A tibble: 440 × 4
-     sub ses    SIIPS1       NPS
-   <int> <chr>   <dbl>     <dbl>
- 1 10008 V1    -0.0797 -0.000435
- 2 10003 V1    -0.0260  0.0142  
- 3 10011 V1    -0.0381 -0.00112 
- 4 10010 V1    -0.0630  0.00221 
- 5 10013 V1    -0.0422  0.00809 
- 6 10014 V1    -0.0377  0.00990 
- 7 10017 V1    -0.0390  0.0237  
- 8 10015 V1    -0.0701  0.00553 
- 9 10020 V1    -0.0509 -0.000624
-10 10023 V1    -0.0160  0.00820 
-# ℹ 430 more rows
+# A tibble: 716 × 4
+     sub ses     SIIPS1      NPS
+   <int> <chr>    <dbl>    <dbl>
+ 1 10011 V1    -0.00652 -0.0740 
+ 2 10010 V1    -0.0611  -0.0200 
+ 3 10003 V1    -0.00162  0.0331 
+ 4 10008 V1    -0.0407  -0.0581 
+ 5 10013 V1    -0.0279   0.0234 
+ 6 10014 V1    -0.00120 -0.0146 
+ 7 10015 V1    -0.0576  -0.0178 
+ 8 10017 V1    -0.0165   0.0263 
+ 9 10020 V1    -0.0103  -0.0530 
+10 10023 V1     0.0116  -0.00789
+# ℹ 706 more rows
 # ℹ Use `print(n = ...)` to see more rows
 ```
 
@@ -156,7 +148,7 @@ In python, a good choice is the [`polars`](https://docs.pola.rs/) library
 #| eval: FALSE
 import polars as pl
 
-pl.read_parquet("data/signature-by-run").filter(
+pl.read_parquet("data/signatures-by-run").filter(
     pl.col("signature").is_in(["grouppred_cvpcr", "137subjmap_weighted_mean"])
 ).filter(pl.col("task") == "cuff", pl.col("run") == 1).rename(
     {"correlation": "value"}
@@ -174,43 +166,25 @@ pl.read_parquet("data/signature-by-run").filter(
 ```
 
 ```bash
-shape: (440, 4)
+shape: (716, 4)
 ┌───────┬─────┬───────────┬───────────┐
 │ sub   ┆ ses ┆ SIIPS1    ┆ NPS       │
 │ ---   ┆ --- ┆ ---       ┆ ---       │
 │ i64   ┆ str ┆ f64       ┆ f64       │
 ╞═══════╪═════╪═══════════╪═══════════╡
-│ 10003 ┆ V1  ┆ -0.025985 ┆ 0.014206  │
-│ 10008 ┆ V1  ┆ -0.079689 ┆ -0.000435 │
-│ 10010 ┆ V1  ┆ -0.062953 ┆ 0.002212  │
-│ 10011 ┆ V1  ┆ -0.038073 ┆ -0.001121 │
-│ 10013 ┆ V1  ┆ -0.042161 ┆ 0.008091  │
+│ 10003 ┆ V1  ┆ -0.001619 ┆ 0.033091  │
+│ 10008 ┆ V1  ┆ -0.040698 ┆ -0.058134 │
+│ 10010 ┆ V1  ┆ -0.061107 ┆ -0.019997 │
+│ 10011 ┆ V1  ┆ -0.006518 ┆ -0.074017 │
+│ 10013 ┆ V1  ┆ -0.027933 ┆ 0.023413  │
 │ …     ┆ …   ┆ …         ┆ …         │
-│ 25081 ┆ V1  ┆ -0.070675 ┆ -0.022013 │
-│ 25090 ┆ V1  ┆ -0.034116 ┆ -0.005581 │
-│ 25091 ┆ V1  ┆ -0.062637 ┆ -0.00005  │
-│ 25094 ┆ V1  ┆ -0.053041 ┆ -0.007981 │
-│ 25095 ┆ V1  ┆ -0.0281   ┆ -0.004837 │
+│ 25266 ┆ V1  ┆ -0.058184 ┆ -0.032597 │
+│ 25271 ┆ V1  ┆ -0.039983 ┆ -0.092517 │
+│ 25273 ┆ V1  ┆ -0.038248 ┆ -0.02306  │
+│ 25275 ┆ V1  ┆ -0.052387 ┆ -0.06732  │
+│ 25277 ┆ V1  ┆ 0.023143  ┆ -0.063882 │
 └───────┴─────┴───────────┴───────────┘
 ```
-
-### Data Quality
-
-All imaging scans are subjected to quality control: [A2CPS Imaging Quality Assurance](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406780), which results in a quality rating of "green", "yellow", or "red". Images rated "red" are not expected to be usable for most analyses. These quality ratings are available in tables matching 
-```bash
-/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/bids/sub-[subject_id]/ses-[session_id]/sub-[subject_id]_ses-[session_id]_scans.tsv
-```
-
-For example
-
-```bash
-$ grep task bids/sub-10050/ses-V1/sub-10050_ses-V1_scans.tsv 
-func/sub-10050_ses-V1_task-cuff_run-01_bold.nii.gz	green
-func/sub-10050_ses-V1_task-cuff_run-02_bold.nii.gz	green
-func/sub-10050_ses-V1_task-rest_run-01_bold.nii.gz	green
-func/sub-10050_ses-V1_task-rest_run-02_bold.nii.gz	green
-```
-
 
 ## Considerations While Working on the Project
 
@@ -230,13 +204,7 @@ The signature responses were extracted using best-practices, but the imaging DIR
 
 The other folders contain intermediate outputs that may be useful for digging into a participant's results
 
-- signature-rawdata
-  - Parquet dataset of minimally preprocessed (post-fMRIPrep) functional MRI (cuff and rest).
-- signature-confounds
+- confounds
   - The nuisance timeseries that were used during denoising
-- signature-cleaned
+- cleaned
   - The NifTI files of functional MRI after denoising (e.g., temporal filter, nuisance regression)
-- signature-bold
-  - Parquet dataset of denoised fMRI
-- signature-labels
-  - Anatomical labels associated with the individual voxels (brain, FreeSurfer Segmentations, FAST Parcellations)
