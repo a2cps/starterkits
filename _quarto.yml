@@ -12,8 +12,9 @@ book:
     - snps.qmd
     - raw-mri.qmd
     - freesurfer.qmd
-    - neural-pain-signatures.qmd
     - brainager.qmd
+    - cat12.qmd
+    - neural-pain-signatures.qmd
     - faq.qmd
     - references.qmd
   appendices:
@@ -28,7 +29,8 @@ csl: apa.csl
 execute:
   freeze: auto  # re-render only when source changes
   cache: true
-  warnings: false
+  warning: false
+  message: false
 
 format:
   html:

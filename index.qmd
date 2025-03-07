@@ -33,11 +33,11 @@ The latest release is always contained in a sub-folder called `pre-surgery`. Tha
   - [ ] proteomics
 - [ ] Data (Imaging)-Please Specify:
   - [x] Raw Data: @sec-raw-mri
+  - [x] FreeSurfer @sec-freesurfer
   - [x] brainager: @sec-brainager
-  - [ ] CAT12
+  - [x] CAT12
   - [ ] Functional Connectivity
   - [ ] fMRIPrep
-  - [x] FreeSurfer @sec-freesurfer
   - [ ] GIFT
   - [ ] MRIQC
   - [ ] QSIprep
