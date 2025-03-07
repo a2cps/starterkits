@@ -1,0 +1,5 @@
+On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath
+
+```bash
+pre-surgery/mris
+```

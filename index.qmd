@@ -8,6 +8,18 @@ Kits correspond to the individual modalities that can be requested in the [Data 
 
 Each kit provides examples of how to explore the data and run simple analyses. These examples rely on various kinds of code, including shell commands, `R`, and `python`. These examples should be seen as only one of many ways to interact with the data. For example, the data reviewed in @sec-freesurfer is stored in `tsv` (tab-separated value) files, and that kit demonstrates working with those tables in `R`. But the tsv can be read with many programs besides `R`, including programs like Excel. The kits rely on code because the dataset is large enough that code- and scripting-based analyses provide substantial benefits. If these methods are a barrier to your analyses, please reach out to members of the Data Integration and Resource Center (DIRC) via email or Slack: [A2CPS Directory](https://a2cps.org/directory/). It is the job of DIRC members to facilitate and support analyses of A2CPS data.
 
+On TACC, all releases are stored underneath this folder. 
+
+```bash
+/corral-secure/projects/A2CPS/products/consortium-data/
+```
+
+The latest release is always contained in a sub-folder called `pre-surgery`. That `pre-surgery` folder will be updated with each release. For example, the latest release is 2.0.0, and so release 2.0.0 is available at
+
+```bash
+/corral-secure/projects/A2CPS/products/consortium-data/
+```
+
 ## Kit Availability
 
 - [ ] QST

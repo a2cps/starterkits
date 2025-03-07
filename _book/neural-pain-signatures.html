@@ -266,12 +266,11 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">4.2.1</span> Locate data</a></li>
   <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">4.2.2</span> Extract data</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">4.2.3</span> Data Quality</a></li>
   </ul></li>
   <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">4.3</span> Considerations While Working on the Project</a>
   <ul class="collapse">
   <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">4.3.1</span> Variability Across Scanners</a></li>
-  <li><a href="#data-quality-1" id="toc-data-quality-1" class="nav-link" data-scroll-target="#data-quality-1"><span class="header-section-number">4.3.2</span> Data Quality</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">4.3.2</span> Data Quality</a></li>
   <li><a href="#signature-response-measure" id="toc-signature-response-measure" class="nav-link" data-scroll-target="#signature-response-measure"><span class="header-section-number">4.3.3</span> Signature Response Measure</a></li>
   <li><a href="#intermediate-outputs" id="toc-intermediate-outputs" class="nav-link" data-scroll-target="#intermediate-outputs"><span class="header-section-number">4.3.4</span> Intermediate Outputs</a></li>
   </ul></li>
@@ -304,27 +303,24 @@ div.csl-indent {
 <h2 data-number="4.1" class="anchored" data-anchor-id="before-proposing-project"><span class="header-section-number">4.1</span> Before Proposing Project</h2>
 <section id="confirm-sample-size" class="level3 page-columns page-full" data-number="4.1.1">
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="confirm-sample-size"><span class="header-section-number">4.1.1</span> Confirm Sample Size</h3>
-<p>Not all participants in a release have imaging, and depending on the application not all MRIs may be of sufficient quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 1.1 has 440 participants with the primary task fMRI biomarker: NPS <span class="citation" data-cites="wager_fmri-based_2013">(<a href="references.html#ref-wager_fmri-based_2013" role="doc-biblioref">Wager et al., 2013</a>)</span> and SIIPS-1 <span class="citation" data-cites="woo_quantifying_2017">(<a href="references.html#ref-woo_quantifying_2017" role="doc-biblioref">Woo et al., 2017</a>)</span>.</p>
+<p>Not all participants in a release have imaging, and depending on the application not all MRIs may be of sufficient quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0 has 716 participants with the primary task fMRI biomarker: NPS <span class="citation" data-cites="wager_fmri-based_2013">(<a href="references.html#ref-wager_fmri-based_2013" role="doc-biblioref">Wager et al., 2013</a>)</span> and SIIPS-1 <span class="citation" data-cites="woo_quantifying_2017">(<a href="references.html#ref-woo_quantifying_2017" role="doc-biblioref">Woo et al., 2017</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-wager_fmri-based_2013" class="csl-entry" role="listitem">
 Wager, T. D., Atlas, L. Y., Lindquist, M. A., Roy, M., Woo, C.-W., &amp; Kross, E. (2013). An <span class="nocase">fMRI-Based Neurologic Signature</span> of <span>Physical Pain</span>. <em>New England Journal of Medicine</em>, <em>368</em>(15), 1388–1397. <a href="https://doi.org/10.1056/NEJMoa1204471">https://doi.org/10.1056/NEJMoa1204471</a>
 </div><div id="ref-woo_quantifying_2017" class="csl-entry" role="listitem">
 Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atlas, L. Y., &amp; Wager, T. D. (2017). Quantifying cerebral contributions to pain beyond nociception. <em>Nature Communications</em>, <em>8</em>(1), 14211. <a href="https://doi.org/10.1038/ncomms14211">https://doi.org/10.1038/ncomms14211</a>
-</div></div><p>Note also that these participants have been collected at several different scanners, and there is <a href="https://a2cps.atlassian.net/wiki/spaces/DIRC/pages/edit-v2/274137090#Variability-Across-Scanners">variability in the measures across scanners</a>. In Release 1.1, some scanners were used to collect only a few participants (for example, only five participants were collected on the Wayne State scanner).</p>
-</section>
+</div></div></section>
 </section>
 <section id="starting-project" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">4.2</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="4.2.1">
 <h3 data-number="4.2.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">4.2.1</span> Locate data</h3>
-<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v1.#.# is underneath</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The signature response are underneath <code>derivatives/signatures</code></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/signatures/</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">signature-bold</span>     signature-by-part.json  signature-by-run.json  signature-by-tr.json  signature-confounds       signature-labels       signature-rawdata</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">signature-by-part</span>  signature-by-run        signature-by-tr        signature-cleaned     signature-confounds.json  signature-labels.json  signature-rawdata.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Signature responses are stored either “by-run” (that is, one response per scan), “by-part” (three responses per run corresponding to the three parts for which participants provided pain ratings), or “by-tr” (one response for every volume). The biomarker corresponds to the values that are “by-run”.</p>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cleaned</span>    confounds.json      signatures-by-part-diff       signatures-by-part.json  signatures-by-run-diff       signatures-by-run.json  signatures-by-tr-diff       signatures-by-tr.json</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">confounds</span>  signatures-by-part  signatures-by-part-diff.json  signatures-by-run        signatures-by-run-diff.json  signatures-by-tr        signatures-by-tr-diff.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Signature responses are stored either “by-run” (that is, one response per scan), “by-part” (three responses per run corresponding to the three parts for which participants provided pain ratings), or “by-tr” (one response for every volume). The biomarker corresponds to the values that are “by-run”. Additionally, responses may be calculated with only the data from a single run (e.g., a “by-run” response for REST1, CUFF1, CUFF2, and REST2), or they may be calculated as a difference (“diff”) between one of the CUFF scans and one of the REST scans.</p>
 <p>Each signature response folder contains a table of values, and <code>*.json</code> sidecars are <a href="https://bids-specification.readthedocs.io/en/v1.9.0/common-principles.html#tabular-files">data dictionaries that conform to BIDS</a>. The data dictionary for responses “by-run” is copied below.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"signature"</span><span class="fu">:</span> <span class="fu">{</span></span>
@@ -350,10 +346,10 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"ses"</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Session"</span><span class="fu">,</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Visit, BIDS Session ID"</span><span class="fu">,</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Visit, Protocol, BIDS Session ID"</span><span class="fu">,</span></span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Levels"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"V1"</span><span class="fu">:</span> <span class="st">"Baseline Visit"</span><span class="fu">,</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"V3"</span><span class="fu">:</span> <span class="st">"3 Month Followup Visit"</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"V1"</span><span class="fu">:</span> <span class="st">"baseline_visit"</span><span class="fu">,</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"V3"</span><span class="fu">:</span> <span class="st">"3mo_postop"</span></span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"</span></span>
 <span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
@@ -376,7 +372,7 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 </section>
 <section id="extract-data" class="level3" data-number="4.2.2">
 <h3 data-number="4.2.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">4.2.2</span> Extract data</h3>
-<p>The tabular data comprise parquet files that have been partitioned in a hive style. That is, subfolders names contain column information – in this case subject ID (REDCap Record ID), task, and run.</p>
+<p>The tabular data comprise parquet files that have been partitioned in a <a href="https://hive.apache.org/">hive-style</a>. That is, subfolders names contain column information – in this case subject ID (REDCap Record ID), task, and run.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree signature-by-run</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">signature-by-run</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> sub=10003</span>
@@ -405,7 +401,7 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">open_dataset</span>(<span class="st">"data/signature-by-run"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">open_dataset</span>(<span class="st">"data/signatures-by-run"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(signature <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"grouppred_cvpcr"</span>, <span class="st">"137subjmap_weighted_mean"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(task<span class="sc">==</span><span class="st">"cuff"</span>, run<span class="sc">==</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(signature, <span class="at">value=</span>correlation, sub, ses) <span class="sc">|&gt;</span></span>
@@ -415,26 +411,26 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">SIIPS1=</span><span class="st">`</span><span class="at">137subjmap_weighted_mean</span><span class="st">`</span>,</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">NPS=</span><span class="st">`</span><span class="at">grouppred_cvpcr</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 440 × 4</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>     <span class="ex">sub</span> ses    SIIPS1       NPS</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">&lt;</span>int<span class="op">&gt;</span> <span class="op">&lt;</span>chr<span class="op">&gt;</span>   <span class="op">&lt;</span>dbl<span class="op">&gt;</span>     <span class="op">&lt;</span>dbl<span class="op">&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">1</span> 10008 V1    <span class="at">-0.0797</span> <span class="at">-0.000435</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a> <span class="ex">2</span> 10003 V1    <span class="at">-0.0260</span>  0.0142  </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a> <span class="ex">3</span> 10011 V1    <span class="at">-0.0381</span> <span class="at">-0.00112</span> </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">4</span> 10010 V1    <span class="at">-0.0630</span>  0.00221 </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a> <span class="ex">5</span> 10013 V1    <span class="at">-0.0422</span>  0.00809 </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">6</span> 10014 V1    <span class="at">-0.0377</span>  0.00990 </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a> <span class="ex">7</span> 10017 V1    <span class="at">-0.0390</span>  0.0237  </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a> <span class="ex">8</span> 10015 V1    <span class="at">-0.0701</span>  0.00553 </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">9</span> 10020 V1    <span class="at">-0.0509</span> <span class="at">-0.000624</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span> 10023 V1    <span class="at">-0.0160</span>  0.00820 </span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ℹ 430 more rows</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 716 × 4</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>     <span class="ex">sub</span> ses     SIIPS1      NPS</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">&lt;</span>int<span class="op">&gt;</span> <span class="op">&lt;</span>chr<span class="op">&gt;</span>    <span class="op">&lt;</span>dbl<span class="op">&gt;</span>    <span class="op">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">1</span> 10011 V1    <span class="at">-0.00652</span> <span class="at">-0.0740</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a> <span class="ex">2</span> 10010 V1    <span class="at">-0.0611</span>  <span class="at">-0.0200</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a> <span class="ex">3</span> 10003 V1    <span class="at">-0.00162</span>  0.0331 </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">4</span> 10008 V1    <span class="at">-0.0407</span>  <span class="at">-0.0581</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a> <span class="ex">5</span> 10013 V1    <span class="at">-0.0279</span>   0.0234 </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">6</span> 10014 V1    <span class="at">-0.00120</span> <span class="at">-0.0146</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a> <span class="ex">7</span> 10015 V1    <span class="at">-0.0576</span>  <span class="at">-0.0178</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a> <span class="ex">8</span> 10017 V1    <span class="at">-0.0165</span>   0.0263 </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">9</span> 10020 V1    <span class="at">-0.0103</span>  <span class="at">-0.0530</span> </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span> 10023 V1     0.0116  <span class="at">-0.00789</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ℹ 706 more rows</span></span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In python, a good choice is the <a href="https://docs.pola.rs/"><code>polars</code></a> library</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>pl.read_parquet(<span class="st">"data/signature-by-run"</span>).<span class="bu">filter</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>pl.read_parquet(<span class="st">"data/signatures-by-run"</span>).<span class="bu">filter</span>(</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"signature"</span>).is_in([<span class="st">"grouppred_cvpcr"</span>, <span class="st">"137subjmap_weighted_mean"</span>])</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>).<span class="bu">filter</span>(pl.col(<span class="st">"task"</span>) <span class="op">==</span> <span class="st">"cuff"</span>, pl.col(<span class="st">"run"</span>) <span class="op">==</span> <span class="dv">1</span>).rename(</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"correlation"</span>: <span class="st">"value"</span>}</span>
@@ -449,35 +445,24 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"grouppred_cvpcr"</span>: <span class="st">"NPS"</span>, <span class="st">"137subjmap_weighted_mean"</span>: <span class="st">"SIIPS1"</span>}</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shape:</span> <span class="er">(</span><span class="ex">440,</span> 4<span class="kw">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shape:</span> <span class="er">(</span><span class="ex">716,</span> 4<span class="kw">)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">┌───────┬─────┬───────────┬───────────┐</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> sub   ┆ ses ┆ SIIPS1    ┆ NPS       │</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> <span class="at">---</span>   ┆ <span class="at">---</span> ┆ <span class="at">---</span>       ┆ <span class="at">---</span>       │</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> i64   ┆ str ┆ f64       ┆ f64       │</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">╞═══════╪═════╪═══════════╪═══════════╡</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10003 ┆ V1  ┆ <span class="at">-0.025985</span> ┆ 0.014206  │</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10008 ┆ V1  ┆ <span class="at">-0.079689</span> ┆ <span class="at">-0.000435</span> │</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10010 ┆ V1  ┆ <span class="at">-0.062953</span> ┆ 0.002212  │</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10011 ┆ V1  ┆ <span class="at">-0.038073</span> ┆ <span class="at">-0.001121</span> │</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10013 ┆ V1  ┆ <span class="at">-0.042161</span> ┆ 0.008091  │</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10003 ┆ V1  ┆ <span class="at">-0.001619</span> ┆ 0.033091  │</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10008 ┆ V1  ┆ <span class="at">-0.040698</span> ┆ <span class="at">-0.058134</span> │</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10010 ┆ V1  ┆ <span class="at">-0.061107</span> ┆ <span class="at">-0.019997</span> │</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10011 ┆ V1  ┆ <span class="at">-0.006518</span> ┆ <span class="at">-0.074017</span> │</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10013 ┆ V1  ┆ <span class="at">-0.027933</span> ┆ 0.023413  │</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> …     ┆ …   ┆ …         ┆ …         │</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25081 ┆ V1  ┆ <span class="at">-0.070675</span> ┆ <span class="at">-0.022013</span> │</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25090 ┆ V1  ┆ <span class="at">-0.034116</span> ┆ <span class="at">-0.005581</span> │</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25091 ┆ V1  ┆ <span class="at">-0.062637</span> ┆ <span class="at">-0.00005</span>  │</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25094 ┆ V1  ┆ <span class="at">-0.053041</span> ┆ <span class="at">-0.007981</span> │</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25095 ┆ V1  ┆ <span class="at">-0.0281</span>   ┆ <span class="at">-0.004837</span> │</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25266 ┆ V1  ┆ <span class="at">-0.058184</span> ┆ <span class="at">-0.032597</span> │</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25271 ┆ V1  ┆ <span class="at">-0.039983</span> ┆ <span class="at">-0.092517</span> │</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25273 ┆ V1  ┆ <span class="at">-0.038248</span> ┆ <span class="at">-0.02306</span>  │</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25275 ┆ V1  ┆ <span class="at">-0.052387</span> ┆ <span class="at">-0.06732</span>  │</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25277 ┆ V1  ┆ 0.023143  ┆ <span class="at">-0.063882</span> │</span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="ex">└───────┴─────┴───────────┴───────────┘</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="data-quality" class="level3" data-number="4.2.3">
-<h3 data-number="4.2.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">4.2.3</span> Data Quality</h3>
-<p>All imaging scans are subjected to quality control: <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406780">A2CPS Imaging Quality Assurance</a>, which results in a quality rating of “green”, “yellow”, or “red”. Images rated “red” are not expected to be usable for most analyses. These quality ratings are available in tables matching</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/bids/sub-[subject_id]/ses-[session_id]/sub-[subject_id]_ses-[session_id]_scans.tsv</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>For example</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> grep task bids/sub-10050/ses-V1/sub-10050_ses-V1_scans.tsv </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10050_ses-V1_task-cuff_run-01_bold.nii.gz</span>  green</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10050_ses-V1_task-cuff_run-02_bold.nii.gz</span>  green</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10050_ses-V1_task-rest_run-01_bold.nii.gz</span>  green</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10050_ses-V1_task-rest_run-02_bold.nii.gz</span>  green</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="considerations-while-working-on-the-project" class="level2" data-number="4.3">
@@ -486,8 +471,8 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 <h3 data-number="4.3.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">4.3.1</span> Variability Across Scanners</h3>
 <p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. The imaging DIRC is quantifying and mitigating this variability. For an ongoing review of the issue, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
-<section id="data-quality-1" class="level3" data-number="4.3.2">
-<h3 data-number="4.3.2" class="anchored" data-anchor-id="data-quality-1"><span class="header-section-number">4.3.2</span> Data Quality</h3>
+<section id="data-quality" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">4.3.2</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality–rated “red” or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
 <section id="signature-response-measure" class="level3" data-number="4.3.3">
@@ -498,25 +483,13 @@ Woo, C.-W., Schmidt, L., Krishnan, A., Jepma, M., Roy, M., Lindquist, M. A., Atl
 <h3 data-number="4.3.4" class="anchored" data-anchor-id="intermediate-outputs"><span class="header-section-number">4.3.4</span> Intermediate Outputs</h3>
 <p>The other folders contain intermediate outputs that may be useful for digging into a participant’s results</p>
 <ul>
-<li>signature-rawdata
-<ul>
-<li>Parquet dataset of minimally preprocessed (post-fMRIPrep) functional MRI (cuff and rest).</li>
-</ul></li>
-<li>signature-confounds
+<li>confounds
 <ul>
 <li>The nuisance timeseries that were used during denoising</li>
 </ul></li>
-<li>signature-cleaned
+<li>cleaned
 <ul>
 <li>The NifTI files of functional MRI after denoising (e.g., temporal filter, nuisance regression)</li>
-</ul></li>
-<li>signature-bold
-<ul>
-<li>Parquet dataset of denoised fMRI</li>
-</ul></li>
-<li>signature-labels
-<ul>
-<li>Anatomical labels associated with the individual voxels (brain, FreeSurfer Segmentations, FAST Parcellations)</li>
 </ul></li>
 </ul>
 
