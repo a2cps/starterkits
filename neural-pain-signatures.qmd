@@ -1,3 +1,9 @@
+---
+format:
+  html:
+    df-print: tibble
+---
+
 # Prior Neural Pain Signature Responses {#sec-neural-pain-signatures}
 
 ## Before Proposing Project
@@ -108,7 +114,6 @@ The biomarker is based on the CUFF1 (task=cuff/run=1) scan. The other scans are 
 To load the whole dataset, the parquet files may be read individually or using a tool that is aware of the hive-partitioning structure. In `R`, a good choice is the [`arrow`](https://arrow.apache.org/docs/r/index.html) library.
 
 ```{r}
-#| eval: FALSE
 library(arrow)
 library(dplyr)
 library(tidyr)
@@ -124,23 +129,6 @@ open_dataset("data/signatures-by-run") |>
     NPS=`grouppred_cvpcr`)
 ```
 
-```bash
-# A tibble: 716 × 4
-     sub ses     SIIPS1      NPS
-   <int> <chr>    <dbl>    <dbl>
- 1 10011 V1    -0.00652 -0.0740 
- 2 10010 V1    -0.0611  -0.0200 
- 3 10003 V1    -0.00162  0.0331 
- 4 10008 V1    -0.0407  -0.0581 
- 5 10013 V1    -0.0279   0.0234 
- 6 10014 V1    -0.00120 -0.0146 
- 7 10015 V1    -0.0576  -0.0178 
- 8 10017 V1    -0.0165   0.0263 
- 9 10020 V1    -0.0103  -0.0530 
-10 10023 V1     0.0116  -0.00789
-# ℹ 706 more rows
-# ℹ Use `print(n = ...)` to see more rows
-```
 
 In python, a good choice is the [`polars`](https://docs.pola.rs/) library
 
