@@ -267,7 +267,8 @@ br_report %>%
 
 Save "tka_bio" and data dictionary as .csv files in the folder named "Reformatted"
 
-```{r warning=FALSE}
+```{r}
+#| eval: false
 
 write_csv(tka_bio,file=here::here("data","blood-draw","Reformatted","reformatted_tka_bio.csv"))
 
@@ -418,7 +419,8 @@ tbr_report %>%
 
 Save "thor_bio" and data dictionary as .csv files in the folder named "Reformatted"
 
-```{r warning=FALSE}
+```{r }
+#| eval: false
 
 write_csv(thor_bio,file=here::here("data","blood-draw","Reformatted","reformatted_thor_bio.csv"))
 
@@ -454,7 +456,8 @@ tka_meds <- tka_meds %>%
 
 Save "tka_meds" and data dictionary as .csv files in the folder named "Reformatted"
 
-```{r warning=FALSE}
+```{r}
+#| eval: false
 
 write_csv(tka_meds,file=here::here("data","blood-draw","Reformatted","reformatted_tka_meds.csv"))
 
@@ -489,7 +492,8 @@ thor_meds <- thor_meds %>%
 
 Save "thor_meds" and data dictionary as .csv files in the folder named "Reformatted"
 
-```{r warning=FALSE}
+```{r}
+#| eval: false
 
 write_csv(thor_meds,file=here::here("data","blood-draw","Reformatted","reformatted_thor_meds.csv"))
 

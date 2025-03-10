@@ -1,0 +1,640 @@
+---
+authors:
+  - name: Martin Lindquist
+  - name: Briha Ansari
+format:
+  html:
+    toc: true
+    self-contained: true
+bibliography: references.bib
+---
+
+# Functional CRF Data Quality Checks
+
+This document goes over quality checks for each the Functional Testing Case Report Form (CRF). The headings in the sidebar help the user navigate to their desired content.
+
+## Read in Data and write functions
+
+### Load Libraries
+
+```{r}
+
+library(shiny)
+library(forcats)
+library(tidyverse)
+library(here)
+library(hablar)
+library(janitor)
+library(gt)
+
+
+```
+
+### Function
+
+Write a function to remove columns where all rows have NA, this is will remove duplicate columns for the the Thoracotomy/TKA cohort
+
+```{r}
+
+not_all_na <- function(x) any(!is.na(x))
+```
+
+## CRF Quality checks
+
+### functional-testing Assessment Form
+
+### Read in data
+
+We will call this `func`
+
+```{r, message=FALSE}
+
+#read_csv function results in parsing errors, we will use read.csv instead
+func <-  read.csv(here("data","functional-testing","functional-testing-2024-11-06.csv")) %>% 
+  retype()
+
+```
+
+Remove test records
+
+```{r}
+test_records <- c('10000','15000','20000','25000','40000','50000','60000','70000','80000','90000','100000','110000','120000')
+
+func <- func %>% 
+  filter(!record_id %in% test_records)
+```
+
+Create a column for cohort type called "cohort"
+
+```{r message =FALSE}
+
+func <- func %>% 
+  mutate(cohort = case_when(record_id >= 10000 & record_id < 15000 |record_id >= 25000 ~ "TKA", TRUE ~ "Thoracic" )) 
+
+
+```
+
+### Data Dictionary
+
+Read in data dictionary and remove duplicate field names
+
+```{r message=FALSE}
+
+func_dict <- read_csv(here("data","functional-testing","functional-testing-Data-Dictionary-2024-11-06.csv")) %>% 
+  distinct(field_name,.keep_all = TRUE) 
+
+```
+
+### New field name(s):
+
+Add the field name "cohort" to the data dictionary
+
+```{r}
+
+# Create field names
+cohort_new_row <- data.frame(
+  field_name = "cohort",
+  field_type = "Character",
+  field_note = "Type of surgical cohort",
+  select_choices_or_calculations = "TKA,Thoracic")
+
+# Add the new row after the last row
+
+func_dict <- func_dict %>%
+  slice(1:nrow(.)) %>%
+  add_row(.after = nrow(.), !!!cohort_new_row) 
+
+```
+
+### TKA Functional Assessment
+
+```{r}
+
+
+tka_func <-func %>% 
+  select(record_id,guid,redcap_data_access_group,redcap_event_name,redcap_repeat_instrument,redcap_repeat_instance,starts_with("walk"),starts_with("tsts"),functional_testing_complete,cohort) 
+
+
+```
+
+```{r}
+
+tka_func <- tka_func %>% 
+  filter(cohort=="TKA") %>% 
+  filter(redcap_repeat_instrument == "functional_testing") %>%
+  filter(functional_testing_complete==2 & !is.na(redcap_repeat_instance)) %>% 
+  group_by(record_id,redcap_event_name) %>%
+  top_n(1,redcap_repeat_instance) %>% 
+  ungroup() %>% 
+  select(where(not_all_na)) 
+
+
+```
+
+Keep records of subjects who completed the test.
+
+```{r}
+
+frdata3 <- tka_func %>% 
+  filter(walk10completeyn == 1 & functional_testing_complete == 2)
+```
+
+#### 10m Walk Test:
+
+##### Flag 1:
+
+Check for discrepancy or missing values in the first and the second initial pain ratings.
+
+```{r}
+
+ferror1 <- frdata3 %>% 
+  mutate(init_pain_diff = walk10initialpainscl - walk10initialpainscl1) %>% 
+  filter(init_pain_diff != 0 | is.na(init_pain_diff)) %>% 
+  add_column(error_type = "Walk test:Discrepancy or missing values in the first and the second initial pain ratings") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+```
+
+##### Flag 2:
+
+Check for discrepancy or missing values in the first and the second final pain ratings.
+
+```{r}
+
+
+ferror2 <- frdata3 %>% 
+  mutate(final_pain_diff = walk10finalpainscl - walk10finalpainscl1) %>% 
+  filter(final_pain_diff != 0 | is.na(final_pain_diff)) %>% 
+  add_column(error_type = "Walk test:Discrepancy or missing values in the first and the second initial pain ratings") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors) 
+
+
+
+
+```
+
+##### Flag 3:
+
+Check for missing values or discrepancy between the first and the second walk time.
+
+```{r}
+
+
+
+ferror3 <- frdata3 %>% 
+  retype() %>% 
+  mutate(walk_time_diff = walk10time - walk10time1) %>% 
+  filter(walk_time_diff != 0 | is.na(walk_time_diff)) %>% 
+  add_column(error_type = "Walk test:Missing values or discrepancy between the first and the second walk time") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors) 
+
+
+```
+
+##### Flag 4:
+
+Check if the reason for test not completed was not specified.
+
+```{r}
+
+
+ferror4 <- tka_func  %>% 
+  filter(walk10completeyn == 0) %>%
+  filter(is.na(walk10incompletereason)) %>% 
+add_column(error_type = "Walk test:If the reason for test not completed was marked off") %>%
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+```
+
+##### Flag 5:
+
+Check for records with missing values for any assistance if the walk test was completed.
+
+```{r}
+
+ferror5 <- frdata3 %>% 
+  filter(walk10completeyn == 1) %>% 
+  filter(is.na(walk10assistyn)) %>% 
+  add_column(error_type = "Walk test:missing values for any assistance if the walk test was completed") %>%
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+
+```
+
+##### Flag 6:
+
+For subjects who used any assistance during the walk test, check for records with type of assistance left "unchecked".
+
+```{r}
+
+
+ferror6 <- frdata3 %>% 
+  filter(walk10assistyn == 1) %>% 
+  filter(walk10assist_cane___1 == 0 & walk10assist_crutch___1 == 0 & walk10assist_perssuppt___1 == 0 & walk10assist_other___1 == 0 & walk10assist_walkder___1 == 0) %>% 
+  add_column(error_type = "Walk test:type of assistance unchecked") %>%
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+
+```
+
+#### 5 times sit to stand test (5tsts)
+
+##### Flag 7:
+
+Check for missing bp values if 5tsts was completed.
+
+```{r}
+
+frdata.sit <- tka_func
+
+
+ferror.bp <- frdata.sit %>% 
+  filter(tstscompleteyn == 1 &  is.na(tstsbpscreen) ) %>% 
+  add_column(error_type = "5tsts:missing bp values if 5tsts was completed") %>%
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+
+```
+
+keep records for subjects who completed the test.
+
+```{r}
+frdata.sit1 <- frdata.sit %>% 
+  filter(tstscompleteyn == 1 & functional_testing_complete == 2) 
+```
+
+##### Flag 8:
+
+Check for discrepancy or missing values in the first and the second initial pain rating.
+
+```{r}
+
+ferror1.sit<- frdata.sit1 %>% 
+  mutate(init_pain_diff.sit = tstsprepainscl - tstsprepainscl1) %>% 
+  filter(init_pain_diff.sit != 0 | is.na(init_pain_diff.sit))%>% 
+add_column(error_type = "5tsts:discrepancy or missing values for the first and the second initial pain rating ") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+
+```
+
+##### Flag 9:
+
+Check for discrepancy or missing values in the first and the second final pain rating.
+
+```{r}
+
+ferror2.sit <- frdata.sit1 %>% 
+  mutate(final_pain_diff.sit = tstspostpainscl - tstspostpainscl1) %>% 
+  filter(final_pain_diff.sit != 0 | is.na(final_pain_diff.sit)) %>% 
+add_column(error_type = "5tsts:discrepancy or missing values for the first and the second final pain rating ") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+
+```
+
+##### Flag 10:
+
+Check for discrepancy or missing values the first and the second activity time.
+
+```{r}
+
+ferror3.sit <- frdata.sit1 %>% 
+  retype() %>% 
+  mutate(sit_time_diff = tststime - tststime1) %>% 
+  filter(sit_time_diff != 0 | is.na(sit_time_diff)) %>% 
+  add_column(error_type = "5tsts:discrepancy or missing values the first and the second activity time") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+
+```
+
+##### Flag 11:
+
+Check if the reason for test not completed was not specified.
+
+```{r}
+
+ferror4.sit <- frdata.sit %>% 
+  filter(tstscompleteyn == 0) %>% 
+  filter(is.na(tstsnonreasonyn)) %>% 
+  add_column(error_type = "5tsts:if the reason for test not completed was not specified") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+```
+
+##### Flag 12:
+
+Check if the test was not completed but was Initiated, and the number of reps completed (n/5) were not specified)
+
+```{r}
+
+ferror5.sit <- frdata.sit %>% 
+  filter(tstscompleteyn == 0) %>% 
+  filter(tstsnonreasonyn == 1) %>% 
+  filter(is.na(tstsnumbrepsyn)) %>% 
+  add_column(error_type = "5tsts:If the test was not completed but was Initiated, and the number of reps completed (n/5) were not specified") %>%
+  add_column(errors = "none") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+
+```
+
+##### Flag 13:
+
+Check for records with missing values for any assistance if the test was completed.
+
+```{r}
+
+ferror6.sit <- frdata.sit1 %>% 
+  filter(tstscompleteyn == 1) %>% 
+  filter(is.na(tstsassistyn)) %>% 
+  add_column(error_type = "5tsts:missing values for any assistance if the test was completed") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+
+```
+
+##### Flag 14:
+
+For subjects who used any assistance during the walk test, check for records with type of assistance left "unchecked".
+
+```{r}
+
+ferror7.sit <- frdata.sit1 %>% 
+  filter(tstsassistyn == 1) %>% 
+  filter(tstsassist_1___1 == 0 & tstsassist_2___1 == 0) %>% 
+  add_column(error_type = "5tsts:type of assistance unchecked") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+```
+
+##### Biomarkers for the TKA cohort
+
+###### Movement Evoked Pain (MEP):
+
+MEP refers to pain that occurs or is worsened by movement ([@Berardi2022]. MEP can not be computed if any of the pain ratings are missing.
+
+###### 10m Walk Test MEP:
+
+MEP 10m walk test= Final pain rating - Initial pain rating
+
+```{r}
+
+tka_func <- tka_func %>% 
+  mutate(mep_walk =walk10finalpainscl- walk10initialpainscl) 
+```
+
+###### 5TSTS Test MEP:
+
+MEP 5TSTS test = Final pain rating - Initial pain rating
+
+```{r}
+tka_func <- tka_func %>% 
+  mutate(mep_5tsts = tstspostpainscl- tstsprepainscl) 
+```
+
+##### New field name(s):
+
+Add field names for the computed biomarkers to the Functional Testing data dictionary
+
+```{r}
+# Create field names
+walk_mep_new_row <- data.frame(
+  field_name = "mep_walk",
+  field_type = "numeric",
+  field_note = "Final pain rating - initial pain rating (10m walk test) ")
+
+tsts_mep_new_row<- data.frame(
+  field_name = "mep_5tsts",
+  field_type = "numeric",
+  field_note = "Final pain rating - initial pain rating (5TSTS test)" )
+
+
+
+
+# Add the new row after the last row
+
+func_dict <- func_dict %>%
+  slice(1:nrow(.)) %>%
+  add_row(.after = nrow(.), !!!walk_mep_new_row)  %>% 
+  add_row(.after = nrow(.), !!!tsts_mep_new_row ) 
+
+```
+
+##### Create functional assessment error report for the TKA cohort.
+
+```{r}
+# Specify the common prefix
+func_error <- "ferror"
+
+# Find data frames in the global environment with the specified prefix
+func_list <- mget(ls(pattern = paste0("^", func_error)))
+
+# Combine the data frames using bind_rows
+tka_func_report <- bind_rows(func_list) %>% 
+  pivot_wider(names_from = "error_type",values_from = "errors") %>% 
+  mutate_all(~replace_na(., ""))
+```
+
+```{r}
+
+tka_func_report %>% 
+  gt() %>% 
+   tab_header(
+    title = md("**TKA Functional Assessment Error Report**")) %>% 
+  tab_options(
+    table.font.size = px(12), 
+    column_labels.font.size = px(12) ) %>%
+  tab_style(
+    style = list(cell_fill(color = "#F4F4F4")),
+    locations = cells_body(columns = record_id)
+  )
+```
+
+##### Save:
+
+Save "tka_func" and data dictionary as .csv files in the folder named "reformatted_functional"
+
+```{r warning=FALSE}
+#| eval: false
+
+write_csv(tka_func,file=here::here("data","functional-testing","Reformatted","reformatted_tka_func.csv"))
+
+write_csv(func_dict,file=here::here("data","functional-testing","Reformatted","updated_func_dict.csv"))
+```
+
+
+### Thoracotomy cohort Functional Assessment:
+
+```{r}
+
+
+thor_func <-func %>% 
+  select(record_id,guid,redcap_data_access_group,redcap_event_name,redcap_repeat_instrument,redcap_repeat_instance,starts_with("ftdbc"),functional_testing_mcc2_v01_complete,cohort) 
+
+
+```
+
+```{r}
+
+thor_func <- thor_func %>% 
+  filter(cohort=="Thoracic") %>% 
+  filter(redcap_repeat_instrument == "functional_testing_mcc2_v01") %>%
+  filter(functional_testing_mcc2_v01_complete==2 & !is.na(redcap_repeat_instance)) %>% 
+  group_by(record_id,redcap_event_name) %>%
+  top_n(1,redcap_repeat_instance) %>% 
+  ungroup() %>% 
+  select(where(not_all_na)) 
+
+
+```
+
+Keep records of subjects who completed the test.
+
+```{r}
+
+
+m2frfunc3 <- thor_func %>% 
+  filter(ftdbctestcmpltyn == 1)
+
+```
+
+##### Flag 1:
+
+Check for discrepancy or missing values in the first and the second initial pain ratings.
+
+```{r}
+m2frerror1 <- m2frfunc3 %>% 
+  mutate(init_pain_diff = ftdbcdeepbrthinitscl - ftdbcdeepbrthinitscl2) %>% 
+  filter(init_pain_diff != 0 | is.na(init_pain_diff)) %>%  
+  add_column(error_type = "Deep breathing & coughing:Discrepancy or missing values in the first and the second initial pain ratings") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+```
+
+##### Flag 2:
+
+Check for discrepancy or missing values in the first and the second final pain ratings.
+
+```{r}
+
+
+m2frerror2 <- m2frfunc3 %>% 
+  mutate(final_pain_diff = ftdbcdeepbrthfinalscl - ftdbcdeepbrthfinalscl2 ) %>% 
+  filter(final_pain_diff != 0 | is.na(final_pain_diff)) %>% 
+  add_column(error_type = "Deep breathing & coughing:Discrepancy or missing values in the first and the second initial pain ratings") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors) 
+
+
+```
+
+##### Flag 3:
+
+Check for missing values or discrepancy between the first and the second cough pain.
+
+```{r}
+
+
+m2frerror3 <- m2frfunc3 %>% 
+  mutate(cough_diff = ftdbccoughfinalscl - ftdbccoughfinalscl2) %>% 
+  filter(cough_diff != 0 | is.na(cough_diff)) %>% 
+  add_column(error_type = "Deep breathing & coughing: Missing values or discrepancy between the first and the second cough pain") %>% 
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors) 
+
+
+```
+
+##### Flag 4:
+
+Check if the reason for test not completed was not specified.
+
+```{r}
+
+m2frerror4 <- thor_func %>% 
+  filter(ftdbctestcmpltyn == 0) %>% 
+  filter(is.na(ftdbctestcmpltno)) %>% 
+add_column(error_type = "If the reason for test not completed was not specified") %>%
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+```
+
+##### Flag 5:
+
+Check if the "functional_testing_mcc2_v01_complete" is missing but the test completion status is available.
+
+```{r}
+
+m2frerror5 <- thor_func %>% 
+  filter(!is.na(ftdbctestcmpltyn)) %>% 
+  filter(is.na(functional_testing_mcc2_v01_complete)) %>% 
+add_column(error_type = "missing functional_testing_mcc2_v01_complete") %>%
+  add_column(errors = "error") %>% 
+  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+
+
+```
+
+##### Create functional assessment error report for the Thoracotomy cohort.
+
+```{r}
+
+# Specify the common prefix
+m2func_error <- "m2frerror"
+
+# Find data frames in the global environment with the specified prefix
+m2func_list <- mget(ls(pattern = paste0("^", m2func_error)))
+
+# Combine the data frames using bind_rows
+thor_func_report <- bind_rows(m2func_list) %>% 
+  pivot_wider(names_from = "error_type",values_from = "errors") %>% 
+  mutate_all(~replace_na(., ""))
+```
+
+```{r}
+thor_func_report %>% 
+  gt() %>% 
+   tab_header(
+    title = md("**Thoracotomy Cohort Functional Assessment Error Report: No Errors**")) %>% 
+  tab_options(
+    table.font.size = px(12), 
+    column_labels.font.size = px(12)) %>%
+  tab_style(
+    style = list(cell_fill(color = "#F4F4F4")),
+    locations = cells_body(columns = record_id)
+  )
+```
+
+##### Biomarkers for the Thoraic cohort:
+
+Post baseline data is needed to compute MEP for the thoracic cohort, hence could not be computed.
+
+##### Save:
+
+Save "thor_func" and data dictionary as .csv files in the folder named "reformatted_functional"
+
+```{r warning=FALSE}
+#| eval: false
+
+write_csv(thor_func,file=here::here("data","functional-testing","Reformatted","reformatted_thor_func.csv"))
+write_csv(func_dict,file=here::here("data","functional-testing","Reformatted","updated_func_dict.csv"))
+
+```
+
