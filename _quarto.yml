@@ -25,6 +25,7 @@ book:
     - biospecimenCRF_quality_checks_and_reformat.qmd
     - FuntionalCRF_data_quality_checks_and_reformat.qmd
     - ImagingCRF_data_quality_checks_and_reformat.qmd
+    - QSTCRF_data_quality_checks_and_reformat.qmd
 
 bibliography: references.bib
 csl: apa.csl
