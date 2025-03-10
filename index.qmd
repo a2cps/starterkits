@@ -36,10 +36,10 @@ The latest release is always contained in a sub-folder called `pre-surgery`. Tha
   - [x] FreeSurfer @sec-freesurfer
   - [x] brainager: @sec-brainager
   - [x] CAT12
-  - [ ] Functional Connectivity
-  - [ ] fMRIPrep
-  - [ ] GIFT
   - [ ] MRIQC
+  - [ ] fMRIPrep
   - [ ] QSIprep
+  - [ ] GIFT
   - [x] Prior Neural Pain Signatures @sec-neural-pain-signatures
+  - [ ] Functional Connectivity
   
