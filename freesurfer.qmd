@@ -1,9 +1,3 @@
----
-format:
-  html:
-    df-print: tibble
----
-
 # FreeSurfer Measures {#sec-freesurfer}
 
 ## Before Proposing Project
@@ -13,6 +7,15 @@ format:
 Not all participants in a release have imaging, and not all MRIs are of good quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0.0 has `{r} readr::read_tsv("data/aparc.tsv") |> dplyr::distinct(sub) |> nrow()` participants with for which FreeSurfer data have been extracted. 
 
 ## Starting Project
+
+This kit will use both `shell` and `R`
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+
 
 ### Locate data
 
@@ -48,7 +51,8 @@ $ ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/der
 In this kit, we will consider the cortical surface measurements, stored within `aparc.tsv`. This table contains nine regional measurements for the various structures that compose each of six parcellations.
 
 ```{r}
-readr::read_tsv("data/aparc.tsv", show_col_types = FALSE)
+aparc <- read_tsv("data/aparc.tsv", show_col_types = FALSE)
+head(aparc)
 ```
 
 
@@ -56,10 +60,19 @@ A typical analysis will only rely on one parcellation. For details of the differ
 
 
 ```{r}
-readr::read_tsv("data/aparc.tsv", show_col_types = FALSE) |>
-  dplyr::filter(parc == "aparc.a2009s")
+a2009s <- aparc |>
+  filter(parc == "aparc.a2009s")
+head(a2009s)
 ```
 
+Some analyses may benefit from having the data in a "wider" format, which can be achieved with [tools from the Tidyverse](https://r4ds.hadley.nz/data-tidy.html#widening-data). For example, here is how we could pivot the table such that one column represents the participant and the others give the average cortical thickness for each region.
+
+```{r}
+a2009s_wider <- a2009s |>
+  select(StructName, ThickAvg, sub, hemisphere) |>
+  pivot_wider(names_from = c(StructName, hemisphere), values_from = ThickAvg)
+head(a2009s_wider)
+```
 
 ## Considerations While Working on the Project
 
