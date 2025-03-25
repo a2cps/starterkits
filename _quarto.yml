@@ -14,6 +14,7 @@ book:
     - freesurfer.qmd
     - brainager.qmd
     - cat12.qmd
+    - fcn.qmd
     - neural-pain-signatures.qmd
     - faq.qmd
     - references.qmd

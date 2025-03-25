@@ -83,7 +83,7 @@ Note: the table mentions "session", but in this release only V1 (baseline) resul
 
 ### Extract data
 
-The tabular data comprise parquet files that have been partitioned in a [hive-style](https://hive.apache.org/). That is, subfolders names contain column information – in this case subject ID (REDCap Record ID), task, and run. 
+The tabular data comprise parquet files that have been partitioned in a [hive-style](https://hive.apache.org/). That is, subfolder names contain column information – in this case subject ID (REDCap Record ID), task, and run. 
 
 ```bash
 $ tree signature-by-run
