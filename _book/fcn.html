@@ -330,6 +330,8 @@ div.csl-indent {
 </header>
 
 
+<p>Functional connectivity is a measurement of how activity in different regions of the brain are related. It is calculated by reducing the voxelwise timeseries into a set of parceled timecourses and then calculating a measure of connectivity between those timecourses.</p>
+<p>This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations. For functional connectivity derived from independent components, see the GIFT starter kit (forthcoming).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -337,7 +339,9 @@ div.csl-indent {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mgc)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="starting-project" class="level2 page-columns page-full" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">6.1</span> Starting Project</h2>
@@ -345,25 +349,49 @@ div.csl-indent {
 <h3 data-number="6.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">6.1.1</span> Locate data</h3>
 <p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The functional connectivity derivatives are underneath <code>derivatives/fcn</code></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/fcn/</span>
+<p>The functional connectivity derivatives are underneath <code>mris/derivatives/fcn</code></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/fcn/</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cleaned</span>  confounds  confounds.json  connectivity  connectivity.json  timeseries  timeseries.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The functional connectivity data is in a tabular format in the folder <code>connectivity</code>. The A2CPS dataset includes functional connectivity from several atlases, estimated using multiple methods. For details on the atlases, see the data dictionary <code>connectivity.json</code>.</p>
 <p>To enable flexibility, the timeseries parcellations are also provided in the folder <code>timeseries</code>, with data dictionary <code>timeseries.json</code>. These enable analyses such as dynamic connectivity or calculation of alternative measures of connectivity (e.g., partial correlation).</p>
+<p>The tabular data comprise parquet files that have been partitioned in a <a href="https://hive.apache.org/">hive style</a>. That is, subfolder names contain column information (e.g., participant label).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree connectivity <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 20</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">connectivity</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> sub=10003</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── ses=V1</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     ├── task=cuff</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp; └── run=1</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     ├── atlas=difumo_dimension-1024_resolution-2mm</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; ├── estimator=empirical</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; │&nbsp;&nbsp; └── part-0.parquet</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; └── estimator=leodit_wolf</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp;     └── part-0.parquet</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     ├── atlas=difumo_dimension-64_resolution-2mm</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; ├── estimator=empirical</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; │&nbsp;&nbsp; └── part-0.parquet</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; └── estimator=leodit_wolf</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp;     └── part-0.parquet</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     ├── atlas=dmn</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; ├── estimator=empirical</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; │&nbsp;&nbsp; └── part-0.parquet</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; └── estimator=leodit_wolf</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp;     └── part-0.parquet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The timeseries were extracted from the NIfTI files in <code>cleaned</code>, which are the outputs of fMRIPrep after band-pass filtering (0.01 - 0.1Hz), quadratic detrending, and nuisance regression (<span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>). The nuisance regressors are stored in the folder <code>confounds</code>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-sadil_acute_2024" class="csl-entry" role="listitem">
 Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J., DeLano, M. C., Ford, J. C., Gattu, R., Guo, X., Harris, R. E., Ichesco, E., Johnson, M. A., Jung, H., Kahn, A. B., Kaplan, C. M., Leloudas, N., Lindquist, M. A., Luo, Q., … Chronic Pain Signatures Consortium, T. A. to. (2024). Image processing in the acute to chronic pain signatures (A2CPS) project. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2024.12.19.627509">https://doi.org/10.1101/2024.12.19.627509</a>
 </div></div></section>
-<section id="extract-data" class="level3" data-number="6.1.2">
+<section id="extract-data" class="level3 page-columns page-full" data-number="6.1.2">
 <h3 data-number="6.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">6.1.2</span> Extract data</h3>
-<p>Most users will start with the functional connectivity data. For example, here we grab all</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dmn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas<span class="sc">==</span><span class="st">"dmn"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator<span class="sc">==</span><span class="st">"leodit_wolf"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, source, target, connectivity) <span class="sc">|&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Netowrk (DMN) atlas (the nodal coordinates were derived from <span class="citation" data-cites="baliki_corticostriatal_2012">Baliki et al. (<a href="references.html#ref-baliki_corticostriatal_2012" role="doc-biblioref">2012</a>)</span>).</p>
+<div class="no-row-height column-margin column-container"><div id="ref-baliki_corticostriatal_2012" class="csl-entry" role="listitem">
+Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. J., Fields, H. L., &amp; Apkarian, A. V. (2012). Corticostriatal functional connectivity predicts transition to chronic back pain. <em>Nature Neuroscience</em>, <em>15</em>(8), 1117–1119. <a href="https://doi.org/10.1038/nn.3153">https://doi.org/10.1038/nn.3153</a>
+</div></div><div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dmn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas<span class="sc">==</span><span class="st">"dmn"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator<span class="sc">==</span><span class="st">"leodit_wolf"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, source, target, connectivity) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -377,40 +405,40 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">0.3433423</td>
+<td style="text-align: right;">0.0636924</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">0.1176422</td>
+<td style="text-align: right;">-0.1188529</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">0.2286231</td>
+<td style="text-align: right;">-0.4824537</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">0.1761649</td>
+<td style="text-align: right;">0.1341398</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">-0.0535801</td>
+<td style="text-align: right;">-0.0532711</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">-0.1632099</td>
+<td style="text-align: right;">0.2889038</td>
 </tr>
 </tbody>
 </table>
@@ -419,8 +447,8 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
 </div>
 <p>Notice that the <code>source</code> and <code>target</code> fields are simply integer indices for this atlas. As specified in <code>connectivity.json</code>, information about these regions is available in one of the A2CPS GitHub repos. That table can be read directly from a URL.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dmn_labels <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/a2cps/functional_connectivity/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dmn_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dmn_labels <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/a2cps/functional_connectivity/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dmn_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -467,14 +495,69 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
 </div>
 </div>
 </div>
+<p>After reading in the labels, they can be merged with the functional connectivity results.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dmn_labeled <span class="ot">&lt;-</span> dmn <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(dmn_labels, <span class="at">by =</span> <span class="fu">join_by</span>(source<span class="sc">==</span>region)) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>source, <span class="sc">-</span>x, <span class="sc">-</span>y, <span class="sc">-</span>z) <span class="sc">|&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">source=</span>label) <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(dmn_labels, <span class="at">by =</span> <span class="fu">join_by</span>(target<span class="sc">==</span>region)) <span class="sc">|&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>target, <span class="sc">-</span>x, <span class="sc">-</span>y, <span class="sc">-</span>z) <span class="sc">|&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">target=</span>label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dmn_labeled <span class="ot">&lt;-</span> dmn <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(dmn_labels, <span class="at">by =</span> <span class="fu">join_by</span>(source<span class="sc">==</span>region)) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>source, <span class="sc">-</span>x, <span class="sc">-</span>y, <span class="sc">-</span>z) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">source=</span>label) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(dmn_labels, <span class="at">by =</span> <span class="fu">join_by</span>(target<span class="sc">==</span>region)) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>target, <span class="sc">-</span>x, <span class="sc">-</span>y, <span class="sc">-</span>z) <span class="sc">|&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">target=</span>label)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn_labeled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">sub</th>
+<th style="text-align: right;">connectivity</th>
+<th style="text-align: left;">source</th>
+<th style="text-align: left;">target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">0.0636924</td>
+<td style="text-align: left;">mPFC</td>
+<td style="text-align: left;">rNAC</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">-0.1188529</td>
+<td style="text-align: left;">mPFC</td>
+<td style="text-align: left;">rInsula</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">-0.4824537</td>
+<td style="text-align: left;">mPFC</td>
+<td style="text-align: left;">S1/M1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">0.1341398</td>
+<td style="text-align: left;">rNAC</td>
+<td style="text-align: left;">rInsula</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">-0.0532711</td>
+<td style="text-align: left;">rNAC</td>
+<td style="text-align: left;">S1/M1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">0.2889038</td>
+<td style="text-align: left;">rInsula</td>
+<td style="text-align: left;">S1/M1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </section>
 </section>
@@ -490,28 +573,30 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
 </section>
 <section id="example-analysis-discriminability" class="level3 page-columns page-full" data-number="6.2.3">
 <h3 data-number="6.2.3" class="anchored" data-anchor-id="example-analysis-discriminability"><span class="header-section-number">6.2.3</span> Example Analysis: Discriminability</h3>
-<p>In this section, we show how the connectivity results could be used to calculate discriminability, which is like a kind of multivariate measure of replicability, like the intra-class correlation coefficient or fingerprinting <span class="citation" data-cites="bridgeford_eliminating_2021">(<a href="references.html#ref-bridgeford_eliminating_2021" role="doc-biblioref">Bridgeford et al., 2021</a>)</span>. We are going to assess whether a person’s connectivity matrix is consistent across runs, even across runs of different types (e.g., CUFF1 vs CUFF2, REST1 vs CUFF1).</p>
+<p>In this section, we show how the connectivity results could be used to calculate discriminability <span class="citation" data-cites="bridgeford_eliminating_2021">(<a href="references.html#ref-bridgeford_eliminating_2021" role="doc-biblioref">Bridgeford et al., 2021</a>)</span>, which is a multivariate measure of replicability like the intra-class correlation coefficient or fingerprinting. Discriminability ranges from 0 - 1, with 0.5 indicating something like an equal chance that the two scans from the same participants are as similar as the two scans from different participants, and 1 indicating that the two scans from the same participant are always more similar than two scans from differing participants.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-bridgeford_eliminating_2021" class="csl-entry" role="listitem">
 Bridgeford, E. W., Wang, S., Wang, Z., Xu, T., Craddock, C., Dey, J., Kiar, G., Gray-Roncal, W., Colantuoni, C., Douville, C., et al. (2021). Eliminating accidental deviations to minimize generalization error and maximize replicability: Applications in connectomics and genomics. <em>PLoS Computational Biology</em>, <em>17</em>(9), e1009279. <a href="https://doi.org/10.1371/journal.pcbi.1009279">https://doi.org/10.1371/journal.pcbi.1009279</a>
-</div></div><p>First, we need a list of participants that have all four scan types.</p>
+</div></div><p>We are going to assess whether a person’s connectivity matrix is consistent across runs, even across runs of different types (e.g., CUFF1 vs CUFF2, REST1 vs CUFF1).</p>
+<p>First, we need a list of participants that have all four scan types.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(sub, task, run) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(sub) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n<span class="sc">==</span><span class="dv">4</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(sub, task, run) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(sub) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n<span class="sc">==</span><span class="dv">4</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As usual, we should also restrict analyses to only those runs that are not “red”.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>red_fmri <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(fs<span class="sc">::</span><span class="fu">dir_ls</span>(<span class="st">"data/scans"</span>, <span class="at">glob =</span> <span class="st">"*tsv"</span>), <span class="at">na =</span> <span class="st">"n/a"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(filename, <span class="st">"task"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rating<span class="sc">==</span><span class="st">"red"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="fu">str_extract</span>(filename, <span class="st">"(?&lt;=sub-)[[:digit:]]{5}"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as.integer</span>()</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(sub)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>red_fmri</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>red_fmri <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="fu">dir_ls</span>(<span class="st">"data/scans"</span>, <span class="at">glob =</span> <span class="st">"*tsv"</span>), <span class="at">na =</span> <span class="st">"n/a"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(filename, <span class="st">"task"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rating<span class="sc">==</span><span class="st">"red"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="fu">str_extract</span>(filename, <span class="st">"(?&lt;=sub-)[[:digit:]]{5}"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as.integer</span>()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(sub)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(red_fmri)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -539,260 +624,30 @@ Bridgeford, E. W., Wang, S., Wang, Z., Xu, T., Craddock, C., Dey, J., Kiar, G., 
 <tr class="even">
 <td style="text-align: right;">10092</td>
 </tr>
-<tr class="odd">
-<td style="text-align: right;">10094</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10095</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10097</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10104</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10105</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10112</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10134</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10149</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10180</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10182</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10189</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10196</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10197</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10202</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10212</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10218</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10220</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10238</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10244</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10258</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10270</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10280</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10285</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10291</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10292</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10302</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10305</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10320</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10321</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10327</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10335</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10349</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10355</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10362</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10363</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10393</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10394</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10397</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10398</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10402</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10408</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10411</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10428</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10431</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10476</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10478</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10495</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10513</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10519</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10520</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10523</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10559</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10586</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10588</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10606</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">15003</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20004</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20016</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20018</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20019</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20023</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20024</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20035</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20040</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20046</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20061</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20068</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20078</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20108</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20171</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20191</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20214</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20227</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20230</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">25027</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">25029</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">25081</td>
-</tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
+<p>Of the list of participants with all four functional scans, filter out the participants for which any of the scans were red.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs_ok <span class="ot">&lt;-</span> subs_with_all_runs <span class="sc">|&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(red_fmri)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs_ok <span class="ot">&lt;-</span> subs_with_all_runs <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(red_fmri)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Use this to filter the connectivity results. We’ll select just one of the smaller DiFuMo atlases <span class="citation" data-cites="dadi_fine_2020">(<a href="references.html#ref-dadi_fine_2020" role="doc-biblioref">Dadi et al., 2020</a>)</span>, and rely on connectivities estimated with the Ledoit-Wolf estimator <span class="citation" data-cites="ledoit_well_2004">(<a href="references.html#ref-ledoit_well_2004" role="doc-biblioref">Ledoit &amp; Wolf, 2004</a>)</span>. This analysis can be slow, and so we will run it for only 100 participants.</p>
+<p>Use this to filter the connectivity results. We’ll select just one of the smaller DiFuMo atlases <span class="citation" data-cites="dadi_fine_2020">(<a href="references.html#ref-dadi_fine_2020" role="doc-biblioref">Dadi et al., 2020</a>)</span>, and rely on connectivities estimated with the Ledoit-Wolf estimator <span class="citation" data-cites="ledoit_well_2004">(<a href="references.html#ref-ledoit_well_2004" role="doc-biblioref">Ledoit &amp; Wolf, 2004</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-dadi_fine_2020" class="csl-entry" role="listitem">
 Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wassermann, D., Thirion, B., &amp; Mensch, A. (2020). Fine-grain atlases of functional modes for fMRI analysis. <em>NeuroImage</em>, <em>221</em>, 117126. <a href="https://doi.org/10.1016/j.neuroimage.2020.117126">https://doi.org/10.1016/j.neuroimage.2020.117126</a>
 </div><div id="ref-ledoit_well_2004" class="csl-entry" role="listitem">
 Ledoit, O., &amp; Wolf, M. (2004). A well-conditioned estimator for large-dimensional covariance matrices. <em>Journal of Multivariate Analysis</em>, <em>88</em>(2), 365–411. <a href="https://doi.org/10.1016/S0047-259X(03)00096-4">https://doi.org/10.1016/S0047-259X(03)00096-4</a>
 </div></div><div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fcn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas<span class="sc">==</span><span class="st">"difumo_dimension-64_resolution-2mm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator<span class="sc">==</span><span class="st">"leodit_wolf"</span>) <span class="sc">|&gt;</span> <span class="co"># sic</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(subs_with_all_runs_ok, <span class="at">by =</span> <span class="fu">join_by</span>(sub)) <span class="sc">|&gt;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">scan =</span> stringr<span class="sc">::</span><span class="fu">str_c</span>(task, run)) <span class="sc">|&gt;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>atlas, <span class="sc">-</span>estimator, <span class="sc">-</span>ses, <span class="sc">-</span>task, <span class="sc">-</span>run) <span class="sc">|&gt;</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() </span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fcn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fcn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas<span class="sc">==</span><span class="st">"difumo_dimension-64_resolution-2mm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator<span class="sc">==</span><span class="st">"leodit_wolf"</span>) <span class="sc">|&gt;</span> <span class="co"># sic</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(subs_with_all_runs_ok, <span class="at">by =</span> <span class="fu">join_by</span>(sub)) <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">scan =</span> <span class="fu">str_c</span>(task, run)) <span class="sc">|&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>atlas, <span class="sc">-</span>estimator, <span class="sc">-</span>ses, <span class="sc">-</span>task, <span class="sc">-</span>run) <span class="sc">|&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fcn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -809,102 +664,116 @@ Ledoit, O., &amp; Wolf, M. (2004). A well-conditioned estimator for large-dimens
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: right;">0.0281701</td>
+<td style="text-align: right;">0.0527825</td>
 <td style="text-align: right;">10011</td>
-<td style="text-align: left;">rest2</td>
+<td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">11</td>
-<td style="text-align: right;">0.3872222</td>
+<td style="text-align: right;">-0.1071058</td>
 <td style="text-align: right;">10011</td>
-<td style="text-align: left;">rest2</td>
+<td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">12</td>
-<td style="text-align: right;">0.7531632</td>
+<td style="text-align: right;">0.4203490</td>
 <td style="text-align: right;">10011</td>
-<td style="text-align: left;">rest2</td>
+<td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">13</td>
-<td style="text-align: right;">0.6413313</td>
+<td style="text-align: right;">0.4512256</td>
 <td style="text-align: right;">10011</td>
-<td style="text-align: left;">rest2</td>
+<td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">14</td>
-<td style="text-align: right;">0.0154408</td>
+<td style="text-align: right;">0.3371507</td>
 <td style="text-align: right;">10011</td>
-<td style="text-align: left;">rest2</td>
+<td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">15</td>
-<td style="text-align: right;">0.0485602</td>
+<td style="text-align: right;">-0.0469351</td>
 <td style="text-align: right;">10011</td>
-<td style="text-align: left;">rest2</td>
+<td style="text-align: left;">cuff2</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
+<p>Next, define some helper functions to break up the different parts of the analysis pipeline.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>get_disc <span class="ot">&lt;-</span> <span class="cf">function</span>(.data){</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> .data <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">feature=</span><span class="fu">interaction</span>(source, target)) <span class="sc">|&gt;</span> </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>source, <span class="sc">-</span>target) <span class="sc">|&gt;</span> </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">"connectivity"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"feature"</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  mgc<span class="sc">::</span><span class="fu">discr.stat</span>(</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>(<span class="fu">select</span>(d, <span class="sc">-</span>sub, <span class="sc">-</span>name)),</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>(<span class="fu">select</span>(d, sub))</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>discr</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">combn</span>(<span class="fu">c</span>(<span class="st">"rest1"</span>, <span class="st">"rest2"</span>, <span class="st">"cuff1"</span>, <span class="st">"cuff2"</span>), <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">scan1=</span>V1, <span class="at">scan2=</span>V2) <span class="sc">|&gt;</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(fcn <span class="sc">|&gt;</span> <span class="fu">group_nest</span>(scan), <span class="at">by =</span> <span class="fu">join_by</span>(scan1<span class="sc">==</span>scan)) <span class="sc">|&gt;</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(fcn <span class="sc">|&gt;</span> <span class="fu">group_nest</span>(scan), <span class="at">by =</span> <span class="fu">join_by</span>(scan2<span class="sc">==</span>scan)) <span class="sc">|&gt;</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">map2</span>(</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>      data.x, data.y, </span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span><span class="fu">left_join</span>(.x, .y, <span class="at">by=</span><span class="fu">join_by</span>(source, target, sub)))</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">"data."</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">discr =</span> <span class="fu">map_dbl</span>(data, get_disc)</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>get_scan_combinations <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">scans=</span><span class="fu">c</span>(<span class="st">"rest1"</span>, <span class="st">"rest2"</span>, <span class="st">"cuff1"</span>, <span class="st">"cuff2"</span>), </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">.col1=</span>scan1, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">.col2=</span>scan2){</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">combn</span>(scans, <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>({{.col1}}<span class="sc">:</span><span class="er">=</span>V1, {{.col2}}<span class="sc">:</span><span class="er">=</span>V2)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>join_fcn_to_combinations <span class="ot">&lt;-</span> <span class="cf">function</span>(.data, fcn){</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  fcn_nested <span class="ot">&lt;-</span> <span class="fu">group_nest</span>(fcn, scan)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  .data <span class="sc">|&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(fcn_nested, <span class="at">by =</span> <span class="fu">join_by</span>(scan1<span class="sc">==</span>scan)) <span class="sc">|&gt;</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(fcn_nested, <span class="at">by =</span> <span class="fu">join_by</span>(scan2<span class="sc">==</span>scan)) <span class="sc">|&gt;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">map2</span>(</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        data.x, data.y, </span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span><span class="fu">left_join</span>(.x, .y, <span class="at">by=</span><span class="fu">join_by</span>(source, target, sub)))</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">"data."</span>))</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>get_discr <span class="ot">&lt;-</span> <span class="cf">function</span>(.data){</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> .data <span class="sc">|&gt;</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">feature=</span><span class="fu">interaction</span>(source, target)) <span class="sc">|&gt;</span> </span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>source, <span class="sc">-</span>target) <span class="sc">|&gt;</span> </span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">"connectivity"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"feature"</span>)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">discr.stat</span>(</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>(<span class="fu">select</span>(d, <span class="sc">-</span>sub, <span class="sc">-</span>name)),</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>(<span class="fu">select</span>(d, sub))</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>discr</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Discriminability ranges from 0 - 1, with 0.5 indicating something like an equal chance that the two scans from the same participants are as similar as the two scans from different participants, and 1 indicating that the two scans from the same participant are always more similar than two scans from differing participants.</p>
-<p>When plotting, let’s color the points based on whether the two scans are of the same type.</p>
+<p>Apply these helper functions to the functional connectivity data, calculating discriminability.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>groups <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">same_type =</span> (<span class="fu">str_detect</span>(scan1, <span class="st">"rest"</span>) <span class="sc">&amp;</span> <span class="fu">str_detect</span>(scan2, <span class="st">"rest"</span>)) <span class="sc">|</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">str_detect</span>(scan1, <span class="st">"cuff"</span>) <span class="sc">&amp;</span> <span class="fu">str_detect</span>(scan2, <span class="st">"cuff"</span>)),</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">scans =</span> <span class="fu">interaction</span>(scan1, scan2)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>scans, <span class="at">y=</span>discr, <span class="at">color=</span>same_type)) <span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>discriminability <span class="ot">&lt;-</span> <span class="fu">get_scan_combinations</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">join_fcn_to_combinations</span>(fcn) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">discr =</span> <span class="fu">map_dbl</span>(data, get_discr)) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To review the results, plot the data. When plotting, let’s color the points based on whether the two scans are of the same type.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>discriminability <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">same_type =</span> (<span class="fu">str_detect</span>(scan1, <span class="st">"rest"</span>) <span class="sc">&amp;</span> <span class="fu">str_detect</span>(scan2, <span class="st">"rest"</span>)) <span class="sc">|</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">str_detect</span>(scan1, <span class="st">"cuff"</span>) <span class="sc">&amp;</span> <span class="fu">str_detect</span>(scan2, <span class="st">"cuff"</span>)),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">scans =</span> <span class="fu">interaction</span>(scan1, scan2)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>scans, <span class="at">y=</span>discr, <span class="at">color=</span>same_type)) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="fcn_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="fcn_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Overall, discriminability is very high, with at most minor differences between pairings of runs.</p>
+<p>Overall, discriminability is around 0.8, with at most minor differences between different pairings of runs.</p>
 
 
 
