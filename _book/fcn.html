@@ -382,19 +382,19 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
 </div></div></section>
 <section id="extract-data" class="level3 page-columns page-full" data-number="6.1.2">
 <h3 data-number="6.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">6.1.2</span> Extract data</h3>
-<p>Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Netowrk (DMN) atlas (the nodal coordinates were derived from <span class="citation" data-cites="baliki_corticostriatal_2012">Baliki et al. (<a href="references.html#ref-baliki_corticostriatal_2012" role="doc-biblioref">2012</a>)</span>).</p>
+<p>Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Netowrk (DMN) atlas (the nodal coordinates were derived from <span class="citation" data-cites="baliki_corticostriatal_2012">Baliki et al. (<a href="references.html#ref-baliki_corticostriatal_2012" role="doc-biblioref">2012</a>)</span>). In this case, we’ll restrict results to connectivities generated with the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance">empirical estimator</a>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-baliki_corticostriatal_2012" class="csl-entry" role="listitem">
 Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. J., Fields, H. L., &amp; Apkarian, A. V. (2012). Corticostriatal functional connectivity predicts transition to chronic back pain. <em>Nature Neuroscience</em>, <em>15</em>(8), 1117–1119. <a href="https://doi.org/10.1038/nn.3153">https://doi.org/10.1038/nn.3153</a>
 </div></div><div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dmn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas<span class="sc">==</span><span class="st">"dmn"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator<span class="sc">==</span><span class="st">"leodit_wolf"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator<span class="sc">==</span><span class="st">"empirical"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, source, target, connectivity) <span class="sc">|&gt;</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() </span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: right;">sub</th>
@@ -404,42 +404,6 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: right;">10003</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.0636924</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10003</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">-0.1188529</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10003</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">-0.4824537</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10003</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0.1341398</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10003</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">-0.0532711</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10003</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0.2889038</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -634,18 +598,16 @@ Bridgeford, E. W., Wang, S., Wang, Z., Xu, T., Craddock, C., Dey, J., Kiar, G., 
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs_ok <span class="ot">&lt;-</span> subs_with_all_runs <span class="sc">|&gt;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(red_fmri)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Use this to filter the connectivity results. We’ll select just one of the smaller DiFuMo atlases <span class="citation" data-cites="dadi_fine_2020">(<a href="references.html#ref-dadi_fine_2020" role="doc-biblioref">Dadi et al., 2020</a>)</span>, and rely on connectivities estimated with the Ledoit-Wolf estimator <span class="citation" data-cites="ledoit_well_2004">(<a href="references.html#ref-ledoit_well_2004" role="doc-biblioref">Ledoit &amp; Wolf, 2004</a>)</span>.</p>
+<p>Use this to filter the connectivity results. We’ll select just one of the smaller DiFuMo atlases <span class="citation" data-cites="dadi_fine_2020">(<a href="references.html#ref-dadi_fine_2020" role="doc-biblioref">Dadi et al., 2020</a>)</span>. As before, we’ll stick with the empirical estimator.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-dadi_fine_2020" class="csl-entry" role="listitem">
 Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wassermann, D., Thirion, B., &amp; Mensch, A. (2020). Fine-grain atlases of functional modes for fMRI analysis. <em>NeuroImage</em>, <em>221</em>, 117126. <a href="https://doi.org/10.1016/j.neuroimage.2020.117126">https://doi.org/10.1016/j.neuroimage.2020.117126</a>
-</div><div id="ref-ledoit_well_2004" class="csl-entry" role="listitem">
-Ledoit, O., &amp; Wolf, M. (2004). A well-conditioned estimator for large-dimensional covariance matrices. <em>Journal of Multivariate Analysis</em>, <em>88</em>(2), 365–411. <a href="https://doi.org/10.1016/S0047-259X(03)00096-4">https://doi.org/10.1016/S0047-259X(03)00096-4</a>
 </div></div><div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fcn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas<span class="sc">==</span><span class="st">"difumo_dimension-64_resolution-2mm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator<span class="sc">==</span><span class="st">"leodit_wolf"</span>) <span class="sc">|&gt;</span> <span class="co"># sic</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator<span class="sc">==</span><span class="st">"empirical"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(subs_with_all_runs_ok, <span class="at">by =</span> <span class="fu">join_by</span>(sub)) <span class="sc">|&gt;</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">scan =</span> <span class="fu">str_c</span>(task, run)) <span class="sc">|&gt;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>atlas, <span class="sc">-</span>estimator, <span class="sc">-</span>ses, <span class="sc">-</span>task, <span class="sc">-</span>run) <span class="sc">|&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>atlas, <span class="sc">-</span>ses, <span class="sc">-</span>task, <span class="sc">-</span>run, <span class="sc">-</span>estimator) <span class="sc">|&gt;</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() </span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fcn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -664,43 +626,43 @@ Ledoit, O., &amp; Wolf, M. (2004). A well-conditioned estimator for large-dimens
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: right;">0.0527825</td>
-<td style="text-align: right;">10011</td>
+<td style="text-align: right;">0.0591276</td>
+<td style="text-align: right;">10010</td>
 <td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">11</td>
-<td style="text-align: right;">-0.1071058</td>
-<td style="text-align: right;">10011</td>
+<td style="text-align: right;">0.0573687</td>
+<td style="text-align: right;">10010</td>
 <td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">12</td>
-<td style="text-align: right;">0.4203490</td>
-<td style="text-align: right;">10011</td>
+<td style="text-align: right;">0.2145623</td>
+<td style="text-align: right;">10010</td>
 <td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">13</td>
-<td style="text-align: right;">0.4512256</td>
-<td style="text-align: right;">10011</td>
+<td style="text-align: right;">-0.3082481</td>
+<td style="text-align: right;">10010</td>
 <td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">14</td>
-<td style="text-align: right;">0.3371507</td>
-<td style="text-align: right;">10011</td>
+<td style="text-align: right;">-0.1808573</td>
+<td style="text-align: right;">10010</td>
 <td style="text-align: left;">cuff2</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">15</td>
-<td style="text-align: right;">-0.0469351</td>
-<td style="text-align: right;">10011</td>
+<td style="text-align: right;">0.1516730</td>
+<td style="text-align: right;">10010</td>
 <td style="text-align: left;">cuff2</td>
 </tr>
 </tbody>
@@ -717,7 +679,7 @@ Ledoit, O., &amp; Wolf, M. (2004). A well-conditioned estimator for large-dimens
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">combn</span>(scans, <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>({{.col1}}<span class="sc">:</span><span class="er">=</span>V1, {{.col2}}<span class="sc">:</span><span class="er">=</span>V2)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>({{.col1}}<span class="sc">:</span><span class="er">=</span>V1, {{.col2}}<span class="sc">:</span><span class="er">=</span>V2) </span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>join_fcn_to_combinations <span class="ot">&lt;-</span> <span class="cf">function</span>(.data, fcn){</span>
