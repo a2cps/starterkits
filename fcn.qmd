@@ -65,12 +65,12 @@ The timeseries were extracted from the NIfTI files in `cleaned`, which are the o
 
 ### Extract data
 
-Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Netowrk (DMN) atlas (the nodal coordinates were derived from @baliki_corticostriatal_2012).
+Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Netowrk (DMN) atlas (the nodal coordinates were derived from @baliki_corticostriatal_2012). In this case, we'll restrict results to connectivities generated with the [empirical estimator](https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance).
 
 ```{r}
 dmn <- open_dataset("data/connectivity") |> 
   filter(atlas=="dmn") |>
-  filter(estimator=="leodit_wolf") |>
+  filter(estimator=="empirical") |>
   select(sub, source, target, connectivity) |>
   collect() 
 head(dmn)
@@ -147,15 +147,15 @@ subs_with_all_runs_ok <- subs_with_all_runs |>
   anti_join(red_fmri)
 ```
 
-Use this to filter the connectivity results. We'll select just one of the smaller DiFuMo atlases [@dadi_fine_2020], and rely on connectivities estimated with the Ledoit-Wolf estimator [@ledoit_well_2004]. 
+Use this to filter the connectivity results. We'll select just one of the smaller DiFuMo atlases [@dadi_fine_2020]. As before, we'll stick with the empirical estimator.
 
 ```{r}
 fcn <- open_dataset("data/connectivity") |> 
   filter(atlas=="difumo_dimension-64_resolution-2mm") |>
-  filter(estimator=="leodit_wolf") |> # sic
+  filter(estimator=="empirical") |>
   semi_join(subs_with_all_runs_ok, by = join_by(sub)) |>
   mutate(scan = str_c(task, run)) |>
-  select(-atlas, -estimator, -ses, -task, -run) |>
+  select(-atlas, -ses, -task, -run, -estimator) |>
   collect() 
 head(fcn)
 ```
@@ -171,7 +171,7 @@ get_scan_combinations <- function(
   combn(scans, 2) |>
     t() |>
     as_tibble() |>
-    rename({{.col1}}:=V1, {{.col2}}:=V2)
+    rename({{.col1}}:=V1, {{.col2}}:=V2) 
 }
 
 join_fcn_to_combinations <- function(.data, fcn){
