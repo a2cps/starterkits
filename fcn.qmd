@@ -1,0 +1,229 @@
+
+# Functional Connectivity {#sec-functional-connectivity}
+
+Functional connectivity is a measurement of how activity in different regions of the brain are related. It is calculated by reducing the voxelwise timeseries into a set of parceled timecourses and then calculating a measure of connectivity between those timecourses. 
+
+This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations. For functional connectivity derived from independent components, see the GIFT starter kit (forthcoming).
+
+```{r}
+library(arrow)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(stringr)
+library(readr)
+library(fs)
+library(mgc)
+library(ggplot2)
+```
+
+
+## Starting Project
+
+### Locate data
+
+{{< include _snippets/mri-location.qmd >}}
+
+The functional connectivity derivatives are underneath `mris/derivatives/fcn`
+
+```bash
+$ ls mris/derivatives/fcn/
+cleaned  confounds  confounds.json  connectivity  connectivity.json  timeseries  timeseries.json
+```
+
+The functional connectivity data is in a tabular format in the folder `connectivity`. The A2CPS dataset includes functional connectivity from several atlases, estimated using multiple methods. For details on the atlases, see the data dictionary `connectivity.json`.
+
+To enable flexibility, the timeseries parcellations are also provided in the folder `timeseries`, with data dictionary `timeseries.json`. These enable analyses such as dynamic connectivity or calculation of alternative measures of connectivity (e.g., partial correlation).
+
+The tabular data comprise parquet files that have been partitioned in a [hive style](https://hive.apache.org/). That is, subfolder names contain column information (e.g., participant label). 
+
+```bash
+$ tree connectivity | head -n 20
+connectivity
+├── sub=10003
+│   └── ses=V1
+│       ├── task=cuff
+│       │   └── run=1
+│       │       ├── atlas=difumo_dimension-1024_resolution-2mm
+│       │       │   ├── estimator=empirical
+│       │       │   │   └── part-0.parquet
+│       │       │   └── estimator=leodit_wolf
+│       │       │       └── part-0.parquet
+│       │       ├── atlas=difumo_dimension-64_resolution-2mm
+│       │       │   ├── estimator=empirical
+│       │       │   │   └── part-0.parquet
+│       │       │   └── estimator=leodit_wolf
+│       │       │       └── part-0.parquet
+│       │       ├── atlas=dmn
+│       │       │   ├── estimator=empirical
+│       │       │   │   └── part-0.parquet
+│       │       │   └── estimator=leodit_wolf
+│       │       │       └── part-0.parquet
+```
+
+The timeseries were extracted from the NIfTI files in `cleaned`, which are the outputs of fMRIPrep after band-pass filtering (0.01 - 0.1Hz), quadratic detrending, and nuisance regression (@sadil_acute_2024). The nuisance regressors are stored in the folder `confounds`.
+
+### Extract data
+
+Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Netowrk (DMN) atlas (the nodal coordinates were derived from @baliki_corticostriatal_2012).
+
+```{r}
+dmn <- open_dataset("data/connectivity") |> 
+  filter(atlas=="dmn") |>
+  filter(estimator=="leodit_wolf") |>
+  select(sub, source, target, connectivity) |>
+  collect() 
+head(dmn)
+```
+
+Notice that the `source` and `target` fields are simply integer indices for this atlas. As specified in `connectivity.json`, information about these regions is available in one of the A2CPS GitHub repos. That table can be read directly from a URL.
+
+```{r}
+dmn_labels <- read_csv("https://raw.githubusercontent.com/a2cps/functional_connectivity/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv")
+dmn_labels
+```
+
+After reading in the labels, they can be merged with the functional connectivity results. 
+
+```{r}
+
+dmn_labeled <- dmn |>
+  left_join(dmn_labels, by = join_by(source==region)) |>
+  select(-source, -x, -y, -z) |>
+  rename(source=label) |>
+  left_join(dmn_labels, by = join_by(target==region)) |>
+  select(-target, -x, -y, -z) |>
+  rename(target=label)
+
+head(dmn_labeled)
+```
+
+
+## Considerations While Working on the Project
+
+### Variability Across Scanners
+
+{{< include _snippets/mri-scanner-variability.qmd >}}
+
+### Data Quality
+
+{{< include _snippets/mri-qc.qmd >}}
+
+### Example Analysis: Discriminability
+
+In this section, we show how the connectivity results could be used to calculate discriminability [@bridgeford_eliminating_2021], which is a multivariate measure of replicability like the intra-class correlation coefficient or fingerprinting. Discriminability ranges from 0 - 1, with 0.5 indicating something like an equal chance that the two scans from the same participants are as similar as the two scans from different participants, and 1 indicating that the two scans from the same participant are always more similar than two scans from differing participants.
+
+We are going to assess whether a person's connectivity matrix is consistent across runs, even across runs of different types (e.g., CUFF1 vs CUFF2, REST1 vs CUFF1).
+
+First, we need a list of participants that have all four scan types.
+
+```{r}
+subs_with_all_runs <- open_dataset("data/connectivity") |>
+  distinct(sub, task, run) |>
+  count(sub) |>
+  filter(n==4) |>
+  select(sub) |>
+  collect()
+```
+
+As usual, we should also restrict analyses to only those runs that are not "red".
+
+```{r}
+red_fmri <- read_tsv(dir_ls("data/scans", glob = "*tsv"), na = "n/a") |>
+  filter(str_detect(filename, "task")) |>
+  filter(rating=="red") |>
+  mutate(
+    sub = str_extract(filename, "(?<=sub-)[[:digit:]]{5}") |>
+      as.integer()
+  ) |>
+  distinct(sub)
+head(red_fmri)
+```
+
+Of the list of participants with all four functional scans, filter out the participants for which any of the scans were red.
+
+```{r}
+subs_with_all_runs_ok <- subs_with_all_runs |>
+  anti_join(red_fmri)
+```
+
+Use this to filter the connectivity results. We'll select just one of the smaller DiFuMo atlases [@dadi_fine_2020], and rely on connectivities estimated with the Ledoit-Wolf estimator [@ledoit_well_2004]. 
+
+```{r}
+fcn <- open_dataset("data/connectivity") |> 
+  filter(atlas=="difumo_dimension-64_resolution-2mm") |>
+  filter(estimator=="leodit_wolf") |> # sic
+  semi_join(subs_with_all_runs_ok, by = join_by(sub)) |>
+  mutate(scan = str_c(task, run)) |>
+  select(-atlas, -estimator, -ses, -task, -run) |>
+  collect() 
+head(fcn)
+```
+
+Next, define some helper functions to break up the different parts of the analysis pipeline.
+
+```{r}
+
+get_scan_combinations <- function(
+    scans=c("rest1", "rest2", "cuff1", "cuff2"), 
+    .col1=scan1, 
+    .col2=scan2){
+  combn(scans, 2) |>
+    t() |>
+    as_tibble() |>
+    rename({{.col1}}:=V1, {{.col2}}:=V2)
+}
+
+join_fcn_to_combinations <- function(.data, fcn){
+  fcn_nested <- group_nest(fcn, scan)
+  .data |>
+    left_join(fcn_nested, by = join_by(scan1==scan)) |>
+    left_join(fcn_nested, by = join_by(scan2==scan)) |>
+    mutate(
+      data = map2(
+        data.x, data.y, 
+        ~left_join(.x, .y, by=join_by(source, target, sub)))
+    ) |>
+    select(-starts_with("data."))
+}
+
+get_discr <- function(.data){
+  d <- .data |>
+    mutate(feature=interaction(source, target)) |> 
+    select(-source, -target) |> 
+    pivot_longer(starts_with("connectivity")) |> 
+    pivot_wider(names_from = "feature")
+  
+  discr.stat(
+    as.matrix(select(d, -sub, -name)),
+    as.matrix(select(d, sub))
+  )$discr
+}
+
+```
+
+Apply these helper functions to the functional connectivity data, calculating discriminability.
+
+```{r}
+discriminability <- get_scan_combinations() |>
+  join_fcn_to_combinations(fcn) |>
+  mutate(discr = map_dbl(data, get_discr)) |>
+  select(-data)
+```
+
+To review the results, plot the data. When plotting, let's color the points based on whether the two scans are of the same type.
+
+```{r}
+discriminability |>
+  mutate(
+    same_type = (str_detect(scan1, "rest") & str_detect(scan2, "rest")) |
+      (str_detect(scan1, "cuff") & str_detect(scan2, "cuff")),
+    scans = interaction(scan1, scan2)
+  ) |>
+  ggplot(aes(x=scans, y=discr, color=same_type)) +
+  geom_point() +
+  coord_flip() +
+  ylim(0, 1)
+```
+
+Overall, discriminability is around 0.8, with at most minor differences between different pairings of runs.
