@@ -65,7 +65,7 @@ The timeseries were extracted from the NIfTI files in `cleaned`, which are the o
 
 ### Extract data
 
-Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Netowrk (DMN) atlas (the nodal coordinates were derived from @baliki_corticostriatal_2012). In this case, we'll restrict results to connectivities generated with the [empirical estimator](https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance).
+Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Network (DMN) atlas (the nodal coordinates were derived from @baliki_corticostriatal_2012). In this case, we'll restrict results to connectivities generated with the [empirical estimator](https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance).
 
 ```{r}
 dmn <- open_dataset("data/connectivity") |> 
