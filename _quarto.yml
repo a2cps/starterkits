@@ -27,6 +27,7 @@ book:
     - FuntionalCRF_data_quality_checks_and_reformat.qmd
     - ImagingCRF_data_quality_checks_and_reformat.qmd
     - QSTCRF_data_quality_checks_and_reformat.qmd
+    - EHR_cleaning_and_comorbidity.qmd
 
 bibliography: references.bib
 csl: apa.csl

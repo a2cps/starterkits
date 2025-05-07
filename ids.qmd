@@ -70,8 +70,8 @@ tibble::tribble(
       buttons = c("copy", "csv", "excel", "pdf"),
       paging = FALSE,
       searching = FALSE,
-      dom = 'Bfrtip'
-      ),
+      dom = "Bfrtip"
+    ),
     caption = "Location Entity Mapping"
   )
 ```
@@ -83,14 +83,13 @@ tibble::tribble(
 #| tbl-cap: "Terminology Mapping"
 tibble::tribble(
   ~Terminology, ~Venue, ~Notes,
-  "subject", "Imaging", 'In Imaging, “subject” is used interchangeably with “participant“ and both are equivalent to “record”',
-  "participant", "Imaging", 'In Imaging, “participant” is used interchangeably with “subject“ and both are equivalent to “record”',
-  "subject_guid", "VBR", 'In the VBR, “subject_guid” refers to the same entity as “NDA GUID” in Imaging, but the format is a UUID',
+  "subject", "Imaging", "In Imaging, “subject” is used interchangeably with “participant“ and both are equivalent to “record”",
+  "participant", "Imaging", "In Imaging, “participant” is used interchangeably with “subject“ and both are equivalent to “record”",
+  "subject_guid", "VBR", "In the VBR, “subject_guid” refers to the same entity as “NDA GUID” in Imaging, but the format is a UUID",
   "record", "REDCap", "10000-14999: MCC1 TKA; 15000-19999: MCC1 Thoracic; 20000-24999: MCC2 Thoracic; 25000-29999: MCC2 TKA",
   "Individual ID", "Genetics", "@sec-snps",
   "Globally Unique ID (GUID*)", "NDA", "The GUIDs used in A2CPS are not typical GUIDs but “pseudo-GUIDs“. A decision to upload to the NDA was made partway through the project, at which time it was too late to collect the information that would be required to make typical GUIDs. In practice, this means that the GUIDs used by A2CPS cannot be used to link these participants to other studies within the NDA. https://nda.nih.gov/nda/using-the-nda-guid"
 )
-  
 ```
 
 ## Visits
@@ -101,13 +100,12 @@ tibble::tribble(
 
 tibble::tribble(
   ~Terminology, ~Venue, ~Notes,
-  "session", "Imaging", '',
-  "visit", "NDA, Imaging", '[image03](https://nda.nih.gov/data-structure/image03)',
-  "visnum", "NDA", '[image03](https://nda.nih.gov/data-structure/image03)',
-  "session_det", "NDA", '[image03](https://nda.nih.gov/data-structure/image03), [fmriresults01](https://nda.nih.gov/data-structure/fmriresults01)',
+  "session", "Imaging", "",
+  "visit", "NDA, Imaging", "[image03](https://nda.nih.gov/data-structure/image03)",
+  "visnum", "NDA", "[image03](https://nda.nih.gov/data-structure/image03)",
+  "session_det", "NDA", "[image03](https://nda.nih.gov/data-structure/image03), [fmriresults01](https://nda.nih.gov/data-structure/fmriresults01)",
   "protocol_name", "VBR", "protocol table"
 )
-
 ```
 
 
@@ -168,8 +166,8 @@ tibble::tribble(
       buttons = c("copy", "csv", "excel", "pdf"),
       paging = FALSE,
       searching = FALSE,
-      dom = 'Bfrtip'
-      ),
+      dom = "Bfrtip"
+    ),
     caption = "Visit Entity Mapping"
   )
 ```

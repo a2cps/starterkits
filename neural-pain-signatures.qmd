@@ -118,15 +118,16 @@ library(arrow)
 library(dplyr)
 library(tidyr)
 
-open_dataset("data/signatures-by-run") |> 
+open_dataset("data/signatures-by-run") |>
   filter(signature %in% c("grouppred_cvpcr", "137subjmap_weighted_mean")) |>
-  filter(task=="cuff", run==1) |>
-  select(signature, value=correlation, sub, ses) |>
+  filter(task == "cuff", run == 1) |>
+  select(signature, value = correlation, sub, ses) |>
   collect() |>
   pivot_wider(names_from = signature) |>
   rename(
-    SIIPS1=`137subjmap_weighted_mean`,
-    NPS=`grouppred_cvpcr`)
+    SIIPS1 = `137subjmap_weighted_mean`,
+    NPS = `grouppred_cvpcr`
+  )
 ```
 
 

@@ -123,10 +123,11 @@ Predicted ages are neat, but these values are most useful when compared against 
 ```{r}
 baseline_ages <- read_csv(
   "data/demographics/demographics-2025-01-10.csv",
-  col_select = c("record_id", "age"))
+  col_select = c("record_id", "age")
+)
 
 brainage <- ages_with_sub |>
-  left_join(baseline_ages, by = join_by(sub==record_id)) |>
+  left_join(baseline_ages, by = join_by(sub == record_id)) |>
   mutate(
     brain_age_gap = brain.predicted_age - age
   ) |>
@@ -140,32 +141,34 @@ By plotting the predicted ages against the true ages, we can review the accuracy
 ```{r}
 #| caption: "Predicted and Chronological Age. Each point corresponds to a participant."
 
-lm_eqn <- function(fit){
+lm_eqn <- function(fit) {
   eq <- substitute(
-    italic(y) == a + b %.% italic(age)*","~~italic(r)^2~"="~r2,
+    italic(y) == a + b %.% italic(age) * "," ~ ~ italic(r)^2 ~ "=" ~ r2,
     list(
       a = format(unname(coef(fit)[1]), digits = 2),
       b = format(unname(coef(fit)[2]), digits = 2),
-      r2 = format(summary(fit)$r.squared, digits = 3)))
+      r2 = format(summary(fit)$r.squared, digits = 3)
+    )
+  )
   as.character(as.expression(eq))
 }
 
-fit <- lm(brain.predicted_age ~ age, data=brainage)
+fit <- lm(brain.predicted_age ~ age, data = brainage)
 
 brainage |>
-  ggplot(aes(x=age, y=brain.predicted_age)) +
+  ggplot(aes(x = age, y = brain.predicted_age)) +
   geom_abline() +
-  geom_point(alpha=0.5) + 
-  geom_smooth(method="lm", formula = y~x) +
-  coord_fixed() + 
-  geom_text(x = 40, y = 80, label = lm_eqn(fit), parse = TRUE) 
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", formula = y ~ x) +
+  coord_fixed() +
+  geom_text(x = 40, y = 80, label = lm_eqn(fit), parse = TRUE)
 ```
 
 The "brain age gap" is the difference between predicted and true age. Positive gaps indicate "older" brains, and younger gaps indicate "younger" brains.
 
 ```{r}
 brainage |>
-  ggplot(aes(x=brain_age_gap)) +
+  ggplot(aes(x = brain_age_gap)) +
   geom_histogram() +
   xlab("(<-- Younger) Brain Age Gap (Older -->)")
 ```
@@ -176,30 +179,28 @@ brainage |>
 Note that using the raw Brain Age Gap can be problematic, and, for final analyses, it is typical to calculate a derivative that has been "corrected". The issue is that the predictions tend to be worse for the youngest and oldest people -- and so the gap is related to age (e.g., a relationship with larger raw gaps partly reflects a relationship with true age). 
 
 ```{r}
-
 brainage |>
-  ggplot(aes(x=age, y=brain_age_gap)) +
-  geom_point(alpha=0.5) + 
-  geom_smooth(method="lm", formula = y~x) +
-  coord_fixed() 
+  ggplot(aes(x = age, y = brain_age_gap)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", formula = y ~ x) +
+  coord_fixed()
 ```
 
 Corrections aim to make them independent, by, for example, residualizing. See @smith_estimation_2019.
 
 ```{r}
-
-bag_age_fit <- lm(brain_age_gap ~ age, data=brainage)
+bag_age_fit <- lm(brain_age_gap ~ age, data = brainage)
 
 brainage |>
   mutate(
     brain_age_gap_corrected = residuals(bag_age_fit),
-    brain_age_gap = scale(brain_age_gap, scale = FALSE)) |>
+    brain_age_gap = scale(brain_age_gap, scale = FALSE)
+  ) |>
   select(sub, brain_age_gap, brain_age_gap_corrected) |>
-  ggplot(aes(x=brain_age_gap, y=brain_age_gap_corrected)) +
-  geom_point(alpha=0.5) + 
-  geom_abline() + 
-  geom_smooth(method = "lm", formula = y~x)
-
+  ggplot(aes(x = brain_age_gap, y = brain_age_gap_corrected)) +
+  geom_point(alpha = 0.5) +
+  geom_abline() +
+  geom_smooth(method = "lm", formula = y ~ x)
 ```
 
 
