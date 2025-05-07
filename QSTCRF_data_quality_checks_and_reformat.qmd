@@ -13,7 +13,6 @@ This document goes over quality checks for the QST Case Report Form (CRF). The h
 ### Load Libraries
 
 ```{r}
-
 library(shiny)
 library(forcats)
 library(tidyverse)
@@ -21,8 +20,6 @@ library(here)
 library(hablar)
 library(janitor)
 library(gt)
-
-
 ```
 
 ### Function
@@ -30,7 +27,6 @@ library(gt)
 Write a function to remove columns where all rows have NA, this is will remove duplicate columns for the the Thoracotomy/TKA cohort
 
 ```{r}
-
 not_all_na <- function(x) any(!is.na(x))
 ```
 
@@ -41,43 +37,37 @@ not_all_na <- function(x) any(!is.na(x))
 Read in QST data, We will call this qst
 
 ```{r, message=FALSE}
-
-qst <-  read.csv(here("data","qst","qst-2024-11-06.csv")) %>% 
+qst <- read.csv(here("data", "qst", "qst-2024-11-06.csv")) %>%
   retype()
 ```
 
 We will also read in Imaging data since the information on recalibration is recorded in the Imaging CRF. We will later merge field names related to recalibration with the imaging data.
 
 ```{r, message=FALSE}
-tka_img_4_qst <-  read.csv(here("data","imaging","imaging-2024-11-06.csv"))%>% 
+tka_img_4_qst <- read.csv(here("data", "imaging", "imaging-2024-11-06.csv")) %>%
   filter(redcap_repeat_instrument == "imaging_mcc1_v09") %>%
-  select(record_id,redcap_event_name,redcap_data_access_group,redcap_repeat_instance,fmricuffcontrarecal,fmricuffcalfpressurerecal,fmricuffipyn,fmricuffcompletescl,imaging_mcc1_v09_complete) %>% 
-  filter(imaging_mcc1_v09_complete==2 & !is.na(redcap_repeat_instance)) %>% 
-  group_by(record_id,redcap_event_name) %>%
-  top_n(1,redcap_repeat_instance) %>% 
-  ungroup() %>% 
+  select(record_id, redcap_event_name, redcap_data_access_group, redcap_repeat_instance, fmricuffcontrarecal, fmricuffcalfpressurerecal, fmricuffipyn, fmricuffcompletescl, imaging_mcc1_v09_complete) %>%
+  filter(imaging_mcc1_v09_complete == 2 & !is.na(redcap_repeat_instance)) %>%
+  group_by(record_id, redcap_event_name) %>%
+  top_n(1, redcap_repeat_instance) %>%
+  ungroup() %>%
   select(where(not_all_na))
-
 ```
 
 Remove test records
 
 ```{r}
-test_records <- c('10000','15000','20000','25000','40000','50000','60000','70000','80000','90000','100000','110000','120000')
+test_records <- c("10000", "15000", "20000", "25000", "40000", "50000", "60000", "70000", "80000", "90000", "100000", "110000", "120000")
 
-qst <- qst %>% 
+qst <- qst %>%
   filter(!record_id %in% test_records)
 ```
 
 Create a column for cohort type called "cohort"
 
 ```{r message =FALSE}
-
-
-qst <- qst %>% 
-  mutate(cohort = case_when(record_id >= 10000 & record_id < 15000 |record_id >= 25000 ~ "TKA", TRUE ~ "Thoracic" )) 
-
-
+qst <- qst %>%
+  mutate(cohort = case_when(record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA", TRUE ~ "Thoracic"))
 ```
 
 ### Data Dictionary
@@ -85,10 +75,8 @@ qst <- qst %>%
 Read in data dictionary and remove duplicate field names
 
 ```{r, message=FALSE}
-
-qst_dict <- read_csv(here("data","qst","qst-Data-Dictionary-2024-11-06.csv")) %>% 
-  distinct(field_name,.keep_all = TRUE) 
-
+qst_dict <- read_csv(here("data", "qst", "qst-Data-Dictionary-2024-11-06.csv")) %>%
+  distinct(field_name, .keep_all = TRUE)
 ```
 
 ### New field name(s):
@@ -96,13 +84,13 @@ qst_dict <- read_csv(here("data","qst","qst-Data-Dictionary-2024-11-06.csv")) %>
 Add the field name "cohort" to the data dictionary
 
 ```{r}
-
 # Create field names
 cohort_new_row <- data.frame(
   field_name = "cohort",
   field_type = "Character",
   field_note = "Type of surgical cohort",
-  select_choices_or_calculations = "TKA,Thoracic")
+  select_choices_or_calculations = "TKA,Thoracic"
+)
 
 
 
@@ -110,33 +98,29 @@ cohort_new_row <- data.frame(
 
 qst_dict <- qst_dict %>%
   slice(1:nrow(.)) %>%
-  add_row(.after = nrow(.), !!!cohort_new_row) 
-
+  add_row(.after = nrow(.), !!!cohort_new_row)
 ```
 
 ### TKA QST
 
 ```{r}
-
-tka_qst <- qst 
+tka_qst <- qst
 ```
 
 keep subjects from the TKA cohort, with the most recent baseline visit and merge with QST data.
 
 ```{r}
-
-tka_qst <- tka_qst %>% 
-  filter(cohort=="TKA") %>% 
+tka_qst <- tka_qst %>%
+  filter(cohort == "TKA") %>%
   filter(redcap_repeat_instrument == "qst_mcc1_v03") %>%
-  filter(qst_mcc1_v03_complete==2 & !is.na(redcap_repeat_instance)) %>% 
-  group_by(record_id,redcap_event_name) %>%
-  top_n(1,redcap_repeat_instance) %>% 
-  ungroup() %>% 
-  select(where(not_all_na)) 
+  filter(qst_mcc1_v03_complete == 2 & !is.na(redcap_repeat_instance)) %>%
+  group_by(record_id, redcap_event_name) %>%
+  top_n(1, redcap_repeat_instance) %>%
+  ungroup() %>%
+  select(where(not_all_na))
 
 
-tka_qst<- left_join(tka_qst,tka_img_4_qst,by = intersect(names(tka_qst), names(tka_img_4_qst)))
-
+tka_qst <- left_join(tka_qst, tka_img_4_qst, by = intersect(names(tka_qst), names(tka_img_4_qst)))
 ```
 
 ### Pressure Pain Thresholds (PPT)
@@ -144,11 +128,9 @@ tka_qst<- left_join(tka_qst,tka_img_4_qst,by = intersect(names(tka_qst), names(t
 keep subjects with completed QST and PPT test completed.
 
 ```{r}
-
-qdata2  <- tka_qst  %>% 
+qdata2 <- tka_qst %>%
   filter(qst_mcc1_v03_complete == 2) %>%
-  filter(pptcompleteyn ==2 |pptcompleteyn ==  1 | pptcompleteyn == 3)
-
+  filter(pptcompleteyn == 2 | pptcompleteyn == 1 | pptcompleteyn == 3)
 ```
 
 ##### Flag 1:
@@ -156,13 +138,12 @@ qdata2  <- tka_qst  %>%
 Check if the location of index site was entered \[both sites =1 OR 3 = Index site (med/lat joint line)\].
 
 ```{r}
-
-qerror1 <- qdata2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>% 
-  filter(is.na(pptpainlocation)) %>% 
+qerror1 <- qdata2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>%
+  filter(is.na(pptpainlocation)) %>%
   add_column(error_type = "Location of index site not entered") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 2:
@@ -174,17 +155,13 @@ Check for missing or mismatch in PPT ratings for Remote site.
 Repetition 1:
 
 ```{r}
-
-qerror2 <-  qdata2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>% 
-  mutate(ppt_contr_diff1 = pptremote1val - pptremote1val1) %>% 
-  filter(ppt_contr_diff1 != 0 | is.na(ppt_contr_diff1)) %>%  
+qerror2 <- qdata2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  mutate(ppt_contr_diff1 = pptremote1val - pptremote1val1) %>%
+  filter(ppt_contr_diff1 != 0 | is.na(ppt_contr_diff1)) %>%
   add_column(error_type = "PPT Repetition 1:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 3:
@@ -192,15 +169,13 @@ qerror2 <-  qdata2 %>%
 Repetition 2:
 
 ```{r}
-
-qerror3 <-  qdata2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>% 
-  mutate(ppt_contr_diff2 = pptremote2val - pptremote2val1) %>% 
-  filter(ppt_contr_diff2 != 0 | is.na(ppt_contr_diff2)) %>%  
+qerror3 <- qdata2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  mutate(ppt_contr_diff2 = pptremote2val - pptremote2val1) %>%
+  filter(ppt_contr_diff2 != 0 | is.na(ppt_contr_diff2)) %>%
   add_column(error_type = "PPT repetition 2:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 4:
@@ -208,16 +183,13 @@ qerror3 <-  qdata2 %>%
 Repetition 3:
 
 ```{r}
-
-
-qerror4 <-  qdata2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>% 
-  mutate(ppt_contr_diff3 = pptremote3val - pptremote3val1) %>% 
-  filter(ppt_contr_diff3 != 0 | is.na(ppt_contr_diff3)) %>%  
+qerror4 <- qdata2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  mutate(ppt_contr_diff3 = pptremote3val - pptremote3val1) %>%
+  filter(ppt_contr_diff3 != 0 | is.na(ppt_contr_diff3)) %>%
   add_column(error_type = "PPT repetition 3:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 5:
@@ -229,15 +201,13 @@ Check for missing or mismatch in PPT ratings for the index site.
 Repetition 1:
 
 ```{r}
-
-qerror5 <-   qdata2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>% 
-  mutate(ppt_index_diff1 = pptindex1val - pptindex1val1) %>% 
-  filter(ppt_index_diff1 != 0 | is.na(ppt_index_diff1)) %>%  
+qerror5 <- qdata2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>%
+  mutate(ppt_index_diff1 = pptindex1val - pptindex1val1) %>%
+  filter(ppt_index_diff1 != 0 | is.na(ppt_index_diff1)) %>%
   add_column(error_type = "PPT Repetition 1:Missing or mismatch in PPT ratings for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 6:
@@ -245,14 +215,13 @@ qerror5 <-   qdata2 %>%
 Repetition 2:
 
 ```{r}
-qerror6 <-   qdata2 %>% 
-   filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>% 
-  mutate(ppt_index_diff2 = pptindex2val - pptindex2val1) %>% 
-  filter(ppt_index_diff2 != 0 | is.na(ppt_index_diff2)) %>% 
+qerror6 <- qdata2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>%
+  mutate(ppt_index_diff2 = pptindex2val - pptindex2val1) %>%
+  filter(ppt_index_diff2 != 0 | is.na(ppt_index_diff2)) %>%
   add_column(error_type = "PPT Repetition 2:Missing or mismatch in PPT ratings for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 7:
@@ -260,15 +229,13 @@ qerror6 <-   qdata2 %>%
 Repetition 3:
 
 ```{r}
-
-qerror7 <- qdata2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>% 
-  mutate(ppt_index_diff3 = pptindex3val - pptindex3val1) %>% 
-  filter(ppt_index_diff3 != 0 | is.na(ppt_index_diff3))%>% 
+qerror7 <- qdata2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>%
+  mutate(ppt_index_diff3 = pptindex3val - pptindex3val1) %>%
+  filter(ppt_index_diff3 != 0 | is.na(ppt_index_diff3)) %>%
   add_column(error_type = "PPT Repetition 3:Missing or mismatch in PPT ratings for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 8:
@@ -276,14 +243,13 @@ qerror7 <- qdata2 %>%
 Check if PPT was performed on remote site (pptcompleteyn == 2) but PPT information was filled out for the index site.
 
 ```{r}
-
-qerror8 <- qdata2 %>% 
-  filter(pptcompleteyn == 2) %>% 
-  mutate(index1 = case_when((!is.na(pptindex1val) & !is.na(pptindex1val1))  | (!is.na(pptindex2val)  & !is.na(pptindex2val1)) | (!is.na(pptindex3val)  & !is.na(pptindex3val1))  ~ 1,TRUE ~ 0)) %>% 
-  filter(index1 == 1)  %>% 
+qerror8 <- qdata2 %>%
+  filter(pptcompleteyn == 2) %>%
+  mutate(index1 = case_when((!is.na(pptindex1val) & !is.na(pptindex1val1)) | (!is.na(pptindex2val) & !is.na(pptindex2val1)) | (!is.na(pptindex3val) & !is.na(pptindex3val1)) ~ 1, TRUE ~ 0)) %>%
+  filter(index1 == 1) %>%
   add_column(error_type = "PPT: Remote site was checked but PPT information was filled out for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 9:
@@ -291,15 +257,13 @@ qerror8 <- qdata2 %>%
 Check if PPT was performed on both sites (pptcompleteyn == 1) but PPT information was not filled out for the index site.
 
 ```{r}
-
-qerror9 <- qdata2 %>% 
-  filter(pptcompleteyn == 1) %>% 
-  mutate(index2 = case_when((is.na(pptindex1val) & is.na(pptindex1val1))  | (is.na(pptindex2val)  & is.na(pptindex2val1)) | (is.na(pptindex3val)  & is.na(pptindex3val1))  ~ 1,TRUE ~ 0))%>% 
-  filter(index2 == 1) %>% 
+qerror9 <- qdata2 %>%
+  filter(pptcompleteyn == 1) %>%
+  mutate(index2 = case_when((is.na(pptindex1val) & is.na(pptindex1val1)) | (is.na(pptindex2val) & is.na(pptindex2val1)) | (is.na(pptindex3val) & is.na(pptindex3val1)) ~ 1, TRUE ~ 0)) %>%
+  filter(index2 == 1) %>%
   add_column(error_type = "PPT: Both sites were checked but PPT information was not filled out for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 10:
@@ -307,16 +271,13 @@ qerror9 <- qdata2 %>%
 Check if PPT was performed on the index site (pptcompleteyn == 3) but PPT information was filled out for the remote site
 
 ```{r}
-
-qerror10 <- qdata2 %>% 
-  filter(pptcompleteyn == 3) %>% 
-  mutate(remote1 = case_when((!is.na(pptremote1val) & !is.na(pptremote1val1))  | (!is.na(pptremote2val) & !is.na(pptremote2val1)) | (!is.na(pptremote3val)  & !is.na(pptremote3val1))  ~ 1,TRUE ~ 0)) %>% 
-  filter(remote1 == 1)  %>% 
+qerror10 <- qdata2 %>%
+  filter(pptcompleteyn == 3) %>%
+  mutate(remote1 = case_when((!is.na(pptremote1val) & !is.na(pptremote1val1)) | (!is.na(pptremote2val) & !is.na(pptremote2val1)) | (!is.na(pptremote3val) & !is.na(pptremote3val1)) ~ 1, TRUE ~ 0)) %>%
+  filter(remote1 == 1) %>%
   add_column(error_type = "PPT: Index site was checked but PPT information was filled out for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 11:
@@ -324,13 +285,13 @@ qerror10 <- qdata2 %>%
 Check if PPT was performed on the both sites (pptcompleteyn == 1) but PPT information was not filled out for the remote site
 
 ```{r}
-qerror11 <- qdata2 %>% 
-  filter(pptcompleteyn == 1) %>% 
-  mutate(remote2 = case_when((is.na(pptremote1val) & is.na(pptremote1val1))  | (is.na(pptremote2val)  & is.na(pptremote2val1)) | (is.na(pptremote3val)  & is.na(pptremote3val1))  ~ 1,TRUE ~ 0)) %>% 
-  filter(remote2 == 1) %>% 
+qerror11 <- qdata2 %>%
+  filter(pptcompleteyn == 1) %>%
+  mutate(remote2 = case_when((is.na(pptremote1val) & is.na(pptremote1val1)) | (is.na(pptremote2val) & is.na(pptremote2val1)) | (is.na(pptremote3val) & is.na(pptremote3val1)) ~ 1, TRUE ~ 0)) %>%
+  filter(remote2 == 1) %>%
   add_column(error_type = "PPT: Both sites were checked but PPT information was not filled out for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 12:
@@ -338,15 +299,14 @@ qerror11 <- qdata2 %>%
 Check if information was available to compute mean PPT values at the index site = primary data point (A2CPS: Site Manual of Procedures v3.0, pg. 154).
 
 ```{r}
-
-qerror12 <- qdata2 %>% 
-  filter((pptcompleteyn == 1 | pptcompleteyn == 3)) %>% 
+qerror12 <- qdata2 %>%
+  filter((pptcompleteyn == 1 | pptcompleteyn == 3)) %>%
   rowwise() %>%
-  mutate(mean1 = mean(c(pptindex1val,pptindex2val,pptindex3val))) %>%  
-  filter(is.na(mean1)) %>% 
+  mutate(mean1 = mean(c(pptindex1val, pptindex2val, pptindex3val))) %>%
+  filter(is.na(mean1)) %>%
   add_column(error_type = "PPT: Not enough information was available to compute mean PPT values at the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 13:
@@ -354,16 +314,14 @@ qerror12 <- qdata2 %>%
 Check if information was available to compute mean PPT values at the remote site = secondary data point (A2CPS: Site Manual of Procedures v3.0, pg. 154).
 
 ```{r}
-qerror13 <- qdata2 %>% 
- filter((pptcompleteyn == 1 | pptcompleteyn == 2)) %>% 
+qerror13 <- qdata2 %>%
+  filter((pptcompleteyn == 1 | pptcompleteyn == 2)) %>%
   rowwise() %>%
-  mutate(mean2 = mean(c(pptremote1val,pptremote2val,pptremote3val))) %>% 
-  filter(is.na(mean2))%>% 
+  mutate(mean2 = mean(c(pptremote1val, pptremote2val, pptremote3val))) %>%
+  filter(is.na(mean2)) %>%
   add_column(error_type = "PPT: Not enough information was available to compute mean PPT values at the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ### Temporal Summation (TS):
@@ -371,12 +329,9 @@ qerror13 <- qdata2 %>%
 Keep subjects with completed QST and TS test.
 
 ```{r}
-
-tr.complete <- tka_qst %>% 
+tr.complete <- tka_qst %>%
   filter(qst_mcc1_v03_complete == 2) %>%
-  filter(tscompleted ==2 |tscompleted ==  1 | tscompleted == 3)
-
-
+  filter(tscompleted == 2 | tscompleted == 1 | tscompleted == 3)
 ```
 
 If TS was completed for both sites then information on at least 1 repetition for both sites should be available.
@@ -384,30 +339,28 @@ If TS was completed for both sites then information on at least 1 repetition for
 Create a field name for each repetition (inital and final) and assign 1 if atleast one repetition has information without mismatch errors or missingness.
 
 ```{r}
-
-tka_ts_recoded <-  tr.complete %>% 
-  mutate(ts_contr_init1 = tsrep1initialpainrem - tsrep1initialpainrem_d) %>% 
-  mutate(ts_contr_fin1 = tsrep1finalpainrem - tsrep1finalpainrem_d) %>% 
-  mutate(ts_contr_init2 = tsrep2initialpainrem - tsrep2initialpainrem_d) %>% 
-  mutate(ts_contr_fin2 = tsrep2finalpainrem - tsrep2finalpainrem_d) %>% 
-  mutate(ts_contr_init3 = tsinitialpainremsclr3 - tsinitialpainremscl1r3) %>% 
-  mutate(ts_contr_fin3 = tsfinalpainremsclr3 - tsfinalpainremscl1r3) %>% 
-   mutate(trrep1 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init1==0 & ts_contr_fin1 == 0 ~ 1,TRUE ~ 0)) %>% 
-   mutate(trrep2 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init2==0 & ts_contr_fin2 == 0 ~ 1,TRUE ~ 0)) %>% 
-   mutate(trrep3 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init3==0 & ts_contr_fin3 == 0 ~ 1,TRUE ~ 0)) %>% 
-  mutate(ts_ind_init1 = tsrep1initialpainindex - tsrep1initialpainindex_d) %>% 
-  mutate(ts_ind_fin1 = tsrep1finalpainindex - tsrep1finalpainindex_d) %>% 
-  mutate(ts_ind_init2 = tsinitialpainindexsclr2 - tsinitialpainindexscl1r2) %>% 
-  mutate(ts_ind_fin2 = tsfinalpainindexsclr2 - tsfinalpainindexscl1r2) %>% 
-  mutate(ts_ind_init3 = tsinitialpainindexsclr3 - tsinitialpainindexscl1r3)  %>% 
-  mutate(ts_ind_fin3 = tsfinalpainindexsclr3 - tsfinalpainindexscl1r3)  %>% 
-   mutate(indrep1 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init1==0 & ts_ind_fin1 == 0 ~ 1,TRUE ~ 0)) %>% 
-   mutate(indrep2 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init2==0 & ts_ind_fin2 == 0 ~ 1,TRUE ~ 0)) %>% 
-   mutate(indrep3 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init3==0 & ts_ind_fin3 == 0 ~ 1,TRUE ~ 0)) %>% 
-  mutate (one_rem= case_when(trrep1 == 1 | trrep2==1 |trrep3 ~ 1,TRUE ~ 0)) %>% 
-  mutate (one_ind= case_when(indrep1 == 1 | indrep2==1 |indrep3 ~ 1,TRUE ~ 0)) %>% 
-  mutate (one_rep= case_when(one_rem == 1 & one_ind==1 ~ 1,TRUE ~ 0)) 
-  
+tka_ts_recoded <- tr.complete %>%
+  mutate(ts_contr_init1 = tsrep1initialpainrem - tsrep1initialpainrem_d) %>%
+  mutate(ts_contr_fin1 = tsrep1finalpainrem - tsrep1finalpainrem_d) %>%
+  mutate(ts_contr_init2 = tsrep2initialpainrem - tsrep2initialpainrem_d) %>%
+  mutate(ts_contr_fin2 = tsrep2finalpainrem - tsrep2finalpainrem_d) %>%
+  mutate(ts_contr_init3 = tsinitialpainremsclr3 - tsinitialpainremscl1r3) %>%
+  mutate(ts_contr_fin3 = tsfinalpainremsclr3 - tsfinalpainremscl1r3) %>%
+  mutate(trrep1 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init1 == 0 & ts_contr_fin1 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(trrep2 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init2 == 0 & ts_contr_fin2 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(trrep3 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init3 == 0 & ts_contr_fin3 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(ts_ind_init1 = tsrep1initialpainindex - tsrep1initialpainindex_d) %>%
+  mutate(ts_ind_fin1 = tsrep1finalpainindex - tsrep1finalpainindex_d) %>%
+  mutate(ts_ind_init2 = tsinitialpainindexsclr2 - tsinitialpainindexscl1r2) %>%
+  mutate(ts_ind_fin2 = tsfinalpainindexsclr2 - tsfinalpainindexscl1r2) %>%
+  mutate(ts_ind_init3 = tsinitialpainindexsclr3 - tsinitialpainindexscl1r3) %>%
+  mutate(ts_ind_fin3 = tsfinalpainindexsclr3 - tsfinalpainindexscl1r3) %>%
+  mutate(indrep1 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init1 == 0 & ts_ind_fin1 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(indrep2 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init2 == 0 & ts_ind_fin2 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(indrep3 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init3 == 0 & ts_ind_fin3 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(one_rem = case_when(trrep1 == 1 | trrep2 == 1 | trrep3 ~ 1, TRUE ~ 0)) %>%
+  mutate(one_ind = case_when(indrep1 == 1 | indrep2 == 1 | indrep3 ~ 1, TRUE ~ 0)) %>%
+  mutate(one_rep = case_when(one_rem == 1 & one_ind == 1 ~ 1, TRUE ~ 0))
 ```
 
 ##### Flag 14:
@@ -415,13 +368,11 @@ tka_ts_recoded <-  tr.complete %>%
 Check if TS was completed for both sites and at least 1 repetition for both sites had no mismatch errors or missing data.
 
 ```{r}
-
-qerror14 <- tka_ts_recoded %>% 
-  filter(tscompleted == 1 & one_rep == 0) %>% 
+qerror14 <- tka_ts_recoded %>%
+  filter(tscompleted == 1 & one_rep == 0) %>%
   add_column(error_type = "TS:TS was completed for both sites and at least 1 repetition for both sites had no mismatch errors or missing data") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 15:
@@ -429,13 +380,11 @@ qerror14 <- tka_ts_recoded %>%
 Check if TS was completed for the remote site and at least 1 repetition had no mismatch errors or missing data.
 
 ```{r}
-
-qerror15 <- tka_ts_recoded %>% 
-  filter(tscompleted == 2 & one_rem == 0) %>% 
+qerror15 <- tka_ts_recoded %>%
+  filter(tscompleted == 2 & one_rem == 0) %>%
   add_column(error_type = "TS:TS was completed for the remote site and at least 1 repetition had no mismatch errors or missing data") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 16:
@@ -443,13 +392,11 @@ qerror15 <- tka_ts_recoded %>%
 Check if TS was completed for the index site and at least 1 repetition had no mismatch errors or missing data.
 
 ```{r}
-
-qerror16 <- tka_ts_recoded %>% 
-  filter(tscompleted == 3 & one_ind == 0) %>% 
+qerror16 <- tka_ts_recoded %>%
+  filter(tscompleted == 3 & one_ind == 0) %>%
   add_column(error_type = "TS:TS was completed for the index site and at least 1 repetition had no mismatch errors or missing data") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 17
@@ -457,14 +404,12 @@ qerror16 <- tka_ts_recoded %>%
 Check for missing after sensation at 15 secs if TS Remote site (contralateral deltoid) was completed
 
 ```{r}
-
-qerror17 <-  tr.complete %>% 
-  filter(tscompleted == 1 | tscompleted == 2) %>% 
-  filter(is.na(tsfinalpainremafts15)) %>% 
+qerror17 <- tr.complete %>%
+  filter(tscompleted == 1 | tscompleted == 2) %>%
+  filter(is.na(tsfinalpainremafts15)) %>%
   add_column(error_type = "TS: Missing after sensation at 15 secs if TS Remote site (contralateral deltoid) was completed") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 18
@@ -472,14 +417,12 @@ qerror17 <-  tr.complete %>%
 Check for missing after sensation at 30 secs if TS Remote site (contralateral deltoid) was completed
 
 ```{r}
-
-qerror18 <-  tr.complete %>% 
-  filter(tscompleted == 1 | tscompleted == 2) %>% 
-  filter(is.na(tsfinalpainremafts30)) %>% 
+qerror18 <- tr.complete %>%
+  filter(tscompleted == 1 | tscompleted == 2) %>%
+  filter(is.na(tsfinalpainremafts30)) %>%
   add_column(error_type = "TS: Missing after sensation at 30 secs if TS Remote site (contralateral deltoid) was completed") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 19
@@ -487,15 +430,12 @@ qerror18 <-  tr.complete %>%
 Check for missing after sensation at 15 secs if TS Index site (med/lat knee) was completed
 
 ```{r}
-
-qerror19 <-  tr.complete %>% 
-  filter(tscompleted == 1 | tscompleted == 3) %>% 
-  filter(is.na(tsfinalpainindafts15)) %>% 
+qerror19 <- tr.complete %>%
+  filter(tscompleted == 1 | tscompleted == 3) %>%
+  filter(is.na(tsfinalpainindafts15)) %>%
   add_column(error_type = "TS: Missing after sensation at 15 secs if TS Index site (med/lat knee) was completed") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 20
@@ -503,14 +443,12 @@ qerror19 <-  tr.complete %>%
 Check for missing after sensation at 30 secs if TS Index site (med/lat knee) was completed
 
 ```{r}
-qerror20 <-  tr.complete %>% 
-  filter(tscompleted == 1 | tscompleted == 3) %>% 
-  filter(is.na(tsfinalpainindafts30)) %>% 
+qerror20 <- tr.complete %>%
+  filter(tscompleted == 1 | tscompleted == 3) %>%
+  filter(is.na(tsfinalpainindafts30)) %>%
   add_column(error_type = "TS: Missing after sensation at 30 secs if TS Index site (med/lat knee) was completed") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 21:
@@ -518,16 +456,13 @@ qerror20 <-  tr.complete %>%
 Check if TS was performed on the remote site but pain ratings were filled out for the index site.
 
 ```{r}
-
-qerror19 <- tr.complete %>% 
-  filter(tscompleted == 2 & tscompleted !=3) %>% 
-  mutate(ts.index1 = case_when((!is.na(tsrep1initialpainindex) & !is.na(tsrep1initialpainindex_d))  | (!is.na(tsrep1finalpainindex)  & !is.na(tsrep1finalpainindex_d)) | (!is.na(tsinitialpainindexsclr2)  & !is.na(tsinitialpainindexscl1r2)) | (!is.na(tsfinalpainindexsclr2) & !is.na(tsfinalpainindexscl1r2))  | (!is.na(tsinitialpainindexsclr3)  & !is.na(tsinitialpainindexscl1r3)) | (!is.na(tsfinalpainindexsclr3)  & !is.na(tsfinalpainindexscl1r3))  ~ 1,TRUE ~ 0))  %>% 
-  filter(ts.index1 == 1)  %>% 
+qerror19 <- tr.complete %>%
+  filter(tscompleted == 2 & tscompleted != 3) %>%
+  mutate(ts.index1 = case_when((!is.na(tsrep1initialpainindex) & !is.na(tsrep1initialpainindex_d)) | (!is.na(tsrep1finalpainindex) & !is.na(tsrep1finalpainindex_d)) | (!is.na(tsinitialpainindexsclr2) & !is.na(tsinitialpainindexscl1r2)) | (!is.na(tsfinalpainindexsclr2) & !is.na(tsfinalpainindexscl1r2)) | (!is.na(tsinitialpainindexsclr3) & !is.na(tsinitialpainindexscl1r3)) | (!is.na(tsfinalpainindexsclr3) & !is.na(tsfinalpainindexscl1r3)) ~ 1, TRUE ~ 0)) %>%
+  filter(ts.index1 == 1) %>%
   add_column(error_type = "TS:Remote site was checked but pain ratings were filled out for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 22:
@@ -535,17 +470,13 @@ qerror19 <- tr.complete %>%
 Check if TS was performed on both sites but pain ratings were not filled out for the index site.
 
 ```{r}
-
-qerror22 <- tr.complete %>% 
-  filter(tscompleted == 1) %>% 
-  mutate(ts.bothindex1 = case_when(is.na(tsrep1initialpainindex) & is.na(tsrep1initialpainindex_d)  & is.na(tsrep1finalpainindex)  & is.na(tsrep1finalpainindex_d) & is.na(tsinitialpainindexsclr2)  & is.na(tsinitialpainindexscl1r2) & is.na(tsfinalpainindexsclr2) & is.na(tsfinalpainindexscl1r2)  & is.na(tsinitialpainindexsclr3)  & is.na(tsinitialpainindexscl1r3) & is.na(tsfinalpainindexsclr3)  & is.na(tsfinalpainindexscl1r3)  ~ 1,TRUE ~ 0))  %>%
-  filter(ts.bothindex1 == 1) %>% 
+qerror22 <- tr.complete %>%
+  filter(tscompleted == 1) %>%
+  mutate(ts.bothindex1 = case_when(is.na(tsrep1initialpainindex) & is.na(tsrep1initialpainindex_d) & is.na(tsrep1finalpainindex) & is.na(tsrep1finalpainindex_d) & is.na(tsinitialpainindexsclr2) & is.na(tsinitialpainindexscl1r2) & is.na(tsfinalpainindexsclr2) & is.na(tsfinalpainindexscl1r2) & is.na(tsinitialpainindexsclr3) & is.na(tsinitialpainindexscl1r3) & is.na(tsfinalpainindexsclr3) & is.na(tsfinalpainindexscl1r3) ~ 1, TRUE ~ 0)) %>%
+  filter(ts.bothindex1 == 1) %>%
   add_column(error_type = "TS:Both sites were checked but pain ratings were not filled out for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 23:
@@ -553,14 +484,13 @@ qerror22 <- tr.complete %>%
 Check if TS was performed on both sites but pain ratings were not filled out for the remote.
 
 ```{r}
-qerror23 <- tr.complete %>% 
-  filter(tscompleted == 1) %>% 
-  mutate(ts.bothrem1 = case_when(is.na(tsrep1initialpainrem) & is.na(tsrep1initialpainrem_d)  & is.na(tsrep1finalpainrem)  & is.na(tsrep1finalpainrem_d) & is.na(tsrep2initialpainrem)  & is.na(tsrep2initialpainrem_d) & is.na(tsrep2finalpainrem) & is.na(tsrep2finalpainrem_d)  & is.na(tsinitialpainremsclr3)  & is.na(tsinitialpainremscl1r3) & is.na(tsfinalpainremsclr3)  & is.na(tsfinalpainremscl1r3)  ~ 1,TRUE ~ 0)) %>% 
-  filter(ts.bothrem1 == 1) %>% 
+qerror23 <- tr.complete %>%
+  filter(tscompleted == 1) %>%
+  mutate(ts.bothrem1 = case_when(is.na(tsrep1initialpainrem) & is.na(tsrep1initialpainrem_d) & is.na(tsrep1finalpainrem) & is.na(tsrep1finalpainrem_d) & is.na(tsrep2initialpainrem) & is.na(tsrep2initialpainrem_d) & is.na(tsrep2finalpainrem) & is.na(tsrep2finalpainrem_d) & is.na(tsinitialpainremsclr3) & is.na(tsinitialpainremscl1r3) & is.na(tsfinalpainremsclr3) & is.na(tsfinalpainremscl1r3) ~ 1, TRUE ~ 0)) %>%
+  filter(ts.bothrem1 == 1) %>%
   add_column(error_type = "TS:Both sites were checked but pain ratings were not filled out for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 24:
@@ -568,16 +498,13 @@ qerror23 <- tr.complete %>%
 Check if TS was performed on the index site but pain ratings were filled out for the remote site.
 
 ```{r}
-
-qerror22 <- tr.complete %>% 
-  filter(tscompleted == 3 & tscompleted != 2) %>% 
-  mutate(ts.remote1 = case_when((!is.na(tsrep1initialpainrem) & !is.na(tsrep1initialpainrem_d))  | (!is.na(tsrep1finalpainrem)  & !is.na(tsrep1finalpainrem_d)) | (!is.na(tsrep2initialpainrem)  & !is.na(tsrep2initialpainrem_d)) | (!is.na(tsrep2finalpainrem) & !is.na(tsrep2finalpainrem_d))  | (!is.na(tsinitialpainremsclr3)  & !is.na(tsinitialpainremscl1r3)) | (!is.na(tsfinalpainremsclr3)  & !is.na(tsfinalpainremscl1r3))  ~ 1,TRUE ~ 0))  %>%
-  filter(ts.remote1 == 1) %>% 
+qerror22 <- tr.complete %>%
+  filter(tscompleted == 3 & tscompleted != 2) %>%
+  mutate(ts.remote1 = case_when((!is.na(tsrep1initialpainrem) & !is.na(tsrep1initialpainrem_d)) | (!is.na(tsrep1finalpainrem) & !is.na(tsrep1finalpainrem_d)) | (!is.na(tsrep2initialpainrem) & !is.na(tsrep2initialpainrem_d)) | (!is.na(tsrep2finalpainrem) & !is.na(tsrep2finalpainrem_d)) | (!is.na(tsinitialpainremsclr3) & !is.na(tsinitialpainremscl1r3)) | (!is.na(tsfinalpainremsclr3) & !is.na(tsfinalpainremscl1r3)) ~ 1, TRUE ~ 0)) %>%
+  filter(ts.remote1 == 1) %>%
   add_column(error_type = "TS:index site was checked but pain ratings were filled out for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 25
@@ -587,26 +514,23 @@ Check if information was available to compute primary outcome: Mean of 3 MTS Dif
 Primary outcome for the Index site.
 
 ```{r}
-
-qerror25 <- tr.complete  %>% 
+qerror25 <- tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 3) %>%
-  mutate(max.rep1.index = pmax(tsrep1finalpainindex,tsrep1initialpainindex)) %>% 
-  mutate(diff.rep1.index = max.rep1.index - tsrep1initialpainindex) %>% 
-  mutate(max.rep2.index = pmax(tsfinalpainindexsclr2,tsinitialpainindexsclr2)) %>% 
-  mutate(diff.rep2.index = max.rep2.index - tsinitialpainindexsclr2) %>% 
-  mutate(max.rep3.index = pmax(tsfinalpainindexsclr3,tsinitialpainindexsclr3)) %>% 
-  mutate(diff.rep3.index = max.rep3.index - tsinitialpainindexsclr3) %>% 
-  mutate(diff.rep1.index = as.numeric(diff.rep1.index)) %>% 
+  mutate(max.rep1.index = pmax(tsrep1finalpainindex, tsrep1initialpainindex)) %>%
+  mutate(diff.rep1.index = max.rep1.index - tsrep1initialpainindex) %>%
+  mutate(max.rep2.index = pmax(tsfinalpainindexsclr2, tsinitialpainindexsclr2)) %>%
+  mutate(diff.rep2.index = max.rep2.index - tsinitialpainindexsclr2) %>%
+  mutate(max.rep3.index = pmax(tsfinalpainindexsclr3, tsinitialpainindexsclr3)) %>%
+  mutate(diff.rep3.index = max.rep3.index - tsinitialpainindexsclr3) %>%
+  mutate(diff.rep1.index = as.numeric(diff.rep1.index)) %>%
   mutate(diff.rep2.index = as.numeric(diff.rep2.index)) %>%
   mutate(diff.rep3.index = as.numeric(diff.rep3.index)) %>%
   rowwise() %>%
-  mutate(mean.index = mean(c(diff.rep1.index,diff.rep2.index,diff.rep3.index))) %>% 
+  mutate(mean.index = mean(c(diff.rep1.index, diff.rep2.index, diff.rep3.index))) %>%
   filter(is.na(mean.index)) %>%
   add_column(error_type = "TS: Not enough information was available to compute primary outcome for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 26
@@ -614,24 +538,23 @@ qerror25 <- tr.complete  %>%
 Primary outcome for the Remote site.
 
 ```{r}
-
-qerror26 <- tr.complete %>% 
+qerror26 <- tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 2) %>%
-  mutate(max.rep1.remote = pmax(tsrep1initialpainrem,tsrep1finalpainrem)) %>% 
-  mutate(diff.rep1.remote = max.rep1.remote - tsrep1initialpainrem) %>% 
-  mutate(max.rep2.remote = pmax(tsrep2initialpainrem,tsrep2finalpainrem)) %>% 
-  mutate(diff.rep2.remote = max.rep2.remote - tsrep2initialpainrem) %>% 
-  mutate(max.rep3.remote = pmax(tsinitialpainremsclr3,tsfinalpainremsclr3)) %>% 
-  mutate(diff.rep3.remote = max.rep3.remote - tsinitialpainremsclr3) %>% 
-  mutate(diff.rep1.remote = as.numeric(diff.rep1.remote)) %>% 
+  mutate(max.rep1.remote = pmax(tsrep1initialpainrem, tsrep1finalpainrem)) %>%
+  mutate(diff.rep1.remote = max.rep1.remote - tsrep1initialpainrem) %>%
+  mutate(max.rep2.remote = pmax(tsrep2initialpainrem, tsrep2finalpainrem)) %>%
+  mutate(diff.rep2.remote = max.rep2.remote - tsrep2initialpainrem) %>%
+  mutate(max.rep3.remote = pmax(tsinitialpainremsclr3, tsfinalpainremsclr3)) %>%
+  mutate(diff.rep3.remote = max.rep3.remote - tsinitialpainremsclr3) %>%
+  mutate(diff.rep1.remote = as.numeric(diff.rep1.remote)) %>%
   mutate(diff.rep2.remote = as.numeric(diff.rep2.remote)) %>%
   mutate(diff.rep3.remote = as.numeric(diff.rep3.remote)) %>%
   rowwise() %>%
-  mutate(mean.remote = mean(c(diff.rep1.remote,diff.rep2.remote,diff.rep3.remote))) %>% 
-  filter(is.na(mean.remote)) %>% 
+  mutate(mean.remote = mean(c(diff.rep1.remote, diff.rep2.remote, diff.rep3.remote))) %>%
+  filter(is.na(mean.remote)) %>%
   add_column(error_type = "TS: Not enough information was available to compute primary outcome for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 27
@@ -641,30 +564,23 @@ Check if information was available to compute secondary outcome: "Mean of 3 Wind
 Secondary outcome for the index site
 
 ```{r}
-
-
-qerror27 <- tr.complete %>% 
+qerror27 <- tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 3) %>%
-  mutate(max.rep1.index1 = 1+(pmax(tsrep1finalpainindex,tsrep1initialpainindex))) %>% 
-  mutate(init.rep1.index1 = 1+(tsrep1initialpainindex)) %>% 
-  mutate(div.rep1.index1 = max.rep1.index1/init.rep1.index1) %>% 
-  mutate(max.rep2.index1 = 1+(pmax(tsfinalpainindexsclr2,tsinitialpainindexsclr2))) %>% 
-  mutate(init.rep2.index1 = 1+(tsinitialpainindexsclr2)) %>% 
-  mutate(div.rep2.index1 = max.rep2.index1/init.rep2.index1) %>% 
-  mutate(max.rep3.index1 = 1+(pmax(tsfinalpainindexsclr3,tsinitialpainindexsclr3))) %>% 
-  mutate(init.rep3.index1 = 1+(tsinitialpainindexsclr3)) %>% 
-  mutate(div.rep3.index1 = max.rep3.index1/init.rep3.index1) %>%
+  mutate(max.rep1.index1 = 1 + (pmax(tsrep1finalpainindex, tsrep1initialpainindex))) %>%
+  mutate(init.rep1.index1 = 1 + (tsrep1initialpainindex)) %>%
+  mutate(div.rep1.index1 = max.rep1.index1 / init.rep1.index1) %>%
+  mutate(max.rep2.index1 = 1 + (pmax(tsfinalpainindexsclr2, tsinitialpainindexsclr2))) %>%
+  mutate(init.rep2.index1 = 1 + (tsinitialpainindexsclr2)) %>%
+  mutate(div.rep2.index1 = max.rep2.index1 / init.rep2.index1) %>%
+  mutate(max.rep3.index1 = 1 + (pmax(tsfinalpainindexsclr3, tsinitialpainindexsclr3))) %>%
+  mutate(init.rep3.index1 = 1 + (tsinitialpainindexsclr3)) %>%
+  mutate(div.rep3.index1 = max.rep3.index1 / init.rep3.index1) %>%
   rowwise() %>%
-  mutate(mean.sec.index = mean(c(div.rep1.index1,div.rep2.index1,div.rep3.index1))) %>% 
+  mutate(mean.sec.index = mean(c(div.rep1.index1, div.rep2.index1, div.rep3.index1))) %>%
   filter(is.na(mean.sec.index)) %>%
   add_column(error_type = "TS: Not enough information was available to compute secondary outcome for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 28
@@ -672,28 +588,23 @@ qerror27 <- tr.complete %>%
 Secondary outcome for the Remote site.
 
 ```{r}
-
-
-qerror28 <- tr.complete %>% 
+qerror28 <- tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 2) %>%
-  mutate(max.rep1.remote1 = 1+(pmax(tsrep1initialpainrem,tsrep1finalpainrem))) %>% 
-  mutate(init.rep1.remote1 = 1+(tsrep1initialpainrem)) %>% 
-  mutate(div.rep1.remote1 = max.rep1.remote1/init.rep1.remote1) %>%
-  mutate(max.rep2.remote1 = 1+(pmax(tsrep2initialpainrem,tsrep2finalpainrem))) %>% 
-  mutate(init.rep2.remote1 = 1+(tsrep2initialpainrem)) %>% 
-  mutate(div.rep2.remote1 = max.rep2.remote1/init.rep2.remote1) %>%
-  mutate(max.rep3.remote1 = 1+(pmax(tsinitialpainremsclr3,tsfinalpainremsclr3))) %>% 
-  mutate(init.rep3.remote1 = 1+(tsinitialpainremsclr3)) %>% 
-  mutate(div.rep3.remote1 = max.rep3.remote1/init.rep3.remote1) %>%
+  mutate(max.rep1.remote1 = 1 + (pmax(tsrep1initialpainrem, tsrep1finalpainrem))) %>%
+  mutate(init.rep1.remote1 = 1 + (tsrep1initialpainrem)) %>%
+  mutate(div.rep1.remote1 = max.rep1.remote1 / init.rep1.remote1) %>%
+  mutate(max.rep2.remote1 = 1 + (pmax(tsrep2initialpainrem, tsrep2finalpainrem))) %>%
+  mutate(init.rep2.remote1 = 1 + (tsrep2initialpainrem)) %>%
+  mutate(div.rep2.remote1 = max.rep2.remote1 / init.rep2.remote1) %>%
+  mutate(max.rep3.remote1 = 1 + (pmax(tsinitialpainremsclr3, tsfinalpainremsclr3))) %>%
+  mutate(init.rep3.remote1 = 1 + (tsinitialpainremsclr3)) %>%
+  mutate(div.rep3.remote1 = max.rep3.remote1 / init.rep3.remote1) %>%
   rowwise() %>%
-  mutate(mean.sec.remote = mean(c(div.rep1.remote1,div.rep2.remote1,div.rep3.remote1))) %>% 
-  filter(is.na(mean.sec.remote)) %>% 
+  mutate(mean.sec.remote = mean(c(div.rep1.remote1, div.rep2.remote1, div.rep3.remote1))) %>%
+  filter(is.na(mean.sec.remote)) %>%
   add_column(error_type = "TS: Not enough information was available to compute secondary outcome for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ### Conditioned Pain Modulation (CPM):
@@ -701,9 +612,8 @@ qerror28 <- tr.complete %>%
 Keep records with "CPM test completed"
 
 ```{r}
-
-trcpm.complete <- tka_qst %>% 
-  filter(qst_mcc1_v03_complete == 2) %>% 
+trcpm.complete <- tka_qst %>%
+  filter(qst_mcc1_v03_complete == 2) %>%
   filter(!is.na(cpmcompleteyn) & cpmcompleteyn != 0)
 ```
 
@@ -712,15 +622,11 @@ trcpm.complete <- tka_qst %>%
 Check if water temperature was not checked:
 
 ```{r}
-
-qerror29 <- trcpm.complete %>% 
-  filter(cpmcoldwatertempc != 1) %>% 
+qerror29 <- trcpm.complete %>%
+  filter(cpmcoldwatertempc != 1) %>%
   add_column(error_type = "CPM: Water temperature not checked") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 30:
@@ -728,18 +634,13 @@ qerror29 <- trcpm.complete %>%
 Check for missing or mismatch in cold water pain ratings at 30 seconds.
 
 ```{r}
-
-
-qerror30 <- trcpm.complete %>% 
-  filter(cpmbathrangeyn == 1 |(cpmbathrangeyn == 2 & cpmoutrangetime >= 30)) %>% 
-  mutate(diff_30 = cpmcoldwaterpain30sscl - cpmcoldwaterpain30sscl1) %>% 
-  filter(diff_30!=0 | is.na(diff_30)) %>% 
+qerror30 <- trcpm.complete %>%
+  filter(cpmbathrangeyn == 1 | (cpmbathrangeyn == 2 & cpmoutrangetime >= 30)) %>%
+  mutate(diff_30 = cpmcoldwaterpain30sscl - cpmcoldwaterpain30sscl1) %>%
+  filter(diff_30 != 0 | is.na(diff_30)) %>%
   add_column(error_type = "CPM: Missing or mismatch in cold water pain ratings at 30 sec") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 31:
@@ -747,20 +648,13 @@ qerror30 <- trcpm.complete %>%
 Check for missing or mismatch in cold water pain ratings at 60 seconds.
 
 ```{r}
-
-
-qerror31 <- trcpm.complete %>% 
-  filter(cpmbathrangeyn == 1| (cpmbathrangeyn == 2 & cpmoutrangetime >= 60))  %>% 
-  mutate(diff_60 = cpmcoldwaterpain60sscl - cpmcoldwaterpain60sscl1) %>% 
-  filter(diff_60!=0 | is.na(diff_60)) %>% 
+qerror31 <- trcpm.complete %>%
+  filter(cpmbathrangeyn == 1 | (cpmbathrangeyn == 2 & cpmoutrangetime >= 60)) %>%
+  mutate(diff_60 = cpmcoldwaterpain60sscl - cpmcoldwaterpain60sscl1) %>%
+  filter(diff_60 != 0 | is.na(diff_60)) %>%
   add_column(error_type = "CPM: Missing or mismatch in cold water pain ratings at 60 sec") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 32:
@@ -768,13 +662,12 @@ qerror31 <- trcpm.complete %>%
 Check for missing or mismatch in PPT ratings for Remote site (repetition 1).
 
 ```{r}
-qerror32 <- trcpm.complete %>% 
-  mutate(diff_cpm1 = cpmppt1val - cpmppt1val1) %>% 
-  filter(diff_cpm1!=0 | is.na(diff_cpm1)) %>% 
+qerror32 <- trcpm.complete %>%
+  mutate(diff_cpm1 = cpmppt1val - cpmppt1val1) %>%
+  filter(diff_cpm1 != 0 | is.na(diff_cpm1)) %>%
   add_column(error_type = "CPM PPT Rep1:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 33:
@@ -782,16 +675,12 @@ qerror32 <- trcpm.complete %>%
 Check for missing or mismatch in PPT ratings for Remote site (repetition 2).
 
 ```{r}
-
-qerror33<- trcpm.complete %>% 
-  mutate(diff_cpm2 = cpmppt2val - cpmppt2val1) %>% 
-  filter(diff_cpm2!=0 | is.na(diff_cpm2)) %>% 
+qerror33 <- trcpm.complete %>%
+  mutate(diff_cpm2 = cpmppt2val - cpmppt2val1) %>%
+  filter(diff_cpm2 != 0 | is.na(diff_cpm2)) %>%
   add_column(error_type = "CPM PPT Rep2:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 34:
@@ -799,15 +688,12 @@ qerror33<- trcpm.complete %>%
 Check for missing or mismatch in PPT ratings for Remote site (repetition 3).
 
 ```{r}
-
-qerror34 <- trcpm.complete %>% 
-  mutate(diff_cpm3 = cpmppt3val - cpmppt3val1) %>% 
-  filter(diff_cpm3!=0 | is.na(diff_cpm3)) %>% 
+qerror34 <- trcpm.complete %>%
+  mutate(diff_cpm3 = cpmppt3val - cpmppt3val1) %>%
+  filter(diff_cpm3 != 0 | is.na(diff_cpm3)) %>%
   add_column(error_type = "CPM PPT Rep3:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 35:
@@ -815,18 +701,17 @@ qerror34 <- trcpm.complete %>%
 Check if information was available to compute primary outcome (A2CPS: Site Manual of Procedures v3.0, pg. 159) i.e. \[(pre hand immersion PPT-post immersion PPT)/pre immersion PPT\] \*100
 
 ```{r}
-
-qerror35 <- trcpm.complete %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2 ) %>% 
-  rowwise() %>% 
-  mutate(mean_pre = mean(c(pptremote1val,pptremote2val,pptremote3val))) %>% 
-  rowwise() %>% 
-  mutate(mean_post = mean(c(cpmppt1val,cpmppt2val,cpmppt3val))) %>%
-  mutate(cpm_change = ((mean_pre - mean_post)/mean_pre) * 100)  %>%   filter(is.na(cpm_change))%>% 
+qerror35 <- trcpm.complete %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  rowwise() %>%
+  mutate(mean_pre = mean(c(pptremote1val, pptremote2val, pptremote3val))) %>%
+  rowwise() %>%
+  mutate(mean_post = mean(c(cpmppt1val, cpmppt2val, cpmppt3val))) %>%
+  mutate(cpm_change = ((mean_pre - mean_post) / mean_pre) * 100) %>%
+  filter(is.na(cpm_change)) %>%
   add_column(error_type = "CPM: Not enough information to compute   primary outcome") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 36:
@@ -834,20 +719,17 @@ qerror35 <- trcpm.complete %>%
 Check if information was available to compute secondary outcome (A2CPS: Site Manual of Procedures v3.0, pg. 159) i.e. CPM difference score computed as pre hand immersion PPT-post immersion PPT
 
 ```{r}
-
-
-qerror36 <- trcpm.complete %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2 ) %>% 
-  rowwise() %>% 
-  mutate(mean_pre = mean(c(pptremote1val,pptremote2val,pptremote3val))) %>% 
-  rowwise() %>% 
-  mutate(mean_post = mean(c(cpmppt1val,cpmppt2val,cpmppt3val))) %>%
-  mutate(cpm_diff = mean_pre - mean_post)  %>% 
-  filter(is.na(cpm_diff)) %>% 
+qerror36 <- trcpm.complete %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  rowwise() %>%
+  mutate(mean_pre = mean(c(pptremote1val, pptremote2val, pptremote3val))) %>%
+  rowwise() %>%
+  mutate(mean_post = mean(c(cpmppt1val, cpmppt2val, cpmppt3val))) %>%
+  mutate(cpm_diff = mean_pre - mean_post) %>%
+  filter(is.na(cpm_diff)) %>%
   add_column(error_type = "CPM: Not enough information to compute   secondary outcome") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 37:
@@ -855,17 +737,13 @@ qerror36 <- trcpm.complete %>%
 Check If personalized pressure was performed during imaging and there were missing values for cuff Pressure to achieve 4/10 pain outside of scanner during QST as well as missing values for recalibration pressure during imaging.
 
 ```{r}
-
-
-qerror37 <- tka_qst %>% 
-  mutate(no.qst = case_when(is.na(fmricuffcalfpressurerecal) & is.na(fmricuffcalfpressure)  ~ 1,TRUE ~ 0)) %>% 
-  mutate(personal.cuff = case_when(fmricuffcompletescl == 1 | fmricuffipyn == 1 ~ 1,TRUE ~ 0)) %>%
-  filter(personal.cuff ==1 & no.qst == 1) %>% 
+qerror37 <- tka_qst %>%
+  mutate(no.qst = case_when(is.na(fmricuffcalfpressurerecal) & is.na(fmricuffcalfpressure) ~ 1, TRUE ~ 0)) %>%
+  mutate(personal.cuff = case_when(fmricuffcompletescl == 1 | fmricuffipyn == 1 ~ 1, TRUE ~ 0)) %>%
+  filter(personal.cuff == 1 & no.qst == 1) %>%
   add_column(error_type = "QST: Missing values for cuff Pressure to achieve 4/10 pain outside of scanner during QST  as well as missing values for recalibration pressure during imaging") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### QST Biomarkers
@@ -875,27 +753,23 @@ qerror37 <- tka_qst %>%
 Mean PPT values at the index site = primary data point (A2CPS: Site Manual of Procedures v3.0, pg. 154).
 
 ```{r}
-
-primary_ppt_tka <- qdata2 %>% 
-  filter((pptcompleteyn == 1 | pptcompleteyn == 3)) %>% 
+primary_ppt_tka <- qdata2 %>%
+  filter((pptcompleteyn == 1 | pptcompleteyn == 3)) %>%
   rowwise() %>%
-  mutate(mean1 = mean(c(pptindex1val,pptindex2val,pptindex3val))) %>% 
-   rename(primary_ppt_tka = mean1) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,primary_ppt_tka)
-
+  mutate(mean1 = mean(c(pptindex1val, pptindex2val, pptindex3val))) %>%
+  rename(primary_ppt_tka = mean1) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, primary_ppt_tka)
 ```
 
 Mean PPT values at the remote site = secondary data point (A2CPS: Site Manual of Procedures v3.0, pg. 154).
 
 ```{r}
-secondary_ppt_tka <- qdata2 %>% 
- filter((pptcompleteyn == 1 | pptcompleteyn == 2)) %>% 
+secondary_ppt_tka <- qdata2 %>%
+  filter((pptcompleteyn == 1 | pptcompleteyn == 2)) %>%
   rowwise() %>%
-  mutate(mean2 = mean(c(pptremote1val,pptremote2val,pptremote3val)))%>% 
-   rename(secondary_ppt_tka = mean2) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,secondary_ppt_tka)
-
-
+  mutate(mean2 = mean(c(pptremote1val, pptremote2val, pptremote3val))) %>%
+  rename(secondary_ppt_tka = mean2) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, secondary_ppt_tka)
 ```
 
 ###### TS Biomarkers:
@@ -905,45 +779,41 @@ Primary outcome: Mean of 3 MTS Difference scores computed (Max -- initial), (A2C
 Primary outcome for the Index site.
 
 ```{r}
-
-primary_ts_index_tka <- tr.complete  %>% 
+primary_ts_index_tka <- tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 3) %>%
-  mutate(max.rep1.index = pmax(tsrep1finalpainindex,tsrep1initialpainindex)) %>% 
-  mutate(diff.rep1.index = max.rep1.index - tsrep1initialpainindex) %>% 
-  mutate(max.rep2.index = pmax(tsfinalpainindexsclr2,tsinitialpainindexsclr2)) %>% 
-  mutate(diff.rep2.index = max.rep2.index - tsinitialpainindexsclr2) %>% 
-  mutate(max.rep3.index = pmax(tsfinalpainindexsclr3,tsinitialpainindexsclr3)) %>% 
-  mutate(diff.rep3.index = max.rep3.index - tsinitialpainindexsclr3) %>% 
-  mutate(diff.rep1.index = as.numeric(diff.rep1.index)) %>% 
+  mutate(max.rep1.index = pmax(tsrep1finalpainindex, tsrep1initialpainindex)) %>%
+  mutate(diff.rep1.index = max.rep1.index - tsrep1initialpainindex) %>%
+  mutate(max.rep2.index = pmax(tsfinalpainindexsclr2, tsinitialpainindexsclr2)) %>%
+  mutate(diff.rep2.index = max.rep2.index - tsinitialpainindexsclr2) %>%
+  mutate(max.rep3.index = pmax(tsfinalpainindexsclr3, tsinitialpainindexsclr3)) %>%
+  mutate(diff.rep3.index = max.rep3.index - tsinitialpainindexsclr3) %>%
+  mutate(diff.rep1.index = as.numeric(diff.rep1.index)) %>%
   mutate(diff.rep2.index = as.numeric(diff.rep2.index)) %>%
   mutate(diff.rep3.index = as.numeric(diff.rep3.index)) %>%
   rowwise() %>%
-  mutate(mean.index = mean(c(diff.rep1.index,diff.rep2.index,diff.rep3.index))) %>% 
-   rename(primary_ts_index_tka = mean.index) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,primary_ts_index_tka)
-
-
+  mutate(mean.index = mean(c(diff.rep1.index, diff.rep2.index, diff.rep3.index))) %>%
+  rename(primary_ts_index_tka = mean.index) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, primary_ts_index_tka)
 ```
 
 Primary outcome for the Remote site.
 
 ```{r}
-
-primary_ts_remote_tka <- tr.complete %>% 
+primary_ts_remote_tka <- tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 2) %>%
-  mutate(max.rep1.remote = pmax(tsrep1initialpainrem,tsrep1finalpainrem)) %>% 
-  mutate(diff.rep1.remote = max.rep1.remote - tsrep1initialpainrem) %>% 
-  mutate(max.rep2.remote = pmax(tsrep2initialpainrem,tsrep2finalpainrem)) %>% 
-  mutate(diff.rep2.remote = max.rep2.remote - tsrep2initialpainrem) %>% 
-  mutate(max.rep3.remote = pmax(tsinitialpainremsclr3,tsfinalpainremsclr3)) %>% 
-  mutate(diff.rep3.remote = max.rep3.remote - tsinitialpainremsclr3) %>% 
-  mutate(diff.rep1.remote = as.numeric(diff.rep1.remote)) %>% 
+  mutate(max.rep1.remote = pmax(tsrep1initialpainrem, tsrep1finalpainrem)) %>%
+  mutate(diff.rep1.remote = max.rep1.remote - tsrep1initialpainrem) %>%
+  mutate(max.rep2.remote = pmax(tsrep2initialpainrem, tsrep2finalpainrem)) %>%
+  mutate(diff.rep2.remote = max.rep2.remote - tsrep2initialpainrem) %>%
+  mutate(max.rep3.remote = pmax(tsinitialpainremsclr3, tsfinalpainremsclr3)) %>%
+  mutate(diff.rep3.remote = max.rep3.remote - tsinitialpainremsclr3) %>%
+  mutate(diff.rep1.remote = as.numeric(diff.rep1.remote)) %>%
   mutate(diff.rep2.remote = as.numeric(diff.rep2.remote)) %>%
   mutate(diff.rep3.remote = as.numeric(diff.rep3.remote)) %>%
   rowwise() %>%
-  mutate(mean.remote = mean(c(diff.rep1.remote,diff.rep2.remote,diff.rep3.remote))) %>%
-   rename(primary_ts_remote_tka = mean.remote) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,primary_ts_remote_tka)
+  mutate(mean.remote = mean(c(diff.rep1.remote, diff.rep2.remote, diff.rep3.remote))) %>%
+  rename(primary_ts_remote_tka = mean.remote) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, primary_ts_remote_tka)
 ```
 
 Secondary outcome: Mean of 3 Wind-up ratios (WUR) computed (\[Max +1\]/ \[initial +1\]). (1 added to handle possibility of zero initial pain rating in denominator). (A2CPS: Site Manual of Procedures v3.0, pg. 156). This is conditional on having 3 repetitions, if a record has \< 3 repetitions, it will be flagged
@@ -951,50 +821,41 @@ Secondary outcome: Mean of 3 Wind-up ratios (WUR) computed (\[Max +1\]/ \[initia
 Secondary outcome for the index site
 
 ```{r}
-
-secondary_ts_index_tka <- tr.complete %>% 
+secondary_ts_index_tka <- tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 3) %>%
-  mutate(max.rep1.index1 = 1+(pmax(tsrep1finalpainindex,tsrep1initialpainindex))) %>% 
-  mutate(init.rep1.index1 = 1+(tsrep1initialpainindex)) %>% 
-  mutate(div.rep1.index1 = max.rep1.index1/init.rep1.index1) %>% 
-  mutate(max.rep2.index1 = 1+(pmax(tsfinalpainindexsclr2,tsinitialpainindexsclr2))) %>% 
-  mutate(init.rep2.index1 = 1+(tsinitialpainindexsclr2)) %>% 
-  mutate(div.rep2.index1 = max.rep2.index1/init.rep2.index1) %>% 
-  mutate(max.rep3.index1 = 1+(pmax(tsfinalpainindexsclr3,tsinitialpainindexsclr3))) %>% 
-  mutate(init.rep3.index1 = 1+(tsinitialpainindexsclr3)) %>% 
-  mutate(div.rep3.index1 = max.rep3.index1/init.rep3.index1) %>%
+  mutate(max.rep1.index1 = 1 + (pmax(tsrep1finalpainindex, tsrep1initialpainindex))) %>%
+  mutate(init.rep1.index1 = 1 + (tsrep1initialpainindex)) %>%
+  mutate(div.rep1.index1 = max.rep1.index1 / init.rep1.index1) %>%
+  mutate(max.rep2.index1 = 1 + (pmax(tsfinalpainindexsclr2, tsinitialpainindexsclr2))) %>%
+  mutate(init.rep2.index1 = 1 + (tsinitialpainindexsclr2)) %>%
+  mutate(div.rep2.index1 = max.rep2.index1 / init.rep2.index1) %>%
+  mutate(max.rep3.index1 = 1 + (pmax(tsfinalpainindexsclr3, tsinitialpainindexsclr3))) %>%
+  mutate(init.rep3.index1 = 1 + (tsinitialpainindexsclr3)) %>%
+  mutate(div.rep3.index1 = max.rep3.index1 / init.rep3.index1) %>%
   rowwise() %>%
-  mutate(mean.sec.index = mean(c(div.rep1.index1,div.rep2.index1,div.rep3.index1))) %>%
-   rename(secondary_ts_index_tka = mean.sec.index) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,secondary_ts_index_tka)
-
-
+  mutate(mean.sec.index = mean(c(div.rep1.index1, div.rep2.index1, div.rep3.index1))) %>%
+  rename(secondary_ts_index_tka = mean.sec.index) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, secondary_ts_index_tka)
 ```
 
 Secondary outcome for the Remote site.
 
 ```{r}
-
-
-secondary_ts_remote_tka <- tr.complete %>% 
+secondary_ts_remote_tka <- tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 2) %>%
-  mutate(max.rep1.remote1 = 1+(pmax(tsrep1initialpainrem,tsrep1finalpainrem))) %>% 
-  mutate(init.rep1.remote1 = 1+(tsrep1initialpainrem)) %>% 
-  mutate(div.rep1.remote1 = max.rep1.remote1/init.rep1.remote1) %>%
-  mutate(max.rep2.remote1 = 1+(pmax(tsrep2initialpainrem,tsrep2finalpainrem))) %>% 
-  mutate(init.rep2.remote1 = 1+(tsrep2initialpainrem)) %>% 
-  mutate(div.rep2.remote1 = max.rep2.remote1/init.rep2.remote1) %>%
-  mutate(max.rep3.remote1 = 1+(pmax(tsinitialpainremsclr3,tsfinalpainremsclr3))) %>% 
-  mutate(init.rep3.remote1 = 1+(tsinitialpainremsclr3)) %>% 
-  mutate(div.rep3.remote1 = max.rep3.remote1/init.rep3.remote1) %>%
+  mutate(max.rep1.remote1 = 1 + (pmax(tsrep1initialpainrem, tsrep1finalpainrem))) %>%
+  mutate(init.rep1.remote1 = 1 + (tsrep1initialpainrem)) %>%
+  mutate(div.rep1.remote1 = max.rep1.remote1 / init.rep1.remote1) %>%
+  mutate(max.rep2.remote1 = 1 + (pmax(tsrep2initialpainrem, tsrep2finalpainrem))) %>%
+  mutate(init.rep2.remote1 = 1 + (tsrep2initialpainrem)) %>%
+  mutate(div.rep2.remote1 = max.rep2.remote1 / init.rep2.remote1) %>%
+  mutate(max.rep3.remote1 = 1 + (pmax(tsinitialpainremsclr3, tsfinalpainremsclr3))) %>%
+  mutate(init.rep3.remote1 = 1 + (tsinitialpainremsclr3)) %>%
+  mutate(div.rep3.remote1 = max.rep3.remote1 / init.rep3.remote1) %>%
   rowwise() %>%
-  mutate(mean.sec.remote = mean(c(div.rep1.remote1,div.rep2.remote1,div.rep3.remote1))) %>%
-   rename(secondary_ts_remote_tka = mean.sec.remote) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,secondary_ts_remote_tka)
-
-
-
-
+  mutate(mean.sec.remote = mean(c(div.rep1.remote1, div.rep2.remote1, div.rep3.remote1))) %>%
+  rename(secondary_ts_remote_tka = mean.sec.remote) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, secondary_ts_remote_tka)
 ```
 
 ###### CPM Biomarkers:
@@ -1002,47 +863,42 @@ secondary_ts_remote_tka <- tr.complete %>%
 Primary outcome (A2CPS: Site Manual of Procedures v3.0, pg. 159) i.e. \[(pre hand immersion PPT-post immersion PPT)/pre immersion PPT\] \*100 
 
 ```{r}
-
-primary_cpm_tka <- trcpm.complete %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2 ) %>% 
-  rowwise() %>% 
-  mutate(mean_pre = mean(c(pptremote1val,pptremote2val,pptremote3val))) %>% 
-  rowwise() %>% 
-  mutate(mean_post = mean(c(cpmppt1val,cpmppt2val,cpmppt3val))) %>%
-  mutate(cpm_change = ((mean_pre - mean_post)/mean_pre) * 100)  %>% 
-   rename(primary_cpm_tka =cpm_change) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,primary_cpm_tka)
-
+primary_cpm_tka <- trcpm.complete %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  rowwise() %>%
+  mutate(mean_pre = mean(c(pptremote1val, pptremote2val, pptremote3val))) %>%
+  rowwise() %>%
+  mutate(mean_post = mean(c(cpmppt1val, cpmppt2val, cpmppt3val))) %>%
+  mutate(cpm_change = ((mean_pre - mean_post) / mean_pre) * 100) %>%
+  rename(primary_cpm_tka = cpm_change) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, primary_cpm_tka)
 ```
 
 Secondary outcome (A2CPS: Site Manual of Procedures v3.0, pg. 159) i.e. CPM difference score computed as pre hand immersion PPT-post immersion PPT
 
 ```{r}
-
-
-secondary_cpm_tka <- trcpm.complete %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2 ) %>% 
-  rowwise() %>% 
-  mutate(mean_pre = mean(c(pptremote1val,pptremote2val,pptremote3val))) %>% 
-  rowwise() %>% 
-  mutate(mean_post = mean(c(cpmppt1val,cpmppt2val,cpmppt3val))) %>%
-  mutate(cpm_diff = mean_pre - mean_post)  %>%
-   rename(secondary_cpm_tka =cpm_diff) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,secondary_cpm_tka)
-
-
+secondary_cpm_tka <- trcpm.complete %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  rowwise() %>%
+  mutate(mean_pre = mean(c(pptremote1val, pptremote2val, pptremote3val))) %>%
+  rowwise() %>%
+  mutate(mean_post = mean(c(cpmppt1val, cpmppt2val, cpmppt3val))) %>%
+  mutate(cpm_diff = mean_pre - mean_post) %>%
+  rename(secondary_cpm_tka = cpm_diff) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, secondary_cpm_tka)
 ```
 
 Merge computed biomarkers to the "tka_qst" dataset:
 
 ```{r}
-tka_qst <- left_join(tka_qst,primary_ppt_tka, by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance")) %>%
-left_join(., secondary_ppt_tka,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance")) %>% 
-left_join(., primary_ts_index_tka,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance")) %>%    left_join(., primary_ts_remote_tka,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance")) %>% 
-left_join(., secondary_ts_index_tka,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance"))%>% 
-left_join(., secondary_ts_remote_tka,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance"))%>% 
-left_join(., primary_cpm_tka,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance"))%>% 
-left_join(., secondary_cpm_tka ,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance"))
+tka_qst <- left_join(tka_qst, primary_ppt_tka, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., secondary_ppt_tka, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., primary_ts_index_tka, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., primary_ts_remote_tka, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., secondary_ts_index_tka, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., secondary_ts_remote_tka, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., primary_cpm_tka, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., secondary_cpm_tka, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance"))
 ```
 
 ##### New field name(s):
@@ -1050,115 +906,99 @@ left_join(., secondary_cpm_tka ,by= c("record_id","redcap_data_access_group","re
 Add field names for the computed biomarkers to the QST data dictionary
 
 ```{r}
-
 # Create field names
 primary_ppt_tka_new_row <- data.frame(
   field_name = "primary_ppt_tka",
   field_type = "numeric",
-  field_note = "PPT primary biomarker:TKA ")
+  field_note = "PPT primary biomarker:TKA "
+)
 
 secondary_ppt_tka_new_row <- data.frame(
   field_name = "secondary_ppt_tka",
   field_type = "numeric",
-  field_note = "PPT secondary biomarker:TKA ")
+  field_note = "PPT secondary biomarker:TKA "
+)
 
 
 primary_ts_index_tka_new_row <- data.frame(
   field_name = "primary_ts_index_tka",
   field_type = "numeric",
-  field_note = "TS primary biomarker for the index site:TKA ")
+  field_note = "TS primary biomarker for the index site:TKA "
+)
 
 primary_ts_remote_tka_new_row <- data.frame(
   field_name = "primary_ts_remote_tka",
   field_type = "numeric",
-  field_note = "TS primary biomarker for the remote site:TKA ")
+  field_note = "TS primary biomarker for the remote site:TKA "
+)
 
 secondary_ts_index_tka_new_row <- data.frame(
   field_name = "secondary_ts_index_tka",
   field_type = "numeric",
-  field_note = "TS secondary biomarker for the index site:TKA ")
+  field_note = "TS secondary biomarker for the index site:TKA "
+)
 
- secondary_ts_remote_tka_new_row <- data.frame(
+secondary_ts_remote_tka_new_row <- data.frame(
   field_name = " secondary_ts_remote_tka",
   field_type = "numeric",
-  field_note = "TS secondary biomarker for the remote site:TKA ")
- 
- 
- primary_cpm_tka_new_row <- data.frame(
+  field_note = "TS secondary biomarker for the remote site:TKA "
+)
+
+
+primary_cpm_tka_new_row <- data.frame(
   field_name = " primary_cpm_tka",
   field_type = "numeric",
-  field_note = "CPM primary biomarker:TKA ")
- 
- secondary_cpm_tka_new_row <- data.frame(
+  field_note = "CPM primary biomarker:TKA "
+)
+
+secondary_cpm_tka_new_row <- data.frame(
   field_name = " secondary_cpm_tka",
   field_type = "numeric",
-  field_note = "CPM secondary biomarker:TKA ")
+  field_note = "CPM secondary biomarker:TKA "
+)
 
 
 # Add the new row after the last row
 
 qst_dict <- qst_dict %>%
   slice(1:nrow(.)) %>%
-  add_row(.after = nrow(.), !!!primary_ppt_tka_new_row ) %>%
-  add_row(.after = nrow(.), !!!secondary_ppt_tka_new_row ) %>%
-  add_row(.after = nrow(.), !!!primary_ts_index_tka_new_row ) %>%
-  add_row(.after = nrow(.), !!!primary_ts_remote_tka_new_row ) %>%
-  add_row(.after = nrow(.), !!!secondary_ts_index_tka_new_row  ) %>%
-  add_row(.after = nrow(.), !!! secondary_ts_remote_tka_new_row )  %>%
-  add_row(.after = nrow(.), !!! primary_cpm_tka_new_row ) %>%
-  add_row(.after = nrow(.), !!!  secondary_cpm_tka_new_row) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
- 
- 
- 
- 
-
-
+  add_row(.after = nrow(.), !!!primary_ppt_tka_new_row) %>%
+  add_row(.after = nrow(.), !!!secondary_ppt_tka_new_row) %>%
+  add_row(.after = nrow(.), !!!primary_ts_index_tka_new_row) %>%
+  add_row(.after = nrow(.), !!!primary_ts_remote_tka_new_row) %>%
+  add_row(.after = nrow(.), !!!secondary_ts_index_tka_new_row) %>%
+  add_row(.after = nrow(.), !!!secondary_ts_remote_tka_new_row) %>%
+  add_row(.after = nrow(.), !!!primary_cpm_tka_new_row) %>%
+  add_row(.after = nrow(.), !!!secondary_cpm_tka_new_row)
 ```
 
 ##### Create QST error report for the TKA cohort.
 
 ```{r}
-
 # Specify the common prefix
 qst_error <- "qerror"
 
 # Find data frames in the global environment with the specified prefix
-qst_list <- mget(ls(pattern = paste0("^",qst_error)))
+qst_list <- mget(ls(pattern = paste0("^", qst_error)))
 
 # Combine the data frames using bind_rows
-qst_report <- bind_rows(qst_list) %>% 
-  as_tibble() %>% 
-  mutate_all(as.character) %>% 
-  pivot_wider(names_from = "error_type",values_from = "errors") %>%
-  mutate_all(~replace_na(., ""))
+qst_report <- bind_rows(qst_list) %>%
+  as_tibble() %>%
+  mutate_all(as.character) %>%
+  pivot_wider(names_from = "error_type", values_from = "errors") %>%
+  mutate_all(~ replace_na(., ""))
 ```
 
 ```{r}
-qst_report %>% 
-  gt() %>% 
-   tab_header(
-    title = md("**TKA Cohort QST form Error Report**")) %>% 
+qst_report %>%
+  gt() %>%
+  tab_header(
+    title = md("**TKA Cohort QST form Error Report**")
+  ) %>%
   tab_options(
-    table.font.size = px(12), 
-    column_labels.font.size = px(12)) %>%
+    table.font.size = px(12),
+    column_labels.font.size = px(12)
+  ) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)
@@ -1172,49 +1012,44 @@ Save "tka_qst" and data dictionary as .csv files in the folder named "reformatte
 ```{r warning=FALSE}
 #| eval: false
 
-write_csv(tka_qst,file=here::here("data","QST","Reformatted","reformatted_tka_qst.csv"))
+write_csv(tka_qst, file = here::here("data", "QST", "Reformatted", "reformatted_tka_qst.csv"))
 
-write_csv(qst_dict,file=here::here("data","QST","Reformatted","updated_qst_dict.csv"))
+write_csv(qst_dict, file = here::here("data", "QST", "Reformatted", "updated_qst_dict.csv"))
 ```
 
 ### QST: Thoracotomy cohort
 
 ```{r}
-thor_qst <- qst 
+thor_qst <- qst
 ```
 
 We will also read in Imaging data since the information on recalibration is recorded in the Imaging CRF. We will later merge field names related to recalibration with the imaging data.
 
 ```{r, message=FALSE}
-
-
-thor_img_4_qst <- read_csv(here("data","imaging","imaging-2024-11-06.csv"))%>% 
+thor_img_4_qst <- read_csv(here("data", "imaging", "imaging-2024-11-06.csv")) %>%
   filter(redcap_repeat_instrument == "imaging_mcc2_v01") %>%
- select(record_id,redcap_event_name,redcap_data_access_group,redcap_repeat_instance,fmricuffcontrarecal,fmricuffcontrarecal,fmricuffcalfpressurerecal,fmricuffipyn,fmricuffcompletescl,imaging_mcc2_v01_complete) %>% 
-  filter(imaging_mcc2_v01_complete==2 & !is.na(redcap_repeat_instance)) %>% 
-  group_by(record_id,redcap_event_name) %>%
-  top_n(1,redcap_repeat_instance) %>% 
-  ungroup() %>% 
+  select(record_id, redcap_event_name, redcap_data_access_group, redcap_repeat_instance, fmricuffcontrarecal, fmricuffcontrarecal, fmricuffcalfpressurerecal, fmricuffipyn, fmricuffcompletescl, imaging_mcc2_v01_complete) %>%
+  filter(imaging_mcc2_v01_complete == 2 & !is.na(redcap_repeat_instance)) %>%
+  group_by(record_id, redcap_event_name) %>%
+  top_n(1, redcap_repeat_instance) %>%
+  ungroup() %>%
   select(where(not_all_na))
-
 ```
 
 keep subjects from the Thoracotomy cohort, with the most recent baseline visit and merge with QST data.
 
 ```{r}
-
-thor_qst <- thor_qst %>% 
-  filter(cohort=="Thoracic") %>% 
+thor_qst <- thor_qst %>%
+  filter(cohort == "Thoracic") %>%
   filter(redcap_repeat_instrument == "qst_mcc1_v03") %>%
-  filter(qst_mcc1_v03_complete==2 & !is.na(redcap_repeat_instance)) %>% 
-  group_by(record_id,redcap_event_name) %>%
-  top_n(1,redcap_repeat_instance) %>% 
-  ungroup() %>% 
-  select(where(not_all_na)) 
+  filter(qst_mcc1_v03_complete == 2 & !is.na(redcap_repeat_instance)) %>%
+  group_by(record_id, redcap_event_name) %>%
+  top_n(1, redcap_repeat_instance) %>%
+  ungroup() %>%
+  select(where(not_all_na))
 
 
-thor_qst<- left_join(thor_qst,thor_img_4_qst,by = intersect(names(thor_qst), names(thor_img_4_qst)))
-
+thor_qst <- left_join(thor_qst, thor_img_4_qst, by = intersect(names(thor_qst), names(thor_img_4_qst)))
 ```
 
 ### Pressure Pain Thresholds (PPT)
@@ -1222,11 +1057,9 @@ thor_qst<- left_join(thor_qst,thor_img_4_qst,by = intersect(names(thor_qst), nam
 keep subjects with completed QST and PPT test.
 
 ```{r}
-
-qdatam2  <- thor_qst  %>% 
+qdatam2 <- thor_qst %>%
   filter(qst_mcc1_v03_complete == 2) %>%
-  filter(pptcompleteyn ==2 |pptcompleteyn ==  1 | pptcompleteyn == 3)
-
+  filter(pptcompleteyn == 2 | pptcompleteyn == 1 | pptcompleteyn == 3)
 ```
 
 ##### Flag 1:
@@ -1238,17 +1071,13 @@ Check for missing or mismatch in PPT ratings for Remote site.
 Repetition 1:
 
 ```{r}
-
-m2qerror1 <-  qdatam2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>% 
-  mutate(ppt_contr_diff1 = pptremoter1val - pptremoter1val_d) %>% 
-  filter(ppt_contr_diff1 != 0 | is.na(ppt_contr_diff1)) %>%  
+m2qerror1 <- qdatam2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  mutate(ppt_contr_diff1 = pptremoter1val - pptremoter1val_d) %>%
+  filter(ppt_contr_diff1 != 0 | is.na(ppt_contr_diff1)) %>%
   add_column(error_type = "PPT Repetition 1:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 2:
@@ -1256,15 +1085,13 @@ m2qerror1 <-  qdatam2 %>%
 Repetition 2:
 
 ```{r}
-
-m2qerror2 <-  qdatam2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>% 
-  mutate(ppt_contr_diff2 = pptremoter2val - pptremoter2val_d) %>% 
-  filter(ppt_contr_diff2 != 0 | is.na(ppt_contr_diff2)) %>%  
+m2qerror2 <- qdatam2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  mutate(ppt_contr_diff2 = pptremoter2val - pptremoter2val_d) %>%
+  filter(ppt_contr_diff2 != 0 | is.na(ppt_contr_diff2)) %>%
   add_column(error_type = "PPT repetition 2:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 3:
@@ -1272,16 +1099,13 @@ m2qerror2 <-  qdatam2 %>%
 Repetition 3:
 
 ```{r}
-
-
-m2qerror3 <-  qdatam2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>% 
-  mutate(ppt_contr_diff3 = pptremoter3val - pptremoter3val_d) %>% 
-  filter(ppt_contr_diff3 != 0 | is.na(ppt_contr_diff3)) %>%  
+m2qerror3 <- qdatam2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  mutate(ppt_contr_diff3 = pptremoter3val - pptremoter3val_d) %>%
+  filter(ppt_contr_diff3 != 0 | is.na(ppt_contr_diff3)) %>%
   add_column(error_type = "PPT repetition 3:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 4:
@@ -1293,15 +1117,13 @@ Check for missing or mismatch in PPT ratings for the index site.
 Repetition 1:
 
 ```{r}
-
-m2qerror4 <-   qdatam2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>% 
-  mutate(ppt_index_diff1 = pptindxr1val - pptindxr1val_d) %>% 
-  filter(ppt_index_diff1 != 0 | is.na(ppt_index_diff1)) %>%  
+m2qerror4 <- qdatam2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>%
+  mutate(ppt_index_diff1 = pptindxr1val - pptindxr1val_d) %>%
+  filter(ppt_index_diff1 != 0 | is.na(ppt_index_diff1)) %>%
   add_column(error_type = "PPT Repetition 1:Missing or mismatch in PPT ratings for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 5:
@@ -1309,14 +1131,13 @@ m2qerror4 <-   qdatam2 %>%
 Repetition 2:
 
 ```{r}
-m2qerror5 <-   qdatam2 %>% 
-   filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>% 
-  mutate(ppt_index_diff2 = pptindxr2val - pptindxr2val_d) %>% 
-  filter(ppt_index_diff2 != 0 | is.na(ppt_index_diff2)) %>% 
+m2qerror5 <- qdatam2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>%
+  mutate(ppt_index_diff2 = pptindxr2val - pptindxr2val_d) %>%
+  filter(ppt_index_diff2 != 0 | is.na(ppt_index_diff2)) %>%
   add_column(error_type = "PPT Repetition 2:Missing or mismatch in PPT ratings for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 6:
@@ -1324,15 +1145,13 @@ m2qerror5 <-   qdatam2 %>%
 Repetition 3:
 
 ```{r}
-
-m2qerror6 <- qdatam2 %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>% 
-  mutate(ppt_index_diff3 = pptindxr3val - pptindxr3val_d) %>% 
-  filter(ppt_index_diff3 != 0 | is.na(ppt_index_diff3))%>% 
+m2qerror6 <- qdatam2 %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 3) %>%
+  mutate(ppt_index_diff3 = pptindxr3val - pptindxr3val_d) %>%
+  filter(ppt_index_diff3 != 0 | is.na(ppt_index_diff3)) %>%
   add_column(error_type = "PPT Repetition 3:Missing or mismatch in PPT ratings for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 7:
@@ -1340,14 +1159,13 @@ m2qerror6 <- qdatam2 %>%
 Check if PPT was performed on remote site (pptcompleteyn == 2) but PPT information was filled out for the index site.
 
 ```{r}
-
-m2qerror7 <- qdatam2 %>% 
-  filter(pptcompleteyn == 2) %>% 
-    mutate(index1 = case_when((!is.na(pptindxr1val) & !is.na(pptindxr1val_d))  | (!is.na(pptindxr2val)  & !is.na(pptindxr2val_d)) | (!is.na(pptindxr3val)  & !is.na(pptindxr3val_d))  ~ 1,TRUE ~ 0)) %>% 
-  filter(index1 == 1)  %>% 
+m2qerror7 <- qdatam2 %>%
+  filter(pptcompleteyn == 2) %>%
+  mutate(index1 = case_when((!is.na(pptindxr1val) & !is.na(pptindxr1val_d)) | (!is.na(pptindxr2val) & !is.na(pptindxr2val_d)) | (!is.na(pptindxr3val) & !is.na(pptindxr3val_d)) ~ 1, TRUE ~ 0)) %>%
+  filter(index1 == 1) %>%
   add_column(error_type = "PPT: Remote site was checked but PPT information was filled out for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 8:
@@ -1355,15 +1173,13 @@ m2qerror7 <- qdatam2 %>%
 Check if PPT was performed on both sites (pptcompleteyn == 1) but PPT information was not filled out for the index site.
 
 ```{r}
-
-m2qerror8 <- qdatam2 %>% 
-  filter(pptcompleteyn == 1) %>% 
-   mutate(index2 = case_when((is.na(pptindxr1val) & is.na(pptindxr1val_d))  | (is.na(pptindxr2val)  & is.na(pptindxr2val_d)) | (is.na(pptindxr3val)  & is.na(pptindxr3val_d))  ~ 1,TRUE ~ 0))%>%
-  filter(index2 == 1) %>% 
+m2qerror8 <- qdatam2 %>%
+  filter(pptcompleteyn == 1) %>%
+  mutate(index2 = case_when((is.na(pptindxr1val) & is.na(pptindxr1val_d)) | (is.na(pptindxr2val) & is.na(pptindxr2val_d)) | (is.na(pptindxr3val) & is.na(pptindxr3val_d)) ~ 1, TRUE ~ 0)) %>%
+  filter(index2 == 1) %>%
   add_column(error_type = "PPT: Both sites were checked but PPT information was not filled out for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 9:
@@ -1371,16 +1187,13 @@ m2qerror8 <- qdatam2 %>%
 Check if PPT was performed on the index site (pptcompleteyn == 3) but PPT information was filled out for the remote site
 
 ```{r}
-
-m2qerror9 <- qdatam2 %>% 
-  filter(pptcompleteyn == 3) %>% 
-  mutate(remote1 = case_when((!is.na(pptremoter1val) & !is.na(pptremoter1val_d))  | (!is.na(pptremoter2val)  & !is.na(pptremoter2val_d)) | (!is.na(pptremoter3val)  & !is.na(pptremoter3val_d))  ~ 1,TRUE ~ 0)) %>% 
-  filter(remote1 == 1)  %>% 
+m2qerror9 <- qdatam2 %>%
+  filter(pptcompleteyn == 3) %>%
+  mutate(remote1 = case_when((!is.na(pptremoter1val) & !is.na(pptremoter1val_d)) | (!is.na(pptremoter2val) & !is.na(pptremoter2val_d)) | (!is.na(pptremoter3val) & !is.na(pptremoter3val_d)) ~ 1, TRUE ~ 0)) %>%
+  filter(remote1 == 1) %>%
   add_column(error_type = "PPT: Index site was checked but PPT information was filled out for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 10:
@@ -1388,13 +1201,13 @@ m2qerror9 <- qdatam2 %>%
 Check if PPT was performed on the both sites (pptcompleteyn == 1) but PPT information was not filled out for the remote site
 
 ```{r}
-m2qerror10 <- qdatam2 %>% 
-  filter(pptcompleteyn == 1) %>% 
-    mutate(remote2 = case_when((is.na(pptremoter1val) & is.na(pptremoter1val_d))  | (is.na(pptremoter2val)  & is.na(pptremoter2val_d)) | (is.na(pptremoter3val)  & is.na(pptremoter3val_d))  ~ 1,TRUE ~ 0)) %>% 
-  filter(remote2 == 1) %>% 
+m2qerror10 <- qdatam2 %>%
+  filter(pptcompleteyn == 1) %>%
+  mutate(remote2 = case_when((is.na(pptremoter1val) & is.na(pptremoter1val_d)) | (is.na(pptremoter2val) & is.na(pptremoter2val_d)) | (is.na(pptremoter3val) & is.na(pptremoter3val_d)) ~ 1, TRUE ~ 0)) %>%
+  filter(remote2 == 1) %>%
   add_column(error_type = "PPT: Both sites were checked but PPT information was not filled out for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 11:
@@ -1402,15 +1215,14 @@ m2qerror10 <- qdatam2 %>%
 Check if information was available to compute mean PPT values at the index site = primary data point (A2CPS: Site Manual of Procedures v3.0, pg. 154).
 
 ```{r}
-
-m2qerror11 <- qdatam2 %>% 
-  filter((pptcompleteyn == 1 | pptcompleteyn == 3)) %>% 
+m2qerror11 <- qdatam2 %>%
+  filter((pptcompleteyn == 1 | pptcompleteyn == 3)) %>%
   rowwise() %>%
-  mutate(mean1 = mean(c(pptindxr1val,pptindxr2val,pptindxr3val))) %>%  
-  filter(is.na(mean1)) %>% 
+  mutate(mean1 = mean(c(pptindxr1val, pptindxr2val, pptindxr3val))) %>%
+  filter(is.na(mean1)) %>%
   add_column(error_type = "PPT: Not enough information was available to compute mean PPT values at the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 12:
@@ -1418,16 +1230,14 @@ m2qerror11 <- qdatam2 %>%
 Check if information was available to compute mean PPT values at the remote site = secondary data point (A2CPS: Site Manual of Procedures v3.0, pg. 154).
 
 ```{r}
-m2qerror12 <- qdatam2 %>% 
- filter((pptcompleteyn == 1 | pptcompleteyn == 2)) %>% 
+m2qerror12 <- qdatam2 %>%
+  filter((pptcompleteyn == 1 | pptcompleteyn == 2)) %>%
   rowwise() %>%
-  mutate(mean2 = mean(c(pptremoter1val,pptremoter2val,pptremoter3val))) %>% 
-  filter(is.na(mean2))%>% 
+  mutate(mean2 = mean(c(pptremoter1val, pptremoter2val, pptremoter3val))) %>%
+  filter(is.na(mean2)) %>%
   add_column(error_type = "PPT: Not enough information was available to compute mean PPT values at the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ### Temporal Summation (TS):
@@ -1435,10 +1245,9 @@ m2qerror12 <- qdatam2 %>%
 Keep subjects with completed QST and TS test.
 
 ```{r}
-
-m2tr.complete <- thor_qst %>% 
+m2tr.complete <- thor_qst %>%
   filter(qst_mcc1_v03_complete == 2) %>%
-  filter(tscompleted ==2 |tscompleted ==  1 | tscompleted ==3) 
+  filter(tscompleted == 2 | tscompleted == 1 | tscompleted == 3)
 ```
 
 If TS was completed for both sites then information on at least 1 repetition for both sites should be available.
@@ -1446,30 +1255,28 @@ If TS was completed for both sites then information on at least 1 repetition for
 Create a field name for each repetition (inital and final) and assign 1 if atleast one repetition has information without mismatch errors.
 
 ```{r}
-
-
-thor_ts_recoded <-  m2tr.complete %>% 
-  mutate(ts_contr_init1 = tsremoter1initial - tsremoter1initial_d) %>% 
-  mutate(ts_contr_fin1 = tsremoter1final - tsremoter1final_d) %>% mutate(ts_contr_init2 = tsremoter2initial - tsremoter2initial_d) %>% 
-  mutate(ts_contr_fin2 =  tsremoter2final - tsremoter2final_d) %>% 
-  mutate(ts_contr_init3 = tsremoter3initial - tsremoter3initial_d) %>% 
-  mutate(ts_contr_fin3 = tsremoter3final - tsremoter3final_d) %>% 
-   mutate(trrep1 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init1==0 & ts_contr_fin1 == 0 ~ 1,TRUE ~ 0)) %>% 
-   mutate(trrep2 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init2==0 & ts_contr_fin2 == 0 ~ 1,TRUE ~ 0)) %>% 
-   mutate(trrep3 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init3==0 & ts_contr_fin3 == 0 ~ 1,TRUE ~ 0)) %>% 
-  mutate(ts_ind_init1 = tsindxr1initial - tsindxr1initial_d) %>% 
-  mutate(ts_ind_fin1 = tsindxr1final - tsindxr1final_d) %>% 
-  mutate(ts_ind_init2 = tsindxr2initial - tsindxr2initial_d) %>% 
-  mutate(ts_ind_fin2 = tsindxr2final - tsindxr2final_d) %>% 
-  mutate(ts_ind_init3 = tsindxr3initial - tsindxr3initial_d)  %>% 
-  mutate(ts_ind_fin3 = tsindxr3final - tsindxr3final_d)  %>% 
-   mutate(indrep1 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init1==0 & ts_ind_fin1 == 0 ~ 1,TRUE ~ 0)) %>% 
-   mutate(indrep2 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init2==0 & ts_ind_fin2 == 0 ~ 1,TRUE ~ 0)) %>% 
-   mutate(indrep3 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init3==0 & ts_ind_fin3 == 0 ~ 1,TRUE ~ 0)) %>% 
-  mutate (one_rem= case_when(trrep1 == 1 | trrep2==1 |trrep3 ~ 1,TRUE ~ 0)) %>% 
-  mutate (one_ind= case_when(indrep1 == 1 | indrep2==1 |indrep3 ~ 1,TRUE ~ 0)) %>% 
-  mutate (one_rep= case_when(one_rem == 1 & one_ind==1 ~ 1,TRUE ~ 0)) 
-  
+thor_ts_recoded <- m2tr.complete %>%
+  mutate(ts_contr_init1 = tsremoter1initial - tsremoter1initial_d) %>%
+  mutate(ts_contr_fin1 = tsremoter1final - tsremoter1final_d) %>%
+  mutate(ts_contr_init2 = tsremoter2initial - tsremoter2initial_d) %>%
+  mutate(ts_contr_fin2 = tsremoter2final - tsremoter2final_d) %>%
+  mutate(ts_contr_init3 = tsremoter3initial - tsremoter3initial_d) %>%
+  mutate(ts_contr_fin3 = tsremoter3final - tsremoter3final_d) %>%
+  mutate(trrep1 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init1 == 0 & ts_contr_fin1 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(trrep2 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init2 == 0 & ts_contr_fin2 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(trrep3 = case_when((tscompleted == 1 | tscompleted == 2) & ts_contr_init3 == 0 & ts_contr_fin3 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(ts_ind_init1 = tsindxr1initial - tsindxr1initial_d) %>%
+  mutate(ts_ind_fin1 = tsindxr1final - tsindxr1final_d) %>%
+  mutate(ts_ind_init2 = tsindxr2initial - tsindxr2initial_d) %>%
+  mutate(ts_ind_fin2 = tsindxr2final - tsindxr2final_d) %>%
+  mutate(ts_ind_init3 = tsindxr3initial - tsindxr3initial_d) %>%
+  mutate(ts_ind_fin3 = tsindxr3final - tsindxr3final_d) %>%
+  mutate(indrep1 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init1 == 0 & ts_ind_fin1 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(indrep2 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init2 == 0 & ts_ind_fin2 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(indrep3 = case_when((tscompleted == 1 | tscompleted == 3) & ts_ind_init3 == 0 & ts_ind_fin3 == 0 ~ 1, TRUE ~ 0)) %>%
+  mutate(one_rem = case_when(trrep1 == 1 | trrep2 == 1 | trrep3 ~ 1, TRUE ~ 0)) %>%
+  mutate(one_ind = case_when(indrep1 == 1 | indrep2 == 1 | indrep3 ~ 1, TRUE ~ 0)) %>%
+  mutate(one_rep = case_when(one_rem == 1 & one_ind == 1 ~ 1, TRUE ~ 0))
 ```
 
 ##### Flag 13:
@@ -1477,13 +1284,11 @@ thor_ts_recoded <-  m2tr.complete %>%
 Check if TS was completed for both sites and at least 1 repetition for both sites had no mismatch errors or missing data.
 
 ```{r}
-
-m2qerror13 <- thor_ts_recoded %>% 
-  filter(tscompleted == 1 & one_rep == 0) %>% 
+m2qerror13 <- thor_ts_recoded %>%
+  filter(tscompleted == 1 & one_rep == 0) %>%
   add_column(error_type = "TS: TS was completed for both sites and at least 1 repetition for both sites has no mismatch errors or missing data") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 14:
@@ -1491,13 +1296,11 @@ m2qerror13 <- thor_ts_recoded %>%
 Check if TS was completed for the remote site and atleast 1 repetition had no mismatch errors or missing data.
 
 ```{r}
-
-m2qerror14 <- thor_ts_recoded %>% 
-  filter(tscompleted == 2 & one_rem == 0) %>% 
+m2qerror14 <- thor_ts_recoded %>%
+  filter(tscompleted == 2 & one_rem == 0) %>%
   add_column(error_type = "TS: TS was completed for the remote site and atleast 1 repetition had no mismatch errors or missing data") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 15:
@@ -1505,13 +1308,11 @@ m2qerror14 <- thor_ts_recoded %>%
 Check if TS was completed for the index site and atleast 1 repetition had no mismatch errors or missing data.
 
 ```{r}
-
-m2qerror15 <- thor_ts_recoded %>% 
-  filter(tscompleted == 3 & one_ind == 0) %>% 
+m2qerror15 <- thor_ts_recoded %>%
+  filter(tscompleted == 3 & one_ind == 0) %>%
   add_column(error_type = "TS: TS was completed for the index site and and atleast 1 repetition had no mismatch errors or missing data") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 16
@@ -1519,14 +1320,12 @@ m2qerror15 <- thor_ts_recoded %>%
 Check for missing after sensation at 15 secs if TS Remote site (contralateral deltoid) was completed
 
 ```{r}
-
-m2qerror16 <-  m2tr.complete %>% 
-  filter(tscompleted == 1 | tscompleted == 2) %>% 
-  filter(is.na(tsremoteafter15)) %>% 
+m2qerror16 <- m2tr.complete %>%
+  filter(tscompleted == 1 | tscompleted == 2) %>%
+  filter(is.na(tsremoteafter15)) %>%
   add_column(error_type = "TS: Missing after sensation at 15 secs if TS Remote site (contralateral deltoid) was completed") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 17
@@ -1534,14 +1333,12 @@ m2qerror16 <-  m2tr.complete %>%
 Check for missing after sensation at 30 secs if TS Remote site (contralateral deltoid) was completed
 
 ```{r}
-
-m2qerror17 <-  m2tr.complete %>% 
-  filter(tscompleted == 1 | tscompleted == 2) %>% 
-  filter(is.na(tsfinalpainremafts31)) %>% 
+m2qerror17 <- m2tr.complete %>%
+  filter(tscompleted == 1 | tscompleted == 2) %>%
+  filter(is.na(tsfinalpainremafts31)) %>%
   add_column(error_type = "TS: Missing after sensation at 30 secs if TS Remote site (contralateral deltoid) was completed") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 18
@@ -1549,15 +1346,12 @@ m2qerror17 <-  m2tr.complete %>%
 Check for missing after sensation at 15 secs if TS Index site was completed
 
 ```{r}
-
-m2qerror18 <-  m2tr.complete %>% 
-  filter(tscompleted == 1 | tscompleted == 3) %>% 
-  filter(is.na(tsindxafter15)) %>% 
+m2qerror18 <- m2tr.complete %>%
+  filter(tscompleted == 1 | tscompleted == 3) %>%
+  filter(is.na(tsindxafter15)) %>%
   add_column(error_type = "TS: Missing after sensation at 15 secs if TS Index site was completed") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 19
@@ -1565,14 +1359,12 @@ m2qerror18 <-  m2tr.complete %>%
 Check for missing after sensation at 30 secs if TS Index site was completed
 
 ```{r}
-m2qerror19 <-  m2tr.complete %>% 
-  filter(tscompleted == 1 | tscompleted == 3) %>% 
-  filter(is.na(tsindxafter30)) %>% 
+m2qerror19 <- m2tr.complete %>%
+  filter(tscompleted == 1 | tscompleted == 3) %>%
+  filter(is.na(tsindxafter30)) %>%
   add_column(error_type = "TS: Missing after sensation at 30 secs if TS Index site (med/lat knee) was completed") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 20:
@@ -1580,16 +1372,13 @@ m2qerror19 <-  m2tr.complete %>%
 Check if TS was performed on the remote site but pain ratings were filled out for the index site.
 
 ```{r}
-
-m2qerror20 <- m2tr.complete %>% 
-  filter(tscompleted == 2 & tscompleted !=3) %>% 
-    mutate(ts.index1 = case_when((!is.na(tsindxr1initial) & !is.na(tsindxr1initial_d))  | (!is.na(tsindxr1final)  & !is.na(tsindxr1final_d)) | (!is.na(tsindxr2initial )  & !is.na(tsindxr2initial_d)) | (!is.na(tsindxr2final) & !is.na(tsindxr2final_d))  | (!is.na(tsindxr3initial)  & !is.na(tsindxr3initial_d)) | (!is.na(tsindxr3final)  & !is.na(tsindxr3final_d))  ~ 1,TRUE ~ 0))  %>% 
-  filter(ts.index1 == 1)  %>% 
+m2qerror20 <- m2tr.complete %>%
+  filter(tscompleted == 2 & tscompleted != 3) %>%
+  mutate(ts.index1 = case_when((!is.na(tsindxr1initial) & !is.na(tsindxr1initial_d)) | (!is.na(tsindxr1final) & !is.na(tsindxr1final_d)) | (!is.na(tsindxr2initial) & !is.na(tsindxr2initial_d)) | (!is.na(tsindxr2final) & !is.na(tsindxr2final_d)) | (!is.na(tsindxr3initial) & !is.na(tsindxr3initial_d)) | (!is.na(tsindxr3final) & !is.na(tsindxr3final_d)) ~ 1, TRUE ~ 0)) %>%
+  filter(ts.index1 == 1) %>%
   add_column(error_type = "TS:Remote site was checked but pain ratings were filled out for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 21:
@@ -1597,17 +1386,13 @@ m2qerror20 <- m2tr.complete %>%
 Check if TS was performed on both sites but pain ratings were not filled out for the index site.
 
 ```{r}
-
-m2qerror21 <- m2tr.complete %>% 
-  filter(tscompleted == 1) %>% 
-    mutate(ts.bothindex1 = case_when(is.na(tsindxr1initial) & is.na(tsindxr1initial_d)  & is.na(tsindxr1final)  & is.na(tsindxr1final_d) & is.na(tsindxr2initial )  & is.na(tsindxr2initial_d) & is.na(tsindxr2final) & is.na(tsindxr2final_d)  & is.na(tsindxr3initial)  & is.na(tsindxr3initial_d) & is.na(tsindxr3final)  & is.na(tsindxr3final_d)  ~ 1,TRUE ~ 0)) %>%
-  filter(ts.bothindex1 == 1) %>% 
+m2qerror21 <- m2tr.complete %>%
+  filter(tscompleted == 1) %>%
+  mutate(ts.bothindex1 = case_when(is.na(tsindxr1initial) & is.na(tsindxr1initial_d) & is.na(tsindxr1final) & is.na(tsindxr1final_d) & is.na(tsindxr2initial) & is.na(tsindxr2initial_d) & is.na(tsindxr2final) & is.na(tsindxr2final_d) & is.na(tsindxr3initial) & is.na(tsindxr3initial_d) & is.na(tsindxr3final) & is.na(tsindxr3final_d) ~ 1, TRUE ~ 0)) %>%
+  filter(ts.bothindex1 == 1) %>%
   add_column(error_type = "TS:Both sites were checked but pain ratings were not filled out for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 22:
@@ -1615,14 +1400,13 @@ m2qerror21 <- m2tr.complete %>%
 Check if TS was performed on both sites but pain ratings were not filled out for the remote.
 
 ```{r}
-m2qerror22 <- m2tr.complete %>% 
-  filter(tscompleted == 1) %>% 
-    mutate(ts.bothrem1 = case_when(is.na(tsremoter1initial) & is.na(tsremoter1initial_d)  & is.na(tsremoter1final)  & is.na(tsremoter1final_d) & is.na(tsremoter2initial)  & is.na(tsremoter2initial_d) & is.na(tsremoter2final) & is.na(tsremoter2final_d)  & is.na(tsremoter3initial)  & is.na(tsremoter3initial_d) & is.na(tsremoter3final)  & is.na(tsremoter3final_d)  ~ 1,TRUE ~ 0))  %>%
-  filter(ts.bothrem1 == 1) %>% 
+m2qerror22 <- m2tr.complete %>%
+  filter(tscompleted == 1) %>%
+  mutate(ts.bothrem1 = case_when(is.na(tsremoter1initial) & is.na(tsremoter1initial_d) & is.na(tsremoter1final) & is.na(tsremoter1final_d) & is.na(tsremoter2initial) & is.na(tsremoter2initial_d) & is.na(tsremoter2final) & is.na(tsremoter2final_d) & is.na(tsremoter3initial) & is.na(tsremoter3initial_d) & is.na(tsremoter3final) & is.na(tsremoter3final_d) ~ 1, TRUE ~ 0)) %>%
+  filter(ts.bothrem1 == 1) %>%
   add_column(error_type = "TS:Both sites were checked but pain ratings were not filled out for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 23:
@@ -1630,16 +1414,13 @@ m2qerror22 <- m2tr.complete %>%
 Check if TS was performed on the index site but pain ratings were filled out for the remote site.
 
 ```{r}
-
-m2qerror23 <- m2tr.complete %>% 
-  filter(tscompleted == 3 & tscompleted != 2) %>% 
-    mutate(ts.remote1 = case_when((!is.na(tsremoter1initial) & !is.na(tsremoter1initial_d))  | (!is.na(tsremoter1final)  & !is.na(tsremoter1final_d)) | (!is.na(tsremoter2initial)  & !is.na(tsremoter2initial_d)) | (!is.na(tsremoter2final) & !is.na(tsremoter2final_d))  | (!is.na(tsremoter3initial)  & !is.na(tsremoter3initial_d)) | (!is.na(tsremoter3final)  & !is.na(tsremoter3final_d))  ~ 1,TRUE ~ 0))  %>%
-  filter(ts.remote1 == 1) %>% 
+m2qerror23 <- m2tr.complete %>%
+  filter(tscompleted == 3 & tscompleted != 2) %>%
+  mutate(ts.remote1 = case_when((!is.na(tsremoter1initial) & !is.na(tsremoter1initial_d)) | (!is.na(tsremoter1final) & !is.na(tsremoter1final_d)) | (!is.na(tsremoter2initial) & !is.na(tsremoter2initial_d)) | (!is.na(tsremoter2final) & !is.na(tsremoter2final_d)) | (!is.na(tsremoter3initial) & !is.na(tsremoter3initial_d)) | (!is.na(tsremoter3final) & !is.na(tsremoter3final_d)) ~ 1, TRUE ~ 0)) %>%
+  filter(ts.remote1 == 1) %>%
   add_column(error_type = "TS:index site was checked but pain ratings were filled out for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 24
@@ -1649,26 +1430,23 @@ Check if information was available to compute primary outcome: Mean of 3 MTS Dif
 Primary outcome for the Index site.
 
 ```{r}
-
-m2qerror24 <- m2tr.complete  %>% 
+m2qerror24 <- m2tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 3) %>%
-  mutate(max.rep1.index = pmax(tsindxr1final,tsindxr1initial)) %>% 
-  mutate(diff.rep1.index = max.rep1.index - tsindxr1initial) %>% 
-  mutate(max.rep2.index = pmax(tsindxr2final,tsindxr2initial )) %>%
-  mutate(diff.rep2.index = max.rep2.index - tsindxr2initial ) %>% 
-  mutate(max.rep3.index = pmax(tsindxr3final,tsindxr3initial)) %>% 
-  mutate(diff.rep3.index = max.rep3.index - tsindxr3initial) %>% 
-  mutate(diff.rep1.index = as.numeric(diff.rep1.index)) %>% 
+  mutate(max.rep1.index = pmax(tsindxr1final, tsindxr1initial)) %>%
+  mutate(diff.rep1.index = max.rep1.index - tsindxr1initial) %>%
+  mutate(max.rep2.index = pmax(tsindxr2final, tsindxr2initial)) %>%
+  mutate(diff.rep2.index = max.rep2.index - tsindxr2initial) %>%
+  mutate(max.rep3.index = pmax(tsindxr3final, tsindxr3initial)) %>%
+  mutate(diff.rep3.index = max.rep3.index - tsindxr3initial) %>%
+  mutate(diff.rep1.index = as.numeric(diff.rep1.index)) %>%
   mutate(diff.rep2.index = as.numeric(diff.rep2.index)) %>%
   mutate(diff.rep3.index = as.numeric(diff.rep3.index)) %>%
   rowwise() %>%
-  mutate(mean.index = mean(c(diff.rep1.index,diff.rep2.index,diff.rep3.index))) %>% 
+  mutate(mean.index = mean(c(diff.rep1.index, diff.rep2.index, diff.rep3.index))) %>%
   filter(is.na(mean.index)) %>%
   add_column(error_type = "TS: Not enough information was available to compute primary outcome for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 25
@@ -1676,24 +1454,23 @@ m2qerror24 <- m2tr.complete  %>%
 Primary outcome for the Remote site.
 
 ```{r}
-
-m2qerror25 <- m2tr.complete %>% 
+m2qerror25 <- m2tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 2) %>%
-  mutate(max.rep1.remote = pmax(tsremoter1initial,tsremoter1final)) %>% 
-  mutate(diff.rep1.remote = max.rep1.remote - tsremoter1initial) %>% 
-  mutate(max.rep2.remote = pmax(tsremoter2initial,tsremoter2final)) %>% 
-  mutate(diff.rep2.remote = max.rep2.remote - tsremoter2initial) %>% 
-  mutate(max.rep3.remote = pmax(tsremoter3initial,tsremoter3final)) %>% 
-  mutate(diff.rep3.remote = max.rep3.remote - tsremoter3initial) %>% 
-  mutate(diff.rep1.remote = as.numeric(diff.rep1.remote)) %>% 
+  mutate(max.rep1.remote = pmax(tsremoter1initial, tsremoter1final)) %>%
+  mutate(diff.rep1.remote = max.rep1.remote - tsremoter1initial) %>%
+  mutate(max.rep2.remote = pmax(tsremoter2initial, tsremoter2final)) %>%
+  mutate(diff.rep2.remote = max.rep2.remote - tsremoter2initial) %>%
+  mutate(max.rep3.remote = pmax(tsremoter3initial, tsremoter3final)) %>%
+  mutate(diff.rep3.remote = max.rep3.remote - tsremoter3initial) %>%
+  mutate(diff.rep1.remote = as.numeric(diff.rep1.remote)) %>%
   mutate(diff.rep2.remote = as.numeric(diff.rep2.remote)) %>%
   mutate(diff.rep3.remote = as.numeric(diff.rep3.remote)) %>%
   rowwise() %>%
-  mutate(mean.remote = mean(c(diff.rep1.remote,diff.rep2.remote,diff.rep3.remote))) %>% 
-  filter(is.na(mean.remote)) %>% 
+  mutate(mean.remote = mean(c(diff.rep1.remote, diff.rep2.remote, diff.rep3.remote))) %>%
+  filter(is.na(mean.remote)) %>%
   add_column(error_type = "TS: Not enough information was available to compute primary outcome for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 26
@@ -1703,32 +1480,23 @@ Check if information was available to compute secondary outcome: Mean of 3 Wind-
 Secondary outcome for the index site
 
 ```{r}
-
-
-m2qerror26 <- m2tr.complete %>% 
+m2qerror26 <- m2tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 3) %>%
-  mutate(max.rep1.index1 = 1+(pmax(tsindxr1final,tsindxr1initial))) %>% 
-  mutate(init.rep1.index1 = 1+(tsindxr1initial)) %>% 
-  mutate(div.rep1.index1 = max.rep1.index1/init.rep1.index1) %>% 
-  
-  mutate(max.rep2.index1 = 1+(pmax(tsindxr2final,tsindxr2initial ))) %>% 
-  mutate(init.rep2.index1 = 1+(tsindxr2initial )) %>% 
-  mutate(div.rep2.index1 = max.rep2.index1/init.rep2.index1) %>% 
-  
-  mutate(max.rep3.index1 = 1+(pmax(tsindxr3final,tsindxr3initial))) %>% 
-  mutate(init.rep3.index1 = 1+(tsindxr3initial)) %>% 
-  mutate(div.rep3.index1 = max.rep3.index1/init.rep3.index1) %>%
+  mutate(max.rep1.index1 = 1 + (pmax(tsindxr1final, tsindxr1initial))) %>%
+  mutate(init.rep1.index1 = 1 + (tsindxr1initial)) %>%
+  mutate(div.rep1.index1 = max.rep1.index1 / init.rep1.index1) %>%
+  mutate(max.rep2.index1 = 1 + (pmax(tsindxr2final, tsindxr2initial))) %>%
+  mutate(init.rep2.index1 = 1 + (tsindxr2initial)) %>%
+  mutate(div.rep2.index1 = max.rep2.index1 / init.rep2.index1) %>%
+  mutate(max.rep3.index1 = 1 + (pmax(tsindxr3final, tsindxr3initial))) %>%
+  mutate(init.rep3.index1 = 1 + (tsindxr3initial)) %>%
+  mutate(div.rep3.index1 = max.rep3.index1 / init.rep3.index1) %>%
   rowwise() %>%
-  mutate(mean.sec.index = mean(c(div.rep1.index1,div.rep2.index1,div.rep3.index1))) %>% 
+  mutate(mean.sec.index = mean(c(div.rep1.index1, div.rep2.index1, div.rep3.index1))) %>%
   filter(is.na(mean.sec.index)) %>%
   add_column(error_type = "TS: Not enough information was available to compute secondary outcome for the index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 27
@@ -1736,28 +1504,23 @@ m2qerror26 <- m2tr.complete %>%
 Secondary outcome for the Remote site.
 
 ```{r}
-
-
-m2qerror28 <- m2tr.complete %>% 
+m2qerror28 <- m2tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 2) %>%
-  mutate(max.rep1.remote1 = 1+(pmax(tsremoter1initial,tsremoter1final))) %>% 
-  mutate(init.rep1.remote1 = 1+(tsremoter1initial)) %>% 
-  mutate(div.rep1.remote1 = max.rep1.remote1/init.rep1.remote1) %>%
-  mutate(max.rep2.remote1 = 1+(pmax(tsremoter2initial,tsremoter2final))) %>% 
-  mutate(init.rep2.remote1 = 1+(tsremoter2initial)) %>% 
-  mutate(div.rep2.remote1 = max.rep2.remote1/init.rep2.remote1) %>%
-  mutate(max.rep3.remote1 = 1+(pmax(tsremoter3initial,tsremoter3final))) %>% 
-  mutate(init.rep3.remote1 = 1+(tsremoter3initial)) %>% 
-  mutate(div.rep3.remote1 = max.rep3.remote1/init.rep3.remote1) %>%
+  mutate(max.rep1.remote1 = 1 + (pmax(tsremoter1initial, tsremoter1final))) %>%
+  mutate(init.rep1.remote1 = 1 + (tsremoter1initial)) %>%
+  mutate(div.rep1.remote1 = max.rep1.remote1 / init.rep1.remote1) %>%
+  mutate(max.rep2.remote1 = 1 + (pmax(tsremoter2initial, tsremoter2final))) %>%
+  mutate(init.rep2.remote1 = 1 + (tsremoter2initial)) %>%
+  mutate(div.rep2.remote1 = max.rep2.remote1 / init.rep2.remote1) %>%
+  mutate(max.rep3.remote1 = 1 + (pmax(tsremoter3initial, tsremoter3final))) %>%
+  mutate(init.rep3.remote1 = 1 + (tsremoter3initial)) %>%
+  mutate(div.rep3.remote1 = max.rep3.remote1 / init.rep3.remote1) %>%
   rowwise() %>%
-  mutate(mean.sec.remote = mean(c(div.rep1.remote1,div.rep2.remote1,div.rep3.remote1))) %>% 
-  filter(is.na(mean.sec.remote)) %>% 
+  mutate(mean.sec.remote = mean(c(div.rep1.remote1, div.rep2.remote1, div.rep3.remote1))) %>%
+  filter(is.na(mean.sec.remote)) %>%
   add_column(error_type = "TS: Not enough information was available to compute secondary outcome for the remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ### Conditioned Pain Modulation (CPM):
@@ -1765,9 +1528,8 @@ m2qerror28 <- m2tr.complete %>%
 Keep records with "CPM test completed"
 
 ```{r}
-
-m2trcpm.complete <- thor_qst %>% 
-  filter(qst_mcc1_v03_complete == 2) %>% 
+m2trcpm.complete <- thor_qst %>%
+  filter(qst_mcc1_v03_complete == 2) %>%
   filter(!is.na(cpmcompleteyn) & cpmcompleteyn != 0)
 ```
 
@@ -1776,13 +1538,11 @@ m2trcpm.complete <- thor_qst %>%
 Check if water temperature was not checked:
 
 ```{r}
-
-m2qerror28 <- m2trcpm.complete %>% 
-  filter(cpmcoldwatertemp != 1) %>% 
+m2qerror28 <- m2trcpm.complete %>%
+  filter(cpmcoldwatertemp != 1) %>%
   add_column(error_type = "CPM: Water temperature not checked") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 29:
@@ -1790,15 +1550,13 @@ m2qerror28 <- m2trcpm.complete %>%
 Check for missing or mismatch in cold water pain ratings at 30 seconds.
 
 ```{r}
-
-m2qerror29 <- m2trcpm.complete %>% 
-   filter(cpmbathrangeyn == 1 |(cpmbathrangeyn == 2 & cpmoutrangetime >= 30)) %>% 
-  mutate(diff_30 = cpmcoldwaterpain30 - cpmcoldwaterpain30_d) %>% 
-  filter(diff_30!=0 | is.na(diff_30)) %>% 
+m2qerror29 <- m2trcpm.complete %>%
+  filter(cpmbathrangeyn == 1 | (cpmbathrangeyn == 2 & cpmoutrangetime >= 30)) %>%
+  mutate(diff_30 = cpmcoldwaterpain30 - cpmcoldwaterpain30_d) %>%
+  filter(diff_30 != 0 | is.na(diff_30)) %>%
   add_column(error_type = "CPM: Missing or mismatch in cold water pain ratings at 30 sec") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 30:
@@ -1806,20 +1564,13 @@ m2qerror29 <- m2trcpm.complete %>%
 Check for missing or mismatch in cold water pain ratings at 60 seconds.
 
 ```{r}
-
-
-m2qerror30 <- m2trcpm.complete %>% 
-  filter(cpmbathrangeyn == 1| (cpmbathrangeyn == 2 & cpmoutrangetime >= 60))  %>% 
-  mutate(diff_60 = cpmcoldwaterpain60 - cpmcoldwaterpain60_d) %>% 
-  filter(diff_60!=0 | is.na(diff_60)) %>% 
+m2qerror30 <- m2trcpm.complete %>%
+  filter(cpmbathrangeyn == 1 | (cpmbathrangeyn == 2 & cpmoutrangetime >= 60)) %>%
+  mutate(diff_60 = cpmcoldwaterpain60 - cpmcoldwaterpain60_d) %>%
+  filter(diff_60 != 0 | is.na(diff_60)) %>%
   add_column(error_type = "CPM: Missing or mismatch in cold water pain ratings at 60 sec") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 31:
@@ -1827,13 +1578,12 @@ m2qerror30 <- m2trcpm.complete %>%
 Check for missing or mismatch in PPT ratings for Remote site (repetition 1).
 
 ```{r}
-m2qerror31 <- m2trcpm.complete %>% 
-  mutate(diff_cpm1 = cpmpptremr1val - cpmpptremr1val_d) %>% 
-  filter(diff_cpm1!=0 | is.na(diff_cpm1)) %>% 
+m2qerror31 <- m2trcpm.complete %>%
+  mutate(diff_cpm1 = cpmpptremr1val - cpmpptremr1val_d) %>%
+  filter(diff_cpm1 != 0 | is.na(diff_cpm1)) %>%
   add_column(error_type = "CPM PPT Rep1:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 32:
@@ -1841,16 +1591,12 @@ m2qerror31 <- m2trcpm.complete %>%
 Check for missing or mismatch in PPT ratings for Remote site (repetition 2).
 
 ```{r}
-
-m2qerror32 <- m2trcpm.complete %>% 
-  mutate(diff_cpm2 = cpmpptremr2val - cpmpptremr2val_d) %>% 
-  filter(diff_cpm2!=0 | is.na(diff_cpm2)) %>% 
+m2qerror32 <- m2trcpm.complete %>%
+  mutate(diff_cpm2 = cpmpptremr2val - cpmpptremr2val_d) %>%
+  filter(diff_cpm2 != 0 | is.na(diff_cpm2)) %>%
   add_column(error_type = "CPM PPT Rep2:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 33:
@@ -1858,15 +1604,12 @@ m2qerror32 <- m2trcpm.complete %>%
 Check for missing or mismatch in PPT ratings for Remote site (repetition 3).
 
 ```{r}
-
-m2qerror33 <- m2trcpm.complete %>% 
-  mutate(diff_cpm3 = cpmpptremr3val - cpmpptremr3val_d) %>% 
-  filter(diff_cpm3!=0 | is.na(diff_cpm3)) %>% 
+m2qerror33 <- m2trcpm.complete %>%
+  mutate(diff_cpm3 = cpmpptremr3val - cpmpptremr3val_d) %>%
+  filter(diff_cpm3 != 0 | is.na(diff_cpm3)) %>%
   add_column(error_type = "CPM PPT Rep3:Missing or mismatch in PPT ratings for Remote site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 34:
@@ -1874,18 +1617,17 @@ m2qerror33 <- m2trcpm.complete %>%
 Check if information was available to compute primary outcome (A2CPS MOP v.3.0, pg. 159) i.e. \[(pre hand immersion PPT-post immersion PPT)/pre immersion PPT\] \*100
 
 ```{r}
-
-m2qerror34 <- m2trcpm.complete %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2 ) %>% 
-  rowwise() %>% 
-    mutate(mean_pre = mean(c(pptremoter1val,pptremoter2val,pptremoter3val))) %>% 
-  rowwise() %>% 
-    mutate(mean_post = mean(c(cpmpptremr1val,cpmpptremr2val,cpmpptremr3val))) %>% 
-  mutate(cpm_change = ((mean_pre - mean_post)/mean_pre) * 100)  %>%   filter(is.na(cpm_change))%>% 
+m2qerror34 <- m2trcpm.complete %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  rowwise() %>%
+  mutate(mean_pre = mean(c(pptremoter1val, pptremoter2val, pptremoter3val))) %>%
+  rowwise() %>%
+  mutate(mean_post = mean(c(cpmpptremr1val, cpmpptremr2val, cpmpptremr3val))) %>%
+  mutate(cpm_change = ((mean_pre - mean_post) / mean_pre) * 100) %>%
+  filter(is.na(cpm_change)) %>%
   add_column(error_type = "CPM: Not enough information to compute primary outcome") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 35:
@@ -1893,20 +1635,17 @@ m2qerror34 <- m2trcpm.complete %>%
 Check if information was available to compute secondary outcome (A2CPS MOP v.3.0, pg. 159) i.e. CPM difference score computed as pre hand immersion PPT-post immersion PPT
 
 ```{r}
-
-
-m2qerror35 <- m2trcpm.complete %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2 ) %>% 
-  rowwise() %>% 
-    mutate(mean_pre = mean(c(pptremoter1val,pptremoter2val,pptremoter3val))) %>% 
-  rowwise() %>% 
-    mutate(mean_post = mean(c(cpmpptremr1val,cpmpptremr2val,cpmpptremr3val))) %>% 
-  mutate(cpm_diff = mean_pre - mean_post)  %>% 
-  filter(is.na(cpm_diff)) %>% 
+m2qerror35 <- m2trcpm.complete %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  rowwise() %>%
+  mutate(mean_pre = mean(c(pptremoter1val, pptremoter2val, pptremoter3val))) %>%
+  rowwise() %>%
+  mutate(mean_post = mean(c(cpmpptremr1val, cpmpptremr2val, cpmpptremr3val))) %>%
+  mutate(cpm_diff = mean_pre - mean_post) %>%
+  filter(is.na(cpm_diff)) %>%
   add_column(error_type = "CPM: Not enough information to compute secondary outcome") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 36:
@@ -1914,17 +1653,13 @@ m2qerror35 <- m2trcpm.complete %>%
 Check If personalized pressure was performed during imaging and there were missing values for cuff Pressure to achieve 4/10 pain outside of scanner during QST as well as missing values for recalibration pressure during imaging.
 
 ```{r}
-
-
-m2qerror36 <- thor_qst %>% 
-  mutate(no.qst = case_when(is.na(fmricuffcalfpressurerecal) & is.na(cuffpfmripressure)  ~ 1,TRUE ~ 0)) %>% 
-  mutate(personal.cuff = case_when(fmricuffcompletescl == 1 | fmricuffipyn == 1 ~ 1,TRUE ~ 0))%>%
-  filter(personal.cuff ==1 & no.qst == 1) %>% 
+m2qerror36 <- thor_qst %>%
+  mutate(no.qst = case_when(is.na(fmricuffcalfpressurerecal) & is.na(cuffpfmripressure) ~ 1, TRUE ~ 0)) %>%
+  mutate(personal.cuff = case_when(fmricuffcompletescl == 1 | fmricuffipyn == 1 ~ 1, TRUE ~ 0)) %>%
+  filter(personal.cuff == 1 & no.qst == 1) %>%
   add_column(error_type = "QST: Missing values for cuff Pressure to achieve 4/10 pain outside of scanner during QST  as well as missing values for recalibration pressure during imaging") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ### Dynamic Mechanical Allodynia (DMA)
@@ -1932,10 +1667,8 @@ m2qerror36 <- thor_qst %>%
 Keep records with "DMA test completed"
 
 ```{r}
-
-m2dma.baseline <- thor_qst %>% 
+m2dma.baseline <- thor_qst %>%
   filter(!is.na(dmatestcompyn) & dmatestcompyn != 0)
-
 ```
 
 ##### Flag 37:
@@ -1943,17 +1676,15 @@ m2dma.baseline <- thor_qst %>%
 If DMA was performed on both or either site but "DMA complete" was missing.
 
 ```{r}
-
-m2qerror37 <-  m2dma.baseline  %>% 
+m2qerror37 <- m2dma.baseline %>%
   filter(is.na(dmatestcompyn)) %>%
-  filter(!is.na(dmacontr1pain &  dmacontr1pain_d & dmacontr2pain & dmacontr2pain_d & dmacontr3pain & dmacontr3pain_d & 
-                  dmacontr4pain & dmacontr4pain_d &dmacontr5pain  & dmacontr5pain_d | dmaindxr1pain & dmaindxr1pain_d &
-                  dmaindxr2pain & dmaindxr2pain_d  &  dmaindxr3pain   &  dmaindxr3pain_d   &     dmaindxr4pain & dmaindxr4pain_d  & 
-                  dmaindxr5pain & dmaindxr5pain_d     &   dmasenscompare))  %>% 
+  filter(!is.na(dmacontr1pain & dmacontr1pain_d & dmacontr2pain & dmacontr2pain_d & dmacontr3pain & dmacontr3pain_d &
+    dmacontr4pain & dmacontr4pain_d & dmacontr5pain & dmacontr5pain_d | dmaindxr1pain & dmaindxr1pain_d &
+    dmaindxr2pain & dmaindxr2pain_d & dmaindxr3pain & dmaindxr3pain_d & dmaindxr4pain & dmaindxr4pain_d &
+    dmaindxr5pain & dmaindxr5pain_d & dmasenscompare)) %>%
   add_column(error_type = "DMA:DMA  was performed on both or either site but DMA complete was missing") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 38:
@@ -1961,13 +1692,11 @@ m2qerror37 <-  m2dma.baseline  %>%
 Check if DMA was performed on all the sites and completion status for Standardized control site (contralateral) and Standardized index site (surgical) was also checked.
 
 ```{r}
-
-m2qerror38 <- m2dma.baseline %>% 
-  filter (dmatestcompyn == 1 & (dmatestcompwhich___1 == 1 |dmatestcompwhich___2 == 1))  %>% 
+m2qerror38 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 & (dmatestcompwhich___1 == 1 | dmatestcompwhich___2 == 1)) %>%
   add_column(error_type = "DMA:DMA was performed on all the sites and completion status for  Standardized control site (contralateral) and Standardized index site (surgical) was also checked") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 39:
@@ -1975,12 +1704,11 @@ m2qerror38 <- m2dma.baseline %>%
 Check if DMA was performed on some sites and completion status for Standardized control site (contralateral) and Standardized index site (surgical) was not specified.
 
 ```{r}
-
-m2qerror39 <- m2dma.baseline %>% 
-  filter ((dmatestcompyn == 2 & dmatestcompwhich___1 == 0  & dmatestcompwhich___2 == 0) | (dmatestcompyn == 2 & dmatestcompwhich___1 == 0 & dmatestcompwhich___2 == 0)) %>% 
+m2qerror39 <- m2dma.baseline %>%
+  filter((dmatestcompyn == 2 & dmatestcompwhich___1 == 0 & dmatestcompwhich___2 == 0) | (dmatestcompyn == 2 & dmatestcompwhich___1 == 0 & dmatestcompwhich___2 == 0)) %>%
   add_column(error_type = "DMA:DMA was performed on some sites and completion status for  Standardized control site (contralateral) and Standardized index site (surgical) was not specified") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 40:
@@ -1990,15 +1718,13 @@ Check for mismatch in or missing pain data for Standardized control site (contra
 Repetition 1
 
 ```{r}
-
-m2qerror40 <- m2dma.baseline %>% 
-  filter(dmatestcompyn == 1|( dmatestcompyn == 2 & dmatestcompwhich___1 == 1 ))%>% 
-  mutate(dma_stand_cont_diff1 = dmacontr1pain - dmacontr1pain_d) %>% 
-  filter(dma_stand_cont_diff1 != 0 | is.na(dma_stand_cont_diff1)) %>% 
+m2qerror40 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___1 == 1)) %>%
+  mutate(dma_stand_cont_diff1 = dmacontr1pain - dmacontr1pain_d) %>%
+  filter(dma_stand_cont_diff1 != 0 | is.na(dma_stand_cont_diff1)) %>%
   add_column(error_type = "DMA: Repetition 1-Mismatch or missing pain data for standardized control site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 41:
@@ -2006,15 +1732,13 @@ m2qerror40 <- m2dma.baseline %>%
 Repetition 2
 
 ```{r}
-m2qerror41 <- m2dma.baseline %>% 
-  filter(dmatestcompyn == 1|( dmatestcompyn == 2 & dmatestcompwhich___1 == 1 ))%>% 
-  mutate(dma_stand_cont_diff2 = dmacontr2pain - dmacontr2pain_d) %>% 
-  filter(dma_stand_cont_diff2 != 0 | is.na(dma_stand_cont_diff2)) %>% 
+m2qerror41 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___1 == 1)) %>%
+  mutate(dma_stand_cont_diff2 = dmacontr2pain - dmacontr2pain_d) %>%
+  filter(dma_stand_cont_diff2 != 0 | is.na(dma_stand_cont_diff2)) %>%
   add_column(error_type = "DMA: Repetition 2-Mismatch or missing pain data for standardized control site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 42:
@@ -2022,17 +1746,13 @@ m2qerror41 <- m2dma.baseline %>%
 Repetition 3
 
 ```{r}
-
-m2qerror42 <- m2dma.baseline %>% 
-  filter(dmatestcompyn == 1|( dmatestcompyn == 2 & dmatestcompwhich___1 == 1 ))%>% 
-  mutate(dma_stand_cont_diff3 = dmacontr3pain - dmacontr3pain_d) %>% 
-  filter(dma_stand_cont_diff3 != 0 | is.na(dma_stand_cont_diff3)) %>% 
+m2qerror42 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___1 == 1)) %>%
+  mutate(dma_stand_cont_diff3 = dmacontr3pain - dmacontr3pain_d) %>%
+  filter(dma_stand_cont_diff3 != 0 | is.na(dma_stand_cont_diff3)) %>%
   add_column(error_type = "DMA: Repetition 3-Mismatch or missing pain data for standardized control site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 43:
@@ -2040,15 +1760,13 @@ m2qerror42 <- m2dma.baseline %>%
 Repetition 4
 
 ```{r}
-
-m2qerror43 <-  m2dma.baseline %>% 
-  filter(dmatestcompyn == 1|( dmatestcompyn == 2 & dmatestcompwhich___1 == 1 ))%>% 
-  mutate(dma_stand_cont_diff4 = dmacontr4pain - dmacontr4pain_d) %>% 
-  filter(dma_stand_cont_diff4 != 0 | is.na(dma_stand_cont_diff4)) %>% 
+m2qerror43 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___1 == 1)) %>%
+  mutate(dma_stand_cont_diff4 = dmacontr4pain - dmacontr4pain_d) %>%
+  filter(dma_stand_cont_diff4 != 0 | is.na(dma_stand_cont_diff4)) %>%
   add_column(error_type = "DMA: Repetition 4-Mismatch or missing pain data for standardized control site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 44:
@@ -2056,16 +1774,13 @@ m2qerror43 <-  m2dma.baseline %>%
 Repetition 5
 
 ```{r}
-
-m2qerror44 <-  m2dma.baseline %>% 
-  filter(dmatestcompyn == 1|( dmatestcompyn == 2 & dmatestcompwhich___1 == 1 ))%>% 
-  mutate(dma_stand_cont_diff5 = dmacontr5pain - dmacontr5pain_d) %>% 
-  filter(dma_stand_cont_diff5 != 0 | is.na(dma_stand_cont_diff5))%>% 
+m2qerror44 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___1 == 1)) %>%
+  mutate(dma_stand_cont_diff5 = dmacontr5pain - dmacontr5pain_d) %>%
+  filter(dma_stand_cont_diff5 != 0 | is.na(dma_stand_cont_diff5)) %>%
   add_column(error_type = "DMA: Repetition 5-Mismatch or missing pain data for standardized control site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 45:
@@ -2075,17 +1790,13 @@ Check for mismatch or missing pain data for standardized index site
 Repetition 1
 
 ```{r}
-
-
-m2qerror45 <-  m2dma.baseline %>% 
-  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1))%>% 
-  mutate(dma_stand_ind_diff1 = dmaindxr1pain - dmaindxr1pain_d) %>% 
-  filter(dma_stand_ind_diff1 != 0 | is.na(dma_stand_ind_diff1)) %>% 
+m2qerror45 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1)) %>%
+  mutate(dma_stand_ind_diff1 = dmaindxr1pain - dmaindxr1pain_d) %>%
+  filter(dma_stand_ind_diff1 != 0 | is.na(dma_stand_ind_diff1)) %>%
   add_column(error_type = "DMA: Repetition 1-Mismatch or missing pain data for standardized index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 46:
@@ -2093,15 +1804,13 @@ m2qerror45 <-  m2dma.baseline %>%
 Repetition 2
 
 ```{r}
-m2qerror46 <-  m2dma.baseline %>% 
-  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1))%>% 
-  mutate(dma_stand_ind_diff2 = dmaindxr2pain - dmaindxr2pain_d) %>% 
-  filter(dma_stand_ind_diff2 != 0 | is.na(dma_stand_ind_diff2))%>% 
+m2qerror46 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1)) %>%
+  mutate(dma_stand_ind_diff2 = dmaindxr2pain - dmaindxr2pain_d) %>%
+  filter(dma_stand_ind_diff2 != 0 | is.na(dma_stand_ind_diff2)) %>%
   add_column(error_type = "DMA: Repetition 2-Mismatch or missing pain data for standardized index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 47:
@@ -2109,15 +1818,13 @@ m2qerror46 <-  m2dma.baseline %>%
 Repetition 3
 
 ```{r}
-
-m2qerror47 <-  m2dma.baseline %>% 
-  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1))%>% 
-  mutate(dma_stand_ind_diff3 = dmaindxr3pain - dmaindxr3pain_d) %>% 
-  filter(dma_stand_ind_diff3 != 0 | is.na(dma_stand_ind_diff3)) %>% 
+m2qerror47 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1)) %>%
+  mutate(dma_stand_ind_diff3 = dmaindxr3pain - dmaindxr3pain_d) %>%
+  filter(dma_stand_ind_diff3 != 0 | is.na(dma_stand_ind_diff3)) %>%
   add_column(error_type = "DMA: Repetition 3-Mismatch or missing pain data for standardized index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 48:
@@ -2125,17 +1832,13 @@ m2qerror47 <-  m2dma.baseline %>%
 Repetition 4
 
 ```{r}
-
-m2qerror48 <-  m2dma.baseline %>% 
-  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1))%>% 
-  mutate(dma_stand_ind_diff4 = dmaindxr4pain - dmaindxr4pain_d) %>% 
-  filter(dma_stand_ind_diff4 != 0 | is.na(dma_stand_ind_diff4)) %>% 
+m2qerror48 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1)) %>%
+  mutate(dma_stand_ind_diff4 = dmaindxr4pain - dmaindxr4pain_d) %>%
+  filter(dma_stand_ind_diff4 != 0 | is.na(dma_stand_ind_diff4)) %>%
   add_column(error_type = "DMA: Repetition 4-Mismatch or missing pain data for standardized index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 49:
@@ -2143,17 +1846,13 @@ m2qerror48 <-  m2dma.baseline %>%
 Repetition 5
 
 ```{r}
-
-m2qerror49 <-  m2dma.baseline %>% 
-  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1))%>% 
-  mutate(dma_stand_ind_diff5 = dmaindxr5pain - dmaindxr5pain_d) %>% 
-  filter(dma_stand_ind_diff5 != 0 | is.na(dma_stand_ind_diff5)) %>% 
+m2qerror49 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 | (dmatestcompyn == 2 & dmatestcompwhich___2 == 1)) %>%
+  mutate(dma_stand_ind_diff5 = dmaindxr5pain - dmaindxr5pain_d) %>%
+  filter(dma_stand_ind_diff5 != 0 | is.na(dma_stand_ind_diff5)) %>%
   add_column(error_type = "DMA: Repetition 5-Mismatch or missing pain data for standardized index site") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### Flag 50:
@@ -2161,15 +1860,11 @@ m2qerror49 <-  m2dma.baseline %>%
 Check if both sites were tested and standardized site comparison was not entered
 
 ```{r}
-
-
-m2qerror50 <-  m2dma.baseline %>% 
-  filter(dmatestcompyn == 1 & is.na(dmasenscompare)) %>% 
+m2qerror50 <- m2dma.baseline %>%
+  filter(dmatestcompyn == 1 & is.na(dmasenscompare)) %>%
   add_column(error_type = "If both sites were tested and standardized site comparison was not entered") %>%
-  add_column(errors = "error") %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,error_type,errors)
-
-
+  add_column(errors = "error") %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
 ```
 
 ##### QST Biomarkers
@@ -2179,27 +1874,23 @@ m2qerror50 <-  m2dma.baseline %>%
 Mean PPT values at the index site = primary data point (A2CPS: Site Manual of Procedures v3.0, pg. 154).
 
 ```{r}
-
-primary_ppt_thor <-  qdatam2 %>% 
-  filter((pptcompleteyn == 1 | pptcompleteyn == 3)) %>% 
+primary_ppt_thor <- qdatam2 %>%
+  filter((pptcompleteyn == 1 | pptcompleteyn == 3)) %>%
   rowwise() %>%
-  mutate(mean1 = mean(c(pptindxr1val,pptindxr2val,pptindxr3val))) %>% 
-   rename(primary_ppt_thor = mean1) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,primary_ppt_thor)
-
+  mutate(mean1 = mean(c(pptindxr1val, pptindxr2val, pptindxr3val))) %>%
+  rename(primary_ppt_thor = mean1) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, primary_ppt_thor)
 ```
 
 Mean PPT values at the remote site = secondary data point (A2CPS: Site Manual of Procedures v3.0, pg. 154).
 
 ```{r}
-secondary_ppt_thor <- qdatam2 %>% 
- filter((pptcompleteyn == 1 | pptcompleteyn == 2)) %>% 
+secondary_ppt_thor <- qdatam2 %>%
+  filter((pptcompleteyn == 1 | pptcompleteyn == 2)) %>%
   rowwise() %>%
-  mutate(mean2 = mean(c(pptremoter1val,pptremoter2val,pptremoter3val))) %>% 
-   rename(secondary_ppt_thor = mean2) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,secondary_ppt_thor)
-
-
+  mutate(mean2 = mean(c(pptremoter1val, pptremoter2val, pptremoter3val))) %>%
+  rename(secondary_ppt_thor = mean2) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, secondary_ppt_thor)
 ```
 
 ###### TS Biomarkers:
@@ -2209,45 +1900,41 @@ Primary outcome: Mean of 3 MTS Difference scores computed (Max -- initial), (A2C
 Primary outcome for the Index site.
 
 ```{r}
-
-primary_ts_index_thor <- m2tr.complete  %>% 
+primary_ts_index_thor <- m2tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 3) %>%
-  mutate(max.rep1.index = pmax(tsindxr1final,tsindxr1initial)) %>% 
-  mutate(diff.rep1.index = max.rep1.index - tsindxr1initial) %>% 
-  mutate(max.rep2.index = pmax(tsindxr2final,tsindxr2initial )) %>%
-  mutate(diff.rep2.index = max.rep2.index - tsindxr2initial ) %>% 
-  mutate(max.rep3.index = pmax(tsindxr3final,tsindxr3initial)) %>% 
-  mutate(diff.rep3.index = max.rep3.index - tsindxr3initial) %>% 
-  mutate(diff.rep1.index = as.numeric(diff.rep1.index)) %>% 
+  mutate(max.rep1.index = pmax(tsindxr1final, tsindxr1initial)) %>%
+  mutate(diff.rep1.index = max.rep1.index - tsindxr1initial) %>%
+  mutate(max.rep2.index = pmax(tsindxr2final, tsindxr2initial)) %>%
+  mutate(diff.rep2.index = max.rep2.index - tsindxr2initial) %>%
+  mutate(max.rep3.index = pmax(tsindxr3final, tsindxr3initial)) %>%
+  mutate(diff.rep3.index = max.rep3.index - tsindxr3initial) %>%
+  mutate(diff.rep1.index = as.numeric(diff.rep1.index)) %>%
   mutate(diff.rep2.index = as.numeric(diff.rep2.index)) %>%
   mutate(diff.rep3.index = as.numeric(diff.rep3.index)) %>%
   rowwise() %>%
-  mutate(mean.index = mean(c(diff.rep1.index,diff.rep2.index,diff.rep3.index))) %>% 
-   rename(primary_ts_index_thor = mean.index) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,primary_ts_index_thor)
-
-
+  mutate(mean.index = mean(c(diff.rep1.index, diff.rep2.index, diff.rep3.index))) %>%
+  rename(primary_ts_index_thor = mean.index) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, primary_ts_index_thor)
 ```
 
 Primary outcome for the Remote site.
 
 ```{r}
-
-primary_ts_remote_thor <- m2tr.complete %>% 
+primary_ts_remote_thor <- m2tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 2) %>%
-  mutate(max.rep1.remote = pmax(tsremoter1initial,tsremoter1final)) %>% 
-  mutate(diff.rep1.remote = max.rep1.remote - tsremoter1initial) %>% 
-  mutate(max.rep2.remote = pmax(tsremoter2initial,tsremoter2final)) %>% 
-  mutate(diff.rep2.remote = max.rep2.remote - tsremoter2initial) %>% 
-  mutate(max.rep3.remote = pmax(tsremoter3initial,tsremoter3final)) %>% 
-  mutate(diff.rep3.remote = max.rep3.remote - tsremoter3initial) %>% 
-  mutate(diff.rep1.remote = as.numeric(diff.rep1.remote)) %>% 
+  mutate(max.rep1.remote = pmax(tsremoter1initial, tsremoter1final)) %>%
+  mutate(diff.rep1.remote = max.rep1.remote - tsremoter1initial) %>%
+  mutate(max.rep2.remote = pmax(tsremoter2initial, tsremoter2final)) %>%
+  mutate(diff.rep2.remote = max.rep2.remote - tsremoter2initial) %>%
+  mutate(max.rep3.remote = pmax(tsremoter3initial, tsremoter3final)) %>%
+  mutate(diff.rep3.remote = max.rep3.remote - tsremoter3initial) %>%
+  mutate(diff.rep1.remote = as.numeric(diff.rep1.remote)) %>%
   mutate(diff.rep2.remote = as.numeric(diff.rep2.remote)) %>%
   mutate(diff.rep3.remote = as.numeric(diff.rep3.remote)) %>%
   rowwise() %>%
-  mutate(mean.remote = mean(c(diff.rep1.remote,diff.rep2.remote,diff.rep3.remote))) %>%
-   rename(primary_ts_remote_thor = mean.remote) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,primary_ts_remote_thor)
+  mutate(mean.remote = mean(c(diff.rep1.remote, diff.rep2.remote, diff.rep3.remote))) %>%
+  rename(primary_ts_remote_thor = mean.remote) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, primary_ts_remote_thor)
 ```
 
 Secondary outcome: Mean of 3 Wind-up ratios (WUR) computed (\[Max +1\]/ \[initial +1\]). (1 added to handle possibility of zero initial pain rating in denominator). (A2CPS: Site Manual of Procedures v3.0, pg. 156). This is conditional on having 3 repetitions, if a record has \< 3 repetitions, it will be flagged
@@ -2255,52 +1942,41 @@ Secondary outcome: Mean of 3 Wind-up ratios (WUR) computed (\[Max +1\]/ \[initia
 Secondary outcome for the index site
 
 ```{r}
-
-secondary_ts_index_thor <- m2tr.complete %>% 
+secondary_ts_index_thor <- m2tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 3) %>%
-  mutate(max.rep1.index1 = 1+(pmax(tsindxr1final,tsindxr1initial))) %>% 
-  mutate(init.rep1.index1 = 1+(tsindxr1initial)) %>% 
-  mutate(div.rep1.index1 = max.rep1.index1/init.rep1.index1) %>% 
-  
-  mutate(max.rep2.index1 = 1+(pmax(tsindxr2final,tsindxr2initial ))) %>% 
-  mutate(init.rep2.index1 = 1+(tsindxr2initial )) %>% 
-  mutate(div.rep2.index1 = max.rep2.index1/init.rep2.index1) %>% 
-  
-  mutate(max.rep3.index1 = 1+(pmax(tsindxr3final,tsindxr3initial))) %>% 
-  mutate(init.rep3.index1 = 1+(tsindxr3initial)) %>% 
-  mutate(div.rep3.index1 = max.rep3.index1/init.rep3.index1) %>%
+  mutate(max.rep1.index1 = 1 + (pmax(tsindxr1final, tsindxr1initial))) %>%
+  mutate(init.rep1.index1 = 1 + (tsindxr1initial)) %>%
+  mutate(div.rep1.index1 = max.rep1.index1 / init.rep1.index1) %>%
+  mutate(max.rep2.index1 = 1 + (pmax(tsindxr2final, tsindxr2initial))) %>%
+  mutate(init.rep2.index1 = 1 + (tsindxr2initial)) %>%
+  mutate(div.rep2.index1 = max.rep2.index1 / init.rep2.index1) %>%
+  mutate(max.rep3.index1 = 1 + (pmax(tsindxr3final, tsindxr3initial))) %>%
+  mutate(init.rep3.index1 = 1 + (tsindxr3initial)) %>%
+  mutate(div.rep3.index1 = max.rep3.index1 / init.rep3.index1) %>%
   rowwise() %>%
-  mutate(mean.sec.index = mean(c(div.rep1.index1,div.rep2.index1,div.rep3.index1))) %>%
-   rename(secondary_ts_index_thor = mean.sec.index) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,secondary_ts_index_thor)
-
-
+  mutate(mean.sec.index = mean(c(div.rep1.index1, div.rep2.index1, div.rep3.index1))) %>%
+  rename(secondary_ts_index_thor = mean.sec.index) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, secondary_ts_index_thor)
 ```
 
 Secondary outcome for the Remote site.
 
 ```{r}
-
-
-secondary_ts_remote_thor <-  m2tr.complete %>% 
+secondary_ts_remote_thor <- m2tr.complete %>%
   filter(tscompleted == 1 | tscompleted == 2) %>%
-  mutate(max.rep1.remote1 = 1+(pmax(tsremoter1initial,tsremoter1final))) %>% 
-  mutate(init.rep1.remote1 = 1+(tsremoter1initial)) %>% 
-  mutate(div.rep1.remote1 = max.rep1.remote1/init.rep1.remote1) %>%
-  mutate(max.rep2.remote1 = 1+(pmax(tsremoter2initial,tsremoter2final))) %>% 
-  mutate(init.rep2.remote1 = 1+(tsremoter2initial)) %>% 
-  mutate(div.rep2.remote1 = max.rep2.remote1/init.rep2.remote1) %>%
-  mutate(max.rep3.remote1 = 1+(pmax(tsremoter3initial,tsremoter3final))) %>% 
-  mutate(init.rep3.remote1 = 1+(tsremoter3initial)) %>% 
-  mutate(div.rep3.remote1 = max.rep3.remote1/init.rep3.remote1) %>%
+  mutate(max.rep1.remote1 = 1 + (pmax(tsremoter1initial, tsremoter1final))) %>%
+  mutate(init.rep1.remote1 = 1 + (tsremoter1initial)) %>%
+  mutate(div.rep1.remote1 = max.rep1.remote1 / init.rep1.remote1) %>%
+  mutate(max.rep2.remote1 = 1 + (pmax(tsremoter2initial, tsremoter2final))) %>%
+  mutate(init.rep2.remote1 = 1 + (tsremoter2initial)) %>%
+  mutate(div.rep2.remote1 = max.rep2.remote1 / init.rep2.remote1) %>%
+  mutate(max.rep3.remote1 = 1 + (pmax(tsremoter3initial, tsremoter3final))) %>%
+  mutate(init.rep3.remote1 = 1 + (tsremoter3initial)) %>%
+  mutate(div.rep3.remote1 = max.rep3.remote1 / init.rep3.remote1) %>%
   rowwise() %>%
-  mutate(mean.sec.remote = mean(c(div.rep1.remote1,div.rep2.remote1,div.rep3.remote1))) %>%
-   rename(secondary_ts_remote_thor = mean.sec.remote) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,secondary_ts_remote_thor)
-
-
-
-
+  mutate(mean.sec.remote = mean(c(div.rep1.remote1, div.rep2.remote1, div.rep3.remote1))) %>%
+  rename(secondary_ts_remote_thor = mean.sec.remote) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, secondary_ts_remote_thor)
 ```
 
 ###### CPM Biomarkers:
@@ -2308,47 +1984,42 @@ secondary_ts_remote_thor <-  m2tr.complete %>%
 Primary outcome (A2CPS: Site Manual of Procedures v3.0, pg. 159) i.e. \[(pre hand immersion PPT-post immersion PPT)/pre immersion PPT\] \*100 
 
 ```{r}
-
-primary_cpm_thor <- m2trcpm.complete %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2 ) %>% 
-  rowwise() %>% 
-    mutate(mean_pre = mean(c(pptremoter1val,pptremoter2val,pptremoter3val))) %>% 
-  rowwise() %>% 
-    mutate(mean_post = mean(c(cpmpptremr1val,cpmpptremr2val,cpmpptremr3val))) %>% 
-  mutate(cpm_change = ((mean_pre - mean_post)/mean_pre) * 100)   %>% 
-   rename(primary_cpm_thor =cpm_change) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,primary_cpm_thor)
-
+primary_cpm_thor <- m2trcpm.complete %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  rowwise() %>%
+  mutate(mean_pre = mean(c(pptremoter1val, pptremoter2val, pptremoter3val))) %>%
+  rowwise() %>%
+  mutate(mean_post = mean(c(cpmpptremr1val, cpmpptremr2val, cpmpptremr3val))) %>%
+  mutate(cpm_change = ((mean_pre - mean_post) / mean_pre) * 100) %>%
+  rename(primary_cpm_thor = cpm_change) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, primary_cpm_thor)
 ```
 
 Secondary outcome (A2CPS: Site Manual of Procedures v3.0, pg. 159) i.e. CPM difference score computed as pre hand immersion PPT-post immersion PPT
 
 ```{r}
-
-
-secondary_cpm_thor <- m2trcpm.complete %>% 
-  filter(pptcompleteyn == 1 | pptcompleteyn == 2 ) %>% 
-  rowwise() %>% 
-    mutate(mean_pre = mean(c(pptremoter1val,pptremoter2val,pptremoter3val))) %>% 
-  rowwise() %>% 
-    mutate(mean_post = mean(c(cpmpptremr1val,cpmpptremr2val,cpmpptremr3val))) %>% 
-  mutate(cpm_diff = mean_pre - mean_post)  %>%
-   rename(secondary_cpm_thor =cpm_diff) %>% 
-  select(record_id,redcap_data_access_group,redcap_repeat_instrument,redcap_repeat_instance,secondary_cpm_thor)
-
-
+secondary_cpm_thor <- m2trcpm.complete %>%
+  filter(pptcompleteyn == 1 | pptcompleteyn == 2) %>%
+  rowwise() %>%
+  mutate(mean_pre = mean(c(pptremoter1val, pptremoter2val, pptremoter3val))) %>%
+  rowwise() %>%
+  mutate(mean_post = mean(c(cpmpptremr1val, cpmpptremr2val, cpmpptremr3val))) %>%
+  mutate(cpm_diff = mean_pre - mean_post) %>%
+  rename(secondary_cpm_thor = cpm_diff) %>%
+  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, secondary_cpm_thor)
 ```
 
 Merge computed biomarkers to the "thor_qst" dataset:
 
 ```{r}
-thor_qst <- left_join(thor_qst,primary_ppt_thor, by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance")) %>%
-left_join(., secondary_ppt_thor,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance")) %>% 
-left_join(., primary_ts_index_thor,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance")) %>%    left_join(., primary_ts_remote_thor,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance")) %>% 
-left_join(., secondary_ts_index_thor,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance"))%>% 
-left_join(., secondary_ts_remote_thor,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance"))%>% 
-left_join(., primary_cpm_thor,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance"))%>% 
-left_join(., secondary_cpm_thor ,by= c("record_id","redcap_data_access_group","redcap_repeat_instrument","redcap_repeat_instance"))
+thor_qst <- left_join(thor_qst, primary_ppt_thor, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., secondary_ppt_thor, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., primary_ts_index_thor, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., primary_ts_remote_thor, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., secondary_ts_index_thor, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., secondary_ts_remote_thor, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., primary_cpm_thor, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance")) %>%
+  left_join(., secondary_cpm_thor, by = c("record_id", "redcap_data_access_group", "redcap_repeat_instrument", "redcap_repeat_instance"))
 ```
 
 ##### New field name(s):
@@ -2356,95 +2027,99 @@ left_join(., secondary_cpm_thor ,by= c("record_id","redcap_data_access_group","r
 Add field names for the computed biomarkers to the QST data dictionary
 
 ```{r}
-
 # Create field names
 primary_ppt_thor_new_row <- data.frame(
   field_name = "primary_ppt_thor",
   field_type = "numeric",
-  field_note = "PPT primary biomarker:thor ")
+  field_note = "PPT primary biomarker:thor "
+)
 
 secondary_ppt_thor_new_row <- data.frame(
   field_name = "secondary_ppt_thor",
   field_type = "numeric",
-  field_note = "PPT secondary biomarker:thoracic ")
+  field_note = "PPT secondary biomarker:thoracic "
+)
 
 
 primary_ts_index_thor_new_row <- data.frame(
   field_name = "primary_ts_index_thor",
   field_type = "numeric",
-  field_note = "TS primary biomarker for the index site:thoracic ")
+  field_note = "TS primary biomarker for the index site:thoracic "
+)
 
 primary_ts_remote_thor_new_row <- data.frame(
   field_name = "primary_ts_remote_thor",
   field_type = "numeric",
-  field_note = "TS primary biomarker for the remote site:thoracic ")
+  field_note = "TS primary biomarker for the remote site:thoracic "
+)
 
 secondary_ts_index_thor_new_row <- data.frame(
   field_name = "secondary_ts_index_thor",
   field_type = "numeric",
-  field_note = "TS secondary biomarker for the index site:thoracic ")
+  field_note = "TS secondary biomarker for the index site:thoracic "
+)
 
- secondary_ts_remote_thor_new_row <- data.frame(
+secondary_ts_remote_thor_new_row <- data.frame(
   field_name = "secondary_ts_remote_thor",
   field_type = "numeric",
-  field_note = "TS secondary biomarker for the remote site:thoracic ")
- 
- 
- primary_cpm_thor_new_row <- data.frame(
+  field_note = "TS secondary biomarker for the remote site:thoracic "
+)
+
+
+primary_cpm_thor_new_row <- data.frame(
   field_name = "primary_cpm_thor",
   field_type = "numeric",
-  field_note = "CPM primary biomarker:thoracic ")
- 
- secondary_cpm_thor_new_row <- data.frame(
+  field_note = "CPM primary biomarker:thoracic "
+)
+
+secondary_cpm_thor_new_row <- data.frame(
   field_name = "secondary_cpm_thor",
   field_type = "numeric",
-  field_note = "CPM secondary biomarker:thoracic ")
+  field_note = "CPM secondary biomarker:thoracic "
+)
 
 
 # Add the new row after the last row
 
 qst_dict <- qst_dict %>%
   slice(1:nrow(.)) %>%
-  add_row(.after = nrow(.), !!!primary_ppt_thor_new_row ) %>%
-  add_row(.after = nrow(.), !!!secondary_ppt_thor_new_row ) %>%
-  add_row(.after = nrow(.), !!!primary_ts_index_thor_new_row ) %>%
-  add_row(.after = nrow(.), !!!primary_ts_remote_thor_new_row ) %>%
-  add_row(.after = nrow(.), !!!secondary_ts_index_thor_new_row  ) %>%
-  add_row(.after = nrow(.), !!! secondary_ts_remote_thor_new_row )  %>%
-  add_row(.after = nrow(.), !!! primary_cpm_thor_new_row ) %>%
-  add_row(.after = nrow(.), !!!  secondary_cpm_thor_new_row) 
-
-
-
-
+  add_row(.after = nrow(.), !!!primary_ppt_thor_new_row) %>%
+  add_row(.after = nrow(.), !!!secondary_ppt_thor_new_row) %>%
+  add_row(.after = nrow(.), !!!primary_ts_index_thor_new_row) %>%
+  add_row(.after = nrow(.), !!!primary_ts_remote_thor_new_row) %>%
+  add_row(.after = nrow(.), !!!secondary_ts_index_thor_new_row) %>%
+  add_row(.after = nrow(.), !!!secondary_ts_remote_thor_new_row) %>%
+  add_row(.after = nrow(.), !!!primary_cpm_thor_new_row) %>%
+  add_row(.after = nrow(.), !!!secondary_cpm_thor_new_row)
 ```
 
 ##### Create QST error report for the Thoracotomy cohort.
 
 ```{r}
-
 # Specify the common prefix
 m2qst_error <- "m2qerror"
 
 # Find data frames in the global environment with the specified prefix
-m2qst_list <- mget(ls(pattern = paste0("^",m2qst_error)))
+m2qst_list <- mget(ls(pattern = paste0("^", m2qst_error)))
 
 # Combine the data frames using bind_rows
-m2qst_report <- bind_rows(m2qst_list) %>% 
-  as_tibble() %>% 
-  mutate_all(as.character) %>% 
-  pivot_wider(names_from = "error_type",values_from = "errors") %>%
-  mutate_all(~replace_na(., ""))
+m2qst_report <- bind_rows(m2qst_list) %>%
+  as_tibble() %>%
+  mutate_all(as.character) %>%
+  pivot_wider(names_from = "error_type", values_from = "errors") %>%
+  mutate_all(~ replace_na(., ""))
 ```
 
 ```{r}
-m2qst_report %>% 
-  gt() %>% 
-   tab_header(
-    title = md("**Thoracotomy Cohort QST form Error Report**")) %>% 
+m2qst_report %>%
+  gt() %>%
+  tab_header(
+    title = md("**Thoracotomy Cohort QST form Error Report**")
+  ) %>%
   tab_options(
-    table.font.size = px(12), 
-    column_labels.font.size = px(12)) %>%
+    table.font.size = px(12),
+    column_labels.font.size = px(12)
+  ) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)
@@ -2458,7 +2133,7 @@ Save "thor_qst" and data dictionary as .csv files in the folder named "reformatt
 ```{r warning=FALSE}
 #| eval: false
 
-write_csv(thor_qst,file=here::here("data","qst","Reformatted","reformatted_thor_qst.csv"))
+write_csv(thor_qst, file = here::here("data", "qst", "Reformatted", "reformatted_thor_qst.csv"))
 
-write_csv(qst_dict,file=here::here("data","qst","Reformatted","updated_qst_dict.csv"))
+write_csv(qst_dict, file = here::here("data", "qst", "Reformatted", "updated_qst_dict.csv"))
 ```

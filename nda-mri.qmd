@@ -73,12 +73,12 @@ The rest of the files are metadata associated with the storage of the dataset in
 #| echo: false
 tibble::tribble(
   ~`File/Directory`, ~`Description/Notes`,
-  '{{< downloadthis files/dataset_collection.txt dname="dataset_collection" label="dataset_collection.txt" >}}', 'Table with identifiers relating to how the data were uploaded',
-  '{{< downloadthis files/datastructure_manifest.txt dname="datastructure_manifest" label="datastructure_manifest.txt" >}}', 'Table with partial information about how the files are stored on the NDA AWS S3 bucket. This example file contains the first 10 rows.', 
-  '{{< downloadthis files/md5_values.txt dname="md5_values" label="md5_values.txt" >}}', 'Table with MD5 File Checksums for each of the files in the image03 folder. This example file contains the first 10 rows.', 
-  '{{< downloadthis files/package_file_metadata_1235008.txt dname="package_file_metadata_1235008" label="package_file_metadata_1235008.txt" >}}', 'Additional metadata related to the location of imaging files within the NDA and their S3 bucket',
-  '{{< downloadthis files/package_info.txt dname="package_info" label="package_info.txt" >}}', 'High-level information about the Data Package and Filter Cart at the time of Data Package creation. Note that the counts listed in this file may not relate to the files that were downloaded (e.g., this file refers to 1053 participants in the filter, but 585 participants were downloaded).',
-  '{{< downloadthis files/README.pdf dname="README" label="README.pdf" >}}', 'Information that pertains to some NDA Data Packages.'
+  '{{< downloadthis files/dataset_collection.txt dname="dataset_collection" label="dataset_collection.txt" >}}', "Table with identifiers relating to how the data were uploaded",
+  '{{< downloadthis files/datastructure_manifest.txt dname="datastructure_manifest" label="datastructure_manifest.txt" >}}', "Table with partial information about how the files are stored on the NDA AWS S3 bucket. This example file contains the first 10 rows.",
+  '{{< downloadthis files/md5_values.txt dname="md5_values" label="md5_values.txt" >}}', "Table with MD5 File Checksums for each of the files in the image03 folder. This example file contains the first 10 rows.",
+  '{{< downloadthis files/package_file_metadata_1235008.txt dname="package_file_metadata_1235008" label="package_file_metadata_1235008.txt" >}}', "Additional metadata related to the location of imaging files within the NDA and their S3 bucket",
+  '{{< downloadthis files/package_info.txt dname="package_info" label="package_info.txt" >}}', "High-level information about the Data Package and Filter Cart at the time of Data Package creation. Note that the counts listed in this file may not relate to the files that were downloaded (e.g., this file refers to 1053 participants in the filter, but 585 participants were downloaded).",
+  '{{< downloadthis files/README.pdf dname="README" label="README.pdf" >}}', "Information that pertains to some NDA Data Packages."
 )
 ```
 

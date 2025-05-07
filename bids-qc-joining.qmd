@@ -65,7 +65,7 @@ In this example, all scans with a rating "red" will be excluded, so filter for t
 
 ```{r}
 red_t1w <- t1w_ratings |>
-  filter(rating=="red")
+  filter(rating == "red")
 red_t1w
 ```
 
