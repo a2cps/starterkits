@@ -41,5 +41,5 @@ The latest release is always contained in a sub-folder called `pre-surgery`. Tha
   - [ ] QSIprep
   - [ ] GIFT
   - [x] Prior Neural Pain Signatures @sec-neural-pain-signatures
-  - [ ] Functional Connectivity
+  - [x] Functional Connectivity @sec-functional-connectivity
   
