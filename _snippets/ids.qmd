@@ -1,0 +1,1 @@
+A2CPS relies on several different schemes for labeling and describing metadata entities. For example, across modalities, participants are identified by Record ID, Subject GUID, Individual ID, and NDA GUID. For more details on how these identifiers relate, see @sec-ids.
