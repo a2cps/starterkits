@@ -171,9 +171,3 @@ tibble::tribble(
     caption = "Visit Entity Mapping"
   )
 ```
-
-## Contacts
-
-- [Joshua Urrutia](https://a2cps.atlassian.net/wiki/people/5bce32cb2bfc57158b2faeb7?ref=confluence)
-- [James Ford](https://a2cps.atlassian.net/wiki/people/712020:b74bac07-188d-4937-94b0-e97a7d5ea96e?ref=confluence)
-- [Margaret Taub](https://a2cps.atlassian.net/wiki/people/70121:329569fc-80ac-4431-9df6-d7ef32c69789?ref=confluence)

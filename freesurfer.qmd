@@ -1,11 +1,5 @@
 # FreeSurfer Measures {#sec-freesurfer}
 
-## Before Proposing Project
-
-### Confirm Sample Size
-
-Not all participants in a release have imaging, and not all MRIs are of good quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0.0 has `{r} readr::read_tsv("data/aparc.tsv") |> dplyr::distinct(sub) |> nrow()` participants with for which FreeSurfer data have been extracted. 
-
 ## Starting Project
 
 This kit will use both `shell` and `R`

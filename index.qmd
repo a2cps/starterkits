@@ -1,24 +1,8 @@
 # Preface {#sec-preface .unnumbered}
 
-Starter kits are brief tutorials that are designed to help guide internal A2CPS projects. The kits target researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data). They assume that researchers will access internal A2CPS releases (that is, on TACC rather than from the NDA). 
+Starter kits are brief tutorials that are designed to help guide internal A2CPS projects. The kits target researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data). 
 
-Each kit has three sections, information to consider before starting a project, information about how to access the relevant data, and an overview of related work by the DIRC. 
-
-Kits correspond to the individual modalities that can be requested in the [Data Request Form](https://a2cps.atlassian.net/wiki/spaces/WG/pages/5080456/Data+Sharing+Committee+Proposal+Meetings+Forms?preview=/5080456/5106943/Data%20Request%20Form_2023.pdf). See below for a status of each kit.
-
-Each kit provides examples of how to explore the data and run simple analyses. These examples rely on various kinds of code, including shell commands, `R`, and `python`. These examples should be seen as only one of many ways to interact with the data. For example, the data reviewed in @sec-freesurfer is stored in `tsv` (tab-separated value) files, and that kit demonstrates working with those tables in `R`. But the tsv can be read with many programs besides `R`, including programs like Excel. The kits rely on code because the dataset is large enough that code- and scripting-based analyses provide substantial benefits. If these methods are a barrier to your analyses, please reach out to members of the Data Integration and Resource Center (DIRC) via email or Slack: [A2CPS Directory](https://a2cps.org/directory/). It is the job of DIRC members to facilitate and support analyses of A2CPS data.
-
-On TACC, all releases are stored underneath this folder. 
-
-```bash
-/corral-secure/projects/A2CPS/products/consortium-data/
-```
-
-The latest release is always contained in a sub-folder called `pre-surgery`. That `pre-surgery` folder will be updated with each release. For example, the latest release is 2.0.0, and so release 2.0.0 is available at
-
-```bash
-/corral-secure/projects/A2CPS/products/consortium-data/
-```
+Each kit has two sections, information about how to access the relevant data, and an overview of related work by the DIRC. Kits provide examples of how to explore the data and run simple analyses. These examples rely on various kinds of code, including shell commands, `R`, and `python`. These examples should be seen as only one of many ways to interact with the data. For example, the data reviewed in @sec-freesurfer is stored in `tsv` (tab-separated value) files, and that kit demonstrates working with those tables in `R`. But the tsv can be read with many programs besides `R`, including programs like Excel. The kits rely on code because the dataset is large enough that code- and scripting-based analyses provide substantial benefits. 
 
 ## Kit Availability
 

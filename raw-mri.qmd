@@ -97,9 +97,9 @@ tibble::tribble(
 ```
 
 
-### Data Quality
+### Data Quality {#sec-raw-mri-quality}
 
-All raw data have undergone quality review. For details on the review process see [A2CPS Imaging Quality Assurance](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406780).
+All raw data have undergone quality review. For details on the review process see [A2CPS Imaging Quality Assurance](https://a2cps.atlassian.net/wiki/external/OTEyMDE5ZDkxY2NkNGI0MWE5ZDRmMWE4MDViM2MzNmE).
 
 The resulting overall quality ratings (red/yellow/green) are included in the `*scans.tsv` files. For example
 
@@ -164,13 +164,9 @@ Prior to release, all T1w images are skull-stripped using brain masks from the f
 
 ### Acquisition Protocol Variation
 
-Over the course of the project, individual scanners have occasionally needed upgrading. For a timeline of acquisition changes, see: [Timeline of Imaging Acquisition Changes](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406851). 
+Over the course of the project, individual scanners have occasionally needed upgrading. For a timeline of acquisition changes, see: [Timeline of Imaging Acquisition Changes](https://a2cps.atlassian.net/wiki/external/ZDE2MjFlYjgwYjJiNGE4NTk3ZGJjMjM4N2I5YWZmMTM). 
 
-Occasionally, scans were collected with acquisition parameters that differed from the standards listed in the [A2CPS Tech Manual](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406812). For a review of the kinds of deviations that have been observed, see [Imaging Log - Problem Cases](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406735). In general, preprocessing pipelines should not assume that there is consistency in the acquisition parameters across participants (even in participants from the same site), and in all cases, the metadata within the json sidecars should be referenced as the best source of information on these parameters.
-
-### Additions Planned for Later Releases
-
-For planned updates, please see the table [Release v2.1](https://https://a2cps.atlassian.net/wiki/spaces/DOC/pages/409567354/Release+v2.1) with `Product == bids`.
+Occasionally, scans were collected with acquisition parameters that differed from the standards listed in the [A2CPS Tech Manual](https://a2cps.atlassian.net/wiki/external/ODZhOWJkN2JmMTg3NDA3OWI2ZGM3M2RhZjhlOTQ3YTc). For a review of the kinds of deviations that have been observed, see [Imaging Log - Problem Cases](https://a2cps.atlassian.net/wiki/external/ZmVkMTczZWJlMzE1NGIyOTgzNGM4NTVlNzUxMGFkZjc). In general, preprocessing pipelines should not assume that there is consistency in the acquisition parameters across participants (even in participants from the same site), and in all cases, the metadata within the json sidecars should be referenced as the best source of information on these parameters.
 
 ### Software Packages for Working with BIDS
 
@@ -189,10 +185,4 @@ Several packages in multiple languages have been developed to simplify interacti
 
 If you use the imaging data in your research, please cite the imaging pipeline preprint: @sadil_acute_2024.
 
-### Contacts {#sec-contacts}
-
-* slack: [#help-imaging](https://a2cps-pain.slack.com/archives/C07SBJJLFMG) 
-* email: 
-  * [James Ford](https://a2cps.atlassian.net/wiki/people/712020:b74bac07-188d-4937-94b0-e97a7d5ea96e?ref=confluence)
-  * [Patrick Sadil](https://a2cps.atlassian.net/wiki/people/712020:9b1f0b7e-3a1b-4955-856b-f0b1a07e458e?ref=confluence)
 

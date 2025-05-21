@@ -6,12 +6,6 @@ format:
 
 # Prior Neural Pain Signature Responses {#sec-neural-pain-signatures}
 
-## Before Proposing Project
-
-### Confirm Sample Size
-
-Not all participants in a release have imaging, and depending on the application not all MRIs may be of sufficient quality. Before proposing a project, please confirm that a release will have a large enough sample size. Release 2.0 has 716 participants with the primary task fMRI biomarker: NPS [@wager_fmri-based_2013] and SIIPS-1 [@woo_quantifying_2017]. 
-
 ## Starting Project
 
 ### Locate data
@@ -187,7 +181,7 @@ shape: (716, 4)
 
 ### Signature Response Measure
 
-The signature responses were extracted using best-practices, but the imaging DIRC is currently exploring alternative ways of calculating signature responses in the CUFF tasks. For details and progress, please see [Imaging Analysis Ideas | NPS+SIIPS1 on ToPS or SpaceTop Data](https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406923/Imaging+Analysis+Ideas#NPS%2BSIIPS1-on-ToPS-or-SpaceTop-Data).
+The signature responses were extracted using best-practices, but the imaging DIRC is currently exploring alternative ways of calculating signature responses in the CUFF tasks. 
 
 ### Intermediate Outputs
 
