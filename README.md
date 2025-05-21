@@ -5,6 +5,7 @@
 The following is a minimal workflow for updating the site. 
 
 * Make changes to the relevant files (e.g., `*qmd`, [references.bib](references.bib)).
+* Add file to either the "chapters" or "appendices" section of [_quarto.yml](_quarto.yml).
 * Render book ([docs](https://quarto.org/docs/projects/quarto-projects.html))
 
 ```{shell}
