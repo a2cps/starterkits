@@ -2,18 +2,6 @@
 
 This page provides considerations for A2CPS projects that involve the Genetic Variant data.
 
-## Before Proposing Project
-
-### Confirm the existence of relevant SNPs
-
-The A2CPS array generates information about approximately 700k polymorphisms. 
-
-To determine whether the polymorphisms are present, gather relevant rsIDs (an identification number for a polymorphism), and then send the list to [Margaret Taub](https://a2cps.atlassian.net/wiki/people/70121:329569fc-80ac-4431-9df6-d7ef32c69789?ref=confluence). 
-
-### Check that the prevalence of available polymorphisms of interest is sufficient
-
-Some polymorphisms are rare (or are rare in certain demographics)--too rare for A2CPS to support a substantial sample size. For this reason, it is good to check the prevalence of the available polymorphisms of interest. One way to do this is to look at allele frequency on [gnomAD](https://gnomad.broadinstitute.org/).
-
 ## Starting Project
 
 ### Locate Data

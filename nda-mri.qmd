@@ -82,10 +82,3 @@ tibble::tribble(
 )
 ```
 
-## Contacts
-
-- slack: [#help-imaging](https://a2cps-pain.slack.com/archives/C07SBJJLFMG)
-- email:
-  - [James Ford](https://a2cps.atlassian.net/wiki/people/712020:b74bac07-188d-4937-94b0-e97a7d5ea96e?ref=confluence)
-  - [Patrick Sadil](https://a2cps.atlassian.net/wiki/people/712020:9b1f0b7e-3a1b-4955-856b-f0b1a07e458e?ref=confluence)
-

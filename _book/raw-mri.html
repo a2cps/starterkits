@@ -463,18 +463,16 @@ div.csl-indent {
   <li><a href="#on-starting-project" id="toc-on-starting-project" class="nav-link active" data-scroll-target="#on-starting-project"><span class="header-section-number">2.1</span> On Starting Project</a>
   <ul class="collapse">
   <li><a href="#sec-raw-mri-extract" id="toc-sec-raw-mri-extract" class="nav-link" data-scroll-target="#sec-raw-mri-extract"><span class="header-section-number">2.1.1</span> Extract Data</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">2.1.2</span> Data Quality</a></li>
+  <li><a href="#sec-raw-mri-quality" id="toc-sec-raw-mri-quality" class="nav-link" data-scroll-target="#sec-raw-mri-quality"><span class="header-section-number">2.1.2</span> Data Quality</a></li>
   </ul></li>
   <li><a href="#considerations-while-working-on-project" id="toc-considerations-while-working-on-project" class="nav-link" data-scroll-target="#considerations-while-working-on-project"><span class="header-section-number">2.2</span> Considerations While Working on Project</a>
   <ul class="collapse">
   <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">2.2.1</span> Data Generation</a></li>
   <li><a href="#skull-stripping-for-privacy" id="toc-skull-stripping-for-privacy" class="nav-link" data-scroll-target="#skull-stripping-for-privacy"><span class="header-section-number">2.2.2</span> Skull-Stripping for Privacy</a></li>
   <li><a href="#acquisition-protocol-variation" id="toc-acquisition-protocol-variation" class="nav-link" data-scroll-target="#acquisition-protocol-variation"><span class="header-section-number">2.2.3</span> Acquisition Protocol Variation</a></li>
-  <li><a href="#additions-planned-for-later-releases" id="toc-additions-planned-for-later-releases" class="nav-link" data-scroll-target="#additions-planned-for-later-releases"><span class="header-section-number">2.2.4</span> Additions Planned for Later Releases</a></li>
-  <li><a href="#software-packages-for-working-with-bids" id="toc-software-packages-for-working-with-bids" class="nav-link" data-scroll-target="#software-packages-for-working-with-bids"><span class="header-section-number">2.2.5</span> Software Packages for Working with BIDS</a></li>
-  <li><a href="#joining-with-other-modalities" id="toc-joining-with-other-modalities" class="nav-link" data-scroll-target="#joining-with-other-modalities"><span class="header-section-number">2.2.6</span> Joining with Other Modalities</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">2.2.7</span> Citations</a></li>
-  <li><a href="#sec-contacts" id="toc-sec-contacts" class="nav-link" data-scroll-target="#sec-contacts"><span class="header-section-number">2.2.8</span> Contacts</a></li>
+  <li><a href="#software-packages-for-working-with-bids" id="toc-software-packages-for-working-with-bids" class="nav-link" data-scroll-target="#software-packages-for-working-with-bids"><span class="header-section-number">2.2.4</span> Software Packages for Working with BIDS</a></li>
+  <li><a href="#joining-with-other-modalities" id="toc-joining-with-other-modalities" class="nav-link" data-scroll-target="#joining-with-other-modalities"><span class="header-section-number">2.2.5</span> Joining with Other Modalities</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">2.2.6</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -600,9 +598,9 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="data-quality" class="level3" data-number="2.1.2">
-<h3 data-number="2.1.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">2.1.2</span> Data Quality</h3>
-<p>All raw data have undergone quality review. For details on the review process see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406780">A2CPS Imaging Quality Assurance</a>.</p>
+<section id="sec-raw-mri-quality" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="sec-raw-mri-quality"><span class="header-section-number">2.1.2</span> Data Quality</h3>
+<p>All raw data have undergone quality review. For details on the review process see <a href="https://a2cps.atlassian.net/wiki/external/OTEyMDE5ZDkxY2NkNGI0MWE5ZDRmMWE4MDViM2MzNmE">A2CPS Imaging Quality Assurance</a>.</p>
 <p>The resulting overall quality ratings (red/yellow/green) are included in the <code>*scans.tsv</code> files. For example</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">filename</span>    rating</span>
@@ -665,15 +663,11 @@ Visconti di Oleggio Castello, M., Dobson, J. E., Sackett, T., Kodiweera, C., Hax
 </section>
 <section id="acquisition-protocol-variation" class="level3" data-number="2.2.3">
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="acquisition-protocol-variation"><span class="header-section-number">2.2.3</span> Acquisition Protocol Variation</h3>
-<p>Over the course of the project, individual scanners have occasionally needed upgrading. For a timeline of acquisition changes, see: <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406851">Timeline of Imaging Acquisition Changes</a>.</p>
-<p>Occasionally, scans were collected with acquisition parameters that differed from the standards listed in the <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406812">A2CPS Tech Manual</a>. For a review of the kinds of deviations that have been observed, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406735">Imaging Log - Problem Cases</a>. In general, preprocessing pipelines should not assume that there is consistency in the acquisition parameters across participants (even in participants from the same site), and in all cases, the metadata within the json sidecars should be referenced as the best source of information on these parameters.</p>
+<p>Over the course of the project, individual scanners have occasionally needed upgrading. For a timeline of acquisition changes, see: <a href="https://a2cps.atlassian.net/wiki/external/ZDE2MjFlYjgwYjJiNGE4NTk3ZGJjMjM4N2I5YWZmMTM">Timeline of Imaging Acquisition Changes</a>.</p>
+<p>Occasionally, scans were collected with acquisition parameters that differed from the standards listed in the <a href="https://a2cps.atlassian.net/wiki/external/ODZhOWJkN2JmMTg3NDA3OWI2ZGM3M2RhZjhlOTQ3YTc">A2CPS Tech Manual</a>. For a review of the kinds of deviations that have been observed, see <a href="https://a2cps.atlassian.net/wiki/external/ZmVkMTczZWJlMzE1NGIyOTgzNGM4NTVlNzUxMGFkZjc">Imaging Log - Problem Cases</a>. In general, preprocessing pipelines should not assume that there is consistency in the acquisition parameters across participants (even in participants from the same site), and in all cases, the metadata within the json sidecars should be referenced as the best source of information on these parameters.</p>
 </section>
-<section id="additions-planned-for-later-releases" class="level3" data-number="2.2.4">
-<h3 data-number="2.2.4" class="anchored" data-anchor-id="additions-planned-for-later-releases"><span class="header-section-number">2.2.4</span> Additions Planned for Later Releases</h3>
-<p>For planned updates, please see the table <a href="https://https://a2cps.atlassian.net/wiki/spaces/DOC/pages/409567354/Release+v2.1">Release v2.1</a> with <code>Product == bids</code>.</p>
-</section>
-<section id="software-packages-for-working-with-bids" class="level3" data-number="2.2.5">
-<h3 data-number="2.2.5" class="anchored" data-anchor-id="software-packages-for-working-with-bids"><span class="header-section-number">2.2.5</span> Software Packages for Working with BIDS</h3>
+<section id="software-packages-for-working-with-bids" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="software-packages-for-working-with-bids"><span class="header-section-number">2.2.4</span> Software Packages for Working with BIDS</h3>
 <p>Several packages in multiple languages have been developed to simplify interacting with BIDS. For a complete list, see: <a href="https://bids.neuroimaging.io/benefits.html#other-tools">Benefits</a>, a subset of which is copied below</p>
 <ul>
 <li><a href="https://github.com/bids-standard/bids-matlab">bids-matlab</a>: MATLAB/Octave tools to interact with datasets conforming to the BIDS format</li>
@@ -681,29 +675,18 @@ Visconti di Oleggio Castello, M., Dobson, J. E., Sackett, T., Kodiweera, C., Hax
 <li><a href="https://github.com/bids-standard/pybids">PyBIDS</a>: Python package to quickly parse / search the components of a BIDS dataset. It also contains functionality for running analyses on your data</li>
 </ul>
 </section>
-<section id="joining-with-other-modalities" class="level3" data-number="2.2.6">
-<h3 data-number="2.2.6" class="anchored" data-anchor-id="joining-with-other-modalities"><span class="header-section-number">2.2.6</span> Joining with Other Modalities</h3>
+<section id="joining-with-other-modalities" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="joining-with-other-modalities"><span class="header-section-number">2.2.5</span> Joining with Other Modalities</h3>
 <p>A2CPS relies on several different schemes for labeling and describing metadata entities. For example, across modalities, participants are identified by Record ID, Subject GUID, Individual ID, and NDA GUID. For more details on how these identifiers relate, see <a href="ids.html" class="quarto-xref"><span>Appendix B</span></a>.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="2.2.7">
-<h3 data-number="2.2.7" class="anchored" data-anchor-id="citations"><span class="header-section-number">2.2.7</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="2.2.6">
+<h3 data-number="2.2.6" class="anchored" data-anchor-id="citations"><span class="header-section-number">2.2.6</span> Citations</h3>
 <p>If you use the imaging data in your research, please cite the imaging pipeline preprint: <span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>.</p>
+
+
 <div class="no-row-height column-margin column-container"><div id="ref-sadil_acute_2024" class="csl-entry" role="listitem">
 Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J., DeLano, M. C., Ford, J. C., Gattu, R., Guo, X., Harris, R. E., Ichesco, E., Johnson, M. A., Jung, H., Kahn, A. B., Kaplan, C. M., Leloudas, N., Lindquist, M. A., Luo, Q., … Chronic Pain Signatures Consortium, T. A. to. (2024). Image processing in the acute to chronic pain signatures (A2CPS) project. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2024.12.19.627509">https://doi.org/10.1101/2024.12.19.627509</a>
-</div></div></section>
-<section id="sec-contacts" class="level3" data-number="2.2.8">
-<h3 data-number="2.2.8" class="anchored" data-anchor-id="sec-contacts"><span class="header-section-number">2.2.8</span> Contacts</h3>
-<ul>
-<li>slack: <a href="https://a2cps-pain.slack.com/archives/C07SBJJLFMG">#help-imaging</a></li>
-<li>email:
-<ul>
-<li><a href="https://a2cps.atlassian.net/wiki/people/712020:b74bac07-188d-4937-94b0-e97a7d5ea96e?ref=confluence">James Ford</a></li>
-<li><a href="https://a2cps.atlassian.net/wiki/people/712020:9b1f0b7e-3a1b-4955-856b-f0b1a07e458e?ref=confluence">Patrick Sadil</a></li>
-</ul></li>
-</ul>
-
-
-
+</div></div>
 </section>
 </section>
 

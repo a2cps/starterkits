@@ -440,24 +440,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#before-proposing-project" id="toc-before-proposing-project" class="nav-link active" data-scroll-target="#before-proposing-project"><span class="header-section-number">1.1</span> Before Proposing Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">1.1</span> Starting Project</a>
   <ul class="collapse">
-  <li><a href="#confirm-the-existence-of-relevant-snps" id="toc-confirm-the-existence-of-relevant-snps" class="nav-link" data-scroll-target="#confirm-the-existence-of-relevant-snps"><span class="header-section-number">1.1.1</span> Confirm the existence of relevant SNPs</a></li>
-  <li><a href="#check-that-the-prevalence-of-available-polymorphisms-of-interest-is-sufficient" id="toc-check-that-the-prevalence-of-available-polymorphisms-of-interest-is-sufficient" class="nav-link" data-scroll-target="#check-that-the-prevalence-of-available-polymorphisms-of-interest-is-sufficient"><span class="header-section-number">1.1.2</span> Check that the prevalence of available polymorphisms of interest is sufficient</a></li>
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">1.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">1.1.2</span> Extract Data</a></li>
+  <li><a href="#plink-1.9" id="toc-plink-1.9" class="nav-link" data-scroll-target="#plink-1.9"><span class="header-section-number">1.1.3</span> PLINK 1.9</a></li>
   </ul></li>
-  <li><a href="#starting-project" id="toc-starting-project" class="nav-link" data-scroll-target="#starting-project"><span class="header-section-number">1.2</span> Starting Project</a>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">1.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">1.2.1</span> Locate Data</a></li>
-  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">1.2.2</span> Extract Data</a></li>
-  <li><a href="#plink-1.9" id="toc-plink-1.9" class="nav-link" data-scroll-target="#plink-1.9"><span class="header-section-number">1.2.3</span> PLINK 1.9</a></li>
-  </ul></li>
-  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">1.3</span> Considerations While Working on the Project</a>
-  <ul class="collapse">
-  <li><a href="#principal-components" id="toc-principal-components" class="nav-link" data-scroll-target="#principal-components"><span class="header-section-number">1.3.1</span> Principal Components</a></li>
-  <li><a href="#sex-typing" id="toc-sex-typing" class="nav-link" data-scroll-target="#sex-typing"><span class="header-section-number">1.3.2</span> Sex Typing</a></li>
-  <li><a href="#relatedness" id="toc-relatedness" class="nav-link" data-scroll-target="#relatedness"><span class="header-section-number">1.3.3</span> Relatedness</a></li>
-  <li><a href="#imputation" id="toc-imputation" class="nav-link" data-scroll-target="#imputation"><span class="header-section-number">1.3.4</span> Imputation</a></li>
-  <li><a href="#currently" id="toc-currently" class="nav-link" data-scroll-target="#currently"><span class="header-section-number">1.3.5</span> Currently</a></li>
+  <li><a href="#principal-components" id="toc-principal-components" class="nav-link" data-scroll-target="#principal-components"><span class="header-section-number">1.2.1</span> Principal Components</a></li>
+  <li><a href="#sex-typing" id="toc-sex-typing" class="nav-link" data-scroll-target="#sex-typing"><span class="header-section-number">1.2.2</span> Sex Typing</a></li>
+  <li><a href="#relatedness" id="toc-relatedness" class="nav-link" data-scroll-target="#relatedness"><span class="header-section-number">1.2.3</span> Relatedness</a></li>
+  <li><a href="#imputation" id="toc-imputation" class="nav-link" data-scroll-target="#imputation"><span class="header-section-number">1.2.4</span> Imputation</a></li>
+  <li><a href="#currently" id="toc-currently" class="nav-link" data-scroll-target="#currently"><span class="header-section-number">1.2.5</span> Currently</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -486,22 +481,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This page provides considerations for A2CPS projects that involve the Genetic Variant data.</p>
-<section id="before-proposing-project" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="before-proposing-project"><span class="header-section-number">1.1</span> Before Proposing Project</h2>
-<section id="confirm-the-existence-of-relevant-snps" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="confirm-the-existence-of-relevant-snps"><span class="header-section-number">1.1.1</span> Confirm the existence of relevant SNPs</h3>
-<p>The A2CPS array generates information about approximately 700k polymorphisms.</p>
-<p>To determine whether the polymorphisms are present, gather relevant rsIDs (an identification number for a polymorphism), and then send the list to <a href="https://a2cps.atlassian.net/wiki/people/70121:329569fc-80ac-4431-9df6-d7ef32c69789?ref=confluence">Margaret Taub</a>.</p>
-</section>
-<section id="check-that-the-prevalence-of-available-polymorphisms-of-interest-is-sufficient" class="level3" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="check-that-the-prevalence-of-available-polymorphisms-of-interest-is-sufficient"><span class="header-section-number">1.1.2</span> Check that the prevalence of available polymorphisms of interest is sufficient</h3>
-<p>Some polymorphisms are rare (or are rare in certain demographics)–too rare for A2CPS to support a substantial sample size. For this reason, it is good to check the prevalence of the available polymorphisms of interest. One way to do this is to look at allele frequency on <a href="https://gnomad.broadinstitute.org/">gnomAD</a>.</p>
-</section>
-</section>
-<section id="starting-project" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">1.2</span> Starting Project</h2>
-<section id="locate-data" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">1.2.1</span> Locate Data</h3>
+<section id="starting-project" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">1.1</span> Starting Project</h2>
+<section id="locate-data" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">1.1.1</span> Locate Data</h3>
 <p>On TACC, the data are stored underneath the releases. For example, data release <code>v1.#.#</code> is underneath</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The single-nucleotide polymorphisms are underneath the <code>omics/gene_variants</code> folder</p>
@@ -514,8 +497,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">20231012_GV_genotypes_RunList_1_2_3_subj_filtered.log</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>These files are in the <a href="https://www.cog-genomics.org/plink/2.0/">PLINK</a> format.</p>
 </section>
-<section id="extract-data" class="level3" data-number="1.2.2">
-<h3 data-number="1.2.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">1.2.2</span> Extract Data</h3>
+<section id="extract-data" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">1.1.2</span> Extract Data</h3>
 <p>To access the variant data, plink2 (or the older plink) must be installed. Please see: <a href="https://www.cog-genomics.org/plink/2.0/">PLINK 2.0</a>.</p>
 <p>Store the rsIDs in a newline-delimited file. For example, the file below, <code>snps.txt</code>, has 11 rsIDs (of which only 3 are available in A2CPS).</p>
 <pre class="shell"><code>$ cat snps.txt 
@@ -628,12 +611,12 @@ rs7570903</code></pre>
 </ul>
 <p>See also the R package <a href="https://rdrr.io/bioc/snpStats/man/read.plink.html">snpStats</a> and the python package <a href="https://github.com/fastlmm/bed-reader">bed-reader</a>.</p>
 </section>
-<section id="plink-1.9" class="level3" data-number="1.2.3">
-<h3 data-number="1.2.3" class="anchored" data-anchor-id="plink-1.9"><span class="header-section-number">1.2.3</span> PLINK 1.9</h3>
+<section id="plink-1.9" class="level3" data-number="1.1.3">
+<h3 data-number="1.1.3" class="anchored" data-anchor-id="plink-1.9"><span class="header-section-number">1.1.3</span> PLINK 1.9</h3>
 <p>See all files types here: <a href="https://www.cog-genomics.org/plink/1.9/formats">File format reference - PLINK 1.9</a>.</p>
 <p>Those critical to the analyses below are expanded.</p>
-<section id="bim" class="level4" data-number="1.2.3.1">
-<h4 data-number="1.2.3.1" class="anchored" data-anchor-id="bim"><span class="header-section-number">1.2.3.1</span> <code>.bim</code></h4>
+<section id="bim" class="level4" data-number="1.1.3.1">
+<h4 data-number="1.1.3.1" class="anchored" data-anchor-id="bim"><span class="header-section-number">1.1.3.1</span> <code>.bim</code></h4>
 <p>Each row in this file specifics a genetic variant and provides extended information on its location and alleles.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -694,8 +677,8 @@ rs7570903</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="fam" class="level4" data-number="1.2.3.2">
-<h4 data-number="1.2.3.2" class="anchored" data-anchor-id="fam"><span class="header-section-number">1.2.3.2</span> <code>.fam</code></h4>
+<section id="fam" class="level4" data-number="1.1.3.2">
+<h4 data-number="1.1.3.2" class="anchored" data-anchor-id="fam"><span class="header-section-number">1.1.3.2</span> <code>.fam</code></h4>
 <div class="cell">
 <div class="cell-output-display">
 <div class="kable-table">
@@ -752,8 +735,8 @@ rs7570903</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="hh" class="level4" data-number="1.2.3.3">
-<h4 data-number="1.2.3.3" class="anchored" data-anchor-id="hh"><span class="header-section-number">1.2.3.3</span> <code>.hh</code></h4>
+<section id="hh" class="level4" data-number="1.1.3.3">
+<h4 data-number="1.1.3.3" class="anchored" data-anchor-id="hh"><span class="header-section-number">1.1.3.3</span> <code>.hh</code></h4>
 <p>A file is generated whenever a variant information contains a heterozygous call when it should not be possible, such as the examples highlighted below:</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -790,17 +773,17 @@ rs7570903</code></pre>
 </section>
 </section>
 </section>
-<section id="considerations-while-working-on-the-project" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">1.3</span> Considerations While Working on the Project</h2>
+<section id="considerations-while-working-on-the-project" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">1.2</span> Considerations While Working on the Project</h2>
 <p>The below procedures were performed with these data:</p>
 <p>20231012_GV_genotypes_RunList_1_2_3_subj_filtered.bed</p>
 <p>20231012_GV_genotypes_RunList_1_2_3_subj_filtered.bim</p>
 <p>20231012_GV_genotypes_RunList_1_2_3_subj_filtered.fam</p>
-<section id="principal-components" class="level3" data-number="1.3.1">
-<h3 data-number="1.3.1" class="anchored" data-anchor-id="principal-components"><span class="header-section-number">1.3.1</span> Principal Components</h3>
+<section id="principal-components" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="principal-components"><span class="header-section-number">1.2.1</span> Principal Components</h3>
 <p>Systematic differences in ancestry between groups – population stratification – can lead to spurious associations with allele frequencies, and so multiethnic analyses often include genetic principal components to account for the variation imposed by population structure.</p>
-<section id="steps" class="level4" data-number="1.3.1.1">
-<h4 data-number="1.3.1.1" class="anchored" data-anchor-id="steps"><span class="header-section-number">1.3.1.1</span> Steps</h4>
+<section id="steps" class="level4" data-number="1.2.1.1">
+<h4 data-number="1.2.1.1" class="anchored" data-anchor-id="steps"><span class="header-section-number">1.2.1.1</span> Steps</h4>
 <ol type="1">
 <li>LD Pruning (as PCA relies on independent observations)</li>
 </ol>
@@ -834,8 +817,8 @@ rs7570903</code></pre>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">[11]</span>  3.632014  3.498574  3.257322  2.571546  2.048390</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">[16]</span>  2.023504  1.966317  1.794002  1.749993  1.722911</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="plotting" class="level4" data-number="1.3.1.2">
-<h4 data-number="1.3.1.2" class="anchored" data-anchor-id="plotting"><span class="header-section-number">1.3.1.2</span> Plotting</h4>
+<section id="plotting" class="level4" data-number="1.2.1.2">
+<h4 data-number="1.2.1.2" class="anchored" data-anchor-id="plotting"><span class="header-section-number">1.2.1.2</span> Plotting</h4>
 <div id="fig-scree" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Scree plot">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-scree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -858,11 +841,11 @@ Figure&nbsp;1.2: scatter plot
 </div>
 </section>
 </section>
-<section id="sex-typing" class="level3" data-number="1.3.2">
-<h3 data-number="1.3.2" class="anchored" data-anchor-id="sex-typing"><span class="header-section-number">1.3.2</span> Sex Typing</h3>
+<section id="sex-typing" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="sex-typing"><span class="header-section-number">1.2.2</span> Sex Typing</h3>
 <p>This procedure confirms the gender of each participant as documented in the study by testing the X Chromosome homozygosity levels. Male participants are haploid for the X chromosome whereas females are diploid, thus we expect a high deviation from the genotypes predicted by Hardy-Weinberg equilibrium (0/0, 0/1, 1/1) with male participants, as their genes should exclusively be either A or a (hemizygous). This deviation is captured by the F Statistic (F stat) in PLINK Below are the steps used on A2CPS genotype data to confirm the gender of each participant.</p>
-<section id="steps-1" class="level4" data-number="1.3.2.1">
-<h4 data-number="1.3.2.1" class="anchored" data-anchor-id="steps-1"><span class="header-section-number">1.3.2.1</span> Steps</h4>
+<section id="steps-1" class="level4" data-number="1.2.2.1">
+<h4 data-number="1.2.2.1" class="anchored" data-anchor-id="steps-1"><span class="header-section-number">1.2.2.1</span> Steps</h4>
 <ol type="1">
 <li>Subset ChrX (23)</li>
 </ol>
@@ -926,8 +909,8 @@ Figure&nbsp;1.2: scatter plot
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--check-sex</span> 0.3 0.75 <span class="dt">\</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--out</span> /Users/sethberke/a2cps_imputation/sextyping/sex_check</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="output" class="level4" data-number="1.3.2.2">
-<h4 data-number="1.3.2.2" class="anchored" data-anchor-id="output"><span class="header-section-number">1.3.2.2</span> Output</h4>
+<section id="output" class="level4" data-number="1.2.2.2">
+<h4 data-number="1.2.2.2" class="anchored" data-anchor-id="output"><span class="header-section-number">1.2.2.2</span> Output</h4>
 <div class="cell">
 <div class="cell-output-display">
 <div class="kable-table">
@@ -973,8 +956,8 @@ Figure&nbsp;1.2: scatter plot
 </div>
 </div>
 </section>
-<section id="plotting-1" class="level4" data-number="1.3.2.3">
-<h4 data-number="1.3.2.3" class="anchored" data-anchor-id="plotting-1"><span class="header-section-number">1.3.2.3</span> Plotting</h4>
+<section id="plotting-1" class="level4" data-number="1.2.2.3">
+<h4 data-number="1.2.2.3" class="anchored" data-anchor-id="plotting-1"><span class="header-section-number">1.2.2.3</span> Plotting</h4>
 <div id="fig-sex-typing" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A2CPS Sex Typing">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-sex-typing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -987,8 +970,8 @@ Figure&nbsp;1.3: A2CPS Sex Typing
 </div>
 </section>
 </section>
-<section id="relatedness" class="level3" data-number="1.3.3">
-<h3 data-number="1.3.3" class="anchored" data-anchor-id="relatedness"><span class="header-section-number">1.3.3</span> Relatedness</h3>
+<section id="relatedness" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="relatedness"><span class="header-section-number">1.2.3</span> Relatedness</h3>
 <p>Allele sharing percentages can identify relatedness amongst participants. For instance, with full siblings we expect 50% of their SNPs to be identical by descent = 1 (AA and AB) and 25% of their SNPs to be identical by descent = 2 (AA and AA). All relationships are shown in the chart below, and correspond to plink .genome values (k0ab = Z0, k0ab = Z1, k0ab = Z2).</p>
 <div id="fig-relatedness" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A2CPS Relatedness Table">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1000,8 +983,8 @@ Figure&nbsp;1.4: A2CPS Relatedness Table
 </figcaption>
 </figure>
 </div>
-<section id="steps-2" class="level4" data-number="1.3.3.1">
-<h4 data-number="1.3.3.1" class="anchored" data-anchor-id="steps-2"><span class="header-section-number">1.3.3.1</span> Steps</h4>
+<section id="steps-2" class="level4" data-number="1.2.3.1">
+<h4 data-number="1.2.3.1" class="anchored" data-anchor-id="steps-2"><span class="header-section-number">1.2.3.1</span> Steps</h4>
 <ol type="1">
 <li>Variant Filtering</li>
 </ol>
@@ -1033,8 +1016,8 @@ Figure&nbsp;1.4: A2CPS Relatedness Table
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--threads</span> 1 <span class="dt">\</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--out</span> /Users/sethberke/a2cps_imputation/relatedness/A2CPS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="plotting-2" class="level4" data-number="1.3.3.2">
-<h4 data-number="1.3.3.2" class="anchored" data-anchor-id="plotting-2"><span class="header-section-number">1.3.3.2</span> Plotting</h4>
+<section id="plotting-2" class="level4" data-number="1.2.3.2">
+<h4 data-number="1.2.3.2" class="anchored" data-anchor-id="plotting-2"><span class="header-section-number">1.2.3.2</span> Plotting</h4>
 <div id="fig-relatedness2" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A2CPS Relatedness">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-relatedness2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1123,16 +1106,16 @@ Figure&nbsp;1.5: A2CPS Relatedness
 </div>
 </section>
 </section>
-<section id="imputation" class="level3" data-number="1.3.4">
-<h3 data-number="1.3.4" class="anchored" data-anchor-id="imputation"><span class="header-section-number">1.3.4</span> Imputation</h3>
+<section id="imputation" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="imputation"><span class="header-section-number">1.2.4</span> Imputation</h3>
 <p>Statistically inferring whole genome sequences from SNP Array data using haplotype reference panels.</p>
 <p>Segments of the genome that the main array did not sample may still be immutable. Work on this is ongoing (as of September 11, 2024).</p>
 <ul>
 <li>Investigate the Michigan Imputation Server: <a href="https://genepi.github.io/michigan-imputationserver/getting-started/">Getting Started - Michigan Imputation Server 2</a>.</li>
 </ul>
 </section>
-<section id="currently" class="level3" data-number="1.3.5">
-<h3 data-number="1.3.5" class="anchored" data-anchor-id="currently"><span class="header-section-number">1.3.5</span> Currently</h3>
+<section id="currently" class="level3" data-number="1.2.5">
+<h3 data-number="1.2.5" class="anchored" data-anchor-id="currently"><span class="header-section-number">1.2.5</span> Currently</h3>
 <p>Working slide deck explaining pre-imputation data preparation: ADD PPTX HERE.</p>
 <p>Will test imputation on <a href="https://imputation.biodatacatalyst.nhlbi.nih.gov/#!pages/home">TOPMed Imputation Server</a> and report back on imputation quality.</p>
 

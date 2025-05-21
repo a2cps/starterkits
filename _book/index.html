@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="A2CPS Consortium">
-<meta name="dcterms.date" content="2025-05-19">
+<meta name="dcterms.date" content="2025-05-21">
 
 <title>A2CPS Starter Kits</title>
 <style>
@@ -21,41 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -471,7 +436,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 19, 2025</p>
+      <p class="date">May 21, 2025</p>
     </div>
   </div>
   
@@ -485,14 +450,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="sec-preface" class="level1 unnumbered">
 <h1 class="unnumbered">Preface</h1>
-<p>Starter kits are brief tutorials that are designed to help guide internal A2CPS projects. The kits target researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data). They assume that researchers will access internal A2CPS releases (that is, on TACC rather than from the NDA).</p>
-<p>Each kit has three sections, information to consider before starting a project, information about how to access the relevant data, and an overview of related work by the DIRC.</p>
-<p>Kits correspond to the individual modalities that can be requested in the <a href="https://a2cps.atlassian.net/wiki/spaces/WG/pages/5080456/Data+Sharing+Committee+Proposal+Meetings+Forms?preview=/5080456/5106943/Data%20Request%20Form_2023.pdf">Data Request Form</a>. See below for a status of each kit.</p>
-<p>Each kit provides examples of how to explore the data and run simple analyses. These examples rely on various kinds of code, including shell commands, <code>R</code>, and <code>python</code>. These examples should be seen as only one of many ways to interact with the data. For example, the data reviewed in <a href="freesurfer.html" class="quarto-xref"><span>3&nbsp; FreeSurfer Measures</span></a> is stored in <code>tsv</code> (tab-separated value) files, and that kit demonstrates working with those tables in <code>R</code>. But the tsv can be read with many programs besides <code>R</code>, including programs like Excel. The kits rely on code because the dataset is large enough that code- and scripting-based analyses provide substantial benefits. If these methods are a barrier to your analyses, please reach out to members of the Data Integration and Resource Center (DIRC) via email or Slack: <a href="https://a2cps.org/directory/">A2CPS Directory</a>. It is the job of DIRC members to facilitate and support analyses of A2CPS data.</p>
-<p>On TACC, all releases are stored underneath this folder.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The latest release is always contained in a sub-folder called <code>pre-surgery</code>. That <code>pre-surgery</code> folder will be updated with each release. For example, the latest release is 2.0.0, and so release 2.0.0 is available at</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Starter kits are brief tutorials that are designed to help guide internal A2CPS projects. The kits target researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data).</p>
+<p>Each kit has two sections, information about how to access the relevant data, and an overview of related work by the DIRC. Kits provide examples of how to explore the data and run simple analyses. These examples rely on various kinds of code, including shell commands, <code>R</code>, and <code>python</code>. These examples should be seen as only one of many ways to interact with the data. For example, the data reviewed in <a href="freesurfer.html" class="quarto-xref"><span>3&nbsp; FreeSurfer Measures</span></a> is stored in <code>tsv</code> (tab-separated value) files, and that kit demonstrates working with those tables in <code>R</code>. But the tsv can be read with many programs besides <code>R</code>, including programs like Excel. The kits rely on code because the dataset is large enough that code- and scripting-based analyses provide substantial benefits.</p>
 <section id="kit-availability" class="level2">
 <h2 class="anchored" data-anchor-id="kit-availability">Kit Availability</h2>
 <ul class="task-list">
