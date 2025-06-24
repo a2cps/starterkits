@@ -1,0 +1,264 @@
+# Imputed Genomics {#sec-genomics}
+
+This page provides considerations for A2CPS projects that involve the Imputed Genomics Data.
+
+![](https://upload.wikimedia.org/wikipedia/commons/d/df/Human_male_karyotpe_high_resolution.jpg){width=500px}
+
+<!-- This picture is free to share -->
+
+The imputed genomic dataset expands single-nucleotide resolution variant data across the human genome, offering deeper and more comprehensive coverage. Genotype imputation aligns SNP array data with ancestry-specific reference haplotypes to infer untyped variants with high confidence. This process can be compared to filling in missing letters in a sentence based on contextual knowledge — for example: 
+
+
+“T_e l_zy d_g j___ed _ver the _at.”
+
+
+Following imputation, the dataset increased from 690,126 to 11,016,319 genetic loci, spanning all 22 autosomes and the X chromosome for 1,375 participants. Prior to imputation, data were preprocessed and formatted for compatibility with the Imputation Server. Post-imputation, we applied rigorous quality control, excluding low-confidence variants and those with a minor allele frequency (MAF) below 1%.
+
+## Starting Project
+
+### Locate Data
+
+On TACC, the data are stored underneath the releases. For example, data release `v2.1.0` is underneath
+
+```bash
+/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants
+```
+
+The single-nucleotide polymorphisms are underneath the `omics/gene_variants` folder
+
+```bash
+$ ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bed
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bim
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.fam
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.log
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.log
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.nosex
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_PCA_Ind_Info.csv
+```
+
+These files are in the [PLINK](https://www.cog-genomics.org/plink/1.9/) format.
+
+For more detail on Plink Binary File information and data extraction for genetic variant data, refer to the Genetic Variant starter kit.
+
+## Imputation Process
+
+The below procedures were performed with these data:
+
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed
+
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
+
+2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam
+
+(these files originally had base name A2CPS_Freeze_2, as reflected in the code below)
+
+### Pre-Imputation Data Preparation
+
+Following the Data Preparation Process as outlined here:
+
+[TOPMed Imputation Server Data Preparation](https://topmedimpute.readthedocs.io/en/latest/prepare-your-data/)
+
+<details>
+<summary>Click to show the Pre-Imputation Data Processing Bash Script, which utilizes Plink 1.9</summary>
+```bash
+
+mkdir A2CPS_RL1-5_For_Imputation_F2
+
+  # 1. Subset out Y Chromosome and MT DNA
+    mkdir A2CPS_RL1-5_For_Imputation_F2/Plink_Merged
+    ./plink --bfile Freeze_2/A2CPS_Freeze_2 --chr 1-23 --keep-allele-order --make-bed --out A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2
+    
+  # 2. Run TOPMed Panel Check
+    ./plink --freq --bfile A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2 --out A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2
+    
+    perl HRC-1000G-check-bim-v4.3.0/HRC-1000G-check-bim.pl -b A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2.bim -f A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2.frq -r CreateTOPMed/PASS.Variants.TOPMed_freeze5_hg38_dbSNP.tab -h
+
+    sh ./A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/Run-plink.sh
+
+  # 3. Sort GZ.VCF Files by Genomic Position
+    mkdir A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted
+    for chr in {1..23}; do
+        bcftools sort ./A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2-updated-chr${chr}.vcf.gz -Oz -o ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted/A2CPS_RL1-5_chr${chr}_sorted.vcf.gz
+    done
+
+  # 4. Add chr infront of chromosome number: "If your input data is GRCh38/hg38, please ensure chromosomes are encoded with prefix 'chr' (e.g. chr20)."
+    mkdir A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted_With_Chr
+    for chr in {1..23}; do
+        zcat ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted/A2CPS_RL1-5_chr${chr}_sorted.vcf.gz | awk 'BEGIN {OFS="\t"} {if($0 !~ /^#/) $1="chr"$1; print}' | bgzip -c > ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted_With_Chr/A2CPS_RL1-5_chr${chr}_sorted_with_chr.vcf.gz
+    done
+```
+</details>
+
+### Imputation
+After preparing the files, they were run through:
+
+[TOPMed Imputation Pipeline](https://topmedimpute.readthedocs.io/en/latest/pipeline/)
+
+### Post-Imputation Quality Control
+
+- Imputed variants with an imputation quality score (R²) less than 0.3 were excluded.
+
+- Imputed variants with minor allele frequencies (MAF) below 0.01 were excluded to remove extremely rare variants.
+
+- Imputed variants lacking rsIDs (denoted as '.') or sharing duplicated genomic positions were excluded, as these caused issues during PLINK merging.
+
+### Considerations while working with these data
+- Population Structure still exists
+
+- Researchers can choose to filter out variants based on other, standard QC measures that suit their studies.
+
+
+<details>
+<summary>Click to show the Post-Imputation Quality Control Bash Script, which utilizes Plink 1.9</summary>
+
+```bash
+
+# 1. Run post_imputation_qc.R 
+
+# This creates update_ids.txt, update_sexes.txt, and chr_${chr}/keep_ranges.txt,
+
+# 2. MAKE Binary Files
+for chr in {1..22}; do
+  ./plink2 --vcf chr_${chr}/chr${chr}.dose.vcf.gz dosage=DS --make-bed --out chr_${chr}/chr${chr}_dose
+done
+
+# 3. UPDATE IDs
+for chr in {1..22}; do
+   ./plink2 --bfile chr_${chr}/chr${chr}_dose --update-ids update_ids.txt --make-bed --out chr_${chr}/chr${chr}_dose_updated_IDs
+done
+
+# 4. UPDATE SEXES
+for chr in {1..22}; do
+   ./plink2 --bfile chr_${chr}/chr${chr}_dose_updated_IDs --update-sex update_sexes.txt --make-bed --out chr_${chr}/chr${chr}_dose_updated_sexes
+done
+
+# 5. Keep variants with (MAF > 0.01 and R2 > 0.3)
+for chr in {1..22}; do
+  ./plink2 --bfile chr_${chr}/chr${chr}_dose_updated_sexes --extract range chr_${chr}/keep_ranges.txt --make-bed --out chr_${chr}/chr${chr}_dose_qced
+done
+
+# X CHR #
+# 6. MAKE Binary Files
+./plink2 --vcf chr_X/chrX.dose.vcf.gz dosage=DS --make-bed --update-sex update_sexes_X.txt --out chr_X/chrX_dose
+
+# 7. Update IDs
+./plink2 --bfile chr_X/chrX_dose --make-bed --update-ids update_ids.txt --out chr_X/chrX_updated_IDs
+
+# 8. Keep only variants that passed QC
+./plink2 --bfile chr_X/chrX_updated_IDs --extract range chr_X/keep_ranges.txt --make-bed --out chr_X/chrX_dose_qced
+
+# 9. Rename each file
+mkdir ./Imputation_QCed
+for chr in {1..22} X; do
+   mv chr_${chr}/chr${chr}_dose_qced.bed Imputation_QCed/chr${chr}_imputed_qced.bed
+   mv chr_${chr}/chr${chr}_dose_qced.bim Imputation_QCed/chr${chr}_imputed_qced.bim
+   mv chr_${chr}/chr${chr}_dose_qced.fam Imputation_QCed/chr${chr}_imputed_qced.fam
+   mv chr_${chr}/chr${chr}_dose_qced.log Imputation_QCed/chr${chr}_imputed_qced.log
+done
+
+# 10. Identify SNPs that were duplicated during Imputation or have "." as their rsID
+duplicate.R
+
+# 11. Drop Duplicate and "." SNPs. Merging files for a combined imputed dataset does not function with duplicates for genomic position or identifiers
+mkdir ./Imputation_QCed/No_Duplicates
+for chr in {1..22} X; do
+   ./plink --bfile Imputation_QCed/chr${chr}_imputed_qced --exclude Imputation_QCed/duplicate_snp_list.txt --make-bed --out Imputation_QCed/No_Duplicates/chr${chr}_No_Duplicates
+done
+
+# 12. Drop Variants that are impossibly called for X Chromosome
+awk '{print $3}' Imputation_QCed/No_Duplicates/chrX_No_Duplicates.hh | sort -u > Imputation_QCed/hh_snps_x_to_exclude.txt
+./plink --bfile Imputation_QCed/No_Duplicates/chrX_No_Duplicates --exclude Imputation_QCed/hh_snps_x_to_exclude.txt --make-bed --out Imputation_QCed/No_Duplicates/chrX_imputed_qced_no_hh
+
+# 13. Merge Chromosomes 1 - 22, X
+mkdir ./Imputation_QCed/Final
+./plink --bfile Imputation_QCed/No_Duplicates/chr1_No_Duplicates --merge-list Imputation_QCed/a2cps_imputed_qc_merge_list.txt --make-bed --out Imputation_QCed/Final/A2CPS_Imputed_Genomics
+
+```
+</details>
+
+#### Supplementary QC Files: RScripts
+<details>
+<summary>Click to show Supplementary RScript #1: Variant-Level QC Based on Quality Metrics(post_imputation_qc.R</summary>
+```r
+library(data.table)
+
+setwd("./Imputation_Results/")
+
+chromosomes <- c(1:22, "X")
+for (chr in chromosomes) {
+  folder <- paste0("chr_", chr)
+  file_path <- file.path(folder, paste0("chr", chr, ".info.gz"))
+  
+  dose <- fread(file_path)
+  
+  dose[, c("AF", "MAF", "AVG_CS", "R2") := {
+    af      <- sub(".*AF=([^;]*).*", "\\1", INFO)
+    maf     <- sub(".*MAF=([^;]*).*", "\\1", INFO)
+    avg.cs  <- sub(".*AVG_CS=([^;]*).*", "\\1", INFO)
+    r2      <- sub(".*R2=([^;]*).*", "\\1", INFO)
+    list(as.numeric(af), as.numeric(maf), as.numeric(avg.cs), as.numeric(r2))
+  }]
+  
+  maf.001 <- dose[MAF > 0.01]
+  r2.03 <- maf.001[R2 > 0.3]
+  setnames(r2.03, "#CHROM", "CHROM", skip_absent=TRUE)
+  r2.03[, chr := sub("^chr", "", CHROM)]
+  r2.03[, start := POS]
+  r2.03[, end := POS]
+  
+  keep_ranges <- r2.03[, .(chr, start, end)]
+  
+  fwrite(keep_ranges, file.path(folder, "keep_ranges.txt"), sep = "\t", col.names = FALSE, quote = FALSE)
+}
+
+# Update IDs 
+fam <- fread("./chr_1/chr1_dose.fam")
+
+OldFID <- fam$V1
+OldIID <- fam$V2
+
+NewFID <- sub("^(.*?)_.*", "\\1", OldIID)
+NewIID <- sub(".*?_(.*)", "\\1", OldIID)
+
+update_ids <- data.table(OldFID, OldIID, NewFID, NewIID)
+fwrite(update_ids, "update_ids.txt", sep = "\t", col.names = FALSE, quote = FALSE)
+
+# Update Sexes
+fam.og <- fread("./A2CPS_RL1-5_For_Imputation_F2.fam")
+update_sexes <- data.table(fam.og$V1, fam.og$V2, fam.og$V5)
+fwrite(update_sexes, "update_sexes.txt", sep = "\t", col.names = FALSE, quote = FALSE)
+
+fam.og <- fread("./A2CPS_RL1-5_For_Imputation_F2.fam")
+fam.now <- fread("./chr1_dose.fam")
+update_sexes <- data.table(fam.now$V1, fam.now$V2, fam.og$V5)
+fwrite(update_sexes, "update_sexes_X.txt", sep = "\t", col.names = FALSE, quote = FALSE)
+```
+</details>
+
+<details>
+<summary>Click to show Supplementary RScript #2: Merge Preparation (duplicate.r)</summary>
+```r
+library(data.table)
+setwd("./Imputation_Results/Imputation_QCed/")
+
+combined_data <- data.table(V1=character(), V2=character(), V4=integer())
+
+for (chr in c(1:22, "X")) {
+  file_name <- paste0("chr", chr, "_imputed_qced.bim")
+  dt <- fread(file_name, select = c(1,2,4), header = FALSE)
+  combined_data <- rbindlist(list(combined_data, dt), use.names = TRUE, fill = TRUE)
+}
+
+dup_pos <- combined_data[, .N, by=.(V1, V4)][N > 1]
+snps_dup_pos <- combined_data[dup_pos, on=.(V1, V4), nomatch=0, V2]
+dup_snps <- combined_data[, .N, by=V2][N > 1, V2]
+
+snps_to_exclude <- unique(c(snps_dup_pos, dup_snps))
+
+fwrite(as.data.table(snps_to_exclude), "duplicate_snp_list.txt", col.names = FALSE)
+```
+</details>
