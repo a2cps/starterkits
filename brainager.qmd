@@ -110,7 +110,7 @@ ages_with_sub
 
 It is in principle possible to replicate the processing that was used in a release by running the brainageR container[^docker] on the raw data. However, A2CPS Releases 1.0.0, 1.1.0, and 2.0.0 have not included raw T1w files for privacy reasons, and thus the end result may differ from the released version, which was generated on the raw images.
 
-[^docker]: The container used by A2CPS is available [here](https://github.com/psadil/brainageR_dockerfile).
+[^docker]: The container used by A2CPS is available [here](https://github.com/a2cps/mri_imaging_pipeline/blob/master/brainager_app/Dockerfile).
 
 ### Variability Across Scanners
 
