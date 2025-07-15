@@ -43,7 +43,21 @@ bio <- read_csv(here("data", "blood-draw", "blood-draw-2024-11-06.csv"))
 Remove test records
 
 ```{r}
-test_records <- c("10000", "15000", "20000", "25000", "40000", "50000", "60000", "70000", "80000", "90000", "100000", "110000", "120000")
+test_records <- c(
+  "10000",
+  "15000",
+  "20000",
+  "25000",
+  "40000",
+  "50000",
+  "60000",
+  "70000",
+  "80000",
+  "90000",
+  "100000",
+  "110000",
+  "120000"
+)
 
 bio <- bio %>%
   filter(!record_id %in% test_records)
@@ -53,7 +67,12 @@ Create a column for cohort type called "cohort"
 
 ```{r message =FALSE}
 bio <- bio %>%
-  mutate(cohort = case_when(record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA", TRUE ~ "Thoracic"))
+  mutate(
+    cohort = case_when(
+      record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA",
+      TRUE ~ "Thoracic"
+    )
+  )
 ```
 
 ### Data Dictionary
@@ -61,7 +80,11 @@ bio <- bio %>%
 Read in data dictionary and remove duplicate field names
 
 ```{r message=FALSE}
-bio_dict <- read_csv(here("data", "blood-draw", "blood-draw-Data-Dictionary-2024-11-06.csv")) %>%
+bio_dict <- read_csv(here(
+  "data",
+  "blood-draw",
+  "blood-draw-Data-Dictionary-2024-11-06.csv"
+)) %>%
   distinct(field_name, .keep_all = TRUE)
 ```
 
@@ -99,22 +122,89 @@ Proposed solution for data release 2.0: For the IDs above, we compared the time 
 
 ```{r}
 bio <- bio %>%
-  filter(!(record_id == 10507 & redcap_repeat_instrument == "current_medications_v02" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 20326 & redcap_repeat_instrument == "current_medications_v02" & redcap_repeat_instance == 2)) %>%
-  mutate(redcap_repeat_instance = case_when(record_id == 25172 & redcap_repeat_instrument == "current_medications_v02" & redcap_repeat_instance == 1 ~ 2, TRUE ~ redcap_repeat_instance)) %>%
-  mutate(redcap_repeat_instance = case_when(record_id == 25204 & redcap_repeat_instrument == "current_medications_v02" & redcap_repeat_instance == 1 ~ 2, TRUE ~ redcap_repeat_instance)) %>%
-  filter(!(record_id == 25212 & redcap_repeat_instrument == "current_medications_v02" & redcap_repeat_instance == 1 | redcap_repeat_instance == 3)) %>%
-  mutate(redcap_repeat_instance = case_when(record_id == 25239 & redcap_repeat_instrument == "current_medications_v02" & redcap_repeat_instance == 1 ~ 2, TRUE ~ redcap_repeat_instance)) %>%
-  filter(!(record_id == 25094 & redcap_repeat_instrument == "current_medications_v02" & redcap_repeat_instance == 1)) %>%
-  mutate(redcap_repeat_instance = case_when(record_id == 25094 & redcap_repeat_instrument == "current_medications_v02" & redcap_repeat_instance == 2 ~ 1, TRUE ~ redcap_repeat_instance)) %>%
-  mutate(redcap_repeat_instance = case_when(record_id == 25108 & redcap_repeat_instrument == "current_medications_v02" & redcap_repeat_instance == 2 ~ 3, TRUE ~ redcap_repeat_instance))
+  filter(
+    !(record_id == 10507 &
+      redcap_repeat_instrument == "current_medications_v02" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 20326 &
+      redcap_repeat_instrument == "current_medications_v02" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  mutate(
+    redcap_repeat_instance = case_when(
+      record_id == 25172 &
+        redcap_repeat_instrument == "current_medications_v02" &
+        redcap_repeat_instance == 1 ~
+        2,
+      TRUE ~ redcap_repeat_instance
+    )
+  ) %>%
+  mutate(
+    redcap_repeat_instance = case_when(
+      record_id == 25204 &
+        redcap_repeat_instrument == "current_medications_v02" &
+        redcap_repeat_instance == 1 ~
+        2,
+      TRUE ~ redcap_repeat_instance
+    )
+  ) %>%
+  filter(
+    !(record_id == 25212 &
+      redcap_repeat_instrument == "current_medications_v02" &
+      redcap_repeat_instance == 1 |
+      redcap_repeat_instance == 3)
+  ) %>%
+  mutate(
+    redcap_repeat_instance = case_when(
+      record_id == 25239 &
+        redcap_repeat_instrument == "current_medications_v02" &
+        redcap_repeat_instance == 1 ~
+        2,
+      TRUE ~ redcap_repeat_instance
+    )
+  ) %>%
+  filter(
+    !(record_id == 25094 &
+      redcap_repeat_instrument == "current_medications_v02" &
+      redcap_repeat_instance == 1)
+  ) %>%
+  mutate(
+    redcap_repeat_instance = case_when(
+      record_id == 25094 &
+        redcap_repeat_instrument == "current_medications_v02" &
+        redcap_repeat_instance == 2 ~
+        1,
+      TRUE ~ redcap_repeat_instance
+    )
+  ) %>%
+  mutate(
+    redcap_repeat_instance = case_when(
+      record_id == 25108 &
+        redcap_repeat_instrument == "current_medications_v02" &
+        redcap_repeat_instance == 2 ~
+        3,
+      TRUE ~ redcap_repeat_instance
+    )
+  )
 ```
 
 ### TKA cohort Biospecimen collection form
 
 ```{r}
 tka_bio <- bio %>%
-  select(record_id, guid, redcap_data_access_group, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance, starts_with("bscp"), blood_sample_collection_and_processing_crf_complete, cohort)
+  select(
+    record_id,
+    guid,
+    redcap_data_access_group,
+    redcap_event_name,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    starts_with("bscp"),
+    blood_sample_collection_and_processing_crf_complete,
+    cohort
+  )
 ```
 
 keep subjects from the TKA cohort, with the most recent baseline visit.
@@ -122,19 +212,27 @@ keep subjects from the TKA cohort, with the most recent baseline visit.
 ```{r}
 tka_bio <- tka_bio %>%
   filter(cohort == "TKA") %>%
-  filter(redcap_repeat_instrument == "blood_sample_collection_and_processing_crf") %>%
-  filter(blood_sample_collection_and_processing_crf_complete == 2 & !is.na(redcap_repeat_instance)) %>%
+  filter(
+    redcap_repeat_instrument == "blood_sample_collection_and_processing_crf"
+  ) %>%
+  filter(
+    blood_sample_collection_and_processing_crf_complete == 2 &
+      !is.na(redcap_repeat_instance)
+  ) %>%
   group_by(record_id, redcap_event_name) %>%
   top_n(1, redcap_repeat_instance) %>%
   ungroup() %>%
   select(where(not_all_na))
 ```
 
-Remove subjects that haven't come in for a vist yet i.e. No blood draw time available and 'No blood obtained' marked)
+Remove subjects that haven't come in for a visit yet i.e. No blood draw time available and 'No blood obtained' marked)
 
 ```{r}
 brdata1 <- tka_bio %>%
-  filter(bscp_sample_obtained___1 == 0 & blood_sample_collection_and_processing_crf_complete == 2)
+  filter(
+    bscp_sample_obtained___1 == 0 &
+      blood_sample_collection_and_processing_crf_complete == 2
+  )
 ```
 
 #### Flag 1:
@@ -146,7 +244,14 @@ brflag1 <- brdata1 %>%
   filter(is.na(bscp_hrs_since_water)) %>%
   add_column(error_type = "Missing info on hours since last drink") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Flag 2:
@@ -158,7 +263,14 @@ brflag2 <- brdata1 %>%
   filter(is.na(bscp_hrs_since_food)) %>%
   add_column(error_type = "Missing information on hours since last food") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Flag 3:
@@ -168,9 +280,18 @@ Check if there is missing information on hours since last caffeine intake in sub
 ```{r}
 brflag3 <- brdata1 %>%
   filter(is.na(bscp_hrs_since_cafstim) & bscp_caff_cups_amt != 4) %>%
-  add_column(error_type = "Missing information on hours since last caffeine") %>%
+  add_column(
+    error_type = "Missing information on hours since last caffeine"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Flag 4:
@@ -182,7 +303,14 @@ brflag4 <- brdata1 %>%
   filter(is.na(bscp_caff_cups_amt)) %>%
   add_column(error_type = "Missing information on the amount of caffeine") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Flag 5:
@@ -194,7 +322,14 @@ brflag5 <- brdata1 %>%
   filter(is.na(bscp_any_vacc)) %>%
   add_column(error_type = "Missing information on vaccination") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Create Biospecimen collection form error report for the TKA cohort.
@@ -235,16 +370,37 @@ Save "tka_bio" and data dictionary as .csv files in the folder named "Reformatte
 ```{r}
 #| eval: false
 
-write_csv(tka_bio, file = here::here("data", "blood-draw", "Reformatted", "reformatted_tka_bio.csv"))
+write_csv(
+  tka_bio,
+  file = here::here(
+    "data",
+    "blood-draw",
+    "Reformatted",
+    "reformatted_tka_bio.csv"
+  )
+)
 
-write_csv(bio_dict, file = here::here("data", "blood-draw", "Reformatted", "updated_bio_dict.csv"))
+write_csv(
+  bio_dict,
+  file = here::here("data", "blood-draw", "Reformatted", "updated_bio_dict.csv")
+)
 ```
 
 ### Thoracotomy Cohort Biospecimen Collection Form:
 
 ```{r}
 thor_bio <- bio %>%
-  select(record_id, guid, redcap_data_access_group, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance, starts_with("bscp"), blood_sample_collection_and_processing_crf_complete, cohort)
+  select(
+    record_id,
+    guid,
+    redcap_data_access_group,
+    redcap_event_name,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    starts_with("bscp"),
+    blood_sample_collection_and_processing_crf_complete,
+    cohort
+  )
 ```
 
 keep subjects from the Thoracotomy cohort, with the most recent baseline visit.
@@ -252,19 +408,27 @@ keep subjects from the Thoracotomy cohort, with the most recent baseline visit.
 ```{r}
 thor_bio <- thor_bio %>%
   filter(cohort == "Thoracic") %>%
-  filter(redcap_repeat_instrument == "blood_sample_collection_and_processing_crf") %>%
-  filter(blood_sample_collection_and_processing_crf_complete == 2 & !is.na(redcap_repeat_instance)) %>%
+  filter(
+    redcap_repeat_instrument == "blood_sample_collection_and_processing_crf"
+  ) %>%
+  filter(
+    blood_sample_collection_and_processing_crf_complete == 2 &
+      !is.na(redcap_repeat_instance)
+  ) %>%
   group_by(record_id, redcap_event_name) %>%
   top_n(1, redcap_repeat_instance) %>%
   ungroup() %>%
   select(where(not_all_na))
 ```
 
-Remove subjects that haven't come in for a vist yet i.e. No blood draw time available and 'No blood obtained' marked)
+Remove subjects that haven't come in for a visit yet i.e. No blood draw time available and 'No blood obtained' marked
 
 ```{r}
 tbrdata1 <- thor_bio %>%
-  filter(bscp_sample_obtained___1 == 0 & blood_sample_collection_and_processing_crf_complete == 2)
+  filter(
+    bscp_sample_obtained___1 == 0 &
+      blood_sample_collection_and_processing_crf_complete == 2
+  )
 ```
 
 #### Flag 1:
@@ -276,7 +440,14 @@ tbrflag1 <- tbrdata1 %>%
   filter(is.na(bscp_hrs_since_water)) %>%
   add_column(error_type = "Missing information on hours since last drink") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Flag 2:
@@ -288,7 +459,14 @@ tbrflag2 <- tbrdata1 %>%
   filter(is.na(bscp_hrs_since_food)) %>%
   add_column(error_type = "Missing information on hours since last food") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Flag 3:
@@ -298,9 +476,18 @@ Check if there is missing information on hours since last caffeine intake in sub
 ```{r}
 tbrflag3 <- tbrdata1 %>%
   filter(is.na(bscp_hrs_since_cafstim) & bscp_caff_cups_amt != 4) %>%
-  add_column(error_type = "Missing information on hours since last caffeine") %>%
+  add_column(
+    error_type = "Missing information on hours since last caffeine"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Flag 4:
@@ -312,7 +499,14 @@ tbrflag4 <- tbrdata1 %>%
   filter(is.na(bscp_caff_cups_amt)) %>%
   add_column(error_type = "Missing information on the amount of caffeine") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Flag 5:
@@ -324,7 +518,14 @@ tbrflag5 <- tbrdata1 %>%
   filter(is.na(bscp_any_vacc)) %>%
   add_column(error_type = "Missing information on vaccination") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 #### Create Biospecimen collection form error report for the Thoracotomy cohort.
@@ -346,7 +547,9 @@ tbr_report <- bind_rows(tbr_list) %>%
 tbr_report %>%
   gt() %>%
   tab_header(
-    title = md("**Thoracotomy Cohort Biospecimen collection form Error Report**")
+    title = md(
+      "**Thoracotomy Cohort Biospecimen collection form Error Report**"
+    )
   ) %>%
   tab_options(
     table.font.size = px(12),
@@ -365,16 +568,37 @@ Save "thor_bio" and data dictionary as .csv files in the folder named "Reformatt
 ```{r }
 #| eval: false
 
-write_csv(thor_bio, file = here::here("data", "blood-draw", "Reformatted", "reformatted_thor_bio.csv"))
+write_csv(
+  thor_bio,
+  file = here::here(
+    "data",
+    "blood-draw",
+    "Reformatted",
+    "reformatted_thor_bio.csv"
+  )
+)
 
-write_csv(bio_dict, file = here::here("data", "blood-draw", "Reformatted", "updated_bio_dict.csv"))
+write_csv(
+  bio_dict,
+  file = here::here("data", "blood-draw", "Reformatted", "updated_bio_dict.csv")
+)
 ```
 
 ### TKA cohort Current Medications v_02 form:
 
 ```{r}
 tka_meds <- bio %>%
-  select(record_id, guid, redcap_data_access_group, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance, starts_with("cmc"), current_medications_v02_complete, cohort)
+  select(
+    record_id,
+    guid,
+    redcap_data_access_group,
+    redcap_event_name,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    starts_with("cmc"),
+    current_medications_v02_complete,
+    cohort
+  )
 ```
 
 keep subjects from the TKA cohort, with the most recent baseline visit.
@@ -383,7 +607,9 @@ keep subjects from the TKA cohort, with the most recent baseline visit.
 tka_meds <- tka_meds %>%
   filter(cohort == "TKA") %>%
   filter(redcap_repeat_instrument == "current_medications_v02") %>%
-  filter(current_medications_v02_complete == 2 & !is.na(redcap_repeat_instance)) %>%
+  filter(
+    current_medications_v02_complete == 2 & !is.na(redcap_repeat_instance)
+  ) %>%
   group_by(record_id, redcap_event_name) %>%
   top_n(1, redcap_repeat_instance) %>%
   ungroup() %>%
@@ -397,14 +623,32 @@ Save "tka_meds" and data dictionary as .csv files in the folder named "Reformatt
 ```{r}
 #| eval: false
 
-write_csv(tka_meds, file = here::here("data", "blood-draw", "Reformatted", "reformatted_tka_meds.csv"))
+write_csv(
+  tka_meds,
+  file = here::here(
+    "data",
+    "blood-draw",
+    "Reformatted",
+    "reformatted_tka_meds.csv"
+  )
+)
 ```
 
 ### Thoracotomy cohort Current Medications v_02 form:
 
 ```{r}
 thor_meds <- bio %>%
-  select(record_id, guid, redcap_data_access_group, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance, starts_with("cmc"), current_medications_v02_complete, cohort)
+  select(
+    record_id,
+    guid,
+    redcap_data_access_group,
+    redcap_event_name,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    starts_with("cmc"),
+    current_medications_v02_complete,
+    cohort
+  )
 ```
 
 keep subjects from the TKA cohort, with the most recent baseline visit.
@@ -413,7 +657,9 @@ keep subjects from the TKA cohort, with the most recent baseline visit.
 thor_meds <- thor_meds %>%
   filter(cohort == "Thoracic") %>%
   filter(redcap_repeat_instrument == "current_medications_v02") %>%
-  filter(current_medications_v02_complete == 2 & !is.na(redcap_repeat_instance)) %>%
+  filter(
+    current_medications_v02_complete == 2 & !is.na(redcap_repeat_instance)
+  ) %>%
   group_by(record_id, redcap_event_name) %>%
   top_n(1, redcap_repeat_instance) %>%
   ungroup() %>%
@@ -427,6 +673,14 @@ Save "thor_meds" and data dictionary as .csv files in the folder named "Reformat
 ```{r}
 #| eval: false
 
-write_csv(thor_meds, file = here::here("data", "blood-draw", "Reformatted", "reformatted_thor_meds.csv"))
+write_csv(
+  thor_meds,
+  file = here::here(
+    "data",
+    "blood-draw",
+    "Reformatted",
+    "reformatted_thor_meds.csv"
+  )
+)
 ```
 

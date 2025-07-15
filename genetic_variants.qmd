@@ -48,12 +48,42 @@ $ head -5 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
 ```{r}
 #| echo: false
 tibble::tribble(
-  ~CHR, ~`VAR ID`, ~`POS (cM)`, ~`POS (bp)`, ~`ALLELE 1 (ALT)`, ~`ALLELE 2 (REF)`,
-  1, "rs9651229", 0, 632287, "T", "C",
-  1, "rs9701872",	0, 632828, "C", "T",
-  1, "rs11497407",0, 633147, "A", "G",
-  1, "GSA-rs116587930", 0,	792461,	"A", "G",
-  1, "rs3131972",	0,	817341,	"A",	"G"
+  ~CHR,
+  ~`VAR ID`,
+  ~`POS (cM)`,
+  ~`POS (bp)`,
+  ~`ALLELE 1 (ALT)`,
+  ~`ALLELE 2 (REF)`,
+  1,
+  "rs9651229",
+  0,
+  632287,
+  "T",
+  "C",
+  1,
+  "rs9701872",
+  0,
+  632828,
+  "C",
+  "T",
+  1,
+  "rs11497407",
+  0,
+  633147,
+  "A",
+  "G",
+  1,
+  "GSA-rs116587930",
+  0,
+  792461,
+  "A",
+  "G",
+  1,
+  "rs3131972",
+  0,
+  817341,
+  "A",
+  "G"
 )
 ```
 
@@ -78,12 +108,42 @@ $ head -5 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam
 ```{r}
 #| echo: false
 tibble::tribble(
-  ~`Family ID`, ~`Individual ID`, ~`Father ID`, ~`Mother ID`, ~Sex, ~Phenotype,
-1, "P3VO69LyyV2AZ_L27BDmybNy8zN", 0, 0, 1, -9,
-2, "74n6ZMnXd3WmA_L27BDmybNy8zN", 0, 0, 1, -9,
-3, "Px3x6X3gWBNA1_L27BDmybNy8zN", 0, 0, 2, -9,
-4, "eyPoDR1qoJegX_L27BDmybNy8zN", 0, 0, 1, -9,
-5, "74m9r0BKoMxk3_L27BDmybNy8zN", 0, 0, 1, -9
+  ~`Family ID`,
+  ~`Individual ID`,
+  ~`Father ID`,
+  ~`Mother ID`,
+  ~Sex,
+  ~Phenotype,
+  1,
+  "P3VO69LyyV2AZ_L27BDmybNy8zN",
+  0,
+  0,
+  1,
+  -9,
+  2,
+  "74n6ZMnXd3WmA_L27BDmybNy8zN",
+  0,
+  0,
+  1,
+  -9,
+  3,
+  "Px3x6X3gWBNA1_L27BDmybNy8zN",
+  0,
+  0,
+  2,
+  -9,
+  4,
+  "eyPoDR1qoJegX_L27BDmybNy8zN",
+  0,
+  0,
+  1,
+  -9,
+  5,
+  "74m9r0BKoMxk3_L27BDmybNy8zN",
+  0,
+  0,
+  1,
+  -9
 )
 ```
 
@@ -141,10 +201,30 @@ Here is the resulting table:
 ```{r}
 #| echo: false
 tibble::tribble(
-  ~CHR, ~SNP, ~A1, ~A2, ~MAF, ~NCHROBS,
-  6, "ilmnseq_rs1799971_ilmndup1,ilmnseq_rs1799971_ilmndup2,rs1799971", "G", "A", 0.1182, 2750,
-  11, "ilmnseq_rs6265_ilmndup1,ilmnseq_rs6265_ilmndup2,rs6265", "T", "C", 0.1535, 2750,
-  11, "ilmnseq_rs1491850_ilmndup1,ilmnseq_rs1491850_ilmndup2,rs1491850", "C", "T", 0.376, 2750
+  ~CHR,
+  ~SNP,
+  ~A1,
+  ~A2,
+  ~MAF,
+  ~NCHROBS,
+  6,
+  "ilmnseq_rs1799971_ilmndup1,ilmnseq_rs1799971_ilmndup2,rs1799971",
+  "G",
+  "A",
+  0.1182,
+  2750,
+  11,
+  "ilmnseq_rs6265_ilmndup1,ilmnseq_rs6265_ilmndup2,rs6265",
+  "T",
+  "C",
+  0.1535,
+  2750,
+  11,
+  "ilmnseq_rs1491850_ilmndup1,ilmnseq_rs1491850_ilmndup2,rs1491850",
+  "C",
+  "T",
+  0.376,
+  2750
 )
 ```
 

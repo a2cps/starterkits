@@ -16,6 +16,7 @@ The following is a minimal workflow for updating the site.
 # cd [path to starterkits] 
 $ quarto render
 ```
+
 * Record changes with `git`
 
 ```{shell}
@@ -23,7 +24,7 @@ $ quarto render
 $ git diff
 
 # modify as needed to record expected changes
-$ git add *qmd _book
+$ git add *qmd _freeze
 
 # please add a more informative message (that is still short)
 $ git commit -m "Update book"
