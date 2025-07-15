@@ -504,13 +504,14 @@ div.csl-indent {
 </header>
 
 
-<p>This starter kit walk through the “Brain Age” outputs that have been derived from the anatomical scans. The examples in the kit relies on <code>bash</code> and <code>R</code>.</p>
+<p>This starter kit walk through the “Brain Age” outputs that have been derived from the anatomical scans. The examples in the kit rely on <code>bash</code> and <code>R</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Fundamentally <code>brainager</code> calculations are about producing an estimated age based on measurable characteristics of a brain image, such as regional variations in gray matter density. The difference between estimated and chronological age is often referred to in the literature as the “brain age gap” (BAG) or “predicted age difference” (PAD), and is usually expressed as estimated minus chronological age. This value is often interpreted as an indicator of brain health.</p>
 <section id="before-proposing-project" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="before-proposing-project"><span class="header-section-number">4.1</span> Before Proposing Project</h2>
 <section id="confirm-sample-size" class="level3" data-number="4.1.1">
@@ -527,7 +528,7 @@ div.csl-indent {
 </section>
 <section id="extract-data" class="level3 page-columns page-full" data-number="4.2.2">
 <h3 data-number="4.2.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">4.2.2</span> Extract data</h3>
-<p>Data for each participant is stored in a sub-directory.</p>
+<p>Data for each participant are stored in a sub-directory.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="kw">|</span> <span class="fu">head</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005</span></span>
@@ -613,7 +614,8 @@ div.csl-indent {
 </section>
 <section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">4.3</span> Considerations While Working on the Project</h2>
-<section id="variability-across-scanners" class="level3" data-number="4.3.1">
+<p>It is in principle possible to replicate the processing that was used in a release by running the brainageR container<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> on the raw data. However, A2CPS Releases 1.0.0, 1.1.0, and 2.0.0 have not included raw T1w files for privacy reasons, and thus the end result may differ from the released version, which was generated on the raw images.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The container used by A2CPS is available <a href="https://github.com/a2cps/mri_imaging_pipeline/blob/master/brainager_app/Dockerfile">here</a>.</p></div></div><section id="variability-across-scanners" class="level3" data-number="4.3.1">
 <h3 data-number="4.3.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">4.3.1</span> Variability Across Scanners</h3>
 <p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
