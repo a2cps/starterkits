@@ -15,6 +15,7 @@ library(dplyr)
 library(tidyr)
 ```
 
+Fundamentally `brainager` calculations are about producing an estimated age based on measurable characteristics of a brain image, such as regional variations in gray matter density. The difference between estimated and chronological age is often referred to in the literature as the "brain age gap" (BAG) or "predicted age difference" (PAD), and is usually expressed as estimated minus chronological age. This value is often interpreted as an indicator of brain health.
 
 ## Before Proposing Project
 
@@ -122,9 +123,7 @@ It is in principle possible to replicate the processing that was used in a relea
 
 ### Calculating the Brain Age Gap
 
-Predicted ages are neat, but these values are most useful when compared against a participant's chronological age[^gap]. These can be found in the `demographics` portion of the release.
-
-[^gap]: The difference between estimated and chronological age is often referred to in the literature as the "brain age gap" (BAG) or "predicted age difference" (PAD) -- usually expressed as estimated minus chronological, and often interpreted as an indicator of brain health.
+Predicted ages are neat, but these values are most useful when compared against a participant's chronological age. These can be found in the `demographics` portion of the release.
 
 ```{r}
 baseline_ages <- read_csv(
