@@ -6,7 +6,7 @@ format:
 
 # Brain Age {#sec-brainager}
 
-This starter kit walk through the "Brain Age" outputs that have been derived from the anatomical scans. The examples in the kit relies on `bash` and `R`. 
+This starter kit walk through the "Brain Age" outputs that have been derived from the anatomical scans. The examples in the kit rely on `bash` and `R`. 
 
 ```{r}
 library(readr)
@@ -15,6 +15,7 @@ library(dplyr)
 library(tidyr)
 ```
 
+Fundamentally `brainager` calculations are about producing an estimated age based on measurable characteristics of a brain image, such as regional variations in gray matter density. The difference between estimated and chronological age is often referred to in the literature as the "brain age gap" (BAG) or "predicted age difference" (PAD), and is usually expressed as estimated minus chronological age. This value is often interpreted as an indicator of brain health.
 
 ## Before Proposing Project
 
@@ -34,7 +35,7 @@ In the release folder, data are stored underneath the `mris/derivatives` folder:
 
 ### Extract data
 
-Data for each participant is stored in a sub-directory.
+Data for each participant are stored in a sub-directory.
 
 ```bash
 $ ls | head
@@ -107,6 +108,10 @@ ages_with_sub
 
 
 ## Considerations While Working on the Project
+
+It is in principle possible to replicate the processing that was used in a release by running the brainageR container[^docker] on the raw data. However, A2CPS Releases 1.0.0, 1.1.0, and 2.0.0 have not included raw T1w files for privacy reasons, and thus the end result may differ from the released version, which was generated on the raw images.
+
+[^docker]: The container used by A2CPS is available [here](https://github.com/a2cps/mri_imaging_pipeline/blob/master/brainager_app/Dockerfile).
 
 ### Variability Across Scanners
 
