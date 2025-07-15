@@ -1,5 +1,9 @@
 # A2CPS Starter Kits
 
+## Publishing Overview
+
+For publishing, we're currently using GitHub Actions with frozen computations, [as described here](https://quarto.org/docs/publishing/github-pages.html#github-action). Note that the action does not execute code.
+
 ## To Update
 
 The following is a minimal workflow for updating the site. 
