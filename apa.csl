@@ -1734,8 +1734,8 @@
     <choose>
       <!-- TODO: We expect "event-title" to be used,
            but processors and applications may not be updated yet.
-           This macro ensures that either "event" or "event-title" can be accpeted.
-           Remove if procesor logic and application adoption can handle this. -->
+           This macro ensures that either "event" or "event-title" can be accepted.
+           Remove if processor logic and application adoption can handle this. -->
       <if variable="event-title">
         <text variable="event-title"/>
       </if>
@@ -1967,7 +1967,7 @@
                 <!-- If there is no session number or code/record title, assume
                      assume the item is a congressional report and include 'No.' term. -->
                 <if variable="chapter-number container-title" match="none">
-                  <!-- The item is a congressional report, rather than a bill or resultion. -->
+                  <!-- The item is a congressional report, rather than a bill or resolution. -->
                   <label variable="number" form="short" text-case="capitalize-first"/>
                 </if>
               </choose>

@@ -85,7 +85,7 @@ mkdir A2CPS_RL1-5_For_Imputation_F2
         bcftools sort ./A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2-updated-chr${chr}.vcf.gz -Oz -o ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted/A2CPS_RL1-5_chr${chr}_sorted.vcf.gz
     done
 
-  # 4. Add chr infront of chromosome number: "If your input data is GRCh38/hg38, please ensure chromosomes are encoded with prefix 'chr' (e.g. chr20)."
+  # 4. Add chr in front of chromosome number: "If your input data is GRCh38/hg38, please ensure chromosomes are encoded with prefix 'chr' (e.g. chr20)."
     mkdir A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted_With_Chr
     for chr in {1..23}; do
         zcat ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted/A2CPS_RL1-5_chr${chr}_sorted.vcf.gz | awk 'BEGIN {OFS="\t"} {if($0 !~ /^#/) $1="chr"$1; print}' | bgzip -c > ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted_With_Chr/A2CPS_RL1-5_chr${chr}_sorted_with_chr.vcf.gz
