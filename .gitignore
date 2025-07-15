@@ -4,6 +4,7 @@
 .Ruserdata
 
 /.quarto/
+/_book/
 data/
 *cache/*
 *files/*
