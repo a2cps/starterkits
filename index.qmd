@@ -3,27 +3,3 @@
 Starter kits are brief tutorials that are designed to help guide internal A2CPS projects. The kits target researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data). 
 
 Each kit has two sections, information about how to access the relevant data, and an overview of related work by the DIRC. Kits provide examples of how to explore the data and run simple analyses. These examples rely on various kinds of code, including shell commands, `R`, and `python`. These examples should be seen as only one of many ways to interact with the data. For example, the data reviewed in @sec-freesurfer is stored in `tsv` (tab-separated value) files, and that kit demonstrates working with those tables in `R`. But the tsv can be read with many programs besides `R`, including programs like Excel. The kits rely on code because the dataset is large enough that code- and scripting-based analyses provide substantial benefits. 
-
-## Kit Availability
-
-- [ ] QST
-- [ ] EHR
-- [ ] Blood Draw Details
-- [ ] Psychosocial Variables
-- [ ] Functional Testing
-- [ ] Demographics
-- [ ] Data (Omics)-Please Specify:
-  - [x] gene_variants: @sec-snps
-  - [ ] proteomics
-- [ ] Data (Imaging)-Please Specify:
-  - [x] Raw Data: @sec-raw-mri
-  - [x] FreeSurfer @sec-freesurfer
-  - [x] brainager: @sec-brainager
-  - [x] CAT12
-  - [ ] MRIQC
-  - [ ] fMRIPrep
-  - [ ] QSIprep
-  - [ ] GIFT
-  - [x] Prior Neural Pain Signatures @sec-neural-pain-signatures
-  - [x] Functional Connectivity @sec-functional-connectivity
-  
