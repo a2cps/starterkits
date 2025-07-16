@@ -9,13 +9,13 @@ book:
   date: today
   chapters:
     - index.qmd
-    - snps.qmd
     - raw-mri.qmd
     - freesurfer.qmd
     - brainager.qmd
     - cat12.qmd
     - fcn.qmd
     - neural-pain-signatures.qmd
+    - genetic_variants.qmd
     - faq.qmd
     - references.qmd
   appendices:
@@ -27,6 +27,7 @@ book:
     - FuntionalCRF_data_quality_checks_and_reformat.qmd
     - ImagingCRF_data_quality_checks_and_reformat.qmd
     - QSTCRF_data_quality_checks_and_reformat.qmd
+    - genomic_imputation.qmd
 
 bibliography: references.bib
 csl: apa.csl
