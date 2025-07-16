@@ -10,16 +10,6 @@
     ]
   },
   {
-    "objectID": "index.html#kit-availability",
-    "href": "index.html#kit-availability",
-    "title": "A2CPS Starter Kits",
-    "section": "Kit Availability",
-    "text": "Kit Availability\n\nQST\nEHR\nBlood Draw Details\nPsychosocial Variables\nFunctional Testing\nDemographics\nData (Omics)-Please Specify:\n\ngene_variants: 1  Genetic Variant Data\nproteomics\n\nData (Imaging)-Please Specify:\n\nRaw Data: 3  Raw MRI Data Starter Kit\nFreeSurfer 4  FreeSurfer Measures\nbrainager: 5  Brain Age\nCAT12\nMRIQC\nfMRIPrep\nQSIprep\nGIFT\nPrior Neural Pain Signatures 8  Prior Neural Pain Signature Responses\nFunctional Connectivity 7  Functional Connectivity",
-    "crumbs": [
-      "Preface"
-    ]
-  },
-  {
     "objectID": "genetic_variants.html",
     "href": "genetic_variants.html",
     "title": "1  Genetic Variant Data",
