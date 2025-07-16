@@ -7,15 +7,20 @@ book:
   title: "A2CPS Starter Kits"
   author: "A2CPS Consortium"
   date: today
+  repo-url: https://github.com/a2cps/starterkits
+  reader-mode: true
+  search: true
+  google-analytics: G-71QFT4EEF8
   chapters:
     - index.qmd
+    - genetic_variants.qmd
+    - genomic_imputation.qmd
     - raw-mri.qmd
     - freesurfer.qmd
     - brainager.qmd
     - cat12.qmd
     - fcn.qmd
     - neural-pain-signatures.qmd
-    - genetic_variants.qmd
     - faq.qmd
     - references.qmd
   appendices:
@@ -27,7 +32,6 @@ book:
     - FuntionalCRF_data_quality_checks_and_reformat.qmd
     - ImagingCRF_data_quality_checks_and_reformat.qmd
     - QSTCRF_data_quality_checks_and_reformat.qmd
-    - genomic_imputation.qmd
 
 bibliography: references.bib
 csl: apa.csl
