@@ -10,7 +10,7 @@ book:
   repo-url: https://github.com/a2cps/starterkits
   reader-mode: true
   search: true
-  google-analytics: G-71QFT4EEF8
+  google-analytics: G-K3383Z78V7
   chapters:
     - index.qmd
     - genetic_variants.qmd
