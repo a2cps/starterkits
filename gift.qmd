@@ -1,0 +1,211 @@
+# Group ICA of fMRI Toolbox (GIFT) {#sec-gift}
+
+```{r}
+library(RNifti)
+library(dplyr)
+library(roll)
+library(tidyr)
+library(purrr)
+library(ggplot2)
+library(fs)
+```
+
+Independent Component Analysis (ICA) applied to fMRI data identifies "components," which are spatial regions of the brain that exhibit distinctly correlated activity over time. These components can be thought of as functional brain networks. For functional connectivity research, the timeseries of these ICA-derived networks are often correlated with each other to assess inter-network correlations, enabling investigators to study how these independent brain systems interact and communicate with one another.
+
+Intrinsic functional connectivity networks within the resting-state fMRI data were estimated with NeuroMark [@du_neuromark_2020] using the Group Independent Component Analysis (ICA) of fMRI Toolbox ([GIFT](http://trendscenter.org/software/gift)). NeuroMark is an automated and adaptive independent component analysis pipeline that uses group ICA-based templates as spatial priors to guide the identification of subject-specific independent component networks and the extraction of network features (e.g., timecourses, functional connectivity within and between networks, graph theoretic measures). For full details on the output and methods of GIFT, please refer to [the toolbox documentation](https://github.com/trendscenter/gift). 
+
+Note: if all you need are estimates of functional connectivity between ICA components, please see the MRI Image Derived Phenotype table, `mris/idp/mri.{tsv,json}`. Here, we outline how A2CPS structures the outputs and highlight a few key files that may be helpful for custom analyses (e.g., estimating dynamic connectivity).
+
+### Locate Data
+
+{{< include _snippets/mri-location.qmd >}}
+
+The GIFT derivatives are underneath `mris/derivatives/gift`. This structure adheres to the [BIDS method of storing derived datasets](https://bids-specification.readthedocs.io/en/stable/common-principles.html#storage-of-derived-datasets). Inputs to GIFT are stored underneath the top-level "sub-[recordid]" directories. 
+
+```bash
+$ tree mris/derivatives/gift/sub-10003
+gift/sub-10003
+└── ses-V1
+    └── func
+        ├── sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz
+        ├── sub-10003_ses-V1_task-rest_run-01_bold.nii.gz
+        └── sub-10003_ses-V1_task-rest_run-02_bold.nii.gz
+```
+
+These files are copies of the outputs of fmriprep ([specifically, files matching *space-MNI152NLin2009cAsym_res-2_desc-preproc*](https://github.com/a2cps/biomarker-extractor/blob/4cc5c52a861b30fe9bdb5e728084b0785e01b71a/src/biomarkers/entrypoints/gift.py#L111-L125)). 
+
+The GIFT derivatives are underneath the subfolder "derivatives"
+
+```bash
+$ ls mris/derivatives/gift/derivatives/
+gift-neuromark_fmri_2.0_modelorder-175  gift-neuromark_fmri_2.1_modelorder-multi
+```
+
+We provide results from two different NeuroMark network templates, also called a "model". These templates are spatial priors that were used in the estimation of ICA components. The first is NeuroMark 2.0 (model order = 175) which includes 58 non-artifactual components produced from a single model order of 175 components [@iraji_identifying_2023]. The second is the multi-scale NeuroMark 2.1 which includes 105 non-artifactual components covering diverse spatial scales which are aggregated from diverse model orders [@iraji_identifying_2023]. A typical analysis will involve only one model. Without a specific reason to prefer one or the other, the 2.1, multi-order model is preferred.
+
+The model directories are themselves organized according to BIDS.
+
+```bash
+$ ls mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi | head
+derivatives
+sub-10003
+sub-10008
+sub-10010
+sub-10011
+sub-10013
+sub-10015
+sub-10017
+sub-10020
+sub-10023
+```
+
+### Extract Data
+
+In each of these sub-[recordid] folders, GIFT outputs the spatial IC maps and timecourses for each run.
+
+```bash
+$ tree mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/sub-10003
+mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/sub-10003
+└── ses-V1
+    └── func
+        ├── sub-10003_ses-V1_task-cuff_run-01_bold_ic_maps.nii.gz
+        ├── sub-10003_ses-V1_task-cuff_run-01_bold_timecourses.nii.gz
+        ├── sub-10003_ses-V1_task-rest_run-01_bold_ic_maps.nii.gz
+        ├── sub-10003_ses-V1_task-rest_run-01_bold_timecourses.nii.gz
+        ├── sub-10003_ses-V1_task-rest_run-02_bold_ic_maps.nii.gz
+        └── sub-10003_ses-V1_task-rest_run-02_bold_timecourses.nii.gz
+```
+
+The IC maps are 4D files, with spatial dimensions matching the input file and the fourth dimension matching the number of non-artifactual components in the model (below, 105).
+
+```bash
+$ fslinfo sub-10003_ses-V1_task-cuff_run-01_bold_ic_maps.nii.gz
+data_type	FLOAT32
+dim1		97
+dim2		115
+dim3		97
+dim4		105
+datatype	16
+pixdim1		2.000000
+pixdim2		2.000000
+pixdim3		2.000000
+pixdim4		0.000000
+cal_max		0.000000
+cal_min		0.000000
+file_type	NIFTI-1+
+```
+
+The timecourse files are 2D arrays, with columns corresponding to the number of non-artifacual components in the model and the rows corresponding to each timepoint[^gift-timepoints].
+
+[^gift-timepoints]: The original fMRIs have 450 timepoints, but in all analyses, the first 15 are excluded to remove Non-Steady State volumes. For details, see @sadil_acute_2024.
+
+```bash
+$ fslinfo sub-10003_ses-V1_task-cuff_run-01_bold_timecourses.nii.gz
+data_type	FLOAT32
+dim1		435
+dim2		105
+dim3		1
+dim4		1
+datatype	16
+pixdim1		2.000000
+pixdim2		2.000000
+pixdim3		2.000000
+pixdim4		0.000000
+cal_max		0.000000
+cal_min		0.000000
+file_type	NIFTI-1+
+```
+
+Most analyses will be based on these on either these spatial maps or the related timecourses [but see @sec-additional-gift].
+
+For example, let's use these components to search for so-called systematic low-frequency oscillations [@korponay_brain_2024]. One signature of these oscillations is that the total functional connectivity -- the sum of the all connectivity between each pair of components -- increases over time. Let's look for 
+
+First, define a helper function for estimating the rolling correlation. We'll use a window of 25 timepoints, which, given the 0.8 second Repetition Time, corresponds to 20 seconds.
+
+```{r}
+do_cor <- function(x, y, width = 25) {
+  rho <- roll_cor(x, y, width = width)
+  tibble(rho = rho, t = 1:length(x))
+}
+```
+
+Next, add a helper function for taking 
+
+```{r}
+
+get_total_correlation <- function(file) {
+  timecourse <- RNifti::readNifti(file)
+  crossing(
+    src = 1:ncol(timecourse),
+    dst = 1:ncol(timecourse)
+  ) |>
+    filter(dst > src) |>
+    mutate(
+      correlations = map2(
+        src,
+        dst,
+        ~ do_cor(timecourse[, .x], timecourse[, .y])
+      )
+    ) |>
+    unnest(correlations) |>
+    na.omit() |> # NAs caused by not having enough timepoints for window
+    summarise(total_correlation = sum(rho), .by = t)
+}
+
+```
+
+```{r}
+#| fig-cap: "Average Total Correlation."
+crossing(
+  file = dir_ls(
+    "data/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/sub-15026",
+    recurse = TRUE,
+    glob = "*timecourses.nii.gz"
+  )
+) |>
+  mutate(total_cors = map(file, get_total_correlation)) |>
+  unnest(total_cors) |>
+  summarise(avg_total_correlation = mean(total_correlation), .by = t) |>
+  ggplot(aes(x = t, y = avg_total_correlation)) +
+  geom_line()
+```
+
+For this participant, there appears to be a slight upward trend after the 200th TR. Of course, a full analysis would involve more participants and more scans. 
+
+### Additional Outputs {#sec-additional-gift}
+
+For analyses that require the full set of raw GIFT outputs, please see the most deeply nested "derivatives folder"
+
+```bash
+ls mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/derivatives | head
+sub-10003_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi
+sub-10003_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi
+sub-10003_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi
+sub-10008_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi
+sub-10008_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi
+sub-10008_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi
+sub-10010_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi
+sub-10010_ses-V1_task-cuff_run-02_bold_neuromark_fmri_2.1_modelorder-multi
+sub-10010_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi
+sub-10010_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi
+```
+
+In this folder, there is a single subfolder corresponding to the outputs for each individual run[^runwise]. For details on these files, please see the [the GIFT documentation](https://github.com/trendscenter/gift). 
+
+[^runwise]: Although GIFT can facilitate group-level analyses, the A2CPS derivatives include only the run-level components.
+
+
+## Considerations While Working on the Project
+
+### Variability Across Scanners
+
+{{< include _snippets/mri-scanner-variability.qmd >}}
+
+### Data Quality
+
+{{< include _snippets/mri-qc.qmd >}}
+
+### Data Generation
+
+The GIFT outputs were generated by the [gift_app](https://github.com/a2cps/mri_imaging_pipeline/tree/master/gift_app) component of the A2CPS Imaging pipeline. Prior to NeuroMark, the resting-state fMRI data were minimally preprocessed (@sadil_acute_2024), and then resampled to 2.4mm isotropic voxel size to ensure identical dimensions across all subjects. After resampling, volumes were spatially smoothed using a Gaussian kernel with a full width at half maximum of 6mm. NeuroMark was then applied separately for each resting-state run from each subject and separately for each template. The NeuroMark pipeline included the following configuration options: brain masking using the default mask plus intracranial volume, coregistration of the functional data to a functional template in MNI space (separate from the registration performed during minimal preprocessing), removal of the first 15 volumes (i.e., dummy scans), bandpass filtering (0.01-0.15Hz), removal of the mean per timepoint, multivariate-objective optimization ICA with reference [@du_group_2013], and z-score scaling of results. The NeuroMark outputs include, separately for each template applied to each resting-state run from each subject, the timecourses and spatial maps of each intrinsic component network, functional network connectivity estimates, summary reports, and visualizations of the networks.
+
