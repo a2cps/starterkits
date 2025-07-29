@@ -1,6 +1,6 @@
 # Group ICA of fMRI Toolbox (GIFT) {#sec-gift}
 
-```{r}
+```{r setup}
 library(RNifti)
 library(dplyr)
 library(roll)
@@ -10,9 +10,9 @@ library(ggplot2)
 library(fs)
 ```
 
-Independent Component Analysis (ICA) applied to fMRI data identifies "components," which are spatial regions of the brain that exhibit distinctly correlated activity over time. These components can be thought of as functional brain networks. For functional connectivity research, the timeseries of these ICA-derived networks are often correlated with each other to assess inter-network correlations, enabling investigators to study how these independent brain systems interact and communicate with one another.
+Independent Component Analysis (ICA) is a method for identifying "components" that are spatial regions of the brain exhibiting distinctly correlated activity over time [@calhoun_method_2001]. These components can be thought of as functional brain networks. For functional connectivity research, the timeseries of these ICA-derived networks are often correlated with each other to assess inter-network correlations, enabling investigators to study how these independent brain systems interact and communicate with one another.
 
-Intrinsic functional connectivity networks within the resting-state fMRI data were estimated with NeuroMark [@du_neuromark_2020] using the Group Independent Component Analysis (ICA) of fMRI Toolbox ([GIFT](http://trendscenter.org/software/gift)). NeuroMark is an automated and adaptive independent component analysis pipeline that uses group ICA-based templates as spatial priors to guide the identification of subject-specific independent component networks and the extraction of network features (e.g., timecourses, functional connectivity within and between networks, graph theoretic measures). For full details on the output and methods of GIFT, please refer to [the toolbox documentation](https://github.com/trendscenter/gift). 
+Intrinsic functional connectivity networks within the resting-state fMRI data were estimated with NeuroMark [@du_neuromark_2020] using the Group ICA of fMRI Toolbox ([GIFT](http://trendscenter.org/software/gift)). NeuroMark is an automated and adaptive independent component analysis pipeline that uses group ICA-based templates as spatial priors to guide the identification of subject-specific independent component networks and the extraction of network features (e.g., timecourses, functional connectivity within and between networks, graph theoretic measures). For full details on the output and methods of GIFT, please refer to [the toolbox documentation](https://github.com/trendscenter/gift). 
 
 Note: if all you need are estimates of functional connectivity between ICA components, please see the MRI Image Derived Phenotype table, `mris/idp/mri.{tsv,json}`. Here, we outline how A2CPS structures the outputs and highlight a few key files that may be helpful for custom analyses (e.g., estimating dynamic connectivity).
 
@@ -20,7 +20,7 @@ Note: if all you need are estimates of functional connectivity between ICA compo
 
 {{< include _snippets/mri-location.qmd >}}
 
-The GIFT derivatives are underneath `mris/derivatives/gift`. This structure adheres to the [BIDS method of storing derived datasets](https://bids-specification.readthedocs.io/en/stable/common-principles.html#storage-of-derived-datasets). Inputs to GIFT are stored underneath the top-level "sub-[recordid]" directories. 
+The GIFT derivatives are underneath `mris/derivatives/gift`. This structure follows the [BIDS method of storing derived datasets](https://bids-specification.readthedocs.io/en/stable/common-principles.html#storage-of-derived-datasets). Inputs to GIFT are stored underneath the top-level "sub-[recordid]" directories. 
 
 ```bash
 $ tree mris/derivatives/gift/sub-10003
@@ -32,16 +32,16 @@ gift/sub-10003
         └── sub-10003_ses-V1_task-rest_run-02_bold.nii.gz
 ```
 
-These files are copies of the outputs of fmriprep ([specifically, files matching *space-MNI152NLin2009cAsym_res-2_desc-preproc*](https://github.com/a2cps/biomarker-extractor/blob/4cc5c52a861b30fe9bdb5e728084b0785e01b71a/src/biomarkers/entrypoints/gift.py#L111-L125)). 
+These files are copies of the outputs of fmriprep. Specifically, they are are [files matching `*space-MNI152NLin2009cAsym_res-2_desc-preproc*`](https://github.com/a2cps/biomarker-extractor/blob/4cc5c52a861b30fe9bdb5e728084b0785e01b71a/src/biomarkers/entrypoints/gift.py#L111-L125).
 
-The GIFT derivatives are underneath the subfolder "derivatives"
+The GIFT derivatives are underneath the subfolder "derivatives".
 
 ```bash
 $ ls mris/derivatives/gift/derivatives/
 gift-neuromark_fmri_2.0_modelorder-175  gift-neuromark_fmri_2.1_modelorder-multi
 ```
 
-We provide results from two different NeuroMark network templates, also called a "model". These templates are spatial priors that were used in the estimation of ICA components. The first is NeuroMark 2.0 (model order = 175) which includes 58 non-artifactual components produced from a single model order of 175 components [@iraji_identifying_2023]. The second is the multi-scale NeuroMark 2.1 which includes 105 non-artifactual components covering diverse spatial scales which are aggregated from diverse model orders [@iraji_identifying_2023]. A typical analysis will involve only one model. Without a specific reason to prefer one or the other, the 2.1, multi-order model is preferred.
+We provide results from two different NeuroMark network templates (alternatively called "model"). Templates are the spatial priors that were used in the estimation of ICA components. The first is NeuroMark 2.0 (model order = 175) which includes 58 non-artifactual components produced from a single model order of 175 components [@iraji_identifying_2023]. The second is the multi-scale NeuroMark 2.1 which includes 105 non-artifactual components covering diverse spatial scales which are aggregated from diverse model orders [@iraji_identifying_2023]. A typical analysis will involve only one model. Without a specific reason to prefer one template, the 2.1, multi-order model is recommended.
 
 The model directories are themselves organized according to BIDS.
 
@@ -116,13 +116,11 @@ cal_min		0.000000
 file_type	NIFTI-1+
 ```
 
-Most analyses will be based on these on either these spatial maps or the related timecourses [but see @sec-additional-gift].
-
-For example, let's use these components to search for so-called systematic low-frequency oscillations [@korponay_brain_2024]. One signature of these oscillations is that the total functional connectivity -- the sum of the all connectivity between each pair of components -- increases over time. Let's look for 
+Many analyses will be based on either these spatial maps or timecourses [but see @sec-additional-gift]. For example, let's use these components to search for so-called systematic low-frequency oscillations [@korponay_brain_2024]. One signature of these oscillations is that the total functional connectivity -- the sum of the all connectivity between each pair of components -- increases over time. 
 
 First, define a helper function for estimating the rolling correlation. We'll use a window of 25 timepoints, which, given the 0.8 second Repetition Time, corresponds to 20 seconds.
 
-```{r}
+```{r helpercor}
 do_cor <- function(x, y, width = 25) {
   rho <- roll_cor(x, y, width = width)
   tibble(rho = rho, t = 1:length(x))
@@ -131,10 +129,10 @@ do_cor <- function(x, y, width = 25) {
 
 Next, add a helper function for taking 
 
-```{r}
+```{r helpertimecourse}
 
 get_total_correlation <- function(file) {
-  timecourse <- RNifti::readNifti(file)
+  timecourse <- readNifti(file)
   crossing(
     src = 1:ncol(timecourse),
     dst = 1:ncol(timecourse)
@@ -154,13 +152,13 @@ get_total_correlation <- function(file) {
 
 ```
 
-```{r}
+```{r main}
 #| fig-cap: "Average Total Correlation."
 crossing(
   file = dir_ls(
-    "data/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/sub-15026",
+    "data/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi",
     recurse = TRUE,
-    glob = "*timecourses.nii.gz"
+    glob = "*rest_run-01*timecourses.nii.gz"
   )
 ) |>
   mutate(total_cors = map(file, get_total_correlation)) |>
@@ -170,7 +168,7 @@ crossing(
   geom_line()
 ```
 
-For this participant, there appears to be a slight upward trend after the 200th TR. Of course, a full analysis would involve more participants and more scans. 
+For the REST1 scans, the sum of connectivity appears to increase by around 20%, which is consistent with the presence of systematic low-frequency oscillations.
 
 ### Additional Outputs {#sec-additional-gift}
 
