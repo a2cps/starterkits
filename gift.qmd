@@ -169,18 +169,18 @@ d <- crossing(
 And now, plot.
 
 ```{r mainplot}
-#| fig-cap: "Average Total Correlation. Total connectivity is the sum of the atanh of all pairs of correlations. The average is taken across scans."
+#| fig-cap: "Median Total Connectivity. Total connectivity is the sum of the atanh of all pairs of correlations. The median is taken across scans."
 d |>
   mutate(t = t * 0.8) |> # convert to seconds
-  summarise(avg_total_connectivity = mean(total_connectivity), .by = t) |>
-  ggplot(aes(x = t, y = avg_total_connectivity)) +
+  summarise(med_total_connectivity = median(total_connectivity), .by = t) |>
+  ggplot(aes(x = t, y = med_total_connectivity)) +
   geom_line() +
-  ylab("Avg. Total Connectivity") +
+  ylab("Total Connectivity") +
   xlab("Time (seconds)")
 ```
 
 
-For the REST1 scans, the sum of connectivity appears to increase by around 18%, which is consistent with the presence of systematic low-frequency oscillations.
+For the REST1 scans, the sum of connectivity appears to increase by around $150/130 = 15\%$, which is consistent with the presence of systematic low-frequency oscillations.
 
 ### Additional Outputs {#sec-additional-gift}
 
