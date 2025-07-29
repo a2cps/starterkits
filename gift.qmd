@@ -147,28 +147,40 @@ get_total_correlation <- function(file) {
     ) |>
     unnest(correlations) |>
     na.omit() |> # NAs caused by not having enough timepoints for window
-    summarise(total_correlation = sum(rho), .by = t)
+    summarise(total_connectivity = sum(atanh(rho)), .by = t)
 }
 
 ```
 
+Use these helper functions to calculate the total connectivity for each REST1 scan.
+
 ```{r main}
-#| fig-cap: "Average Total Correlation."
-crossing(
+d <- crossing(
   file = dir_ls(
     "data/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi",
     recurse = TRUE,
     glob = "*rest_run-01*timecourses.nii.gz"
   )
 ) |>
-  mutate(total_cors = map(file, get_total_correlation)) |>
-  unnest(total_cors) |>
-  summarise(avg_total_correlation = mean(total_correlation), .by = t) |>
-  ggplot(aes(x = t, y = avg_total_correlation)) +
-  geom_line()
+  mutate(total_connectivity = map(file, get_total_correlation)) |>
+  unnest(total_connectivity)
 ```
 
-For the REST1 scans, the sum of connectivity appears to increase by around 20%, which is consistent with the presence of systematic low-frequency oscillations.
+And now, plot.
+
+```{r mainplot}
+#| fig-cap: "Average Total Correlation. Total connectivity is the sum of the atanh of all pairs of correlations. The average is taken across scans."
+d |>
+  mutate(t = t * 0.8) |> # convert to seconds
+  summarise(avg_total_connectivity = mean(total_connectivity), .by = t) |>
+  ggplot(aes(x = t, y = avg_total_connectivity)) +
+  geom_line() +
+  ylab("Avg. Total Connectivity") +
+  xlab("Time (seconds)")
+```
+
+
+For the REST1 scans, the sum of connectivity appears to increase by around 18%, which is consistent with the presence of systematic low-frequency oscillations.
 
 ### Additional Outputs {#sec-additional-gift}
 
