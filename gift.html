@@ -643,47 +643,55 @@ Korponay, C., Janes, A. C., &amp; Frederick, B. B. (2024). <a href="">Brain-wide
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unnest</span>(correlations) <span class="sc">|&gt;</span></span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na.omit</span>() <span class="sc">|&gt;</span> <span class="co"># NAs caused by not having enough timepoints for window</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">total_correlation =</span> <span class="fu">sum</span>(rho), <span class="at">.by =</span> t)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">total_connectivity =</span> <span class="fu">sum</span>(<span class="fu">atanh</span>(rho)), <span class="at">.by =</span> t)</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Use these helper functions to calculate the total connectivity for each REST1 scan.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crossing</span>(</span>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">crossing</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">dir_ls</span>(</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi"</span>,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">recurse =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">glob =</span> <span class="st">"*rest_run-01*timecourses.nii.gz"</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_cors =</span> <span class="fu">map</span>(file, get_total_correlation)) <span class="sc">|&gt;</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(total_cors) <span class="sc">|&gt;</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_total_correlation =</span> <span class="fu">mean</span>(total_correlation), <span class="at">.by =</span> t) <span class="sc">|&gt;</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> avg_total_correlation)) <span class="sc">+</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_connectivity =</span> <span class="fu">map</span>(file, get_total_correlation)) <span class="sc">|&gt;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(total_connectivity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And now, plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">t =</span> t <span class="sc">*</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> <span class="co"># convert to seconds</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_total_connectivity =</span> <span class="fu">mean</span>(total_connectivity), <span class="at">.by =</span> t) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> avg_total_connectivity)) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Avg. Total Connectivity"</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Time (seconds)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="gift_files/figure-html/main-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Average Total Correlation.</figcaption>
+<p><img src="gift_files/figure-html/mainplot-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Average Total Correlation. Total connectivity is the sum of the atanh of all pairs of correlations. The average is taken across scans.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>For the REST1 scans, the sum of connectivity appears to increase by around 20%, which is consistent with the presence of systematic low-frequency oscillations.</p>
+<p>For the REST1 scans, the sum of connectivity appears to increase by around 18%, which is consistent with the presence of systematic low-frequency oscillations.</p>
 </section>
 <section id="sec-additional-gift" class="level3 page-columns page-full" data-number="8.0.3">
 <h3 data-number="8.0.3" class="anchored" data-anchor-id="sec-additional-gift"><span class="header-section-number">8.0.3</span> Additional Outputs</h3>
 <p>For analyses that require the full set of raw GIFT outputs, please see the most deeply nested “derivatives folder”</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/derivatives <span class="kw">|</span> <span class="fu">head</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-cuff_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/derivatives <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-cuff_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In this folder, there is a single subfolder corresponding to the outputs for each individual run<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. For details on these files, please see the <a href="https://github.com/trendscenter/gift">the GIFT documentation</a>.</p>
 <div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Although GIFT can facilitate group-level analyses, the A2CPS derivatives include only the run-level components.</p></div></div></section>
 <section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="8.1">
