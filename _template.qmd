@@ -6,7 +6,7 @@ Please include the following two major sections: "*Starting Project*", and "*Con
 
 The scope of each kit is expected to roughly correspond to the individual modalities that can be requested in the Data Request Form ([Data Sharing Committee Proposal Meetings & Forms](https://a2cps.atlassian.net/wiki/spaces/WG/pages/5080456/Data+Sharing+Committee+Proposal+Meetings+Forms?preview=/5080456/5106943/Data%20Request%20Form_2023.pdf)). 
 
-## Before Proposing Project
+## Starting Project
 
 ### Locate Data
 
