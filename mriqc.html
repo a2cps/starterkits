@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9&nbsp; MRIQC – A2CPS Starter Kits</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./neural-pain-signatures.html" rel="next">
+<link href="./gift.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-bc185b5c5bdbcb35c2eb49d8a876ef70.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e8de9bd59ba156b9e4cb33cd6f01d621.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-14686e36f001b95c97dee76b7cf2390e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-e8de9bd59ba156b9e4cb33cd6f01d621.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-K3383Z78V7"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
+</script>
+
+
+</head>
+
+<body class="nav-sidebar floating slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./mriqc.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">MRIQC</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">A2CPS Starter Kits</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/a2cps/starterkits" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./genetic_variants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Genetic Variant Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./genomic_imputation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Imputed Genomics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./raw-mri.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Raw MRI Data Starter Kit</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./freesurfer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">FreeSurfer Measures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./brainager.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Brain Age</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cat12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Voxel-Based Morphometry</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fcn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Functional Connectivity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gift.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Group ICA of fMRI Toolbox (GIFT)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mriqc.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">MRIQC</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./neural-pain-signatures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Prior Neural Pain Signature Responses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FAQ</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bids-qc-joining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exclude Scans with “Red” Quality</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">ID Information</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./nda-mri.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">NDA Download Example, MRI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./psycho_social_biomarker_impute.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Psychosocial Data Imputation and Biomarker calculations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./biospecimenCRF_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FuntionalCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Functional CRF Data Quality Checks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ImagingCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Imaging CRF Data Quality Checks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./QSTCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">QST CRF Data Quality Checks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">9.1</span> Starting Project</a>
+  <ul class="collapse">
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">9.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">9.1.2</span> Extract Data</a></li>
+  <li><a href="#comparison-with-reference-distributions" id="toc-comparison-with-reference-distributions" class="nav-link" data-scroll-target="#comparison-with-reference-distributions"><span class="header-section-number">9.1.3</span> Comparison with Reference Distributions</a></li>
+  </ul></li>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">9.2</span> Considerations While Working on the Project</a>
+  <ul class="collapse">
+  <li><a href="#framewise-displacement-and-a2cps" id="toc-framewise-displacement-and-a2cps" class="nav-link" data-scroll-target="#framewise-displacement-and-a2cps"><span class="header-section-number">9.2.1</span> Framewise Displacement and A2CPS</a></li>
+  <li><a href="#mriqc-versions" id="toc-mriqc-versions" class="nav-link" data-scroll-target="#mriqc-versions"><span class="header-section-number">9.2.2</span> MRIQC Versions</a></li>
+  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">9.2.3</span> Variability Across Scanners</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">9.2.4</span> Citations</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-mriqc" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">MRIQC</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(duckplyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scattermore)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Part of the A2CPS MRI quality control procedure <a href="raw-mri.html#sec-raw-mri-quality" class="quarto-xref"><span>Section 3.1.2</span></a> uses metrics derived from the MRI Quality Control (MRIQC) pipeline <span class="citation" data-cites="esteban_mriqc_2017">(<a href="references.html#ref-esteban_mriqc_2017" role="doc-biblioref">Esteban et al., 2017</a>)</span>. However, MRIQC provides several metrics beyond the subset used by A2CPS. This kit reviews those metrics and shows how they compare with others that are available in the MRIQC database.</p>
+<div class="no-row-height column-margin column-container"></div><section id="starting-project" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">9.1</span> Starting Project</h2>
+<section id="locate-data" class="level3" data-number="9.1.1">
+<h3 data-number="9.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">9.1.1</span> Locate Data</h3>
+<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The MRIQC metrics are underneath <code>derivatives/mriqc</code>.</p>
+</section>
+<section id="extract-data" class="level3" data-number="9.1.2">
+<h3 data-number="9.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">9.1.2</span> Extract Data</h3>
+<p>The A2CPS pipeline produces a standard set of MRIQC outputs, including both participant- and group-level results. For a detailed explanation of the outputs, please see the <a href="https://mriqc.readthedocs.io/en/latest/index.html">official MRIQC documentation</a>. At a high-level, the outputs include:</p>
+<ul>
+<li>participant-level metrics: underneath sub-[recordid]/ses-[protocolid]/{anat,func,dwi}</li>
+<li>participant-level reports: html documents that display participant-level figures related to data quality and MRIQC preprocessing</li>
+<li>group-level results: files with the prefix <code>group_</code> that collate the participant-level results</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/mriqc <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">group_bold.html</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">group_bold.tsv</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">group_dwi.html</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">group_dwi.tsv</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">group_T1w.html</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">group_T1w.tsv</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_dwi.html</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_T1w.html</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-cuff_run-01_bold.html</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For example, here are all of the metrics available for the functional data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>group_bold <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/mriqc/group_bold.tsv"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>group_bold <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">size_x</th>
+<th style="text-align: right;">summary_fg_p05</th>
+<th style="text-align: right;">gsr_x</th>
+<th style="text-align: right;">fd_perc</th>
+<th style="text-align: right;">fwhm_x</th>
+<th style="text-align: right;">fwhm_avg</th>
+<th style="text-align: right;">gsr_y</th>
+<th style="text-align: right;">size_y</th>
+<th style="text-align: right;">gcor</th>
+<th style="text-align: right;">summary_bg_k</th>
+<th style="text-align: right;">fwhm_z</th>
+<th style="text-align: right;">spacing_z</th>
+<th style="text-align: right;">summary_bg_median</th>
+<th style="text-align: right;">summary_fg_mean</th>
+<th style="text-align: right;">summary_fg_p95</th>
+<th style="text-align: right;">size_z</th>
+<th style="text-align: right;">summary_bg_mad</th>
+<th style="text-align: right;">spacing_x</th>
+<th style="text-align: right;">summary_bg_n</th>
+<th style="text-align: right;">summary_bg_p95</th>
+<th style="text-align: right;">dvars_nstd</th>
+<th style="text-align: right;">summary_bg_stdv</th>
+<th style="text-align: right;">summary_fg_k</th>
+<th style="text-align: right;">spacing_tr</th>
+<th style="text-align: right;">size_t</th>
+<th style="text-align: right;">snr</th>
+<th style="text-align: right;">summary_fg_stdv</th>
+<th style="text-align: right;">tsnr</th>
+<th style="text-align: right;">dvars_vstd</th>
+<th style="text-align: right;">dvars_std</th>
+<th style="text-align: right;">aqi</th>
+<th style="text-align: right;">fd_mean</th>
+<th style="text-align: right;">fd_num</th>
+<th style="text-align: right;">fber</th>
+<th style="text-align: right;">dummy_trs</th>
+<th style="text-align: right;">spacing_y</th>
+<th style="text-align: right;">aor</th>
+<th style="text-align: right;">efc</th>
+<th style="text-align: right;">summary_bg_mean</th>
+<th style="text-align: right;">fwhm_y</th>
+<th style="text-align: right;">summary_bg_p05</th>
+<th style="text-align: right;">summary_fg_mad</th>
+<th style="text-align: right;">summary_fg_median</th>
+<th style="text-align: right;">summary_fg_n</th>
+<th style="text-align: left;">bids_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">255</td>
+<td style="text-align: right;">-0.0121202</td>
+<td style="text-align: right;">92.77652</td>
+<td style="text-align: right;">3.069183</td>
+<td style="text-align: right;">2.910943</td>
+<td style="text-align: right;">0.0296651</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0.0039961</td>
+<td style="text-align: right;">69.6477</td>
+<td style="text-align: right;">2.866987</td>
+<td style="text-align: right;">2.4</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1072.0242</td>
+<td style="text-align: right;">1873</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">14.8260</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">389198</td>
+<td style="text-align: right;">167</td>
+<td style="text-align: right;">114.37294</td>
+<td style="text-align: right;">89.8264</td>
+<td style="text-align: right;">2.5801</td>
+<td style="text-align: right;">0.8000000</td>
+<td style="text-align: right;">443</td>
+<td style="text-align: right;">2.220860</td>
+<td style="text-align: right;">468.2846</td>
+<td style="text-align: right;">16.08951</td>
+<td style="text-align: right;">0.9862437</td>
+<td style="text-align: right;">1.283511</td>
+<td style="text-align: right;">0.0532005</td>
+<td style="text-align: right;">0.9142547</td>
+<td style="text-align: right;">411</td>
+<td style="text-align: right;">10858.5127</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">0.0045815</td>
+<td style="text-align: right;">0.4243</td>
+<td style="text-align: right;">38.3237</td>
+<td style="text-align: right;">2.796658</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">356.6813</td>
+<td style="text-align: right;">1040</td>
+<td style="text-align: right;">96802</td>
+<td style="text-align: left;">sub-10355_ses-V3_task-cuff_run-01_bold</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">290</td>
+<td style="text-align: right;">0.0088436</td>
+<td style="text-align: right;">47.40406</td>
+<td style="text-align: right;">3.250654</td>
+<td style="text-align: right;">2.996301</td>
+<td style="text-align: right;">0.0279804</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0.0035719</td>
+<td style="text-align: right;">97.8685</td>
+<td style="text-align: right;">2.940925</td>
+<td style="text-align: right;">2.4</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1215.6718</td>
+<td style="text-align: right;">2224</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">20.7531</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">366337</td>
+<td style="text-align: right;">248</td>
+<td style="text-align: right;">39.78583</td>
+<td style="text-align: right;">153.3359</td>
+<td style="text-align: right;">4.6670</td>
+<td style="text-align: right;">0.8000000</td>
+<td style="text-align: right;">443</td>
+<td style="text-align: right;">2.032800</td>
+<td style="text-align: right;">569.6553</td>
+<td style="text-align: right;">26.74147</td>
+<td style="text-align: right;">0.9690394</td>
+<td style="text-align: right;">1.090245</td>
+<td style="text-align: right;">0.0189762</td>
+<td style="text-align: right;">0.2202484</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">7218.0190</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">0.0046997</td>
+<td style="text-align: right;">0.4688</td>
+<td style="text-align: right;">58.3281</td>
+<td style="text-align: right;">2.797325</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">399.2685</td>
+<td style="text-align: right;">1158</td>
+<td style="text-align: right;">119663</td>
+<td style="text-align: left;">sub-20041_ses-V3_task-cuff_run-02_bold</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">182</td>
+<td style="text-align: right;">-0.0173981</td>
+<td style="text-align: right;">38.47875</td>
+<td style="text-align: right;">2.851042</td>
+<td style="text-align: right;">3.053996</td>
+<td style="text-align: right;">0.0641578</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0.0022321</td>
+<td style="text-align: right;">50.8674</td>
+<td style="text-align: right;">3.215412</td>
+<td style="text-align: right;">2.4</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">471.1883</td>
+<td style="text-align: right;">806</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">4.6468</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">388706</td>
+<td style="text-align: right;">127</td>
+<td style="text-align: right;">36.21926</td>
+<td style="text-align: right;">59.6670</td>
+<td style="text-align: right;">0.5428</td>
+<td style="text-align: right;">0.8000000</td>
+<td style="text-align: right;">447</td>
+<td style="text-align: right;">2.444261</td>
+<td style="text-align: right;">184.9220</td>
+<td style="text-align: right;">35.41455</td>
+<td style="text-align: right;">0.9611394</td>
+<td style="text-align: right;">1.029062</td>
+<td style="text-align: right;">0.0133520</td>
+<td style="text-align: right;">0.1717237</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">731.6926</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">0.0003907</td>
+<td style="text-align: right;">0.4995</td>
+<td style="text-align: right;">35.7919</td>
+<td style="text-align: right;">3.095533</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">165.4644</td>
+<td style="text-align: right;">452</td>
+<td style="text-align: right;">97294</td>
+<td style="text-align: left;">sub-20399_ses-V3_task-cuff_run-02_bold</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">6845</td>
+<td style="text-align: right;">-0.0110442</td>
+<td style="text-align: right;">94.15730</td>
+<td style="text-align: right;">2.686887</td>
+<td style="text-align: right;">2.534638</td>
+<td style="text-align: right;">0.0287072</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">0.0061725</td>
+<td style="text-align: right;">70.4831</td>
+<td style="text-align: right;">2.449446</td>
+<td style="text-align: right;">2.4</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">19412.4011</td>
+<td style="text-align: right;">27486</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">38.5477</td>
+<td style="text-align: right;">2.21875</td>
+<td style="text-align: right;">394502</td>
+<td style="text-align: right;">3262</td>
+<td style="text-align: right;">66.94345</td>
+<td style="text-align: right;">1492.6184</td>
+<td style="text-align: right;">1.4292</td>
+<td style="text-align: right;">0.7999997</td>
+<td style="text-align: right;">445</td>
+<td style="text-align: right;">3.529797</td>
+<td style="text-align: right;">5676.2202</td>
+<td style="text-align: right;">25.88404</td>
+<td style="text-align: right;">0.9959189</td>
+<td style="text-align: right;">1.174573</td>
+<td style="text-align: right;">0.0453041</td>
+<td style="text-align: right;">0.7045787</td>
+<td style="text-align: right;">419</td>
+<td style="text-align: right;">584686.2500</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2.21875</td>
+<td style="text-align: right;">0.0025314</td>
+<td style="text-align: right;">0.4514</td>
+<td style="text-align: right;">699.5358</td>
+<td style="text-align: right;">2.467583</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3896.1295</td>
+<td style="text-align: right;">20036</td>
+<td style="text-align: right;">103162</td>
+<td style="text-align: left;">sub-11069_ses-V3_task-cuff_run-02_bold</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">306</td>
+<td style="text-align: right;">-0.0119028</td>
+<td style="text-align: right;">55.32880</td>
+<td style="text-align: right;">3.275942</td>
+<td style="text-align: right;">3.119962</td>
+<td style="text-align: right;">0.0276843</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0.0013895</td>
+<td style="text-align: right;">276.4821</td>
+<td style="text-align: right;">3.100054</td>
+<td style="text-align: right;">2.4</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1143.9366</td>
+<td style="text-align: right;">1970</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">17.7912</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">385415</td>
+<td style="text-align: right;">181</td>
+<td style="text-align: right;">41.74820</td>
+<td style="text-align: right;">138.2481</td>
+<td style="text-align: right;">3.0032</td>
+<td style="text-align: right;">0.8000000</td>
+<td style="text-align: right;">441</td>
+<td style="text-align: right;">2.274493</td>
+<td style="text-align: right;">490.6563</td>
+<td style="text-align: right;">20.88673</td>
+<td style="text-align: right;">0.9053607</td>
+<td style="text-align: right;">1.014526</td>
+<td style="text-align: right;">0.0416413</td>
+<td style="text-align: right;">0.2101655</td>
+<td style="text-align: right;">244</td>
+<td style="text-align: right;">8937.8770</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">0.0025078</td>
+<td style="text-align: right;">0.4332</td>
+<td style="text-align: right;">45.6822</td>
+<td style="text-align: right;">2.983891</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">366.2935</td>
+<td style="text-align: right;">1116</td>
+<td style="text-align: right;">100585</td>
+<td style="text-align: left;">sub-10295_ses-V1_task-cuff_run-01_bold</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">191</td>
+<td style="text-align: right;">0.0039095</td>
+<td style="text-align: right;">29.93197</td>
+<td style="text-align: right;">2.805417</td>
+<td style="text-align: right;">2.664839</td>
+<td style="text-align: right;">0.0147271</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0.0099024</td>
+<td style="text-align: right;">98.7085</td>
+<td style="text-align: right;">2.593362</td>
+<td style="text-align: right;">2.4</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1129.2300</td>
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">16.3053</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">398773</td>
+<td style="text-align: right;">163</td>
+<td style="text-align: right;">38.32907</td>
+<td style="text-align: right;">103.9497</td>
+<td style="text-align: right;">2.2260</td>
+<td style="text-align: right;">0.8000000</td>
+<td style="text-align: right;">441</td>
+<td style="text-align: right;">2.206411</td>
+<td style="text-align: right;">513.9539</td>
+<td style="text-align: right;">31.49358</td>
+<td style="text-align: right;">0.9654090</td>
+<td style="text-align: right;">1.134152</td>
+<td style="text-align: right;">0.0140956</td>
+<td style="text-align: right;">0.1442416</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">11567.4209</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2.40000</td>
+<td style="text-align: right;">0.0010844</td>
+<td style="text-align: right;">0.4023</td>
+<td style="text-align: right;">40.0061</td>
+<td style="text-align: right;">2.595737</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">367.4937</td>
+<td style="text-align: right;">1134</td>
+<td style="text-align: right;">87227</td>
+<td style="text-align: left;">sub-10326_ses-V1_task-cuff_run-02_bold</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>For a detailed description of these metrics, please see the official MRIQC documentation.</p>
+<ul>
+<li><a href="https://mriqc.readthedocs.io/en/latest/iqms/t1w.html">Structural</a></li>
+<li><a href="https://mriqc.readthedocs.io/en/latest/iqms/bold.html">Functional</a></li>
+<li><a href="https://mriqc.readthedocs.io/en/latest/iqms/dwi.html">Diffusion</a></li>
+</ul>
+</section>
+<section id="comparison-with-reference-distributions" class="level3" data-number="9.1.3">
+<h3 data-number="9.1.3" class="anchored" data-anchor-id="comparison-with-reference-distributions"><span class="header-section-number">9.1.3</span> Comparison with Reference Distributions</h3>
+<p>One strength of MRIQC is that the pipeline automatically stores the metrics in a centralized database. The centralized database is available via the <a href="https://mriqc.nimh.nih.gov/">MRIQC Web API</a>. An example of interacting with the API can be found in https://github.com/psadil/mriqc-export.</p>
+<p>In this kit, the metrics have already been downloaded and stored in a set parquet files.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>all_bold <span class="ot">&lt;-</span> duckplyr<span class="sc">::</span><span class="fu">read_parquet_duckdb</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  fs<span class="sc">::</span><span class="fu">dir_ls</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/mriqcwebapi/bold"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">recurse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">glob =</span> <span class="st">"*parquet"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="st">`</span><span class="at">_id</span><span class="st">`</span>, fd_mean) <span class="sc">|&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(all_bold)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1245400</code></pre>
+</div>
+</div>
+<p>Loading them, we see that there are over 1 million entries in the database.</p>
+<p>Let’s use that reference set to rate A2CPS. One of the most important</p>
+<p>Note that MRIQC occasionally changes the way metrics are calculated, and so detailed comparisons between the A2CPS values and the reference values often need to consider the version of MRIQC that was run. For example, the between version 0.15.1 and 24.0.2, the MRIQC workflow changed in a way that dramatically affected the Contrast-to-Noise Ratio calculations: https://github.com/nipreps/mriqc/issues/1390.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(<span class="fu">list</span>(<span class="at">a2cps =</span> group_bold, <span class="at">mriqc =</span> all_bold), <span class="at">.id =</span> <span class="st">"source"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> source, <span class="at">y =</span> fd_mean)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>() <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_scattermore</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="mriqc_files/figure-html/cnr-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Quantitatively, the dataset is in the upper quantiles of motion, which is to be expected given the study population.</p>
+<div class="cell" data-fig-caption="Quantiles of Mean Framewise Displacement in A2CPS. The quantiles are calculated from an empirical CDF derived from the MRIQC reference database.">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>empirical_motion_cdf <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(all_bold<span class="sc">$</span>fd_mean)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>group_bold <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fd_quantile =</span> <span class="fu">empirical_motion_cdf</span>(fd_mean)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> fd_quantile)) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="mriqc_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">9.2</span> Considerations While Working on the Project</h2>
+<section id="framewise-displacement-and-a2cps" class="level3 page-columns page-full" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="framewise-displacement-and-a2cps"><span class="header-section-number">9.2.1</span> Framewise Displacement and A2CPS</h3>
+<p>A key element of the A2CPS Quality Ratings for raw data is based on Framewise Displacement. Although MRIQC provides a measurement of framewise displacement, it is not the one that is entered into the rating. Instead, A2CPS uses the estimate of motion from fMRIPrep, what it refers to as <code>rmsd</code>, also referred to as FD_Jenk, in reference to the method as described in <span class="citation" data-cites="jenkinson_improved_2002">Jenkinson et al. (<a href="references.html#ref-jenkinson_improved_2002" role="doc-biblioref">2002</a>)</span>. The measure of motion provided by MRIQC is sometimes referred to as FD_Power (e.g., <span class="citation" data-cites="parkes_evaluation_2018">Parkes et al. (<a href="references.html#ref-parkes_evaluation_2018" role="doc-biblioref">2018</a>)</span>), referring to <span class="citation" data-cites="power_spurious_2012">Power et al. (<a href="references.html#ref-power_spurious_2012" role="doc-biblioref">2012</a>)</span>. FD_Power measures the distance travelled by a point on the edge of a sphere between frames (usually using a sphere of 50 mm), whereas FD_Jenk measures the average distance traveled by the entire sphere (usually using a sphere of 80 mm). The two measures are often almost perfectly correlated, but FD_Power tends to be about 1.7x as high as FD_Jenk.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-jenkinson_improved_2002" class="csl-entry" role="listitem">
+Jenkinson, M., Bannister, P., Brady, M., &amp; Smith, S. (2002). Improved optimization for the robust and accurate linear registration and motion correction of brain images. <em>Neuroimage</em>, <em>17</em>(2), 825–841. <a href="https://doi.org/10.1006/nimg.2002.1132">https://doi.org/10.1006/nimg.2002.1132</a>
+</div><div id="ref-parkes_evaluation_2018" class="csl-entry" role="listitem">
+Parkes, L., Fulcher, B., Yücel, M., &amp; Fornito, A. (2018). An evaluation of the efficacy, reliability, and sensitivity of motion correction strategies for resting-state functional MRI. <em>Neuroimage</em>, <em>171</em>, 415–436. <a href="https://doi.org/10.1016/j.neuroimage.2017.12.073">https://doi.org/10.1016/j.neuroimage.2017.12.073</a>
+</div><div id="ref-power_spurious_2012" class="csl-entry" role="listitem">
+Power, J. D., Barnes, K. A., Snyder, A. Z., Schlaggar, B. L., &amp; Petersen, S. E. (2012). Spurious but systematic correlations in functional connectivity MRI networks arise from subject motion. <em>Neuroimage</em>, <em>59</em>(3), 2142–2154. <a href="https://doi.org/10.1016/j.neuroimage.2011.10.018">https://doi.org/10.1016/j.neuroimage.2011.10.018</a>
+</div></div></section>
+<section id="mriqc-versions" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="mriqc-versions"><span class="header-section-number">9.2.2</span> MRIQC Versions</h3>
+<p>Please be aware that, across versions of MRIQC, the manner in which MRIQC calculates metrics has changed. These changes can lead to substantial differences in the distribution of metrics. For one set of examples, please see <a href="https://github.com/nipreps/mriqc/issues/1390">this GitHub issue</a>.</p>
+</section>
+<section id="variability-across-scanners" class="level3 page-columns page-full" data-number="9.2.3">
+<h3 data-number="9.2.3" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">9.2.3</span> Variability Across Scanners</h3>
+<p>Many of these metrics exhibit substantial variability across the scanners, which may confound some analyses. For example, the scanner “NS” (serial number: 70032) has the “Prescan Normalization” feature turned off, which produces substantial intensity inhomogeneity in the images. This inhomogeneity is very noticeable in the images, resulting in much voxels near the edge of the field-of-view being much brighter than voxels in the center of the field-of-view. Unfortunately, this spatial pattern confounds one of the metrics produced by MRIQC that is designed to estimate <a href="https://mriquestions.com/ghosting.html">ghosting</a>: the “Ghost-to-Signal” Ratio. That is, the values for this ratio suggest that the NS scanner suffers from substantial ghosting, but those values are instead driven primarily by intensity inhomogeneity.</p>
+<p>As another example, the scanner UC (serial number: 71399) is unique in that the structural images were collected with <a href="https://mriquestions.com/two-types-of-pi.html">“Image Domain Parallel Imaging”</a>. This form of parallel imaging causes a near total suppression of the background signal (that is, most background voxels have intensity 0). Several of the MRIQC metrics incorporate the background signal, and so this noise suppression causes those metrics to have a fundamentally different scaling as compared to metrics calculated on images without that suppression. Consider the <a href="https://mriqc.readthedocs.io/en/latest/iqms/t1w.html#mriqc.qc.anatomical.snr_dietrich">“Dietrich” version of the signal-to-noise ratio</a> <span class="citation" data-cites="dietrich_measurement_2007">(<a href="references.html#ref-dietrich_measurement_2007" role="doc-biblioref">Dietrich et al., 2007</a>)</span>, which uses the standard deviation of the intensity in the background to scale the average intensity of the foreground, producing substantially larger estimates of the signal-to-noise ratio.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-dietrich_measurement_2007" class="csl-entry" role="listitem">
+Dietrich, O., Raya, J. G., Reeder, S. B., Reiser, M. F., &amp; Schoenberg, S. O. (2007). Measurement of signal-to-noise ratios in MR images: Influence of multichannel coils, parallel imaging, and reconstruction filters. <em>Journal of Magnetic Resonance Imaging: An Official Journal of the International Society for Magnetic Resonance in Medicine</em>, <em>26</em>(2), 375–385. <a href="https://doi.org/10.1002/jmri.20969">https://doi.org/10.1002/jmri.20969</a>
+</div></div><p>For a detailed description of these particular issues, please see <a href="images/A2CPS_imaging_MRIQC.pdf">these slides</a>. In general, interpreting the MRIQC metrics should be done with caution.</p>
+</section>
+<section id="citations" class="level3 page-columns page-full" data-number="9.2.4">
+<h3 data-number="9.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">9.2.4</span> Citations</h3>
+<p>If you use these results, please cite the MRIQC report <span class="citation" data-cites="esteban_mriqc_2017">(<a href="references.html#ref-esteban_mriqc_2017" role="doc-biblioref">Esteban et al., 2017</a>)</span> and all relevant citations of the pipeline configuration.</p>
+
+
+<div class="no-row-height column-margin column-container"><div id="ref-esteban_mriqc_2017" class="csl-entry" role="listitem">
+Esteban, O., Birman, D., Schaer, M., Koyejo, O. O., Poldrack, R. A., &amp; Gorgolewski, K. J. (2017). MRIQC: Advancing the automatic prediction of image quality in MRI from unseen sites. <em>PloS One</em>, <em>12</em>(9), e0184661. <a href="https://doi.org/10.1371/journal.pone.0184661">https://doi.org/10.1371/journal.pone.0184661</a>
+</div></div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./gift.html" class="pagination-link" aria-label="Group ICA of fMRI Toolbox (GIFT)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Group ICA of fMRI Toolbox (GIFT)</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./neural-pain-signatures.html" class="pagination-link" aria-label="Prior Neural Pain Signature Responses">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Prior Neural Pain Signature Responses</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
