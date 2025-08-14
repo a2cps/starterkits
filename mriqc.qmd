@@ -49,20 +49,15 @@ group_bold |>
   head()
 ```
 
-
 For a detailed description of these metrics, please see the official MRIQC documentation. 
 
 - [Structural](https://mriqc.readthedocs.io/en/latest/iqms/t1w.html)
 - [Functional](https://mriqc.readthedocs.io/en/latest/iqms/bold.html)
 - [Diffusion](https://mriqc.readthedocs.io/en/latest/iqms/dwi.html)
 
-
-
 ### Comparison with Reference Distributions
 
-One strength of MRIQC is that the pipeline automatically stores the metrics in a centralized database. The centralized database is available via the [MRIQC Web API](https://mriqc.nimh.nih.gov/). An example of interacting with the API can be found in https://github.com/psadil/mriqc-export. 
-
-In this kit, the metrics have already been downloaded and stored in a set parquet files. 
+One strength of MRIQC is that the pipeline automatically stores the metrics in a centralized database. The centralized database is available via the [MRIQC Web API](https://mriqc.nimh.nih.gov/). An example of interacting with the API can be found in https://github.com/psadil/mriqc-export. In this kit, the metrics have already been downloaded and stored in a set parquet files. Let's use that reference set to rate A2CPS. One of the most important determiners of quality is motion, so let's focus on the average Framewise Displacement. 
 
 ```{r loadapi}
 all_bold <- duckplyr::read_parquet_duckdb(
@@ -80,9 +75,7 @@ nrow(all_bold)
 
 Loading them, we see that there are over 1 million entries in the database.
 
-Let's use that reference set to rate A2CPS. One of the most important
-
-Note that MRIQC occasionally changes the way metrics are calculated, and so detailed comparisons between the A2CPS values and the reference values often need to consider the version of MRIQC that was run. For example, the between version 0.15.1 and 24.0.2, the MRIQC workflow changed in a way that dramatically affected the Contrast-to-Noise Ratio calculations: https://github.com/nipreps/mriqc/issues/1390. 
+Let's create a simple scatter plot to compare motion in A2CPS against motion in the MRIQC database. Note that because there are so many points to display, we're using the package [`scattermore`](https://exaexa.github.io/scattermore/). 
 
 ```{r cnr}
 
@@ -98,6 +91,7 @@ Quantitatively, the dataset is in the upper quantiles of motion, which is to be 
 
 ```{r}
 #| fig-caption: "Quantiles of Mean Framewise Displacement in A2CPS. The quantiles are calculated from an empirical CDF derived from the MRIQC reference database."
+
 empirical_motion_cdf <- ecdf(all_bold$fd_mean)
 
 group_bold |>
