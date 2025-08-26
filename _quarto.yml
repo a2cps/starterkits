@@ -21,6 +21,7 @@ book:
     - cat12.qmd
     - fcn.qmd
     - gift.qmd
+    - postgift.qmd
     - mriqc.qmd
     - neural-pain-signatures.qmd
     - faq.qmd
