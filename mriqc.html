@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>9&nbsp; MRIQC – A2CPS Starter Kits</title>
+<title>10&nbsp; MRIQC – A2CPS Starter Kits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -86,7 +86,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./neural-pain-signatures.html" rel="next">
-<link href="./gift.html" rel="prev">
+<link href="./postgift.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -312,7 +312,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./mriqc.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">MRIQC</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./mriqc.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">MRIQC</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -402,14 +402,20 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./postgift.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">ICA Connectivity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./mriqc.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">MRIQC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">MRIQC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./neural-pain-signatures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Prior Neural Pain Signature Responses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Prior Neural Pain Signature Responses</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -493,18 +499,18 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">9.1</span> Starting Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">10.1</span> Starting Project</a>
   <ul class="collapse">
-  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">9.1.1</span> Locate Data</a></li>
-  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">9.1.2</span> Extract Data</a></li>
-  <li><a href="#comparison-with-reference-distributions" id="toc-comparison-with-reference-distributions" class="nav-link" data-scroll-target="#comparison-with-reference-distributions"><span class="header-section-number">9.1.3</span> Comparison with Reference Distributions</a></li>
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">10.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">10.1.2</span> Extract Data</a></li>
+  <li><a href="#comparison-with-reference-distributions" id="toc-comparison-with-reference-distributions" class="nav-link" data-scroll-target="#comparison-with-reference-distributions"><span class="header-section-number">10.1.3</span> Comparison with Reference Distributions</a></li>
   </ul></li>
-  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">9.2</span> Considerations While Working on the Project</a>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">10.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#framewise-displacement-and-a2cps" id="toc-framewise-displacement-and-a2cps" class="nav-link" data-scroll-target="#framewise-displacement-and-a2cps"><span class="header-section-number">9.2.1</span> Framewise Displacement and A2CPS</a></li>
-  <li><a href="#mriqc-versions" id="toc-mriqc-versions" class="nav-link" data-scroll-target="#mriqc-versions"><span class="header-section-number">9.2.2</span> MRIQC Versions</a></li>
-  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">9.2.3</span> Variability Across Scanners</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">9.2.4</span> Citations</a></li>
+  <li><a href="#framewise-displacement-and-a2cps" id="toc-framewise-displacement-and-a2cps" class="nav-link" data-scroll-target="#framewise-displacement-and-a2cps"><span class="header-section-number">10.2.1</span> Framewise Displacement and A2CPS</a></li>
+  <li><a href="#mriqc-versions" id="toc-mriqc-versions" class="nav-link" data-scroll-target="#mriqc-versions"><span class="header-section-number">10.2.2</span> MRIQC Versions</a></li>
+  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">10.2.3</span> Variability Across Scanners</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">10.2.4</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -515,7 +521,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-mriqc" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">MRIQC</span></span></h1>
+<h1 class="title"><span id="sec-mriqc" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">MRIQC</span></span></h1>
 </div>
 
 
@@ -540,16 +546,16 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scattermore)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Part of the A2CPS MRI quality control procedure <a href="raw-mri.html#sec-raw-mri-quality" class="quarto-xref"><span>Section 3.1.2</span></a> uses metrics derived from the MRI Quality Control (MRIQC) pipeline <span class="citation" data-cites="esteban_mriqc_2017">(<a href="references.html#ref-esteban_mriqc_2017" role="doc-biblioref">Esteban et al., 2017</a>)</span>. However, MRIQC provides several metrics beyond the subset used by A2CPS. This kit reviews those metrics and shows how they compare with others that are available in the MRIQC database.</p>
-<div class="no-row-height column-margin column-container"></div><section id="starting-project" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">9.1</span> Starting Project</h2>
-<section id="locate-data" class="level3" data-number="9.1.1">
-<h3 data-number="9.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">9.1.1</span> Locate Data</h3>
+<div class="no-row-height column-margin column-container"></div><section id="starting-project" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">10.1</span> Starting Project</h2>
+<section id="locate-data" class="level3" data-number="10.1.1">
+<h3 data-number="10.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">10.1.1</span> Locate Data</h3>
 <p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The MRIQC metrics are underneath <code>derivatives/mriqc</code>.</p>
 </section>
-<section id="extract-data" class="level3" data-number="9.1.2">
-<h3 data-number="9.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">9.1.2</span> Extract Data</h3>
+<section id="extract-data" class="level3" data-number="10.1.2">
+<h3 data-number="10.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">10.1.2</span> Extract Data</h3>
 <p>The A2CPS pipeline produces a standard set of MRIQC outputs, including both participant- and group-level results. For a detailed explanation of the outputs, please see the <a href="https://mriqc.readthedocs.io/en/latest/index.html">official MRIQC documentation</a>. At a high-level, the outputs include:</p>
 <ul>
 <li>participant-level metrics: underneath sub-[recordid]/ses-[protocolid]/{anat,func,dwi}</li>
@@ -966,8 +972,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <li><a href="https://mriqc.readthedocs.io/en/latest/iqms/dwi.html">Diffusion</a></li>
 </ul>
 </section>
-<section id="comparison-with-reference-distributions" class="level3" data-number="9.1.3">
-<h3 data-number="9.1.3" class="anchored" data-anchor-id="comparison-with-reference-distributions"><span class="header-section-number">9.1.3</span> Comparison with Reference Distributions</h3>
+<section id="comparison-with-reference-distributions" class="level3" data-number="10.1.3">
+<h3 data-number="10.1.3" class="anchored" data-anchor-id="comparison-with-reference-distributions"><span class="header-section-number">10.1.3</span> Comparison with Reference Distributions</h3>
 <p>One strength of MRIQC is that the pipeline automatically stores the metrics in a centralized database. The centralized database is available via the <a href="https://mriqc.nimh.nih.gov/">MRIQC Web API</a>. An example of interacting with the API can be found in https://github.com/psadil/mriqc-export. In this kit, the metrics have already been downloaded and stored in a set parquet files. Let’s use that reference set to rate A2CPS. One of the most important determiners of quality is motion, so let’s focus on the average Framewise Displacement.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>all_bold <span class="ot">&lt;-</span> duckplyr<span class="sc">::</span><span class="fu">read_parquet_duckdb</span>(</span>
@@ -1021,10 +1027,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </section>
 </section>
-<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">9.2</span> Considerations While Working on the Project</h2>
-<section id="framewise-displacement-and-a2cps" class="level3 page-columns page-full" data-number="9.2.1">
-<h3 data-number="9.2.1" class="anchored" data-anchor-id="framewise-displacement-and-a2cps"><span class="header-section-number">9.2.1</span> Framewise Displacement and A2CPS</h3>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">10.2</span> Considerations While Working on the Project</h2>
+<section id="framewise-displacement-and-a2cps" class="level3 page-columns page-full" data-number="10.2.1">
+<h3 data-number="10.2.1" class="anchored" data-anchor-id="framewise-displacement-and-a2cps"><span class="header-section-number">10.2.1</span> Framewise Displacement and A2CPS</h3>
 <p>A key element of the A2CPS Quality Ratings for raw data is based on Framewise Displacement. Although MRIQC provides a measurement of framewise displacement, it is not the one that is entered into the rating. Instead, A2CPS uses the estimate of motion from fMRIPrep, what it refers to as <code>rmsd</code>, also referred to as FD_Jenk, in reference to the method as described in <span class="citation" data-cites="jenkinson_improved_2002">Jenkinson et al. (<a href="references.html#ref-jenkinson_improved_2002" role="doc-biblioref">2002</a>)</span>. The measure of motion provided by MRIQC is sometimes referred to as FD_Power (e.g., <span class="citation" data-cites="parkes_evaluation_2018">Parkes et al. (<a href="references.html#ref-parkes_evaluation_2018" role="doc-biblioref">2018</a>)</span>), referring to <span class="citation" data-cites="power_spurious_2012">Power et al. (<a href="references.html#ref-power_spurious_2012" role="doc-biblioref">2012</a>)</span>. FD_Power measures the distance travelled by a point on the edge of a sphere between frames (usually using a sphere of 50 mm), whereas FD_Jenk measures the average distance traveled by the entire sphere (usually using a sphere of 80 mm). The two measures are often almost perfectly correlated, but FD_Power tends to be about 1.7x as high as FD_Jenk.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-jenkinson_improved_2002" class="csl-entry" role="listitem">
 Jenkinson, M., Bannister, P., Brady, M., &amp; Smith, S. (2002). Improved optimization for the robust and accurate linear registration and motion correction of brain images. <em>Neuroimage</em>, <em>17</em>(2), 825–841. <a href="https://doi.org/10.1006/nimg.2002.1132">https://doi.org/10.1006/nimg.2002.1132</a>
@@ -1033,20 +1039,20 @@ Parkes, L., Fulcher, B., Yücel, M., &amp; Fornito, A. (2018). An evaluation of 
 </div><div id="ref-power_spurious_2012" class="csl-entry" role="listitem">
 Power, J. D., Barnes, K. A., Snyder, A. Z., Schlaggar, B. L., &amp; Petersen, S. E. (2012). Spurious but systematic correlations in functional connectivity MRI networks arise from subject motion. <em>Neuroimage</em>, <em>59</em>(3), 2142–2154. <a href="https://doi.org/10.1016/j.neuroimage.2011.10.018">https://doi.org/10.1016/j.neuroimage.2011.10.018</a>
 </div></div></section>
-<section id="mriqc-versions" class="level3" data-number="9.2.2">
-<h3 data-number="9.2.2" class="anchored" data-anchor-id="mriqc-versions"><span class="header-section-number">9.2.2</span> MRIQC Versions</h3>
+<section id="mriqc-versions" class="level3" data-number="10.2.2">
+<h3 data-number="10.2.2" class="anchored" data-anchor-id="mriqc-versions"><span class="header-section-number">10.2.2</span> MRIQC Versions</h3>
 <p>Please be aware that, across versions of MRIQC, the manner in which MRIQC calculates metrics has changed. These changes can lead to substantial differences in the distribution of metrics. For one set of examples, please see <a href="https://github.com/nipreps/mriqc/issues/1390">this GitHub issue</a>.</p>
 </section>
-<section id="variability-across-scanners" class="level3 page-columns page-full" data-number="9.2.3">
-<h3 data-number="9.2.3" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">9.2.3</span> Variability Across Scanners</h3>
+<section id="variability-across-scanners" class="level3 page-columns page-full" data-number="10.2.3">
+<h3 data-number="10.2.3" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">10.2.3</span> Variability Across Scanners</h3>
 <p>Many of these metrics exhibit substantial variability across the scanners, which may confound some analyses. For example, the scanner “NS” (serial number: 70032) has the “Prescan Normalization” feature turned off, which produces substantial intensity inhomogeneity in the images. This inhomogeneity is very noticeable in the images, resulting in much voxels near the edge of the field-of-view being much brighter than voxels in the center of the field-of-view. Unfortunately, this spatial pattern confounds one of the metrics produced by MRIQC that is designed to estimate <a href="https://mriquestions.com/ghosting.html">ghosting</a>: the “Ghost-to-Signal” Ratio. That is, the values for this ratio suggest that the NS scanner suffers from substantial ghosting, but those values are instead driven primarily by intensity inhomogeneity.</p>
 <p>As another example, the scanner UC (serial number: 71399) is unique in that the structural images were collected with <a href="https://mriquestions.com/two-types-of-pi.html">“Image Domain Parallel Imaging”</a>. This form of parallel imaging causes a near total suppression of the background signal (that is, most background voxels have intensity 0). Several of the MRIQC metrics incorporate the background signal, and so this noise suppression causes those metrics to have a fundamentally different scaling as compared to metrics calculated on images without that suppression. Consider the <a href="https://mriqc.readthedocs.io/en/latest/iqms/t1w.html#mriqc.qc.anatomical.snr_dietrich">“Dietrich” version of the signal-to-noise ratio</a> <span class="citation" data-cites="dietrich_measurement_2007">(<a href="references.html#ref-dietrich_measurement_2007" role="doc-biblioref">Dietrich et al., 2007</a>)</span>, which uses the standard deviation of the intensity in the background to scale the average intensity of the foreground, producing substantially larger estimates of the signal-to-noise ratio.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-dietrich_measurement_2007" class="csl-entry" role="listitem">
 Dietrich, O., Raya, J. G., Reeder, S. B., Reiser, M. F., &amp; Schoenberg, S. O. (2007). Measurement of signal-to-noise ratios in MR images: Influence of multichannel coils, parallel imaging, and reconstruction filters. <em>Journal of Magnetic Resonance Imaging: An Official Journal of the International Society for Magnetic Resonance in Medicine</em>, <em>26</em>(2), 375–385. <a href="https://doi.org/10.1002/jmri.20969">https://doi.org/10.1002/jmri.20969</a>
 </div></div><p>For a detailed description of these particular issues, please see <a href="images/A2CPS_imaging_MRIQC.pdf">these slides</a>. In general, interpreting the MRIQC metrics should be done with caution.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="9.2.4">
-<h3 data-number="9.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">9.2.4</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="10.2.4">
+<h3 data-number="10.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">10.2.4</span> Citations</h3>
 <p>If you use these results, please cite the MRIQC report <span class="citation" data-cites="esteban_mriqc_2017">(<a href="references.html#ref-esteban_mriqc_2017" role="doc-biblioref">Esteban et al., 2017</a>)</span> and all relevant citations of the pipeline configuration.</p>
 
 
@@ -1471,13 +1477,13 @@ Esteban, O., Birman, D., Schaer, M., Koyejo, O. O., Poldrack, R. A., &amp; Gorgo
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./gift.html" class="pagination-link" aria-label="Group ICA of fMRI Toolbox (GIFT)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Group ICA of fMRI Toolbox (GIFT)</span></span>
+      <a href="./postgift.html" class="pagination-link" aria-label="ICA Connectivity">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">ICA Connectivity</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./neural-pain-signatures.html" class="pagination-link" aria-label="Prior Neural Pain Signature Responses">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Prior Neural Pain Signature Responses</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Prior Neural Pain Signature Responses</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

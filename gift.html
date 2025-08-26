@@ -85,7 +85,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./mriqc.html" rel="next">
+<link href="./postgift.html" rel="next">
 <link href="./fcn.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -431,14 +431,20 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./postgift.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">ICA Connectivity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./mriqc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">MRIQC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">MRIQC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./neural-pain-signatures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Prior Neural Pain Signature Responses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Prior Neural Pain Signature Responses</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -530,6 +536,7 @@ window.Quarto = {
   <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">8.1.1</span> Variability Across Scanners</a></li>
   <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">8.1.2</span> Data Quality</a></li>
   <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">8.1.3</span> Data Generation</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">8.1.4</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -589,7 +596,7 @@ Du, Y., Fu, Z., Sui, J., Gao, S., Xing, Y., Lin, D., Salman, M., Abrol, A., Raha
 <p>The GIFT derivatives are underneath the subfolder “derivatives”.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/gift/derivatives/</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gift-neuromark_fmri_2.0_modelorder-175</span>  gift-neuromark_fmri_2.1_modelorder-multi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We provide results from two different NeuroMark network templates (alternatively called “model”). Templates are the spatial priors that were used in the estimation of ICA components. The first is NeuroMark 2.0 (model order = 175) which includes 58 non-artifactual components produced from a single model order of 175 components <span class="citation" data-cites="iraji_identifying_2023">(<a href="references.html#ref-iraji_identifying_2023" role="doc-biblioref">Iraji et al., 2023</a>)</span>. The second is the multi-scale NeuroMark 2.1 which includes 105 non-artifactual components covering diverse spatial scales which are aggregated from diverse model orders <span class="citation" data-cites="iraji_identifying_2023">(<a href="references.html#ref-iraji_identifying_2023" role="doc-biblioref">Iraji et al., 2023</a>)</span>. A typical analysis will involve only one model. Without a specific reason to prefer one template, the 2.1, multi-order model is recommended.</p>
+<p>We provide results from two different NeuroMark network templates (alternatively called “model”). Templates are the spatial priors that were used in the estimation of ICA components. The first is NeuroMark 2.0 (model order = 175) which includes 58 non-artifactual components produced from a single model order of 175 components <span class="citation" data-cites="iraji_identifying_2023">(<a href="references.html#ref-iraji_identifying_2023" role="doc-biblioref">Iraji et al., 2023</a>)</span>. The second is the multi-scale NeuroMark 2.1 which includes 105 non-artifactual components covering diverse spatial scales which are aggregated from diverse model orders <span class="citation" data-cites="iraji_identifying_2023">(<a href="references.html#ref-iraji_identifying_2023" role="doc-biblioref">Iraji et al., 2023</a>)</span>. A typical analysis will involve only one model. Without a specific reason to prefer one template, the 2.1, multi-order model is recommended. For additional details on the templates, please see this <a href="https://trendscenter.org/data/">page of references</a>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-iraji_identifying_2023" class="csl-entry" role="listitem">
 Iraji, A., Fu, Z., Faghiri, A., Duda, M., Chen, J., Rachakonda, S., DeRamus, T., Kochunov, P., Adhikari, B. M., Belger, A., et al. (2023). Identifying canonical and replicable multi-scale intrinsic connectivity networks in 100k+ resting-state fMRI datasets. <em>Human Brain Mapping</em>, <em>44</em>(17), 5729–5748. <a href="https://doi.org/10.1002/hbm.26472">https://doi.org/10.1002/hbm.26472</a>
 </div></div><p>The model directories are themselves organized according to BIDS.</p>
@@ -742,11 +749,15 @@ Korponay, C., Janes, A. C., &amp; Frederick, B. B. (2024). <a href="">Brain-wide
 <section id="data-generation" class="level3 page-columns page-full" data-number="8.1.3">
 <h3 data-number="8.1.3" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">8.1.3</span> Data Generation</h3>
 <p>The GIFT outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/gift_app">gift_app</a> component of the A2CPS Imaging pipeline. Prior to NeuroMark, the resting-state fMRI data were minimally preprocessed (<span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>), and then resampled to 2.4mm isotropic voxel size to ensure identical dimensions across all subjects. After resampling, volumes were spatially smoothed using a Gaussian kernel with a full width at half maximum of 6mm. NeuroMark was then applied separately for each resting-state run from each subject and separately for each template. The NeuroMark pipeline included the following configuration options: brain masking using the default mask plus intracranial volume, coregistration of the functional data to a functional template in MNI space (separate from the registration performed during minimal preprocessing), removal of the first 15 volumes (i.e., dummy scans), bandpass filtering (0.01-0.15Hz), removal of the mean per timepoint, multivariate-objective optimization ICA with reference <span class="citation" data-cites="du_group_2013">(<a href="references.html#ref-du_group_2013" role="doc-biblioref">Du &amp; Fan, 2013</a>)</span>, and z-score scaling of results. The NeuroMark outputs include, separately for each template applied to each resting-state run from each subject, the timecourses and spatial maps of each intrinsic component network, functional network connectivity estimates, summary reports, and visualizations of the networks.</p>
-
-
 <div class="no-row-height column-margin column-container"><div id="ref-du_group_2013" class="csl-entry" role="listitem">
 Du, Y., &amp; Fan, Y. (2013). Group information guided ICA for fMRI data analysis. <em>Neuroimage</em>, <em>69</em>, 157–197. <a href="https://doi.org/10.1016/j.neuroimage.2012.11.008">https://doi.org/10.1016/j.neuroimage.2012.11.008</a>
-</div></div>
+</div></div></section>
+<section id="citations" class="level3" data-number="8.1.4">
+<h3 data-number="8.1.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">8.1.4</span> Citations</h3>
+<p>If you use these products in your analyses, please cite the relevant papers written by members <a href="https://trendscenter.org/data/">TReNDS</a>.</p>
+
+
+
 </section>
 </section>
 
@@ -1171,8 +1182,8 @@ Du, Y., &amp; Fan, Y. (2013). Group information guided ICA for fMRI data analysi
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./mriqc.html" class="pagination-link" aria-label="MRIQC">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">MRIQC</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./postgift.html" class="pagination-link" aria-label="ICA Connectivity">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">ICA Connectivity</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
