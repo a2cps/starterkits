@@ -1,0 +1,136 @@
+# ICA Connectivity {#sec-postgift}
+
+```{r setup}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(duckplyr)
+library(fs)
+library(tidyr)
+library(ggdist)
+```
+
+The @sec-gift products provide outputs in a raw format that will be familiar to users of that library. To facilitate analyses, A2CPS has repackaged those products into a tabular format. This kit covers the repackaged structure.
+
+## Starting Project
+
+### Locate Data
+
+{{< include _snippets/mri-location.qmd >}}
+
+The MRIQC metrics are underneath `derivatives/postgift`. Let's take a look.
+
+```{bash}
+#| eval: false
+$ ls postgift
+amplitude  amplitude.json  biomarkers  biomarkers.json  connectivity  connectivity.json
+```
+
+### Extract Data
+
+The tabular data comprise [parquet files](https://parquet.apache.org/) that have been partitioned in a [hive style](https://hive.apache.org/). Each table is a different summary of the components derived from GIFT.
+
+- [amplitude](https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/gift_amplitude.json): a measure of component amplitudes. In particular, they are the fractional Amplitude of Low Frequency Fluctuations [@zou_improved_2008].
+- [connectivity](https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/gift_connectivity.json): the (product-moment) correlations between component timecourses.
+- [biomarkers](https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/gift_biomarkers.json): putative biomarkers of chronic pain calculated for A2CPS analyses.
+
+Let's take a look at just the amplitudes.
+
+```{r loadfalff}
+
+amplitude <- read_parquet_duckdb(
+  dir_ls(
+    "data/postgift/amplitude",
+    recurse = TRUE,
+    glob = "*parquet"
+  ),
+  prudence = "lavish"
+)
+
+head(amplitude)
+```
+
+To get a feel for the data, let's see whether there are differences between the amplitudes in the REST1 and CUFF1 scans.
+
+First, we filter the table, keeping only the amplitudes from a single model. We'll also convert the components into a factor, for later use during modeling. At this point, the dataset is small enough that it's easy to handle in memory, and so we'll also [collect](https://dplyr.tidyverse.org/reference/compute.html) it. 
+
+```{r}
+
+run1_amplitudes <- amplitude |>
+  filter(model == "2.1", run == 1) |>
+  select(-model, -run, -ses) |>
+  collect() |>
+  mutate(component = factor(component))
+
+head(run1_amplitudes)
+```
+
+To get a very high-level overview of the data, generate the [MA plot](https://en.wikipedia.org/wiki/MA_plot). Let's exclude the "red" scans to determine whether those are driving the difference.
+
+```{r}
+red_run1_scans <- read_tsv(dir_ls("data/scans", glob = "*tsv"), na = "n/a") |>
+  filter(rating == "red", stringr::str_detect(filename, "cuff_run-0[12]")) |>
+  mutate(
+    sub = stringr::str_extract(filename, "[[:digit:]]{5}") |> as.integer()
+  ) |>
+  select(sub)
+
+```
+
+::: {#fig-falff}
+
+```{r}
+#| fig-height: 15
+
+do_ma_plot <- function(.d) {
+  .d |>
+    pivot_wider(names_from = task, values_from = fALFF) |>
+    na.omit() |> # not every participant has a REST1 and CUFF1
+    mutate(a = (log2(rest) + log2(cuff)) / 2, m = log2(cuff) - log2(rest)) |>
+    ggplot(aes(x = a, y = m)) +
+    facet_wrap(~component, scales = "free", nrow = 15) +
+    geom_point(alpha = 0.2) +
+    geom_hline(yintercept = 0, color = "blue") +
+    geom_smooth(method = "lm", color = "red") +
+    xlab("Average Log Intensity") +
+    ylab("CUFF1 - REST1 Log Intensities") +
+    theme(strip.background = element_blank(), strip.text = element_blank())
+}
+
+run1_amplitudes_without_red <- run1_amplitudes |>
+  anti_join(red_run1_scans, by = join_by(sub))
+
+run1_amplitudes |> do_ma_plot()
+
+```
+
+Fractional Amplitude of Low Frequency Fluctuations. Each panel is a distinct component. The x-axis is a mean average, and the y-axis is a ratio of the two fALFFs. The 
+
+:::
+
+For the most part, there is not a substantially large difference in the log intensities. However, it may be interesting that there appears to be a trend such that amplitudes are somewhat lower in the CUFF as compared to REST conditions. 
+
+
+```{r}
+lme4::lmer(
+  log(fALFF) ~ task + (1 | sub) + (1 | component),
+  run1_amplitudes_without_red
+) |>
+  summary()
+```
+
+So, indeed, there is some evidence for higher amplitudes during REST1 as compared with CUFF1. Please note that a more careful analysis should include other factors like scanning site, participant age, or motion. 
+
+## Considerations While Working on the Project
+
+### Variability Across Scanners
+
+{{< include _snippets/mri-scanner-variability.qmd >}}
+
+### Data Quality
+
+{{< include _snippets/mri-qc.qmd >}}
+
+### Citations
+
+If you use these products in your analyses, please cite the relevant papers written by members [TReNDS](https://trendscenter.org/data/).
