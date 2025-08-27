@@ -1,0 +1,119 @@
+---
+title: "A2CPS Starter Kit: Psychosocial Data"
+authors:
+  - name: Briha Ansari
+  - name: Patrick Sadil
+format:
+  html:
+    toc: true
+    self-contained: true
+editor: visual
+bibliography: references.bib
+---
+
+## Overview
+
+This template is for a new A2CPS Starter Kit, which is a brief tutorial that provides considerations about starting a project with A2CPS data. The kits are aimed at researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data). They assume that researchers will access internal A2CPS releases (that is, on TACC rather than from the NDA). Starter kits are expected to be useful during the planning stage of an internal project (see [Approved Projects](https://a2cps.atlassian.net/wiki/spaces/WG/pages/22675472) list), and while first accessing the data (see [How do I download Consortium data?](https://a2cps.atlassian.net/wiki/spaces/DAS/pages/5080606)).
+
+The scope of each kit is expected to roughly correspond to the individual modalities that can be requested in the Data Request Form ([Data Sharing Committee Proposal Meetings & Forms](https://a2cps.atlassian.net/wiki/spaces/WG/pages/5080456/Data+Sharing+Committee+Proposal+Meetings+Forms?preview=/5080456/5106943/Data%20Request%20Form_2023.pdf)).
+
+## Starting Project
+
+### Locate Data
+
+Where are the relevant files?
+
+``` bash
+$ /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-0-0/psychosocial/reformatted
+```
+
+### Download data
+
+``` bash
+$ scp -r usernam@login8.frontera.tacc.utexas.edu:/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-0-0/psychosocial/reformatted/ /Path to where you want to store data on your machine/
+```
+
+## Considerations While Working on the Project
+
+### Data Quality
+
+The data were exported from REDCap and may contain errors or missing values. Therefore, to ensure high-quality data, the data were cleaned and reformatted. This [document](https://github.com/a2cps/starterkits/blob/main/psycho_social_biomarker_impute.qmd) goes over score calculation and missing data imputation for each psychosocial form. This document can be a useful resource to help understand the data. There are individual reformatted files as well as a combined file for psychosocial data (look for files ending in TKA and/or Thoracic)
+
+### Cross-Modality Links
+
+All files include `record_id` and `guid`, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.
+
+## Example workflow with GAD-7 (Anxiety) and PHQ-9 (Depression)
+
+Load Libraries (Uncomment to install libraries if not already installed)
+
+```{r}
+#install.packages(c("tidyverse", "ggplot2"))
+
+#load libraries
+library(tidyverse)
+library(ggplot2)
+```
+
+Load Data: GAD-7 (Anxiety) and PHQ-9 (Depression)
+
+```{r}
+gad <- read_csv("reformatted_gad.csv")
+phq <- read_csv("reformatted_phq.csv")
+```
+
+Join GAD-7 (Anxiety) and PHQ-9 (Depression) datasets using unique identifiers i.e. `record_id` and `guid`, and other common data elements , we will call this combined dataset `"gad_phq"`. Left join keeps all rows from the left table and matches data from the right. Right join keeps all rows from the right table and matches data from the left. Inner join keeps rows that exist in both tables. Full join keeps all rows from both tables, leaving missing values where there’s no match. The type of join depends on the researchers’ goals. Here we will use an inner join for exploratory data analysis purposes. In cases where the datasets have more than two columns in common the following code is helpful since it uses the common column names between the two datasets.
+
+```{r}
+gad_phq <- inner_join(gad,phq, by = intersect(names(gad), names(phq)))
+```
+
+View columns available after merging the two datasets
+
+```{r}
+head(gad_phq)
+```
+
+Check data types and ensure that character variables are not stored as numeric, and that numeric variables are stored with the correct numeric type—not as character or factor.
+
+```{r}
+glimpse(gad_phq)
+
+```
+
+## Exploratory data analysis
+
+Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations[@Kircanski2017]. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the `glimpse()` functiona that those variables are stored as ordered and numeric.
+
+**Spearman Correlation**:
+
+Since GAD and PHQ scores are ordered but not continuous, spearman correlation here would be a better choice than pearson since it measures monotonic association between two variables by comparing their ranks, we will add the argument `use = "complete.obs"` to ignore rows with missing values:
+
+```{r}
+cor(gad_phq$imputed_gad_score, gad_phq$imputed_phq_score, use = "complete.obs")
+```
+
+As expected we see a very strong correlation between anxiety and depression within the A2CPS cohort i.e. 0.76. Let’s visualize these results with a simple boxplot.
+
+```{r}
+# Remove rows with NA in either column
+gad_phq_clean <- gad_phq %>%
+  filter(!is.na(imputed_gad_score), !is.na(imputed_phq_score))
+
+# Create the plot
+ggplot(gad_phq_clean, aes(x = factor(imputed_gad_score), y = imputed_phq_score, fill = factor(imputed_gad_score))) +
+  geom_boxplot() +
+  labs(
+    title = "PHQ Score Distribution by GAD Score",
+    x = "GAD Score (Imputed)",
+    y = "PHQ Score (Imputed)",
+    fill = "GAD Score"
+  ) +
+  theme_minimal()
+```
+
+We see that there is a positive association between Anxiety and Depression scores
+
+### Other
+
+Proceed with caution when merging data across psychosocial data or different modalities. Merging datasets often leads to a reduced sample size due to missing data or incomplete forms. This can lower statistical power and limit the ability to draw reliable conclusions.
