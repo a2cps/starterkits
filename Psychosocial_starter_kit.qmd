@@ -37,7 +37,7 @@ $ scp -r usernam@login8.frontera.tacc.utexas.edu:/corral-secure/projects/A2CPS/p
 
 ### Data Quality
 
-The data were exported from REDCap and may contain errors or missing values. Therefore, to ensure high-quality data, the data were cleaned and reformatted. This [document](https://github.com/a2cps/starterkits/blob/main/psycho_social_biomarker_impute.qmd) goes over score calculation and missing data imputation for each psychosocial form. This document can be a useful resource to help understand the data. There are individual reformatted files as well as a combined file for psychosocial data (look for files ending in TKA and/or Thoracic)
+The data were exported from REDCap and may contain errors or missing values. Therefore, to ensure high-quality data, the data were cleaned and reformatted. This [document](https://github.com/a2cps/starterkits/blob/main/psycho_social_biomarker_impute.qmd) goes over score calculation and missing data imputation for each psychosocial form. This document can be a useful resource to help understand the data. There are individual reformatted files as well as a combined file for psychosocial data (look for files ending in TKA and/or Thoracic).
 
 ### Cross-Modality Links
 
@@ -87,7 +87,7 @@ Anxiety and depression frequently coexist due to shared biological mechanisms an
 
 **Spearman Correlation**:
 
-Since GAD and PHQ scores are ordered but not continuous, spearman correlation here would be a better choice than pearson since it measures monotonic association between two variables by comparing their ranks, we will add the argument `use = "complete.obs"` to ignore rows with missing values:
+Since GAD and PHQ scores are ordered but not continuous, spearman correlation here would be a better choice than pearson since it measures monotonic association between two variables by comparing their ranks, we will add the argument `use = "complete.obs"` to ignore rows with missing values.
 
 ```{r}
 cor(gad_phq$imputed_gad_score, gad_phq$imputed_phq_score, use = "complete.obs")
@@ -112,7 +112,7 @@ ggplot(gad_phq_clean, aes(x = factor(imputed_gad_score), y = imputed_phq_score, 
   theme_minimal()
 ```
 
-We see that there is a positive association between Anxiety and Depression scores
+We see that there is a positive association between Anxiety and Depression scores.
 
 ### Other
 
