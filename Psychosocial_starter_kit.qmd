@@ -11,6 +11,40 @@ editor: visual
 bibliography: references.bib
 ---
 
+## Psychosocial Data:
+
+Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements[@wandner2022] to gain a comprehensive understanding of chronic pain. These assessments include:
+
+1.  Pain related psychosocial constructs
+
+2.  Mood disorders (Depression and Anxiety)
+
+3.  Social Support
+
+4.  Cognitive Function and Sleep
+
+5.  Other Assessments (Demographic, Comorbidity Questionnaire (SCQ), The Adverse Childhood Experience questionnaire (ACE), Big Five Inventory−2 short form (BFI-2-S)
+
+#### Pain-Related Psychosocial Constructs
+
+These include pain resilience, catastrophizing, kinesiophobia, and multisensory sensitivity. Pain resilience is measured using the Pain Resilience Scale (PRS)[@slepian2016]. Catastrophizing measures negative appraisal of pain using the Pain Catastrophizing Scale-6 (PCS-6) [@mcwilliams2015a]. Kinesiophobia (fear of movement) is measured using the Fear Avoidance Beliefs Questionnaire—Physical Activity subscale (FABQ-PA)[@waddell1993]. Sensitivity to sensory stimulation (light, sound, odor, flavor, touch) and interoception (balance, nausea, heart rate) are measured using an 8-item General Sensory Sensitivity (GSS)[@schrepf2018a].
+
+#### Mood disorders 
+
+Depression and Anxiety are measured using the 8-item Patient Health Questionnaire-8 (PHQ-8) [@kroenke2009] and the 7-item General Anxiety Disorder (GAD-7) instruments[@spitzer2006] :
+
+#### Social Support
+
+PROMIS SFv2.0 Instrumental Support 6a questionnaire is used to measure the quality of social support received by the subjects, and PROMIS SFv2.0 Emotional Support 6a questionnaire measures subjects' perception about being valued and cared for[@measurin2010].
+
+#### Cognitive Function and Sleep
+
+Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) [@kratz2016a] measures perceived cognitive dysfunction in patients with fibromyalgia. Sleep is assessed using the PROMIS Short Form v1.0 Sleep Disturbance 6a measure ([11](https://pmc.ncbi.nlm.nih.gov/articles/PMC9082267/#B118)[@yu2012] and Pain-Sleep Duration (Sleep II) form [@buysse1989a].
+
+#### Other Assessments Performed at Baseline
+
+The demographic information form captures age, sex, gender, ethnicity, race, level of education, employment status, relationship status, household income, and disability status. Chronic health conditions are captured using the Self-Administered Comorbidity Questionnaire (SCQ)[@sangha2003]. The Adverse Childhood Experience questionnaire (ACE) [@felitti1998] is used to assess the history of childhood abuse and dysfunctional family dynamics retrospectively. Also at baseline, five personality constructs are measured using the Big Five Inventory−2 short form (BFI-2-S), which measure five personality domains, i.e., 1. extraversion, 2. agreeableness, 3. conscientiousness, 4. negative emotionality, and 5. open-mindedness [@soto2017].
+
 ## Overview
 
 This template is for a new A2CPS Starter Kit, which is a brief tutorial that provides considerations about starting a project with A2CPS data. The kits are aimed at researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data). They assume that researchers will access internal A2CPS releases (that is, on TACC rather than from the NDA). Starter kits are expected to be useful during the planning stage of an internal project (see [Approved Projects](https://a2cps.atlassian.net/wiki/spaces/WG/pages/22675472) list), and while first accessing the data (see [How do I download Consortium data?](https://a2cps.atlassian.net/wiki/spaces/DAS/pages/5080606)).
