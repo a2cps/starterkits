@@ -125,3 +125,5 @@ For a detailed description of these particular issues, please see [these slides]
 ### Citations
 
 If you use these results, please cite the MRIQC report [@esteban_mriqc_2017] and all relevant citations of the pipeline configuration. 
+
+{{< include _snippets/a2cps_citations.qmd >}}

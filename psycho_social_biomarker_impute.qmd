@@ -4,7 +4,7 @@ authors:
   - name: Briha Ansari
 ---
 
-# Psychosocial Data Imputation and Biomarker calculations {#sec-psychosocial}
+# Psychosocial Data Imputation and Biomarker calculations {#sec-psychosocial-methods}
 
 This document goes over score calculation and missing data imputation for each psychosocial form. The headings in the sidebar help the user navigate to their desired content. The code chunks for each form can be run independently after running @sec-psychosocial-reading in its entirety.
 
@@ -374,7 +374,7 @@ All three datasets have the desired fields names. We will now look at missing da
 
 ### Michigan Body Map:
 
-Michigan Body Map records pain intensity and duration for the body region indicated by the subject [@Berardi2022]. The painful body regions can vary from subject to subject, which can result in null values in field names for body regions not indicated by the subject, this explains the data sparsity.
+Michigan Body Map records pain intensity and duration for the body region indicated by the subject [@berardi_multi_2022]. The painful body regions can vary from subject to subject, which can result in null values in field names for body regions not indicated by the subject, this explains the data sparsity.
 
 #### Missing Data:
 
@@ -990,7 +990,7 @@ write_csv(
 
 ### Modified BPI -- surgical site pain:
 
-Modified BPI -- surgical site pain records pain intensity and interference. The primary outcome is the worst pain intensity at the surgical site i.e field name "bpiworstpainratingss" over the past 24 hours,using a scale of 0 to 10. The form also includes the pain interference sub-scale [@cleeland1995], which assesses the level of interference in the subject's daily activities over the past 24 hours [@Berardi2022] due to surgical site pain. Pain interference is scored as the mean of seven interference items, in case of missing data, this mean can still be used if there is a response to at least 4 of 7 items ([BPI user guide](https://www.mdanderson.org/documents/Departments-and-Divisions/Symptom-Research/BPI_UserGuide.pdf)).
+Modified BPI -- surgical site pain records pain intensity and interference. The primary outcome is the worst pain intensity at the surgical site i.e field name "bpiworstpainratingss" over the past 24 hours,using a scale of 0 to 10. The form also includes the pain interference sub-scale [@cleeland1995], which assesses the level of interference in the subject's daily activities over the past 24 hours [@berardi_multi_2022] due to surgical site pain. Pain interference is scored as the mean of seven interference items, in case of missing data, this mean can still be used if there is a response to at least 4 of 7 items ([BPI user guide](https://www.mdanderson.org/documents/Departments-and-Divisions/Symptom-Research/BPI_UserGuide.pdf)).
 
 #### Missing Data:
 
@@ -1355,7 +1355,7 @@ write_csv(
 
 ### Generalized Anxiety Disorder 7 Item (GAD7) Scale Score
 
-The GAD-7 is a 7-item likert scale questionnaire that assesses anxiety levels over the last two weeks. The response to each item is rated on a scale of 0 ("not at all") to 3 ("nearly every day"). A total score is calculated by adding the scores for all the 7 items and ranges from 0 to 21. A greater total score on the GAD-7 reflects higher anxiety levels[@Spitzer2006]. At the end of the questionnaire there is an additional question ("gad7difficulttowork") to evaluate the subject's perception about the impact of identified problems on their activities such as work, taking care of things at home, or interacting with others.
+The GAD-7 is a 7-item likert scale questionnaire that assesses anxiety levels over the last two weeks. The response to each item is rated on a scale of 0 ("not at all") to 3 ("nearly every day"). A total score is calculated by adding the scores for all the 7 items and ranges from 0 to 21. A greater total score on the GAD-7 reflects higher anxiety levels [@spitzer_brief_2006]. At the end of the questionnaire there is an additional question ("gad7difficulttowork") to evaluate the subject's perception about the impact of identified problems on their activities such as work, taking care of things at home, or interacting with others.
 
 #### Read in Data:
 
@@ -1734,7 +1734,7 @@ write_csv(
 
 ### Fear-Avoidance Beliefs Questionnaire v0.3 (FABQ)
 
-The FABQ is a 4-item questionnaire that assesses fear avoidance behavior. The response to each item ranges from 0 (completely disagree) to 6 (completely agree)[@Waddell1993]. A total score is calculated by adding the scores for all the items and ranges from 0-24. A higher score indicates a higher degree of fear-avoidance belief.
+The FABQ is a 4-item questionnaire that assesses fear avoidance behavior. The response to each item ranges from 0 (completely disagree) to 6 (completely agree) [@waddell_fear_1993]. A total score is calculated by adding the scores for all the items and ranges from 0-24. A higher score indicates a higher degree of fear-avoidance belief.
 
 #### Read in Data:
 
@@ -2608,7 +2608,7 @@ PROMIS instruments are based on item response theory (IRT), where the responses 
 
 ### Pain-Sleep Duration (Sleep II)
 
-The Sleep II form measures the average number of hours and minutes of sleep each night during the past month[@Buysse1989].
+The Sleep II form measures the average number of hours and minutes of sleep each night during the past month [@buysse_pittsburgh_1989].
 
 #### Read in Data:
 
@@ -3486,7 +3486,7 @@ write_csv(
 
 ### The Big Five Inventory (BFI-2-S)
 
-The BFI-2-S is is used to evaluate five personality domains and 15 specific facet traits within the five domains. Altogether, the BFI-2-S comprises thirty items based on a Likert scale ranging from 1-5, where 1 is "disagree strongly" and 5 is "agree strongly". Some items are negatively phrased and should be reverse coded for scoring [@soto2017].
+The BFI-2-S is is used to evaluate five personality domains and 15 specific facet traits within the five domains. Altogether, the BFI-2-S comprises thirty items based on a Likert scale ranging from 1-5, where 1 is "disagree strongly" and 5 is "agree strongly". Some items are negatively phrased and should be reverse coded for scoring [@soto_short_2017].
 
 Following table shows the five domains and the specific facet traits:
 

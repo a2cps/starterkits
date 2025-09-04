@@ -191,3 +191,7 @@ The other folders contain intermediate outputs that may be useful for digging in
   - The nuisance timeseries that were used during denoising
 - cleaned
   - The NifTI files of functional MRI after denoising (e.g., temporal filter, nuisance regression)
+
+## Citations
+
+{{< include _snippets/a2cps_citations.qmd >}}

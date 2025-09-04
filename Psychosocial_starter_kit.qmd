@@ -1,55 +1,23 @@
 ---
-title: "A2CPS Starter Kit: Psychosocial Data"
 authors:
   - name: Briha Ansari
   - name: Patrick Sadil
-format:
-  html:
-    toc: true
-    self-contained: true
-editor: visual
-bibliography: references.bib
 ---
 
-## Psychosocial Data:
+# Psychosocial {#sec-psychosocial}
 
-Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements[@wandner2022] to gain a comprehensive understanding of chronic pain. These assessments include:
+Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements [@wandner_nih_2022] to gain a comprehensive understanding of chronic pain. These assessments include:
 
-1.  Pain related psychosocial constructs
-
-2.  Mood disorders (Depression and Anxiety)
-
-3.  Social Support
-
-4.  Cognitive Function and Sleep
-
-5.  Other Assessments (Demographic, Comorbidity Questionnaire (SCQ), The Adverse Childhood Experience questionnaire (ACE), Big Five Inventory−2 short form (BFI-2-S)
-
-#### Pain-Related Psychosocial Constructs
-
-These include pain resilience, catastrophizing, kinesiophobia, and multisensory sensitivity. Pain resilience is measured using the Pain Resilience Scale (PRS)[@slepian2016]. Catastrophizing measures negative appraisal of pain using the Pain Catastrophizing Scale-6 (PCS-6) [@mcwilliams2015a]. Kinesiophobia (fear of movement) is measured using the Fear Avoidance Beliefs Questionnaire—Physical Activity subscale (FABQ-PA)[@waddell1993]. Sensitivity to sensory stimulation (light, sound, odor, flavor, touch) and interoception (balance, nausea, heart rate) are measured using an 8-item General Sensory Sensitivity (GSS)[@schrepf2018a].
-
-#### Mood disorders 
-
-Depression and Anxiety are measured using the 8-item Patient Health Questionnaire-8 (PHQ-8) [@kroenke2009] and the 7-item General Anxiety Disorder (GAD-7) instruments[@spitzer2006] :
-
-#### Social Support
-
-PROMIS SFv2.0 Instrumental Support 6a questionnaire is used to measure the quality of social support received by the subjects, and PROMIS SFv2.0 Emotional Support 6a questionnaire measures subjects' perception about being valued and cared for[@measurin2010].
-
-#### Cognitive Function and Sleep
-
-Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) [@kratz2016a] measures perceived cognitive dysfunction in patients with fibromyalgia. Sleep is assessed using the PROMIS Short Form v1.0 Sleep Disturbance 6a measure ([11](https://pmc.ncbi.nlm.nih.gov/articles/PMC9082267/#B118)[@yu2012] and Pain-Sleep Duration (Sleep II) form [@buysse1989a].
-
-#### Other Assessments Performed at Baseline
-
-The demographic information form captures age, sex, gender, ethnicity, race, level of education, employment status, relationship status, household income, and disability status. Chronic health conditions are captured using the Self-Administered Comorbidity Questionnaire (SCQ)[@sangha2003]. The Adverse Childhood Experience questionnaire (ACE) [@felitti1998] is used to assess the history of childhood abuse and dysfunctional family dynamics retrospectively. Also at baseline, five personality constructs are measured using the Big Five Inventory−2 short form (BFI-2-S), which measure five personality domains, i.e., 1. extraversion, 2. agreeableness, 3. conscientiousness, 4. negative emotionality, and 5. open-mindedness [@soto2017].
-
-## Overview
-
-This template is for a new A2CPS Starter Kit, which is a brief tutorial that provides considerations about starting a project with A2CPS data. The kits are aimed at researchers accustomed to working with some specialized data format, but not necessarily the modality in question (e.g., someone familiar with genetics working with neuroimaging data). They assume that researchers will access internal A2CPS releases (that is, on TACC rather than from the NDA). Starter kits are expected to be useful during the planning stage of an internal project (see [Approved Projects](https://a2cps.atlassian.net/wiki/spaces/WG/pages/22675472) list), and while first accessing the data (see [How do I download Consortium data?](https://a2cps.atlassian.net/wiki/spaces/DAS/pages/5080606)).
-
-The scope of each kit is expected to roughly correspond to the individual modalities that can be requested in the Data Request Form ([Data Sharing Committee Proposal Meetings & Forms](https://a2cps.atlassian.net/wiki/spaces/WG/pages/5080456/Data+Sharing+Committee+Proposal+Meetings+Forms?preview=/5080456/5106943/Data%20Request%20Form_2023.pdf)).
+- Pain related psychosocial constructs
+  - These include pain resilience, catastrophizing, kinesiophobia, and multisensory sensitivity. Pain resilience is measured using the Pain Resilience Scale (PRS)[@slepian_development_2016]. Catastrophizing measures negative appraisal of pain using the Pain Catastrophizing Scale-6 (PCS-6) [@mcwilliams_development_2015]. Kinesiophobia (fear of movement) is measured using the Fear Avoidance Beliefs Questionnaire—Physical Activity subscale (FABQ-PA)[@waddell_fear_1993]. Sensitivity to sensory stimulation (light, sound, odor, flavor, touch) and interoception (balance, nausea, heart rate) are measured using an 8-item General Sensory Sensitivity (GSS) [@schrepf_sensory_2018].
+- Mood disorders (Depression and Anxiety)
+  - Depression and Anxiety are measured using the 8-item Patient Health Questionnaire-8 (PHQ-8) [@kroenke_phq_2009] and the 7-item General Anxiety Disorder (GAD-7) instruments [@spitzer_brief_2006]
+- Social Support
+  - PROMIS SFv2.0 Instrumental Support 6a questionnaire is used to measure the quality of social support received by the subjects, and PROMIS SFv2.0 Emotional Support 6a questionnaire measures subjects' perception about being valued and cared for [@hahn_measuring_2010].
+- Cognitive Function and Sleep
+  - Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) [@kratz_promis_2016] measures perceived cognitive dysfunction in patients with fibromyalgia. Sleep is assessed using the PROMIS Short Form v1.0 Sleep Disturbance 6a measure [@yu_development_2012] and Pain-Sleep Duration (Sleep II) form [@buysse_pittsburgh_1989].
+- Other Assessments (Demographic, Comorbidity Questionnaire (SCQ), The Adverse Childhood Experience questionnaire (ACE), Big Five Inventory−2 short form (BFI-2-S)
+  - The demographic information form captures age, sex, gender, ethnicity, race, level of education, employment status, relationship status, household income, and disability status. Chronic health conditions are captured using the Self-Administered Comorbidity Questionnaire (SCQ) [@sangha_self_2003]. The Adverse Childhood Experience questionnaire (ACE) [@felitti_relationship_1998] is used to assess the history of childhood abuse and dysfunctional family dynamics retrospectively. Also at baseline, five personality constructs are measured using the Big Five Inventory−2 short form (BFI-2-S), which measure five personality domains, i.e., 1. extraversion, 2. agreeableness, 3. conscientiousness, 4. negative emotionality, and 5. open-mindedness [@soto_short_2017].
 
 ## Starting Project
 
@@ -57,31 +25,16 @@ The scope of each kit is expected to roughly correspond to the individual modali
 
 Where are the relevant files?
 
-``` bash
+```{bash}
+#| eval: false
 $ /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-0-0/psychosocial/reformatted
 ```
 
-### Download data
+### Example workflow with GAD-7 (Anxiety) and PHQ-9 (Depression)
 
-``` bash
-$ scp -r usernam@login8.frontera.tacc.utexas.edu:/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-0-0/psychosocial/reformatted/ /Path to where you want to store data on your machine/
-```
+Load libraries (Uncomment to install libraries if not already installed)
 
-## Considerations While Working on the Project
-
-### Data Quality
-
-The data were exported from REDCap and may contain errors or missing values. Therefore, to ensure high-quality data, the data were cleaned and reformatted. This [document](https://github.com/a2cps/starterkits/blob/main/psycho_social_biomarker_impute.qmd) goes over score calculation and missing data imputation for each psychosocial form. This document can be a useful resource to help understand the data. There are individual reformatted files as well as a combined file for psychosocial data (look for files ending in TKA and/or Thoracic).
-
-### Cross-Modality Links
-
-All files include `record_id` and `guid`, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.
-
-## Example workflow with GAD-7 (Anxiety) and PHQ-9 (Depression)
-
-Load Libraries (Uncomment to install libraries if not already installed)
-
-```{r}
+```{r setup}
 #install.packages(c("tidyverse", "ggplot2"))
 
 #load libraries
@@ -91,51 +44,57 @@ library(ggplot2)
 
 Load Data: GAD-7 (Anxiety) and PHQ-9 (Depression)
 
-```{r}
-gad <- read_csv("reformatted_gad.csv")
-phq <- read_csv("reformatted_phq.csv")
+```{r load}
+gad <- read_csv("data/reformatted_gad.csv")
+phq <- read_csv("data/reformatted_phq.csv")
 ```
 
-Join GAD-7 (Anxiety) and PHQ-9 (Depression) datasets using unique identifiers i.e. `record_id` and `guid`, and other common data elements , we will call this combined dataset `"gad_phq"`. Left join keeps all rows from the left table and matches data from the right. Right join keeps all rows from the right table and matches data from the left. Inner join keeps rows that exist in both tables. Full join keeps all rows from both tables, leaving missing values where there’s no match. The type of join depends on the researchers’ goals. Here we will use an inner join for exploratory data analysis purposes. In cases where the datasets have more than two columns in common the following code is helpful since it uses the common column names between the two datasets.
+Join GAD-7 (Anxiety) and PHQ-9 (Depression) datasets using unique identifiers i.e. `record_id` and `guid`, and other common data elements, we will call this combined dataset `"gad_phq"`. Left join keeps all rows from the left table and matches data from the right. Right join keeps all rows from the right table and matches data from the left. Inner join keeps rows that exist in both tables. Full join keeps all rows from both tables, leaving missing values where there's no match. The type of join depends on the researchers' goals. Here we will use an inner join for exploratory data analysis purposes. In cases where the datasets have more than two columns in common the following code is helpful since it uses the common column names between the two datasets.
 
-```{r}
-gad_phq <- inner_join(gad,phq, by = intersect(names(gad), names(phq)))
+```{r join}
+gad_phq <- inner_join(gad, phq, by = intersect(names(gad), names(phq)))
 ```
 
 View columns available after merging the two datasets
 
-```{r}
+```{r peak}
 head(gad_phq)
 ```
 
 Check data types and ensure that character variables are not stored as numeric, and that numeric variables are stored with the correct numeric type—not as character or factor.
 
-```{r}
+```{r glimpse}
 glimpse(gad_phq)
-
 ```
 
 ## Exploratory data analysis
 
-Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations[@Kircanski2017]. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the `glimpse()` functiona that those variables are stored as ordered and numeric.
+Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations [@kircanski_investigating_2017]. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the `glimpse()` functiona that those variables are stored as ordered and numeric.
 
 **Spearman Correlation**:
 
 Since GAD and PHQ scores are ordered but not continuous, spearman correlation here would be a better choice than pearson since it measures monotonic association between two variables by comparing their ranks, we will add the argument `use = "complete.obs"` to ignore rows with missing values.
 
-```{r}
+```{r stats}
 cor(gad_phq$imputed_gad_score, gad_phq$imputed_phq_score, use = "complete.obs")
 ```
 
 As expected we see a very strong correlation between anxiety and depression within the A2CPS cohort i.e. 0.76. Let’s visualize these results with a simple boxplot.
 
-```{r}
+```{r plot}
 # Remove rows with NA in either column
 gad_phq_clean <- gad_phq %>%
   filter(!is.na(imputed_gad_score), !is.na(imputed_phq_score))
 
 # Create the plot
-ggplot(gad_phq_clean, aes(x = factor(imputed_gad_score), y = imputed_phq_score, fill = factor(imputed_gad_score))) +
+ggplot(
+  gad_phq_clean,
+  aes(
+    x = factor(imputed_gad_score),
+    y = imputed_phq_score,
+    fill = factor(imputed_gad_score)
+  )
+) +
   geom_boxplot() +
   labs(
     title = "PHQ Score Distribution by GAD Score",
@@ -148,6 +107,24 @@ ggplot(gad_phq_clean, aes(x = factor(imputed_gad_score), y = imputed_phq_score, 
 
 We see that there is a positive association between Anxiety and Depression scores.
 
-### Other
+## Considerations While Working on the Project
+
+### Methods
+
+Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI) (see below for more details). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessement and a mood assessment.
+
+### Data Quality
+
+The data were exported from REDCap and may contain errors or missing values. Therefore, to ensure high-quality data, the data were cleaned and reformatted. For details, see @sec-psychosocial-methods. There are individual reformatted files as well as a combined file for psychosocial data (look for files ending in TKA and/or Thoracic).
+
+### Cross-Modality Links
+
+All files include `record_id` and `guid`, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.
+
+### Missing Data
 
 Proceed with caution when merging data across psychosocial data or different modalities. Merging datasets often leads to a reduced sample size due to missing data or incomplete forms. This can lower statistical power and limit the ability to draw reliable conclusions.
+
+### Citations
+
+{{< include _snippets/a2cps_citations.qmd >}}

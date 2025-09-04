@@ -262,3 +262,7 @@ snps_to_exclude <- unique(c(snps_dup_pos, dup_snps))
 fwrite(as.data.table(snps_to_exclude), "duplicate_snp_list.txt", col.names = FALSE)
 ```
 </details>
+
+### Citations
+
+{{< include _snippets/a2cps_citations.qmd >}}

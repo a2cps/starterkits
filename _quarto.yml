@@ -13,6 +13,7 @@ book:
   google-analytics: G-K3383Z78V7
   chapters:
     - index.qmd
+    - Psychosocial_starter_kit.qmd
     - genetic_variants.qmd
     - genomic_imputation.qmd
     - raw-mri.qmd
@@ -38,6 +39,7 @@ book:
 
 bibliography: references.bib
 csl: apa.csl
+google-scholar: true
 
 execute:
   freeze: auto  # re-render only when source changes

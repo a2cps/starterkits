@@ -79,7 +79,9 @@ head(dmn)
 Notice that the `source` and `target` fields are simply integer indices for this atlas. As specified in `connectivity.json`, information about these regions is available in one of the A2CPS GitHub repos. That table can be read directly from a URL.
 
 ```{r}
-dmn_labels <- read_csv("https://raw.githubusercontent.com/a2cps/functional_connectivity/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv")
+dmn_labels <- read_csv(
+  "https://raw.githubusercontent.com/a2cps/functional_connectivity/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv"
+)
 dmn_labels
 ```
 
@@ -96,17 +98,6 @@ dmn_labeled <- dmn |>
 
 head(dmn_labeled)
 ```
-
-
-## Considerations While Working on the Project
-
-### Variability Across Scanners
-
-{{< include _snippets/mri-scanner-variability.qmd >}}
-
-### Data Quality
-
-{{< include _snippets/mri-qc.qmd >}}
 
 ### Example Analysis: Discriminability
 
@@ -163,9 +154,10 @@ Next, define some helper functions to break up the different parts of the analys
 
 ```{r}
 get_scan_combinations <- function(
-    scans = c("rest1", "rest2", "cuff1", "cuff2"),
-    .col1 = scan1,
-    .col2 = scan2) {
+  scans = c("rest1", "rest2", "cuff1", "cuff2"),
+  .col1 = scan1,
+  .col2 = scan2
+) {
   combn(scans, 2) |>
     t() |>
     as_tibble() |>
@@ -179,7 +171,8 @@ join_fcn_to_combinations <- function(.data, fcn) {
     left_join(fcn_nested, by = join_by(scan2 == scan)) |>
     mutate(
       data = map2(
-        data.x, data.y,
+        data.x,
+        data.y,
         ~ left_join(.x, .y, by = join_by(source, target, sub))
       )
     ) |>
@@ -225,3 +218,18 @@ discriminability |>
 ```
 
 Overall, discriminability is around 0.8, with at most minor differences between different pairings of runs.
+
+
+## Considerations While Working on the Project
+
+### Variability Across Scanners
+
+{{< include _snippets/mri-scanner-variability.qmd >}}
+
+### Data Quality
+
+{{< include _snippets/mri-qc.qmd >}}
+
+### Citations
+
+{{< include _snippets/a2cps_citations.qmd >}}

@@ -1,6 +1,9 @@
 
 # FAQ {.unnumbered}
 
+* Q: How do I access the data?
+  * A: Please see [this page on our website](https://a2cps.org/researchers/accessing-our-data/).
+
 * Q: After reviewing the kit, I still have questions. Who should I contact?
   * A: Each kit is maintained by a different member of the DIRC, and their contact information is listed at the end of the kit. Please use the channels listed in the kit
 
@@ -10,3 +13,5 @@
 * Q: I'm seeing what appears to be a set of related technologies, including parquet files, the Arrow format, and hive-style partioning. Where can I find out more information about these?
   * A: Please see [this chapter in the R for Data Science book](https://r4ds.hadley.nz/arrow.html). See also [this series of posts by Danielle Navarro](https://blog.djnavarro.net/#category=Apache%20Arrow). For reading and working with these files, many kits specifically use the [duckplyr](https://duckplyr.tidyverse.org/index.html) package.
 
+* Q: Where can I find out more information about Chronic Pain, and how A2CPS will help?
+  * A: Please see [this page on our website](https://a2cps.org/researchers/a2cps-study-details/).

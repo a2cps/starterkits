@@ -86,13 +86,44 @@ Files at the top level of the bids folder contain information that applies to mu
 #| echo: false
 
 tibble::tribble(
-  ~File, ~Documentation,
-  glue::glue("README ([A2CPS file](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/README.md))"), glue::glue("[modality agnostic files](https://bids-specification.readthedocs.io/en/{params$bids}/modality-agnostic-files.html)"),
-  glue::glue("participants.tsv ([dictionary](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/participants.json))"), glue::glue("[participants file](https://bids-specification.readthedocs.io/en/{params$bids}/modality-agnostic-files.html#participants-file)"),
-  glue::glue("sub-[record_id]_ses-[ses_id]_scans.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/scans.json))"), glue::glue("[scans file](https://bids-specification.readthedocs.io/en/{params$tag}/modality-agnostic-files.html#scans-file)"),
-  glue::glue("sub-[record_id]_sessions.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/sessions.json))"), glue::glue("[sessions file](https://bids-specification.readthedocs.io/en/{params$tag}/modality-agnostic-files.html#sessions-file)"),
-  glue::glue("sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/task-cuff_events.json))"), glue::glue("[task events](https://bids-specification.readthedocs.io/en/{params$tag}/modality-specific-files/task-events.html)"),
-  glue::glue("dataset_description.json ([A2CPS file](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/dataset_description.json))"), glue::glue("[dataset descriptions](https://bids-specification.readthedocs.io/en/{params$tag}/modality-agnostic-files.html#dataset_descriptionjson)")
+  ~File,
+  ~Documentation,
+  glue::glue(
+    "README ([A2CPS file](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/README.md))"
+  ),
+  glue::glue(
+    "[modality agnostic files](https://bids-specification.readthedocs.io/en/{params$bids}/modality-agnostic-files.html)"
+  ),
+  glue::glue(
+    "participants.tsv ([dictionary](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/participants.json))"
+  ),
+  glue::glue(
+    "[participants file](https://bids-specification.readthedocs.io/en/{params$bids}/modality-agnostic-files.html#participants-file)"
+  ),
+  glue::glue(
+    "sub-[record_id]_ses-[ses_id]_scans.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/scans.json))"
+  ),
+  glue::glue(
+    "[scans file](https://bids-specification.readthedocs.io/en/{params$tag}/modality-agnostic-files.html#scans-file)"
+  ),
+  glue::glue(
+    "sub-[record_id]_sessions.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/sessions.json))"
+  ),
+  glue::glue(
+    "[sessions file](https://bids-specification.readthedocs.io/en/{params$tag}/modality-agnostic-files.html#sessions-file)"
+  ),
+  glue::glue(
+    "sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/task-cuff_events.json))"
+  ),
+  glue::glue(
+    "[task events](https://bids-specification.readthedocs.io/en/{params$tag}/modality-specific-files/task-events.html)"
+  ),
+  glue::glue(
+    "dataset_description.json ([A2CPS file](https://github.com/a2cps/snapshot/blob/{params$tag}/src/snapshot/data/dataset_description.json))"
+  ),
+  glue::glue(
+    "[dataset descriptions](https://bids-specification.readthedocs.io/en/{params$tag}/modality-agnostic-files.html#dataset_descriptionjson)"
+  )
 )
 ```
 
@@ -185,4 +216,4 @@ Several packages in multiple languages have been developed to simplify interacti
 
 If you use the imaging data in your research, please cite the imaging pipeline preprint: @sadil_acute_2024.
 
-
+{{< include _snippets/a2cps_citations.qmd >}}

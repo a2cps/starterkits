@@ -206,6 +206,12 @@ brainage |>
 
 There are many models for calculating Brain Age. The values that have been pre-calculated for A2CPS are derived from a model that has been around for a while and used successfully in a variety of studies [@clausen_assessment_2022; @hobday_tissue_2022; @biondo_brain_2022]. For some analyses, it may be worthwhile to assess whether results persist across different models. For pain studies, one successful model has been DeepBrainNet [@valdes_brain_2023; @montesino_brain_2023; @bashyam_mri_2020], which can be used with derivatives from fMRIPrep.
 
-### Methods, Citations
+### Methods
 
 For additional documentation on the files and a detailed description of the methods, please see the official [brainageR repo](https://github.com/james-cole/brainageR). 
+
+### Citations
+
+If you use the brainageR materials, please follow the instructions for citing the brainageR package: https://github.com/james-cole/brainageR?tab=readme-ov-file#citations.
+
+{{< include _snippets/a2cps_citations.qmd >}}

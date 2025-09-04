@@ -920,3 +920,7 @@ Allele-sharing percentages, determined during identity-by descent analyses, can 
 ### Imputation
 
 Imputation is the process of statistically inferring whole genome sequences from SNP Array data using haplotype reference panels. For our imputation we used the TOPMed Imputation Server that implements the TOPMed R3 reference panel. View @sec-genomics for imputation details.
+
+### Citations
+
+{{< include _snippets/a2cps_citations.qmd >}}

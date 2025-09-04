@@ -172,3 +172,8 @@ The version of the IQR reported as a percentage is equal to $105 - 10*IQR$.
 
 Note that CAT12 typically generates a PDF with an overview of processing and image quality. There is an ongoing issue with CAT12 that prevented the PDFs from being generated for Release 2.0.0. For details, see [the associated issue on the CAT12 GitHub Repo](https://github.com/ChristianGaser/cat12/issues/27). 
 
+### Citations
+
+The methods driving CAT12 are based on extensive research. If you use these results, please be sure to cite the relevant papers outlined here: https://neuro-jena.github.io/cat/index.html#About.
+
+{{< include _snippets/a2cps_citations.qmd >}}

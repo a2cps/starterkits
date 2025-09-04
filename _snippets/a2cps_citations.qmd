@@ -1,0 +1,8 @@
+In publications or presentations including data from A2CPS, please include the following statement as attribution:
+
+> Data were provided [in part] by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/ Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).
+
+::: {.callout-note}
+The following published papers should be cited when referring to A2CPS Protocol and Biomarkers: @sluka_predicting_2023 @berardi_multi_2022
+:::
+
