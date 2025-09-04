@@ -10,7 +10,7 @@
 * Q: I am not familiar with `R`. What are a few good resources.
   * A: A great introduction to data analysis in R is the [R for Data Science](https://r4ds.hadley.nz/) book. Many of the starter kits rely on the [tidyverse](https://www.tidyverse.org/), which is covered in that book. 
 
-* Q: I'm seeing what appears to be a set of related technologies, including parquet files, the Arrow format, and hive-style partioning. Where can I find out more information about these?
+* Q: I'm seeing what appears to be a set of related technologies, including parquet files, the Arrow format, and hive-style partitioning. Where can I find out more information about these?
   * A: Please see [this chapter in the R for Data Science book](https://r4ds.hadley.nz/arrow.html). See also [this series of posts by Danielle Navarro](https://blog.djnavarro.net/#category=Apache%20Arrow). For reading and working with these files, many kits specifically use the [duckplyr](https://duckplyr.tidyverse.org/index.html) package.
 
 * Q: Where can I find out more information about Chronic Pain, and how A2CPS will help?

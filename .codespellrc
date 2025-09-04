@@ -1,4 +1,4 @@
 [codespell]
 # reference: https://github.com/codespell-project/codespell#using-a-config-file
-skip = .git,*.pdf,*.svg,*.lock,.codespellrc,_book,*_files,*_cache,renv,data,_freeze
-ignore-words-list = EHR,ehr,PROMIS
+skip = .git,*.pdf,*.svg,*.lock,.codespellrc,_book,*_files,*_cache,renv,data,_freeze,_extensions
+ignore-words-list = EHR,ehr,PROMIS,MAPP,notin
