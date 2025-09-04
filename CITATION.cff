@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+authors:
+- family-names: "Sadil"
+  given-names: "Patrick"
+  orcid: "0000-0003-4141-1343"
+  id: ps
+- family-names: "Ansari"
+  given-names: "Briha"
+  id: ba
+- family-names: "Berke"
+  given-names: "Seth R."
+  id: srb
+- family-names: "Ford"
+  given-names: "James C."
+  orcid: 0000-0001-8044-6536
+  id: jcf
+- family-names: "Lindquist"
+  given-names: "Martin A."
+  orcid: 0000-0003-2289-0828
+  id: mal  
+- family-names: "Taub"
+  given-names: "Margaret A."
+  id: mat
+title: "A2CPS Starter Kits"
+version: 0.1
+url: "https://a2cps.github.io/starterkits/"
