@@ -6,7 +6,7 @@ authors:
 
 # Psychosocial {#sec-psychosocial}
 
-Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements [@wandner_nih_2022] to gain a comprehensive understanding of chronic pain. These assessments include:
+Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements [@wandner_nih_2022] to gain a comprehensive understanding of chronic pain [@berardi_multi_2022]. These assessments include:
 
 - Pain related psychosocial constructs
   - These include pain resilience, catastrophizing, kinesiophobia, and multisensory sensitivity. Pain resilience is measured using the Pain Resilience Scale (PRS)[@slepian_development_2016]. Catastrophizing measures negative appraisal of pain using the Pain Catastrophizing Scale-6 (PCS-6) [@mcwilliams_development_2015]. Kinesiophobia (fear of movement) is measured using the Fear Avoidance Beliefs Questionnaire—Physical Activity subscale (FABQ-PA)[@waddell_fear_1993]. Sensitivity to sensory stimulation (light, sound, odor, flavor, touch) and interoception (balance, nausea, heart rate) are measured using an 8-item General Sensory Sensitivity (GSS) [@schrepf_sensory_2018].
