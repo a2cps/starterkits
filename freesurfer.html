@@ -582,10 +582,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   </ul></li>
   <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">5.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">5.2.1</span> Variability Across Scanners</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">5.2.2</span> Data Quality</a></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">5.2.3</span> Methods</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">5.2.4</span> Citations</a></li>
+  <li><a href="#example-analysis-relationship-between-cortical-surface-area-and-gray-matter-volume" id="toc-example-analysis-relationship-between-cortical-surface-area-and-gray-matter-volume" class="nav-link" data-scroll-target="#example-analysis-relationship-between-cortical-surface-area-and-gray-matter-volume"><span class="header-section-number">5.2.1</span> Example Analysis: Relationship between Cortical Surface Area and Gray Matter Volume</a></li>
+  <li><a href="#pivoting-the-data" id="toc-pivoting-the-data" class="nav-link" data-scroll-target="#pivoting-the-data"><span class="header-section-number">5.2.2</span> Pivoting the Data</a></li>
+  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">5.2.3</span> Variability Across Scanners</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">5.2.4</span> Data Quality</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">5.2.5</span> Methods</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">5.2.6</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -613,13 +615,20 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://freesurfer.net/landing/images/brain.png" class="img-fluid figure-img"></p>
+<figcaption>Cortical Mesh (source: https://freesurfer.net)</figcaption>
+</figure>
+</div>
+<p>One of the core scans in the A2CPS neuroimaging protocol is a T1w scan, which is used to capture structural information. These scans are processed using a software suite called <a href="https://freesurfer.net/">FreeSurfer</a>. FreeSurfer takes the 3D image, segments it into pre-defined anatomical regions (like the hippocampus or amygdala), and also creates a triangular “mesh” of cerebral cortex from which it derives measurements of cortical thickness, surface area, and curvature. These structural measurements are related to a wide range of diseases, including chronic pain, and are often used as a source of features for predictive modeling. A2CPS has compiled the measurements into tabular files, providing a rich set of neuroanatomical variables ready for statistical analysis to explore brain-behavior relationships or group differences. This kit provides an overview of those tabular files.</p>
 <section id="starting-project" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">5.1</span> Starting Project</h2>
-<p>This kit will use both <code>shell</code> and <code>R</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="locate-data" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">5.1.1</span> Locate data</h3>
@@ -932,12 +941,76 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>Some analyses may benefit from having the data in a “wider” format, which can be achieved with <a href="https://r4ds.hadley.nz/data-tidy.html#widening-data">tools from the Tidyverse</a>. For example, here is how we could pivot the table such that one column represents the participant and the others give the average cortical thickness for each region.</p>
+</section>
+</section>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">5.2</span> Considerations While Working on the Project</h2>
+<section id="example-analysis-relationship-between-cortical-surface-area-and-gray-matter-volume" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="example-analysis-relationship-between-cortical-surface-area-and-gray-matter-volume"><span class="header-section-number">5.2.1</span> Example Analysis: Relationship between Cortical Surface Area and Gray Matter Volume</h3>
+<p>One of the most common features in predictive models is cortical thickness, but each of them may carry unique information. Here’s let’s compare the regional volume with the regional surface area.</p>
+<div id="fig-pairs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pairs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a2009s_wider <span class="ot">&lt;-</span> a2009s <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(StructName, ThickAvg, sub, hemisphere) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="fu">c</span>(StructName, hemisphere), <span class="at">values_from =</span> ThickAvg)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(a2009s_wider)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a2009s <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> SurfArea, <span class="at">y =</span> GrayVol)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="freesurfer_files/figure-html/pairs-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pairs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.1: Cortical Gray Matter Volume (mm^3) and Surface Area (mm^2). Each point represents a single pair of measurements for a single region within a participant.
+</figcaption>
+</figure>
+</div>
+<p>Clearly, there are groupings in the data. These groupings could partly be driven by participant demographics (e.g., some participants having larger or smaller regional volumes), but they may also be driven by different structures (e.g., the relationship between surface area and volume may differ across regions). Let’s zoom in on two of the larger clusters, and color the points by structure.</p>
+<div id="fig-pairs2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pairs2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>a2009s <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">between</span>(SurfArea, <span class="dv">4000</span>, <span class="dv">6000</span>), <span class="fu">between</span>(GrayVol, <span class="dv">10000</span>, <span class="dv">20000</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> SurfArea, <span class="at">y =</span> GrayVol, <span class="at">color =</span> StructName)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="freesurfer_files/figure-html/pairs2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pairs2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.2: The data are plotted as in <a href="#fig-pairs" class="quarto-xref">Figure&nbsp;<span>5.1</span></a>, but with a restricted axis. Note the apparent variability in the relationship between surface area and volume.
+</figcaption>
+</figure>
+</div>
+<p>The relationship between surface area and volume appears to vary by region. For example, the Superior Temporal Sulcus has a similar surface area to the Superior Frontal Gyrus, but that gyrus has a larger volume.</p>
+</section>
+<section id="pivoting-the-data" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="pivoting-the-data"><span class="header-section-number">5.2.2</span> Pivoting the Data</h3>
+<p>The data have been shared in a <a href="https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data">“longer” format</a>, with rows corresponding to region-level observations. Some analyses benefit from having the data in a <a href="https://r4ds.hadley.nz/data-tidy.html#widening-data">“wider” format</a>, with rows corresponding to participant-level observations. For example, if we’re predicting age from cortical thickness, we may want to drop the other morphological measures, and pivot the table such that columns correspond to regional thickness.</p>
+<div id="tbl-wide" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-wide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.1: Average Thickness in a Wider Format. Rows correspond to participants. Note that the region (<code>StructName</code>) has been combined with the hemisphere label.
+</figcaption>
+<div aria-describedby="tbl-wide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a2009s <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(StructName, ThickAvg, sub, hemisphere) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> <span class="fu">c</span>(StructName, hemisphere),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> ThickAvg</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -2157,25 +2230,25 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
+</div>
+</figure>
+</div>
 </section>
-</section>
-<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">5.2</span> Considerations While Working on the Project</h2>
-<section id="variability-across-scanners" class="level3" data-number="5.2.1">
-<h3 data-number="5.2.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">5.2.1</span> Variability Across Scanners</h3>
+<section id="variability-across-scanners" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">5.2.3</span> Variability Across Scanners</h3>
 <p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
-<section id="data-quality" class="level3" data-number="5.2.2">
-<h3 data-number="5.2.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">5.2.2</span> Data Quality</h3>
+<section id="data-quality" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">5.2.4</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 <p>Currently, no QC has been performed on the underlying segmentations and parcellations. With adequate sample sizes, results based on whole-atlas FreeSurfer measurements are generally robust, although there are individual regions that may warrant close inspection (e.g., <a href="http://dx.doi.org/10.3389/fnins.2015.00379">McCarthy et al.&nbsp;2015</a>, <a href="https://doi.org/10.1016/j.neuroimage.2023.120306">Vahermaa et al.&nbsp;2023</a>). Moreover, it remains unclear the extent to which FreeSurfer’s accuracy persists over the wide range of demographics found in the A2CPS dataset. The Imaging DIRC is actively exploring these aspects of quality.</p>
 </section>
-<section id="methods" class="level3" data-number="5.2.3">
-<h3 data-number="5.2.3" class="anchored" data-anchor-id="methods"><span class="header-section-number">5.2.3</span> Methods</h3>
+<section id="methods" class="level3" data-number="5.2.5">
+<h3 data-number="5.2.5" class="anchored" data-anchor-id="methods"><span class="header-section-number">5.2.5</span> Methods</h3>
 <p>FreeSurfer outputs were generated by the <a href="https://fmriprep.org/en/stable/workflows.html#surface-preprocessing">fMRIPrep pipeline</a>. The fMRIPrep pipeline is similar to a typical call to FreeSurfer’s <code>recon-all</code>, with a majority of changes aiming to parallelize more parts of <code>recon-all</code>. However, there are differences, such as in how the brain is masked. The A2CPS use of fMRIPrep is even more different because it entails replacing the fMRIPrep masking procedure with <a href="https://surfer.nmr.mgh.harvard.edu/docs/synthstrip/"><code>SynthStrip</code></a>. In general, these changes are expected to only improve the quality of the FreeSurfer outputs. However, they may hinder some comparisons between results derived from A2CPS and those in other studies.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="5.2.4">
-<h3 data-number="5.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">5.2.4</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="5.2.6">
+<h3 data-number="5.2.6" class="anchored" data-anchor-id="citations"><span class="header-section-number">5.2.6</span> Citations</h3>
 <p>The FreeSurfer package has been developed through extensive research. If you use these derivatives in your analyses, please follow the documentation for citing FreeSurfer: https://surfer.nmr.mgh.harvard.edu/fswiki/FreeSurferMethodsCitation.</p>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
