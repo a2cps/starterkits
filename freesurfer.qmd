@@ -1,13 +1,95 @@
+```{r lockfile, include=FALSE}
+renv::use(
+  base64enc = "base64enc@0.1-3",
+  bit = "bit@4.5.0",
+  bit64 = "bit64@4.5.2",
+  bslib = "bslib@0.9.0",
+  cachem = "cachem@1.1.0",
+  cli = "cli@3.6.4",
+  clipr = "clipr@0.8.0",
+  colorspace = "colorspace@2.1-1",
+  cpp11 = "cpp11@0.5.0",
+  crayon = "crayon@1.5.3",
+  digest = "digest@0.6.37",
+  dplyr = "dplyr@1.1.4",
+  evaluate = "evaluate@1.0.3",
+  fansi = "fansi@1.0.6",
+  farver = "farver@2.1.2",
+  fastmap = "fastmap@1.2.0",
+  fontawesome = "fontawesome@0.5.3",
+  forcats = "forcats@1.0.0",
+  fs = "fs@1.6.5",
+  generics = "generics@0.1.3",
+  GGally = "GGally@2.2.1",
+  ggplot2 = "ggplot2@3.5.1",
+  ggstats = "ggstats@0.8.0",
+  glue = "glue@1.8.0",
+  gtable = "gtable@0.3.6",
+  highr = "highr@0.11",
+  hms = "hms@1.1.3",
+  htmltools = "htmltools@0.5.8.1",
+  isoband = "isoband@0.2.7",
+  jquerylib = "jquerylib@0.1.4",
+  jsonlite = "jsonlite@1.9.1",
+  knitr = "knitr@1.50",
+  labeling = "labeling@0.4.3",
+  lattice = "lattice@0.22-6",
+  lifecycle = "lifecycle@1.0.4",
+  magrittr = "magrittr@2.0.3",
+  MASS = "MASS@7.3-60.2",
+  Matrix = "Matrix@1.7-0",
+  memoise = "memoise@2.0.1",
+  mgcv = "mgcv@1.9-1",
+  mime = "mime@0.13",
+  munsell = "munsell@0.5.1",
+  nlme = "nlme@3.1-164",
+  patchwork = "patchwork@1.3.0",
+  pillar = "pillar@1.11.0",
+  pkgconfig = "pkgconfig@2.0.3",
+  plyr = "plyr@1.8.9",
+  prettyunits = "prettyunits@1.2.0",
+  progress = "progress@1.2.3",
+  purrr = "purrr@1.0.2",
+  R6 = "R6@2.6.1",
+  rappdirs = "rappdirs@0.3.3",
+  RColorBrewer = "RColorBrewer@1.1-3",
+  Rcpp = "Rcpp@1.1.0",
+  readr = "readr@2.1.5",
+  renv = "renv@1.1.5",
+  rlang = "rlang@1.1.5",
+  rmarkdown = "rmarkdown@2.29",
+  sass = "sass@0.4.9",
+  scales = "scales@1.3.0",
+  stringi = "stringi@1.8.4",
+  stringr = "stringr@1.5.1",
+  tibble = "tibble@3.2.1",
+  tidyr = "tidyr@1.3.1",
+  tidyselect = "tidyselect@1.2.1",
+  tinytex = "tinytex@0.56",
+  tzdb = "tzdb@0.4.0",
+  utf8 = "utf8@1.2.4",
+  vctrs = "vctrs@0.6.5",
+  viridisLite = "viridisLite@0.4.2",
+  vroom = "vroom@1.6.5",
+  withr = "withr@3.0.2",
+  xfun = "xfun@0.51",
+  yaml = "yaml@2.3.10"
+)
+```
+
 # FreeSurfer Measures {#sec-freesurfer}
 
-## Starting Project
+![Cortical Mesh (source: https://freesurfer.net)](https://freesurfer.net/landing/images/brain.png)
 
-This kit will use both `shell` and `R`
+One of the core scans in the A2CPS neuroimaging protocol is a T1w scan, which is used to capture structural information. These scans are processed using a software suite called [FreeSurfer](https://freesurfer.net/). FreeSurfer takes the 3D image, segments it into pre-defined anatomical regions (like the hippocampus or amygdala), and also creates a triangular "mesh" of cerebral cortex from which it derives measurements of cortical thickness, surface area, and curvature. These structural measurements are related to a wide range of diseases, including chronic pain, and are often used as a source of features for predictive modeling. A2CPS has compiled the measurements into tabular files, providing a rich set of neuroanatomical variables ready for statistical analysis to explore brain-behavior relationships or group differences. This kit provides an overview of those tabular files. 
+
+## Starting Project
 
 ```{r}
 library(readr)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
 ```
 
 
@@ -44,7 +126,7 @@ $ ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/der
 
 In this kit, we will consider the cortical surface measurements, stored within `aparc.tsv`. This table contains nine regional measurements for the various structures that compose each of six parcellations.
 
-```{r}
+```{r load}
 aparc <- read_tsv("data/aparc.tsv", show_col_types = FALSE)
 head(aparc)
 ```
@@ -53,22 +135,70 @@ head(aparc)
 A typical analysis will only rely on one parcellation. For details of the different parcellations, see the [FreeSurfer documentation](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation). Two good starting choices are either the `aparc` or `aparc.a2009s` atlas. 
 
 
-```{r}
+```{r a2009s}
 a2009s <- aparc |>
   filter(parc == "aparc.a2009s")
 head(a2009s)
 ```
 
-Some analyses may benefit from having the data in a "wider" format, which can be achieved with [tools from the Tidyverse](https://r4ds.hadley.nz/data-tidy.html#widening-data). For example, here is how we could pivot the table such that one column represents the participant and the others give the average cortical thickness for each region.
-
-```{r}
-a2009s_wider <- a2009s |>
-  select(StructName, ThickAvg, sub, hemisphere) |>
-  pivot_wider(names_from = c(StructName, hemisphere), values_from = ThickAvg)
-head(a2009s_wider)
-```
 
 ## Considerations While Working on the Project
+
+### Example Analysis: Relationship between Cortical Surface Area and Gray Matter Volume
+
+One of the most common features in predictive models is cortical thickness, but each of them may carry unique information. Here's let's compare the regional volume with the regional surface area.
+
+:::  {#fig-pairs}
+
+```{r pairs}
+a2009s |>
+  ggplot(aes(x = SurfArea, y = GrayVol)) +
+  geom_point(alpha = 0.1)
+
+```
+
+Cortical Gray Matter Volume (mm^3) and Surface Area (mm^2). Each point represents a single pair of measurements for a single region within a participant.
+
+:::
+
+Clearly, there are groupings in the data. These groupings could partly be driven by participant demographics (e.g., some participants having larger or smaller regional volumes), but they may also be driven by different structures (e.g., the relationship between surface area and volume may differ across regions). Let's zoom in on two of the larger clusters, and color the points by structure.
+
+:::  {#fig-pairs2}
+
+```{r pairs2}
+
+a2009s |>
+  filter(between(SurfArea, 4000, 6000), between(GrayVol, 10000, 20000)) |>
+  ggplot(aes(x = SurfArea, y = GrayVol, color = StructName)) +
+  geom_point()
+
+```
+
+The data are plotted as in @fig-pairs, but with a restricted axis. Note the apparent variability in the relationship between surface area and volume. 
+
+:::
+
+The relationship between surface area and volume appears to vary by region. For example, the Superior Temporal Sulcus has a similar surface area to the Superior Frontal Gyrus, but that gyrus has a larger volume. 
+
+### Pivoting the Data
+
+The data have been shared in a ["longer" format](https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data), with rows corresponding to region-level observations. Some analyses benefit from having the data in a ["wider" format](https://r4ds.hadley.nz/data-tidy.html#widening-data), with rows corresponding to participant-level observations. For example, if we're predicting age from cortical thickness, we may want to drop the other morphological measures, and pivot the table such that columns correspond to regional thickness. 
+
+::: {#tbl-wide}
+
+```{r wider}
+a2009s |>
+  select(StructName, ThickAvg, sub, hemisphere) |>
+  pivot_wider(
+    names_from = c(StructName, hemisphere),
+    values_from = ThickAvg
+  ) |>
+  head()
+```
+
+Average Thickness in a Wider Format. Rows correspond to participants. Note that the region (`StructName`) has been combined with the hemisphere label.
+
+:::
 
 ### Variability Across Scanners
 
