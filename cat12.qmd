@@ -177,3 +177,5 @@ Note that CAT12 typically generates a PDF with an overview of processing and ima
 The methods driving CAT12 are based on extensive research. If you use these results, please be sure to cite the relevant papers outlined here: https://neuro-jena.github.io/cat/index.html#About.
 
 {{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.

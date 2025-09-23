@@ -8,3 +8,4 @@
 data/
 *cache/*
 *files/*
+**/*.quarto_ipynb

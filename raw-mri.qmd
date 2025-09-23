@@ -217,3 +217,5 @@ Several packages in multiple languages have been developed to simplify interacti
 If you use the imaging data in your research, please cite the imaging pipeline preprint: @sadil_acute_2024.
 
 {{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.

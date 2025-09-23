@@ -144,3 +144,5 @@ The biomarkers table was calculated by [this A2CPS biomarker-extractor workflow]
 If you use these products in your analyses, please cite the relevant papers written by members [TReNDS](https://trendscenter.org/data/).
 
 {{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.

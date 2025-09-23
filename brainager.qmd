@@ -215,3 +215,5 @@ For additional documentation on the files and a detailed description of the meth
 If you use the brainageR materials, please follow the instructions for citing the brainageR package: https://github.com/james-cole/brainageR?tab=readme-ov-file#citations.
 
 {{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.

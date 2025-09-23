@@ -233,3 +233,5 @@ Overall, discriminability is around 0.8, with at most minor differences between 
 ### Citations
 
 {{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.
