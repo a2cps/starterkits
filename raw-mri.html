@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -89,18 +89,19 @@ div.csl-indent {
 <link href="./genomic_imputation.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-befe23ebd2f54d8af2c8a89d1a1611f1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-23102fe0f0b5b1a9f09cc09ebcc8fe5b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-11608ecab0b4e008b87a77b96745bd9e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-23102fe0f0b5b1a9f09cc09ebcc8fe5b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d58359eb3ecc31d3bec1ed479c2cbb3a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-194232c968a292054ad9c2d54c766ee0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d58359eb3ecc31d3bec1ed479c2cbb3a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -395,7 +396,9 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">A2CPS Starter Kits</a> 
         <div class="sidebar-tools-main tools-wide">
@@ -619,7 +622,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;For a generic introduction to BIDS, see: <a href="https://bids-website.readthedocs.io/en/latest/getting_started/index.html">Unsure how to get started using BIDS with your current data? - The Brain Imaging Data Structure</a>]</p></div></div><section id="on-starting-project" class="level2 page-columns page-full" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="on-starting-project"><span class="header-section-number">4.1</span> On Starting Project</h2>
 <p>Once downloaded, the data will be stored deep inside the image03 folder.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls image03/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/bids/ <span class="kw">|</span> <span class="fu">head</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls image03/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/bids/ <span class="kw">|</span> <span class="fu">head</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dataset_description.json</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">participants.json</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">participants.tsv</span></span>
@@ -629,12 +632,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="sec-raw-mri-extract" class="level3 page-columns page-full" data-number="4.1.1">
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="sec-raw-mri-extract"><span class="header-section-number">4.1.1</span> Extract Data</h3>
 <p>The raw MRI data are organized according to <a href="https://bids-specification.readthedocs.io/en/v1.9.0/">v1.9.0</a> of the BIDS standard.</p>
 <p>In BIDS data for individual subjects are stored in folders named “sub-[record_id]”. For an example A2CPS session this format results in the following<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The <code>tree</code> command is just used here to display the folder structure, and is not required for you to have.</p></div></div><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree sub-10003</span>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The <code>tree</code> command is just used here to display the folder structure, and is not required for you to have.</p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree sub-10003</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> ses-V1</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── anat</span>
@@ -666,7 +669,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   └── sub-10003_ses-V1_task-rest_run-02_bold.nii.gz</span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── sub-10003_ses-V1_scans.tsv</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> sub-10003_sessions.tsv</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> directories, 25 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> directories, 25 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The raw imaging data are in the (<code>gzip</code> compressed) <a href="https://nifti.nimh.nih.gov/">NIfTI</a> files, and each image is associated with a <code>.json</code> sidecar containing metadata about the scan and acquisition parameters (metadata that subsumes the NIfTI header).</p>
 <p>The “session” refers to the visit. Currently only the baseline (pre-surgery) data is included, so all sessions have the label “V1”. Information about each participant’s visit is stored in the <code>sub-[record_id]/sub-[record_id]_sessions.tsv</code> file.</p>
 <p>The pressures that were applied during the CUFF scans are recorded in the <a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-specific-files/task-events.html"><code>sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv</code> tables</a>.</p>
@@ -717,7 +720,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="sec-raw-mri-quality"><span class="header-section-number">4.1.2</span> Data Quality</h3>
 <p>All raw data have undergone quality review. For details on the review process see <a href="https://a2cps.atlassian.net/wiki/external/OTEyMDE5ZDkxY2NkNGI0MWE5ZDRmMWE4MDViM2MzNmE">A2CPS Imaging Quality Assurance</a>.</p>
 <p>The resulting overall quality ratings (red/yellow/green) are included in the <code>*scans.tsv</code> files. For example</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">filename</span>    rating</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz</span>  green</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">dwi/sub-10003_ses-V1_dwi.nii.gz</span> green</span>
@@ -727,10 +730,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.nii.gz</span>  n/a</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.nii.gz</span>  n/a</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz</span>   n/a</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz</span>   n/a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz</span>   n/a</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>For a description of the reviews, see the <a href="https://github.com/a2cps/snapshot/blob/v2.0.0/src/snapshot/data/scans.json">scans.json data dictionary</a>. Re-evaluation of quality and inclusion/exclusion criteria in the context of a specific analysis is always reasonable, but we would advise against including scans labeled “red” in most analyses.</p>
 <p>Note that some “cuff” scans were collected without cuff inflation. These scans can be identified by the “applied_pressure” column of the <code>*events.tsv</code> file. For example</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> grep <span class="at">-b1</span> <span class="at">-HP</span> <span class="st">"0\t450\t0"</span> sub-<span class="pp">*</span>/ses-V1/func/<span class="pp">*</span>events.tsv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 9</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> grep <span class="at">-b1</span> <span class="at">-HP</span> <span class="st">"0\t450\t0"</span> sub-<span class="pp">*</span>/ses-V1/func/<span class="pp">*</span>events.tsv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 9</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv-0-onset</span>  duration    applied_pressure</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv:32:0</span> 450 0</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">--</span></span>
@@ -738,7 +741,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv:32:0</span> 450 0</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">--</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv-0-onset</span>  duration    applied_pressure</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv:32:0</span> 450 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv:32:0</span> 450 0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="considerations-while-working-on-project" class="level2 page-columns page-full" data-number="4.2">
@@ -759,7 +762,7 @@ Li, X., Morgan, P. S., Ashburner, J., Smith, J., &amp; Rorden, C. (2016). The fi
 </div><div id="ref-visconti_di_oleggio_castello_repronimreproin_2023" class="csl-entry" role="listitem">
 Visconti di Oleggio Castello, M., Dobson, J. E., Sackett, T., Kodiweera, C., Haxby, J. V., Goncalves, M., Ghosh, S., &amp; Halchenko, Y. O. (2023). <em><span>ReproNim</span>/reproin: 0.11.6.2</em>. Zenodo. <a href="https://doi.org/10.5281/ZENODO.7975330">https://doi.org/10.5281/ZENODO.7975330</a>
 </div></div><p>All MRI pipeline code is available through github: <a href="https://github.com/a2cps/mri_imaging_pipeline">https://github.com/a2cps/mri_imaging_pipeline</a>. Note that the code used to generate the BIDS derivatives has been updated several times (e.g., the same version of <a href="https://github.com/rordenlab/dcm2niix"><code>dcm2niix</code></a> was not used to convert all participants). The specific version of the conversion code is stored in the <code>GeneratedBy</code> field of the <code>dataset_description.json</code>, with entries like</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"CodeUrl"</span><span class="fu">:</span> <span class="st">"https://github.com/a2cps/mri_imaging_pipeline"</span><span class="fu">,</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Container"</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"Tag"</span><span class="fu">:</span> <span class="st">"221121"</span><span class="fu">,</span></span>
@@ -769,7 +772,7 @@ Visconti di Oleggio Castello, M., Dobson, J. E., Sackett, T., Kodiweera, C., Hax
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"WS20207V1"</span><span class="fu">,</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Name"</span><span class="fu">:</span> <span class="st">"heudiconv_app"</span><span class="fu">,</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Version"</span><span class="fu">:</span> <span class="st">"urrutia-heudiconv-0.11.6"</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This indicates that the presurgery scan session for participant 20207 (who happens to have been collected at Wayne State) was converted with the <code>heudiconv_app</code> version 0.11.6. That version is recorded <a href="https://github.com/a2cps/mri_imaging_pipeline/blob/c6dd760501b142de34b988be10cc663311a3ceee/heudiconv_app/app.ini">here</a>. This version of the app used the docker image <a href="https://hub.docker.com/layers/psadil/heudiconv/221121/images/sha256-13982ccab36adb26d4439d3673bfc4ee4ad9a7c86b0de4896298a029a1eeb7c3?context=explore">psadil/heudiconv:221121</a>.</p>
 </section>
 <section id="skull-stripping-for-privacy" class="level3" data-number="4.2.2">
@@ -797,9 +800,7 @@ Visconti di Oleggio Castello, M., Dobson, J. E., Sackett, T., Kodiweera, C., Hax
 <section id="citations" class="level3 page-columns page-full" data-number="4.2.6">
 <h3 data-number="4.2.6" class="anchored" data-anchor-id="citations"><span class="header-section-number">4.2.6</span> Citations</h3>
 <p>If you use the imaging data in your research, please cite the imaging pipeline preprint: <span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-sadil_acute_2024" class="csl-entry" role="listitem">
-Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J., DeLano, M. C., Ford, J. C., Gattu, R., Guo, X., Harris, R. E., Ichesco, E., Johnson, M. A., Jung, H., Kahn, A. B., Kaplan, C. M., Leloudas, N., Lindquist, M. A., Luo, Q., … Chronic Pain Signatures Consortium, T. A. to. (2024). Image processing in the acute to chronic pain signatures (A2CPS) project. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2024.12.19.627509">https://doi.org/10.1101/2024.12.19.627509</a>
-</div></div><p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
+<div class="no-row-height column-margin column-container"></div><p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
 <p>Data were provided [in part] by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/ Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
 </blockquote>
@@ -816,13 +817,16 @@ Note
 <p>The following published papers should be cited when referring to A2CPS Protocol and Biomarkers: <span class="citation" data-cites="sluka_predicting_2023">Sluka et al. (<a href="references.html#ref-sluka_predicting_2023" role="doc-biblioref">2023</a>)</span> <span class="citation" data-cites="berardi_multi_2022">Berardi et al. (<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">2022</a>)</span></p>
 </div>
 </div>
-
-
 <div class="no-row-height column-margin column-container"><div id="ref-berardi_multi_2022" class="csl-entry" role="listitem">
 Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, D., Vance, C. G. T., Dailey, D. L., Burns, J., Buvanendran, A., McCarthy, R. J., Jacobs, J., Zhou, X. J., Wixson, R., Balach, T., Brummett, C. M., Clauw, D., Colquhoun, D., Harte, S. E., … Wandner, L. D. (2022). Multi-site observational study to assess biomarkers for susceptibility or resilience to chronic pain: The acute to chronic pain signatures (A2CPS) study protocol. <em>Frontiers in Medicine</em>, <em>9</em>. <a href="https://doi.org/10.3389/fmed.2022.849214">https://doi.org/10.3389/fmed.2022.849214</a>
 </div></div><div class="no-row-height column-margin column-container"><div id="ref-sluka_predicting_2023" class="csl-entry" role="listitem">
 Sluka, K. A., Wager, T. D., Sutherland, S. P., Labosky, P. A., Balach, T., Bayman, E. O., Berardi, G., Brummett, C. M., Burns, J., Buvanendran, A., et al. (2023). Predicting chronic postsurgical pain: Current evidence and a novel program to develop predictive biomarker signatures. <em>Pain</em>, <em>164</em>(9), 1912–1926. <a href="https://doi.org/10.1097/j.pain.0000000000002938">https://doi.org/10.1097/j.pain.0000000000002938</a>
-</div></div>
+</div><div id="ref-sadil_acute_2024" class="csl-entry" role="listitem">
+Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J., DeLano, M. C., Ford, J. C., Gattu, R., Guo, X., Harris, R. E., Ichesco, E., Johnson, M. A., Jung, H., Kahn, A. B., Kaplan, C. M., Leloudas, N., Lindquist, M. A., Luo, Q., … Chronic Pain Signatures Consortium, T. A. to. (2024). Image processing in the acute to chronic pain signatures (A2CPS) project. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2024.12.19.627509">https://doi.org/10.1101/2024.12.19.627509</a>
+</div></div><p>When using neuroimaging derivatives, please also cite <span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>.</p>
+
+
+
 </section>
 </section>
 
@@ -892,13 +896,14 @@ Sluka, K. A., Wager, T. D., Sutherland, S. P., Labosky, P. A., Balach, T., Bayma
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
