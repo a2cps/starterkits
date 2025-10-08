@@ -85,16 +85,9 @@ One of the core scans in the A2CPS neuroimaging protocol is a T1w scan, which is
 
 ## Starting Project
 
-```{r}
-library(readr)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-```
-
 ### Locate data
 
-In the release folder, data are stored underneath the `mris/derivatives` folder:
+In the release, data are stored underneath the `mris/derivatives` folder:
 
 ```{bash}
 #| eval: false
@@ -106,16 +99,16 @@ This folder contains all of the FreeSurfer outputs for every participant (e.g., 
 Most users will not need the raw FreeSurfer outputs and can instead rely on tables in which the morphological measures have been aggregated. There are three relevant tables
 
 - aparc.tsv 
-  - measurements derived from parcellations of the cortical surface, like cortical thickness
+  - measurements derived from parcellations of the cortical surface (e.g., cortical thickness)
   - produced by [`aparcstats2table`](https://surfer.nmr.mgh.harvard.edu/fswiki/aparcstats2table)
 - aseg.tsv 
-  - measurements derived from segmentations of the 3d structural image, like regional gray matter volumes
+  - measurements derived from segmentations of the 3d structural image (e.g., average signal intensity)
   - produced by [`asegstats2table`](https://surfer.nmr.mgh.harvard.edu/fswiki/asegstats2table)
 - headers.tsv 
   - information about the brain as a whole (e.g., estimated Total Intracranial Volume)
   - derived from the headers of the `aparcstats2table` and `asegstats2table` outputs
 
-For each of these, there are data dictionaries that details the contents (e.g., `aparc.json` explains the columns of `aparc.tsv`). 
+For each of these, there are data dictionaries in `json` files (e.g., `aparc.json` explains the columns of `aparc.tsv`). 
 
 ```{bash}
 #| eval: false
@@ -130,14 +123,27 @@ Copies of the data dictionaries are available online for preview: [aparc.json](h
 
 ### Extract data
 
-In this kit, we will explore the cortical surface measurements, stored within `aparc.tsv`. This table contains nine regional measurements for the various structures that compose each of six parcellations.
+
+In this kit, we will explore the cortical parcellations. 
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+
+As described above, the parcellation information is stored in `aparc.tsv`. 
 
 ```{r load}
 aparc <- read_tsv("data/aparc.tsv", show_col_types = FALSE)
 head(aparc)
 ```
 
-A typical analysis will only rely on one parcellation. For details of the different parcellations, see the [FreeSurfer documentation](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation). Two good starting choices are either `aparc` or `aparc.a2009s`. The `aparc` segmentation is a coarser parcellation, and the `aparc.a2009s` segmentation is finer. Filter the table for the `aparc.a2009s` parcellation.
+That table contains nine regional measurements (GrayVol, SurfArea) for the various structures that compose each of six parcellations.
+
+A typical analysis will only rely on one parcellation. For details of the different parcellations, see the [FreeSurfer documentation](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation). Two good starting choices are either `aparc` or `aparc.a2009s`. The `aparc` atlas is a coarser parcellation, whereas `aparc.a2009s` is finer. Here, we'll filter for `aparc.a2009s`.
 
 ```{r a2009s}
 a2009s <- aparc |>
