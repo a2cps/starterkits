@@ -625,29 +625,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <p>One of the core scans in the A2CPS neuroimaging protocol is a T1w scan, which is used to capture structural information. These scans are processed using a software suite called <a href="https://freesurfer.net/">FreeSurfer</a>. FreeSurfer takes the 3D image, segments it into pre-defined anatomical regions (like the hippocampus or amygdala), and also creates a triangular “mesh” of cerebral cortex from which it derives measurements of structural morphometry, including cortical thickness, surface area, and curvature. These measurements are related to a wide range of diseases, including chronic pain, and are often used as a source of features for predictive modeling. A2CPS has compiled the measurements into tabular files, providing a rich set of neuroanatomical variables ready for statistical analysis to explore brain-behavior relationships or group differences. This kit provides an overview of those tabular files.</p>
 <section id="starting-project" class="level2 page-columns page-full" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">5.1</span> Starting Project</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <section id="locate-data" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">5.1.1</span> Locate data</h3>
-<p>In the release folder, data are stored underneath the <code>mris/derivatives</code> folder:</p>
+<p>In the release, data are stored underneath the <code>mris/derivatives</code> folder:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This folder contains all of the FreeSurfer outputs for every participant (e.g., this is the directory that could correspond to the FreeSurfer environment variable <code>$SUBJECTS_DIR</code>), which subject folders of the form <code>sub-[recordid]_ses-[protocolid]</code>.</p>
 <p>Most users will not need the raw FreeSurfer outputs and can instead rely on tables in which the morphological measures have been aggregated. There are three relevant tables</p>
 <ul>
 <li>aparc.tsv
 <ul>
-<li>measurements derived from parcellations of the cortical surface, like cortical thickness</li>
+<li>measurements derived from parcellations of the cortical surface (e.g., cortical thickness)</li>
 <li>produced by <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/aparcstats2table"><code>aparcstats2table</code></a></li>
 </ul></li>
 <li>aseg.tsv
 <ul>
-<li>measurements derived from segmentations of the 3d structural image, like regional gray matter volumes</li>
+<li>measurements derived from segmentations of the 3d structural image (e.g., average signal intensity)</li>
 <li>produced by <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/asegstats2table"><code>asegstats2table</code></a></li>
 </ul></li>
 <li>headers.tsv
@@ -656,19 +650,26 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <li>derived from the headers of the <code>aparcstats2table</code> and <code>asegstats2table</code> outputs</li>
 </ul></li>
 </ul>
-<p>For each of these, there are data dictionaries that details the contents (e.g., <code>aparc.json</code> explains the columns of <code>aparc.tsv</code>).</p>
+<p>For each of these, there are data dictionaries in <code>json</code> files (e.g., <code>aparc.json</code> explains the columns of <code>aparc.tsv</code>).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/<span class="pp">*</span><span class="dt">{json</span><span class="op">,</span><span class="dt">tsv}</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aparc.json</span>  /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/gm_morph.tsv</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aparc.tsv</span>   /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/headers.json</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aseg.json</span>   /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/headers.tsv</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aseg.tsv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/<span class="pp">*</span><span class="dt">{json</span><span class="op">,</span><span class="dt">tsv}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aparc.json</span>  /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/gm_morph.tsv</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aparc.tsv</span>   /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/headers.json</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aseg.json</span>   /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/headers.tsv</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aseg.tsv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Copies of the data dictionaries are available online for preview: <a href="https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/aparc.json">aparc.json</a>, <a href="https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/aseg.json">aseg.json</a>, <a href="https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/headers.json">headers.json</a>.</p>
 </section>
 <section id="extract-data" class="level3" data-number="5.1.2">
 <h3 data-number="5.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">5.1.2</span> Extract data</h3>
-<p>In this kit, we will explore the cortical surface measurements, stored within <code>aparc.tsv</code>. This table contains nine regional measurements for the various structures that compose each of six parcellations.</p>
+<p>In this kit, we will explore the cortical parcellations.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>As described above, the parcellation information is stored in <code>aparc.tsv</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>aparc <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/aparc.tsv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aparc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -811,7 +812,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>A typical analysis will only rely on one parcellation. For details of the different parcellations, see the <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation">FreeSurfer documentation</a>. Two good starting choices are either <code>aparc</code> or <code>aparc.a2009s</code>. The <code>aparc</code> segmentation is a coarser parcellation, and the <code>aparc.a2009s</code> segmentation is finer. Filter the table for the <code>aparc.a2009s</code> parcellation.</p>
+<p>That table contains nine regional measurements (GrayVol, SurfArea) for the various structures that compose each of six parcellations.</p>
+<p>A typical analysis will only rely on one parcellation. For details of the different parcellations, see the <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation">FreeSurfer documentation</a>. Two good starting choices are either <code>aparc</code> or <code>aparc.a2009s</code>. The <code>aparc</code> atlas is a coarser parcellation, whereas <code>aparc.a2009s</code> is finer. Here, we’ll filter for <code>aparc.a2009s</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>a2009s <span class="ot">&lt;-</span> aparc <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(parc <span class="sc">==</span> <span class="st">"aparc.a2009s"</span>)</span>
