@@ -81,7 +81,7 @@ renv::use(
 
 ![Cortical Mesh (source: https://freesurfer.net)](https://freesurfer.net/landing/images/brain.png)
 
-One of the core scans in the A2CPS neuroimaging protocol is a T1w scan, which is used to capture structural information. These scans are processed using a software suite called [FreeSurfer](https://freesurfer.net/). FreeSurfer takes the 3D image, segments it into pre-defined anatomical regions (like the hippocampus or amygdala), and also creates a triangular "mesh" of cerebral cortex from which it derives measurements of cortical thickness, surface area, and curvature. These structural measurements are related to a wide range of diseases, including chronic pain, and are often used as a source of features for predictive modeling. A2CPS has compiled the measurements into tabular files, providing a rich set of neuroanatomical variables ready for statistical analysis to explore brain-behavior relationships or group differences. This kit provides an overview of those tabular files. 
+One of the core scans in the A2CPS neuroimaging protocol is a T1w scan, which is used to capture structural information. These scans are processed using a software suite called [FreeSurfer](https://freesurfer.net/). FreeSurfer takes the 3D image, segments it into pre-defined anatomical regions (like the hippocampus or amygdala), and also creates a triangular "mesh" of cerebral cortex from which it derives measurements of structural morphometry, including cortical thickness, surface area, and curvature. These measurements are related to a wide range of diseases, including chronic pain, and are often used as a source of features for predictive modeling. A2CPS has compiled the measurements into tabular files, providing a rich set of neuroanatomical variables ready for statistical analysis to explore brain-behavior relationships or group differences. This kit provides an overview of those tabular files. 
 
 ## Starting Project
 
@@ -91,7 +91,6 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 ```
-
 
 ### Locate data
 
@@ -106,9 +105,15 @@ This folder contains all of the FreeSurfer outputs for every participant (e.g., 
 
 Most users will not need the raw FreeSurfer outputs and can instead rely on tables in which the morphological measures have been aggregated. There are three relevant tables
 
-- aparc.tsv has the outputs of [`aparcstats2table`](https://surfer.nmr.mgh.harvard.edu/fswiki/aparcstats2table) (this is measurements derived from parcellations of the cortical surface, like cortical thickness)
-- aseg.tsv has the outputs of [`asegstats2table`](https://surfer.nmr.mgh.harvard.edu/fswiki/asegstats2table) (that is, measurements derived from segmentations of the 3d structural image, like regional gray matter volumes)
-- headers.tsv has some other information about the brain as a whole (e.g., estimated Total Intracranial Volume)
+- aparc.tsv 
+  - measurements derived from parcellations of the cortical surface, like cortical thickness
+  - produced by [`aparcstats2table`](https://surfer.nmr.mgh.harvard.edu/fswiki/aparcstats2table)
+- aseg.tsv 
+  - measurements derived from segmentations of the 3d structural image, like regional gray matter volumes
+  - produced by [`asegstats2table`](https://surfer.nmr.mgh.harvard.edu/fswiki/asegstats2table)
+- headers.tsv 
+  - information about the brain as a whole (e.g., estimated Total Intracranial Volume)
+  - derived from the headers of the `aparcstats2table` and `asegstats2table` outputs
 
 For each of these, there are data dictionaries that details the contents (e.g., `aparc.json` explains the columns of `aparc.tsv`). 
 
@@ -121,19 +126,18 @@ $ ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/der
 /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/freesurfer/aseg.tsv
 ```
 
+Copies of the data dictionaries are available online for preview: [aparc.json](https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/aparc.json), [aseg.json](https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/aseg.json), [headers.json](https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/headers.json).
 
 ### Extract data
 
-In this kit, we will consider the cortical surface measurements, stored within `aparc.tsv`. This table contains nine regional measurements for the various structures that compose each of six parcellations.
+In this kit, we will explore the cortical surface measurements, stored within `aparc.tsv`. This table contains nine regional measurements for the various structures that compose each of six parcellations.
 
 ```{r load}
 aparc <- read_tsv("data/aparc.tsv", show_col_types = FALSE)
 head(aparc)
 ```
 
-
-A typical analysis will only rely on one parcellation. For details of the different parcellations, see the [FreeSurfer documentation](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation). Two good starting choices are either the `aparc` or `aparc.a2009s` atlas. 
-
+A typical analysis will only rely on one parcellation. For details of the different parcellations, see the [FreeSurfer documentation](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation). Two good starting choices are either `aparc` or `aparc.a2009s`. The `aparc` segmentation is a coarser parcellation, and the `aparc.a2009s` segmentation is finer. Filter the table for the `aparc.a2009s` parcellation.
 
 ```{r a2009s}
 a2009s <- aparc |>
@@ -142,11 +146,9 @@ head(a2009s)
 ```
 
 
-## Considerations While Working on the Project
-
 ### Example Analysis: Relationship between Cortical Surface Area and Gray Matter Volume
 
-One of the most common features in predictive models is cortical thickness, but each of them may carry unique information. Here's let's compare the regional volume with the regional surface area.
+One of the most common features in predictive models is cortical thickness, but each of the morphological measurements may carry unique information. For example, cortical surface area may be more predictive of widespread chronic pain as compared to cortical thickness, which may be more closely related to chronic headaches [@bhatt_mapping_2024]. Let's compare the regional volume with the regional surface area.
 
 :::  {#fig-pairs}
 
