@@ -1,0 +1,52 @@
+# MRI Image Derived Phenotypes  {#sec-mri-idps}
+
+As a part of processing, a set of phenotypes are derived from the neuroimaging scans. These phenotypes have been compiled into 
+
+
+
+## Starting Project
+
+### Locate Data
+
+Where are the relevant files?
+
+```bash
+$ # [/corral-secure/projects/A2CPS/products/consortium-data/rest_of_path]
+```
+
+### Extract Data
+
+Brief script to read the files (e.g., suggestions of relevant packages, links to documentation about datatype)
+
+
+### Data Quality
+
+Describe any necessary preprocessing (e.g., known bad samples to exclude).
+
+### Cross-Modality Links
+
+How can records in this modality be linked to others (e.g., what are the relevant IDs that will be available in other modalities)?
+
+## Considerations While Working on the Project
+
+### Data Generation
+
+Provide links to documentation on how the data were generated (e.g., relevant pipelines, scripts)
+
+### Other
+
+Provide details about any difficulties that are expected during a finalized analysis, or substantial augmentation to the modality that are forthcoming. Possible topics include
+
+- Batch effects
+  - Have they been measured? Are they severe? Are there recommended ways to mitigate them?
+- Quality Control
+  - Have all the pipelines that produced the derivatives been thoroughly checked? Could there be errors? Where or how can people verify the existing quality procedures?
+- Forthcoming Additions
+  - Is the DIRC working on something that will substantially change or add to the modality in upcoming releases?
+
+
+### Citations
+
+Are there any A2CPS publications that should be cited?
+
+

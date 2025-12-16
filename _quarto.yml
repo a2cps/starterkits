@@ -16,6 +16,7 @@ book:
     - Psychosocial_starter_kit.qmd
     - genetic_variants.qmd
     - genomic_imputation.qmd
+    - mri-idps.qmd
     - raw-mri.qmd
     - freesurfer.qmd
     - brainager.qmd
