@@ -1,0 +1,254 @@
+```{r lockfile, include=FALSE}
+renv::use(
+  agree = "psadil/agree@c092e22ba1c8b3fdf4526b83bb850bbd901cc985",
+  base64enc = "base64enc@0.1-3",
+  bit = "bit@4.5.0",
+  bit64 = "bit64@4.5.2",
+  bslib = "bslib@0.9.0",
+  cachem = "cachem@1.1.0",
+  cli = "cli@3.6.4",
+  clipr = "clipr@0.8.0",
+  colorspace = "colorspace@2.1-1",
+  cpp11 = "cpp11@0.5.0",
+  crayon = "crayon@1.5.3",
+  digest = "digest@0.6.37",
+  distributional = "distributional@0.5.0",
+  dplyr = "dplyr@1.1.4",
+  evaluate = "evaluate@1.0.3",
+  fansi = "fansi@1.0.6",
+  farver = "farver@2.1.2",
+  fastmap = "fastmap@1.2.0",
+  fontawesome = "fontawesome@0.5.3",
+  fs = "fs@1.6.5",
+  generics = "generics@0.1.3",
+  ggdist = "ggdist@3.3.3",
+  ggplot2 = "ggplot2@3.5.1",
+  glue = "glue@1.8.0",
+  gtable = "gtable@0.3.6",
+  highr = "highr@0.11",
+  hms = "hms@1.1.3",
+  htmltools = "htmltools@0.5.8.1",
+  irr = "irr@0.84.1",
+  isoband = "isoband@0.2.7",
+  jquerylib = "jquerylib@0.1.4",
+  jsonlite = "jsonlite@1.9.1",
+  knitr = "knitr@1.50",
+  labeling = "labeling@0.4.3",
+  lattice = "lattice@0.22-6",
+  lifecycle = "lifecycle@1.0.4",
+  lpSolve = "lpSolve@5.6.23",
+  magrittr = "magrittr@2.0.3",
+  MASS = "MASS@7.3-60.2",
+  Matrix = "Matrix@1.7-0",
+  memoise = "memoise@2.0.1",
+  mgcv = "mgcv@1.9-1",
+  mime = "mime@0.13",
+  munsell = "munsell@0.5.1",
+  nlme = "nlme@3.1-164",
+  numDeriv = "numDeriv@2016.8-1.1",
+  pillar = "pillar@1.11.0",
+  pkgconfig = "pkgconfig@2.0.3",
+  prettyunits = "prettyunits@1.2.0",
+  progress = "progress@1.2.3",
+  purrr = "purrr@1.0.2",
+  quadprog = "quadprog@1.5-8",
+  R6 = "R6@2.6.1",
+  rappdirs = "rappdirs@0.3.3",
+  RColorBrewer = "RColorBrewer@1.1-3",
+  Rcpp = "Rcpp@1.1.0",
+  readr = "readr@2.1.5",
+  renv = "renv@1.1.5",
+  rlang = "rlang@1.1.5",
+  rmarkdown = "rmarkdown@2.29",
+  sass = "sass@0.4.9",
+  scales = "scales@1.3.0",
+  stringi = "stringi@1.8.4",
+  stringr = "stringr@1.5.1",
+  tibble = "tibble@3.2.1",
+  tidyr = "tidyr@1.3.1",
+  tidyselect = "tidyselect@1.2.1",
+  tinytex = "tinytex@0.56",
+  tzdb = "tzdb@0.4.0",
+  utf8 = "utf8@1.2.4",
+  vctrs = "vctrs@0.6.5",
+  viridisLite = "viridisLite@0.4.2",
+  vroom = "vroom@1.6.5",
+  withr = "withr@3.0.2",
+  xfun = "xfun@0.51",
+  yaml = "yaml@2.3.10"
+)
+```
+
+
+# FSL Anat {#sec-fslanat}
+
+![Subcortical Structures (source: https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.png)
+
+The structural T1w scan in the A2CPS neuroimaging protocol is the source of several pre-specified biomarkers. Two of these biomarkers--the volumes of the hippocampi and amygdalae--are derived from a tool in the Functional Magnetic Resonance Imaging of the Brain (FMRIB) Software Library (FSL): [FMRIB's Integrated Registration and Segmentation Tool (FIRST)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html). The A2CPS pipeline calls FIRST as a part of FSL standard pipeline for processing anatomical images ([fsl_anat](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html)), which generates several outputs in addition to the biomarkers. This kit provides and overview of the outputs available from that pipeline.
+
+## Starting Project
+
+### Locate data
+
+In the release, data are stored underneath the `mris/derivatives` folder:
+
+```{bash path}
+#| eval: false
+/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/fslanat
+```
+
+This folder contains all of the outputs for every participant, with subject folders of the form `sub-[recordid]_ses-[protocolid]_T1w.anat`. Detailed descriptions of the outputs are available in the [`fsl_anat` documentation](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html#outputs).
+
+Many users will not need the raw `fsl_anat` outputs and can instead rely a table in which the subcortical measures have been aggregated: `fslanat.tsv`. A data dictionary for this table is available in the `fslanat.json` file, and also [ online](https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/fslanat.json).
+
+### Extract data
+
+In this kit, we will compare volumetric measurements that are produced by both FIRST and FreeSurfer (@sec-freesurfer). In some circumstances, the volumes are largely interchangeable, but for some structures these tools are known to produce fairly different estimates of volume [@sadil_comparing_2024]. Let's replicate part of that analysis.
+
+```{r setup}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(purrr)
+library(irr)
+library(agree)
+```
+
+First, load in the cortical volumes provided by FSL.
+
+```{r load}
+fslanat <- read_tsv("data/fslanat/fslanat.tsv", show_col_types = FALSE)
+head(fslanat)
+```
+
+In addition to subcortical volumetric information, that table contains a few fields related to the overall size of the brain (`t1_to_mni_scaling`, `t1_space_orig_volume`, `t1_space_mni_volume`). Drop those fields. To make it easier to join with FreeSurfer values, we'll also unpivot the table into a wider format, and extract information about the hemisphere.
+
+```{r fsltidy}
+
+subcort_fsl <- fslanat |>
+  select(-starts_with("t1_")) |>
+  pivot_longer(-c(sub, ses), values_to = "volume", names_to = "structure") |>
+  separate(structure, c("hemisphere", "structure"), sep = "-")
+
+head(subcort_fsl)
+```
+
+Now, grab the equivalent information from FreeSurfer.
+
+```{r freesurfer}
+
+subcort_freesurfer <- read_tsv(
+  "data/freesurfer/aseg.tsv",
+  show_col_types = FALSE
+) |>
+  filter(str_detect(
+    StructName,
+    "Thalamus|Putamen|Pallidum|Hippocampus|Amygdala|Accumbens"
+  )) |>
+  separate(StructName, into = c("hemisphere", "structure"), sep = "-") |>
+  select(volume = Volume_mm3, hemisphere, structure, sub, ses)
+
+```
+
+The tables may now be combined. Note that, while combining them, we add an additional column to keep track of which method produced the volume.
+
+```{r subcort}
+
+subcort <- bind_rows(
+  list(fsl = subcort_fsl, freesurfer = subcort_freesurfer),
+  .id = "method"
+) |>
+  pivot_wider(names_from = method, values_from = volume) |>
+  na.omit() # not every structure is available in both methods, and not every participant has been processed by both pipelines
+
+
+# check which structures we have available
+subcort |> distinct(structure)
+```
+
+To compare the structures, make a simple [Bland-Altman plot](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot). 
+
+::: {#fig-ba}
+
+```{r plotting}
+
+subcort |>
+  mutate(Average = (fsl + freesurfer) / 2, Difference = fsl - freesurfer) |>
+  ggplot(aes(x = Average, y = Difference)) +
+  facet_wrap(~ structure + hemisphere, scales = "free") +
+  geom_point(alpha = 0.1, shape = 20) +
+  geom_hline(yintercept = 0) +
+  geom_ba() +
+  ylab("Difference (FSL - FreeSurfer)") +
+  xlab("Average ([FSL + FreeSurfer]/2)")
+
+```
+
+Comparison of Subcortical Volumes as Estimated by FSL and FreeSurfer. Each dot corresponds to a single structure of a single participant. The blue lines span the 95% confidence interval around the difference of the two estimates of volume, and the red lines are confidence intervals around the limits of agreement. 
+
+:::
+
+As expected, there are overal differences in how the estimates provided by the two structures [@fig-ba]. We can quantify these differences using the intraclass correlation coefficient.
+
+::: {#tbl-icc}
+
+```{r, icc}
+
+subcort |>
+  group_nest(hemisphere, structure) |>
+  mutate(
+    fit = map(
+      data,
+      ~ icc(
+        cbind(.x$fsl, .x$freesurfer),
+        model = "twoway",
+        type = "consistency",
+        unit = "single"
+      )
+    ),
+    estimate = map_dbl(fit, pluck, "value"),
+    lower = map_dbl(fit, pluck, "lbound"),
+    upper = map_dbl(fit, pluck, "ubound")
+  ) |>
+  select(-data, -fit) |>
+  arrange(structure, hemisphere)
+
+```
+
+Consistency of Subcortical Volumes. The lower and upper bounds are 95% Confidence intervals, and the estimate is for the intraclass correlation. By the conventions of @mcgraw_forming_1996, this is also known as the $ICC(C,1)$.
+
+:::
+
+## Considerations While Working on Projects
+
+### Variability Across Scanners
+
+{{< include _snippets/mri-scanner-variability.qmd >}}
+
+### Data Quality
+
+{{< include _snippets/mri-qc.qmd >}}
+
+### Methods
+
+For a subset of participants, the standard `fsl_anat` pipeline needed to be modified.
+
+#### Field-of-View Estimation in UC
+
+An early step in this pipeline involves estimating the field-of-view and cropping the image to a standard size. The cropping is done with the FSL tool `robustfov`, which uses a heuristic to first identify the most superior slice that could include the skull, uses a pre-specified distance in mm to select an inferior slice that is expected to be below the cerebellum, and crops everything outside of those slices. The heuristic is based on the quantiles of intensity values, but this heuristic was observed to often fail for data collected with SENSE.
+
+To accommodate scans that failed for this reason, a small amount of noise was added to the entire image, and then the field-of-view was estimated on this degraded image. The field-of-view was then applied to the original image, and that cropped image was provided to `fsl_anat` (with automated cropping disabled). This workaround was recommended by [Mark Jenkinson on the FSL Archives](https://www.jiscmail.ac.uk/cgi-bin/wa-jisc.exe?A2=ind2307&L=FSL&D=0&P=182032), and it was applied to [these subjects](https://github.com/a2cps/mri_imaging_pipeline/blob/96f36b3a5cd9f9fa3c74d9239f1b864cdd603dfc/fslanat_actor/reactor.py#L26-L92).
+
+#### High-Intensity Voxels
+
+A subset of cases exhibited poor alignment to the standard space, with the misalignment driven by high-intensity voxels from outside of the brain. The extreme intensity values may have been driven by relatively high proportions of fatty tissue. For cases where these failures were identified, a mask was generated from the top 1% of voxels, which was then visually inspected to confirm that it did not include any voxels in the brain. That mask was then provided to `fsl_anat` as a "lesion" mask (via a hidden option), resulting in those voxels being ignored during alignment. In instances where the mask included brain voxels, the `fsl_anat` results were not included. The list of participants this fix was applied to is [here](https://github.com/a2cps/mri_imaging_pipeline/blob/96f36b3a5cd9f9fa3c74d9239f1b864cdd603dfc/fslanat_actor/reactor.py#L94-L102).
+
+### Citations
+
+The fsl_anat pipeline relies on several tools that are the products of research by the FMRIB team. If you use these derivatives in your analyses, please follow the instructions for citations here: https://fsl.fmrib.ox.ac.uk/fsl/docs/index.html.
+
+{{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.

@@ -18,6 +18,7 @@ book:
     - genomic_imputation.qmd
     - raw-mri.qmd
     - freesurfer.qmd
+    - fslanat.qmd
     - brainager.qmd
     - cat12.qmd
     - fcn.qmd

@@ -620,6 +620,37 @@
       "Author": "Tony Plate [aut, cre], Richard Heiberger [aut]",
       "Repository": "CRAN"
     },
+    "agree": {
+      "Package": "agree",
+      "Version": "0.0.0.9000",
+      "Source": "GitHub",
+      "Title": "What the Package Does (One Line, Title Case)",
+      "Authors@R": "person(\"Patrick\", \"Sadil\", , \"psadil1@jh.edu\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0003-4141-1343\"))",
+      "Description": "What the package does (one paragraph).",
+      "License": "MIT + file LICENSE",
+      "Imports": [
+        "dplyr",
+        "ggdist",
+        "ggplot2",
+        "rlang (>= 0.4.11)",
+        "stats",
+        "tibble"
+      ],
+      "Suggests": [
+        "roxygen2"
+      ],
+      "Encoding": "UTF-8",
+      "Roxygen": "list(markdown = TRUE)",
+      "RoxygenNote": "7.3.1",
+      "Author": "Patrick Sadil [aut, cre] (<https://orcid.org/0000-0003-4141-1343>)",
+      "Maintainer": "Patrick Sadil <psadil1@jh.edu>",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "psadil",
+      "RemoteRepo": "agree",
+      "RemoteRef": "main",
+      "RemoteSha": "c092e22ba1c8b3fdf4526b83bb850bbd901cc985"
+    },
     "arrow": {
       "Package": "arrow",
       "Version": "17.0.0.1",
@@ -1215,49 +1246,6 @@
       "Maintainer": "Jennifer Bryan <jenny@stat.ubc.ca>",
       "Repository": "CRAN"
     },
-    "checkmate": {
-      "Package": "checkmate",
-      "Version": "2.3.2",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Fast and Versatile Argument Checks",
-      "Description": "Tests and assertions to perform frequent argument checks. A substantial part of the package was written in C to minimize any worries about execution time overhead.",
-      "Authors@R": "c( person(\"Michel\", \"Lang\", NULL, \"michellang@gmail.com\", role = c(\"cre\", \"aut\"), comment = c(ORCID = \"0000-0001-9754-0393\")), person(\"Bernd\", \"Bischl\", NULL, \"bernd_bischl@gmx.net\", role = \"ctb\"), person(\"Dénes\", \"Tóth\", NULL, \"toth.denes@kogentum.hu\", role = \"ctb\", comment = c(ORCID = \"0000-0003-4262-3217\")) )",
-      "URL": "https://mllg.github.io/checkmate/, https://github.com/mllg/checkmate",
-      "URLNote": "https://github.com/mllg/checkmate",
-      "BugReports": "https://github.com/mllg/checkmate/issues",
-      "NeedsCompilation": "yes",
-      "ByteCompile": "yes",
-      "Encoding": "UTF-8",
-      "Depends": [
-        "R (>= 3.0.0)"
-      ],
-      "Imports": [
-        "backports (>= 1.1.0)",
-        "utils"
-      ],
-      "Suggests": [
-        "R6",
-        "fastmatch",
-        "data.table (>= 1.9.8)",
-        "devtools",
-        "ggplot2",
-        "knitr",
-        "magrittr",
-        "microbenchmark",
-        "rmarkdown",
-        "testthat (>= 3.0.4)",
-        "tinytest (>= 1.1.0)",
-        "tibble"
-      ],
-      "License": "BSD_3_clause + file LICENSE",
-      "VignetteBuilder": "knitr",
-      "RoxygenNote": "7.3.2",
-      "Collate": "'AssertCollection.R' 'allMissing.R' 'anyInfinite.R' 'anyMissing.R' 'anyNaN.R' 'asInteger.R' 'assert.R' 'helper.R' 'makeExpectation.R' 'makeTest.R' 'makeAssertion.R' 'checkAccess.R' 'checkArray.R' 'checkAtomic.R' 'checkAtomicVector.R' 'checkCharacter.R' 'checkChoice.R' 'checkClass.R' 'checkComplex.R' 'checkCount.R' 'checkDataFrame.R' 'checkDataTable.R' 'checkDate.R' 'checkDirectoryExists.R' 'checkDisjunct.R' 'checkDouble.R' 'checkEnvironment.R' 'checkFALSE.R' 'checkFactor.R' 'checkFileExists.R' 'checkFlag.R' 'checkFormula.R' 'checkFunction.R' 'checkInt.R' 'checkInteger.R' 'checkIntegerish.R' 'checkList.R' 'checkLogical.R' 'checkMatrix.R' 'checkMultiClass.R' 'checkNamed.R' 'checkNames.R' 'checkNull.R' 'checkNumber.R' 'checkNumeric.R' 'checkOS.R' 'checkPOSIXct.R' 'checkPathForOutput.R' 'checkPermutation.R' 'checkR6.R' 'checkRaw.R' 'checkScalar.R' 'checkScalarNA.R' 'checkSetEqual.R' 'checkString.R' 'checkSubset.R' 'checkTRUE.R' 'checkTibble.R' 'checkVector.R' 'coalesce.R' 'isIntegerish.R' 'matchArg.R' 'qassert.R' 'qassertr.R' 'vname.R' 'wfwl.R' 'zzz.R'",
-      "Author": "Michel Lang [cre, aut] (<https://orcid.org/0000-0001-9754-0393>), Bernd Bischl [ctb], Dénes Tóth [ctb] (<https://orcid.org/0000-0003-4262-3217>)",
-      "Maintainer": "Michel Lang <michellang@gmail.com>",
-      "Repository": "CRAN"
-    },
     "cli": {
       "Package": "cli",
       "Version": "3.6.4",
@@ -1434,43 +1422,6 @@
       "NeedsCompilation": "yes",
       "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>), John MacFarlane [cph] (Author of cmark)",
       "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
-      "Repository": "CRAN"
-    },
-    "comorbidity": {
-      "Package": "comorbidity",
-      "Version": "1.1.0",
-      "Source": "Repository",
-      "Title": "Computing Comorbidity Scores",
-      "Description": "Computing comorbidity indices and scores such as the weighted Charlson score (Charlson, 1987 <doi:10.1016/0021-9681(87)90171-8>) and the Elixhauser comorbidity score (Elixhauser, 1998 <doi:10.1097/00005650-199801000-00004>) using ICD-9-CM or ICD-10 codes (Quan, 2005 <doi:10.1097/01.mlr.0000182534.19832.83>). Australian and Swedish modifications of the Charlson Comorbidity Index are available as well (Sundararajan, 2004 <doi:10.1016/j.jclinepi.2004.03.012> and Ludvigsson, 2021  <doi:10.2147/CLEP.S282475>), together with different weighting algorithms for both the Charlson and Elixhauser comorbidity scores.",
-      "Authors@R": "c(person(given = \"Alessandro\", family = \"Gasparini\", role = c(\"aut\", \"cre\"), email = \"alessandro@ellessenne.xyz\", comment = c(ORCID = \"0000-0002-8319-7624\")), person(given = \"Hojjat\", family = \"Salmasian\", role = \"ctb\", email = \"hsalmasian@bwh.harvard.edu\", comment = \"ICD-9-CM scores\"), person(given = \"Jonathan\", family = \"Williman\", role = \"ctb\", email = \"jonathan.williman@otago.ac.nz\", comment = c(ORCID = \"0000-0001-5080-4435\")), person(given = \"Sing Yi\", family = \"Chia\", role = \"ctb\", email = \"cxycsy@hotmail.com\", comment = c(ORCID = \"0000-0002-7591-3141\")), person(given = \"Edmund\", family = \"Teo\", role = \"ctb\", email = \"ed_teo8@yahoo.com.sg\", comment = c(ORCID = \"0000-0003-3936-4082\")), person(given = \"Desi\", family = \"Quintans\", role = \"ctb\"))",
-      "URL": "https://ellessenne.github.io/comorbidity/, https://github.com/ellessenne/comorbidity",
-      "BugReports": "https://github.com/ellessenne/comorbidity/issues",
-      "License": "GPL (>= 3)",
-      "Depends": [
-        "R (>= 2.10)"
-      ],
-      "Imports": [
-        "checkmate",
-        "data.table",
-        "stats",
-        "stringi",
-        "utils"
-      ],
-      "Suggests": [
-        "covr",
-        "knitr",
-        "rmarkdown",
-        "testthat"
-      ],
-      "RoxygenNote": "7.3.2",
-      "Encoding": "UTF-8",
-      "LazyData": "true",
-      "ByteCompile": "true",
-      "VignetteBuilder": "knitr",
-      "Language": "en-GB",
-      "NeedsCompilation": "no",
-      "Author": "Alessandro Gasparini [aut, cre] (<https://orcid.org/0000-0002-8319-7624>), Hojjat Salmasian [ctb] (ICD-9-CM scores), Jonathan Williman [ctb] (<https://orcid.org/0000-0001-5080-4435>), Sing Yi Chia [ctb] (<https://orcid.org/0000-0002-7591-3141>), Edmund Teo [ctb] (<https://orcid.org/0000-0003-3936-4082>), Desi Quintans [ctb]",
-      "Maintainer": "Alessandro Gasparini <alessandro@ellessenne.xyz>",
       "Repository": "CRAN"
     },
     "conflicted": {
@@ -3244,6 +3195,24 @@
       "Maintainer": "Rich FitzJohn <rich.fitzjohn@gmail.com>",
       "Repository": "CRAN"
     },
+    "irr": {
+      "Package": "irr",
+      "Version": "0.84.1",
+      "Source": "Repository",
+      "Date": "2012-01-22",
+      "Title": "Various Coefficients of Interrater Reliability and Agreement",
+      "Author": "Matthias Gamer <m.gamer@uke.uni-hamburg.de>, Jim Lemon <jim@bitwrit.com.au>, Ian Fellows <ifellows@uscd.edu> Puspendra Singh <puspendra.pusp22@gmail.com>",
+      "Maintainer": "Matthias Gamer <m.gamer@uke.uni-hamburg.de>",
+      "Depends": [
+        "R (>= 2.10)",
+        "lpSolve"
+      ],
+      "Description": "Coefficients of Interrater Reliability and Agreement for quantitative, ordinal and nominal data: ICC, Finn-Coefficient, Robinson's A, Kendall's W, Cohen's Kappa, ...",
+      "License": "GPL (>= 2)",
+      "URL": "https://www.r-project.org",
+      "Repository": "CRAN",
+      "NeedsCompilation": "no"
+    },
     "isoband": {
       "Package": "isoband",
       "Version": "0.2.7",
@@ -3687,6 +3656,22 @@
       "Author": "Douglas Bates [aut] (<https://orcid.org/0000-0001-8316-9503>), Martin Maechler [aut] (<https://orcid.org/0000-0002-8685-9910>), Ben Bolker [aut, cre] (<https://orcid.org/0000-0002-2127-0443>), Steven Walker [aut] (<https://orcid.org/0000-0002-4394-9078>), Rune Haubo Bojesen Christensen [ctb] (<https://orcid.org/0000-0002-4494-3399>), Henrik Singmann [ctb] (<https://orcid.org/0000-0002-4842-3657>), Bin Dai [ctb], Fabian Scheipl [ctb] (<https://orcid.org/0000-0001-8172-3603>), Gabor Grothendieck [ctb], Peter Green [ctb] (<https://orcid.org/0000-0002-0238-9852>), John Fox [ctb], Alexander Bauer [ctb], Pavel N. Krivitsky [ctb, cph] (<https://orcid.org/0000-0002-9101-3362>, shared copyright on simulate.formula), Emi Tanaka [ctb] (<https://orcid.org/0000-0002-1455-259X>), Mikael Jagan [ctb] (<https://orcid.org/0000-0002-3542-2938>), Ross D. Boylan [ctb] (<https://orcid.org/0009-0003-4123-8090>)",
       "Maintainer": "Ben Bolker <bbolker+lme4@gmail.com>",
       "Repository": "https://packagemanager.posit.co/cran/latest"
+    },
+    "lpSolve": {
+      "Package": "lpSolve",
+      "Version": "5.6.23",
+      "Source": "Repository",
+      "Title": "Interface to 'Lp_solve' v. 5.5 to Solve Linear/Integer Programs",
+      "Authors@R": "c( person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = \"cre\"), person(\"Michel\", \"Berkelaar\", role = \"aut\") )",
+      "Description": "Lp_solve is freely available (under LGPL 2) software for solving linear, integer and mixed integer programs. In this implementation we supply a \"wrapper\" function in C and some R functions that solve general linear/integer problems, assignment problems, and transportation problems. This version calls lp_solve version 5.5.",
+      "License": "LGPL-2",
+      "URL": "https://github.com/gaborcsardi/lpSolve",
+      "BugReports": "https://github.com/gaborcsardi/lpSolve/issues",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
+      "Author": "Gábor Csárdi [cre], Michel Berkelaar [aut]",
+      "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+      "Repository": "RSPM"
     },
     "lubridate": {
       "Package": "lubridate",
@@ -6218,34 +6203,6 @@
       "NeedsCompilation": "no",
       "Author": "Yihui Xie [aut, cre, cph] (<https://orcid.org/0000-0003-0645-5666>), Posit Software, PBC [cph, fnd], Christophe Dervieux [ctb] (<https://orcid.org/0000-0003-4474-2498>), Devon Ryan [ctb] (<https://orcid.org/0000-0002-8549-0971>), Ethan Heinzen [ctb], Fernando Cagua [ctb]",
       "Maintainer": "Yihui Xie <xie@yihui.name>",
-      "Repository": "CRAN"
-    },
-    "touch": {
-      "Package": "touch",
-      "Version": "0.1-6",
-      "Source": "Repository",
-      "Title": "Tools of Utilization and Cost in Healthcare",
-      "Authors@R": "c( person(given = \"Wenjie\", family = \"Wang\", role = c(\"aut\", \"cre\"), email = \"wang@wwenjie.org\", comment = c(ORCID = \"0000-0003-0363-3180\")), person(given = \"Yan\", family = \"Li\", role = \"aut\"), person(given = \"Jun\", family = \"Yan\", role = \"aut\", comment = c(ORCID = \"0000-0003-4401-7296\")) )",
-      "Description": "R implementation of the software tools developed in the H-CUP (Healthcare Cost and Utilization Project) <https://www.hcup-us.ahrq.gov> and AHRQ (Agency for Healthcare Research and Quality) <https://www.ahrq.gov>.  It currently contains functions for mapping ICD-9 codes to the AHRQ comorbidity measures and translating ICD-9 (resp. ICD-10) codes to ICD-10 (resp. ICD-9) codes based on GEM (General Equivalence Mappings) from CMS (Centers for Medicare and Medicaid Services).",
-      "Depends": [
-        "R (>= 3.2.0)"
-      ],
-      "LinkingTo": [
-        "Rcpp"
-      ],
-      "Imports": [
-        "Rcpp"
-      ],
-      "License": "GPL (>= 3)",
-      "LazyData": "yes",
-      "SysDataCompression": "xz",
-      "SystemRequirements": "C++11",
-      "URL": "https://github.com/wenjie2wang/touch",
-      "BugReports": "https://github.com/wenjie2wang/touch/issues",
-      "Encoding": "UTF-8",
-      "NeedsCompilation": "yes",
-      "Author": "Wenjie Wang [aut, cre] (<https://orcid.org/0000-0003-0363-3180>), Yan Li [aut], Jun Yan [aut] (<https://orcid.org/0000-0003-4401-7296>)",
-      "Maintainer": "Wenjie Wang <wang@wwenjie.org>",
       "Repository": "CRAN"
     },
     "tzdb": {
