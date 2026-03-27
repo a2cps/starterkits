@@ -188,6 +188,8 @@ The data are plotted as in @fig-pairs, but with a restricted axis. Note the appa
 
 The relationship between surface area and volume appears to vary by region. For example, the Superior Temporal Sulcus has a similar surface area to the Superior Frontal Gyrus, but that gyrus has a larger volume. 
 
+## Considerations While Working on Projects
+
 ### Pivoting the Data
 
 The data have been shared in a ["longer" format](https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data), with rows corresponding to region-level observations. Some analyses benefit from having the data in a ["wider" format](https://r4ds.hadley.nz/data-tidy.html#widening-data), with rows corresponding to participant-level observations. For example, if we're predicting age from cortical thickness, we may want to drop the other morphological measures, and pivot the table such that columns correspond to regional thickness. 
