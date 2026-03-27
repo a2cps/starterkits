@@ -1,52 +1,70 @@
 # MRI Image Derived Phenotypes  {#sec-mri-idps}
 
-As a part of processing, a set of phenotypes are derived from the neuroimaging scans. These phenotypes have been compiled into 
+Often, researchers may wish to simply have a set of features that they can use to train and test predictive models. When those features are extracted from the neuroimaging data, we refer to them as image-derived phenotypes. This kit describes a subset of them that have been compiled into a single table. While this table of image-derived phenotypes does not emcompass all available measurements, they are often a good place to start analyses.
 
+The selection of phenotypes was based on those that are available within the UK Biobank [@miller_multimodal_2016], and they are derived from the structural and functional MRI scans (diffusion MRI phenotypes will be available in a subsequent release). A full data dictionary is available [here](https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/mri.json), and they are summarized below.
 
+## sMRI
+
+- 15 measures (volumetric) from [FSL's FIRST](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html)
+- 1 scaling factor and 2 volumes from @sec-fslanat
+- 24 global measures from @sec-freesurfer
+
+## fMRI
+
+- 104 nodal fraction of low-frequency fluctuation values from the NeuroMark 2.1 multi-resolution components (@sec-postgift), for each of the four functional scans
+- 5460 connectivities from NeuroMark 2.1 multi-resolution functional connectivity matrices (@sec-postgift), for each of the four functional scans
 
 ## Starting Project
 
 ### Locate Data
 
-Where are the relevant files?
+{{< include _snippets/mri-location.qmd >}}
 
-```bash
-$ # [/corral-secure/projects/A2CPS/products/consortium-data/rest_of_path]
+The table, `mri.tsv`, is in a file are underneath the folder `idp`. Let's take a look.
+
+```{bash}
+#| eval: false
+$ ls idp/
+mask_volumes.json  mask_volumes.tsv  mri.json  mri.tsv
+```
+
+Even though this is only a subset of the available neuroimaging derivatives, there are many fields.
+
+```{bash}
+#| eval: false
+$ awk '{print NF; exit}' idp/mri.tsv 
+21886
 ```
 
 ### Extract Data
 
-Brief script to read the files (e.g., suggestions of relevant packages, links to documentation about datatype)
+Any function capable of parsing tab-separated value files can load in this data. Here, let's take the participant identifier and the REST1 fALFF measurements.
 
+```{r}
+readr::read_tsv(
+  "data/idp/mri.tsv",
+  col_select = c("sub", tidyselect::matches("task_rest_run_1.*falff"))
+) |>
+  head()
+```
 
-### Data Quality
-
-Describe any necessary preprocessing (e.g., known bad samples to exclude).
-
-### Cross-Modality Links
-
-How can records in this modality be linked to others (e.g., what are the relevant IDs that will be available in other modalities)?
 
 ## Considerations While Working on the Project
 
-### Data Generation
+### Variability Across Scanners
 
-Provide links to documentation on how the data were generated (e.g., relevant pipelines, scripts)
+{{< include _snippets/mri-scanner-variability.qmd >}}
 
-### Other
+### Data Quality
 
-Provide details about any difficulties that are expected during a finalized analysis, or substantial augmentation to the modality that are forthcoming. Possible topics include
-
-- Batch effects
-  - Have they been measured? Are they severe? Are there recommended ways to mitigate them?
-- Quality Control
-  - Have all the pipelines that produced the derivatives been thoroughly checked? Could there be errors? Where or how can people verify the existing quality procedures?
-- Forthcoming Additions
-  - Is the DIRC working on something that will substantially change or add to the modality in upcoming releases?
-
+{{< include _snippets/mri-qc.qmd >}}
 
 ### Citations
 
-Are there any A2CPS publications that should be cited?
+If you use these results, please cite the MRIQC report [@esteban_mriqc_2017] and all relevant citations of the pipeline configuration. 
 
+{{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.
 
