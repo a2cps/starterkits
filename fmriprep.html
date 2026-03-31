@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>12&nbsp; Group ICA of fMRI Toolbox (GIFT) – A2CPS Starter Kits</title>
+<title>7&nbsp; fMRIPrep – A2CPS Starter Kits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -88,8 +88,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./postgift.html" rel="next">
-<link href="./fcn.html" rel="prev">
+<link href="./fslanat.html" rel="next">
+<link href="./freesurfer.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -141,37 +141,8 @@ gtag('js', new Date());
 gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<meta name="citation_title" content="[[12]{.chapter-number}&nbsp; [Group ICA of fMRI Toolbox (GIFT)]{.chapter-title}]{#sec-gift .quarto-section-identifier}">
+<meta name="citation_title" content="[7]{.chapter-number}&nbsp; [fMRIPrep]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Corticostriatal functional connectivity predicts transition to chronic back pain;,citation_author=Marwan N Baliki;,citation_author=Bogdan Petre;,citation_author=Souraya Torbey;,citation_author=Kristina M Herrmann;,citation_author=Lejian Huang;,citation_author=Thomas J Schnitzer;,citation_author=Howard L Fields;,citation_author=A Vania Apkarian;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=8;,citation_doi=10.1038/nn.3153;,citation_volume=15;,citation_journal_title=Nature neuroscience;,citation_publisher=Nature Publishing Group US New York;">
 <meta name="citation_reference" content="citation_title=MRI signatures of brain age and disease over the lifespan based on a deep brain network and 14 468 individuals worldwide;,citation_author=Vishnu M Bashyam;,citation_author=Guray Erus;,citation_author=Jimit Doshi;,citation_author=Mohamad Habes;,citation_author=Ilya M Nasrallah;,citation_author=Monica Truelove-Hill;,citation_author=Dhivya Srinivasan;,citation_author=Liz Mamourian;,citation_author=Raymond Pomponio;,citation_author=Yong Fan;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_issue=7;,citation_doi=10.1093/brain/awaa160;,citation_volume=143;,citation_journal_title=Brain;,citation_publisher=Oxford University Press;">
@@ -449,7 +420,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./gift.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Group ICA of fMRI Toolbox (GIFT)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./fmriprep.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">fMRIPrep</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -527,7 +498,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./fmriprep.html" class="sidebar-item-text sidebar-link">
+  <a href="./fmriprep.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">fMRIPrep</span></span></a>
   </div>
 </li>
@@ -557,7 +528,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./gift.html" class="sidebar-item-text sidebar-link active">
+  <a href="./gift.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Group ICA of fMRI Toolbox (GIFT)</span></span></a>
   </div>
 </li>
@@ -660,15 +631,18 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#locate-data" id="toc-locate-data" class="nav-link active" data-scroll-target="#locate-data"><span class="header-section-number">12.0.1</span> Locate Data</a></li>
-  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">12.0.2</span> Extract Data</a></li>
-  <li><a href="#sec-additional-gift" id="toc-sec-additional-gift" class="nav-link" data-scroll-target="#sec-additional-gift"><span class="header-section-number">12.0.3</span> Additional Outputs</a></li>
-  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">12.1</span> Considerations While Working on the Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">7.1</span> Starting Project</a>
   <ul class="collapse">
-  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">12.1.1</span> Variability Across Scanners</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">12.1.2</span> Data Quality</a></li>
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">12.1.3</span> Data Generation</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">12.1.4</span> Citations</a></li>
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">7.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">7.1.2</span> Extract Data</a></li>
+  </ul></li>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">7.2</span> Considerations While Working on the Project</a>
+  <ul class="collapse">
+  <li><a href="#sec-synthstrip" id="toc-sec-synthstrip" class="nav-link" data-scroll-target="#sec-synthstrip"><span class="header-section-number">7.2.1</span> Brain Masking</a></li>
+  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">7.2.2</span> Variability Across Scanners</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">7.2.3</span> Data Quality</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">7.2.4</span> Data Generation</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">7.2.5</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -679,7 +653,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-gift" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Group ICA of fMRI Toolbox (GIFT)</span></span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">fMRIPrep</span></h1>
 </div>
 
 
@@ -696,198 +670,112 @@ window.Quarto = {
 </header>
 
 
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RNifti)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(roll)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Independent Component Analysis (ICA) is a method for identifying “components” that are spatial regions of the brain exhibiting distinctly correlated activity over time <span class="citation" data-cites="calhoun_method_2001">(<a href="references.html#ref-calhoun_method_2001" role="doc-biblioref">Calhoun et al., 2001</a>)</span>. These components can be thought of as functional brain networks. For functional connectivity research, the timeseries of these ICA-derived networks are often correlated with each other to assess inter-network correlations, enabling investigators to study how these independent brain systems interact and communicate with one another.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-calhoun_method_2001" class="csl-entry" role="listitem">
-Calhoun, V. D., Adali, T., Pearlson, G. D., &amp; Pekar, J. J. (2001). A method for making group inferences from functional MRI data using independent component analysis. <em>Human Brain Mapping</em>, <em>14</em>(3), 140–151. <a href="https://doi.org/10.1002/hbm.1048">https://doi.org/10.1002/hbm.1048</a>
-</div><div id="ref-du_neuromark_2020" class="csl-entry" role="listitem">
-<span class="nocase">Du, Y., Fu, Z., Sui, J., Gao, S., Xing, Y., Lin, D., Salman, M., Abrol, A., Rahaman, M. A., Chen, J., et al.</span> (2020). NeuroMark: An automated and adaptive ICA based pipeline to identify reproducible fMRI markers of brain disorders. <em>NeuroImage: Clinical</em>, <em>28</em>, 102375. <a href="https://doi.org/10.1016/j.nicl.2020.102375">https://doi.org/10.1016/j.nicl.2020.102375</a>
-</div></div><p>Intrinsic functional connectivity networks within the resting-state fMRI data were estimated with NeuroMark <span class="citation" data-cites="du_neuromark_2020">(<a href="references.html#ref-du_neuromark_2020" role="doc-biblioref"><span class="nocase">Du et al.</span>, 2020</a>)</span> using the Group ICA of fMRI Toolbox (<a href="http://trendscenter.org/software/gift">GIFT</a>). NeuroMark is an automated and adaptive independent component analysis pipeline that uses group ICA-based templates as spatial priors to guide the identification of subject-specific independent component networks and the extraction of network features (e.g., timecourses, functional connectivity within and between networks, graph theoretic measures). For full details on the output and methods of GIFT, please refer to <a href="https://github.com/trendscenter/gift">the toolbox documentation</a>.</p>
-<p>Note: if all you need are estimates of functional connectivity between ICA components, please see the MRI Image Derived Phenotype table, <code>mris/idp/mri.{tsv,json}</code>. Here, we outline how A2CPS structures the outputs and highlight a few key files that may be helpful for custom analyses (e.g., estimating dynamic connectivity).</p>
-<section id="locate-data" class="level3 page-columns page-full" data-number="12.0.1">
-<h3 data-number="12.0.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">12.0.1</span> Locate Data</h3>
+<p>Before being analyzed, structural and functional neuroimaging data must undergo a core set of preprocessing steps. The need for these preprocessing steps are relatively uncontroversial, and they include intensity non-uniformity correction (for structural), correction for motion across volumes (functional), coregistration (structural and functional), as well as several others. As such, these outputs are the result of a minimal preprocessing stream (acknowledging that the meaning of “minimal” differs between datasets). That is, these derivatives have not undergone many steps that are common in other preprocessing pipelines, such as denoising, nuisance regression, or scrubbing. If you need data that have gone through data cleaning, please see either <a href="fcn.html" class="quarto-xref"><span>Chapter 11</span></a> or <a href="neural-pain-signatures.html" class="quarto-xref"><span>Chapter 15</span></a>. The fMRIPrep derivatives are most useful for tasks like reviewing the quality of preprocessing, implementing your own cleaning pipeline, or working from HCP-style <a href="https://www.nitrc.org/projects/cifti/">CIFTI data</a>.</p>
+<section id="starting-project" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">7.1</span> Starting Project</h2>
+<section id="locate-data" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">7.1.1</span> Locate Data</h3>
 <p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The GIFT derivatives are underneath <code>mris/derivatives/gift</code>. This structure follows the <a href="https://bids-specification.readthedocs.io/en/stable/common-principles.html#storage-of-derived-datasets">BIDS method of storing derived datasets</a>. Inputs to GIFT are stored underneath the top-level “sub-[recordid]” directories.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree mris/derivatives/gift/sub-10003</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gift/sub-10003</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> func</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10003_ses-V1_task-rest_run-01_bold.nii.gz</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> sub-10003_ses-V1_task-rest_run-02_bold.nii.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>These files are copies of the outputs of fmriprep. Specifically, they are are <a href="https://github.com/a2cps/biomarker-extractor/blob/4cc5c52a861b30fe9bdb5e728084b0785e01b71a/src/biomarkers/entrypoints/gift.py#L111-L125">files matching <code>*space-MNI152NLin2009cAsym_res-2_desc-preproc*</code></a>.</p>
-<p>The GIFT derivatives are underneath the subfolder “derivatives”.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/gift/derivatives/</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gift-neuromark_fmri_2.0_modelorder-175</span>  gift-neuromark_fmri_2.1_modelorder-multi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>We provide results from two different NeuroMark network templates (alternatively called “model”). Templates are the spatial priors that were used in the estimation of ICA components. The first is NeuroMark 2.0 (model order = 175) which includes 58 non-artifactual components produced from a single model order of 175 components <span class="citation" data-cites="iraji_identifying_2023">(<a href="references.html#ref-iraji_identifying_2023" role="doc-biblioref"><span class="nocase">Iraji et al.</span>, 2023</a>)</span>. The second is the multi-scale NeuroMark 2.1 which includes 105 non-artifactual components covering diverse spatial scales which are aggregated from diverse model orders <span class="citation" data-cites="iraji_identifying_2023">(<a href="references.html#ref-iraji_identifying_2023" role="doc-biblioref"><span class="nocase">Iraji et al.</span>, 2023</a>)</span>. A typical analysis will involve only one model. Without a specific reason to prefer one template, the 2.1, multi-order model is recommended. For additional details on the templates, please see this <a href="https://trendscenter.org/data/">page of references</a>.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-iraji_identifying_2023" class="csl-entry" role="listitem">
-<span class="nocase">Iraji, A., Fu, Z., Faghiri, A., Duda, M., Chen, J., Rachakonda, S., DeRamus, T., Kochunov, P., Adhikari, B. M., Belger, A., et al.</span> (2023). Identifying canonical and replicable multi-scale intrinsic connectivity networks in 100k+ resting-state fMRI datasets. <em>Human Brain Mapping</em>, <em>44</em>(17), 5729–5748. <a href="https://doi.org/10.1002/hbm.26472">https://doi.org/10.1002/hbm.26472</a>
-</div></div><p>The model directories are themselves organized according to BIDS.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi <span class="kw">|</span> <span class="fu">head</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">derivatives</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10011</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10013</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10015</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10017</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10020</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10023</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The MRIQC metrics are underneath <code>derivatives/fmriprep</code>. Let’s take a look.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/fmriprep/ <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dataset_description.json</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">desc-aparcaseg_dseg.tsv</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">desc-aseg_dseg.tsv</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">README</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1.html</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005_ses-V1.html</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1.html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="extract-data" class="level3 page-columns page-full" data-number="12.0.2">
-<h3 data-number="12.0.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">12.0.2</span> Extract Data</h3>
-<p>In each of these sub-[recordid] folders, GIFT outputs the spatial IC maps and timecourses for each run.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/sub-10003</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/sub-10003</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> func</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10003_ses-V1_task-cuff_run-01_bold_ic_maps.nii.gz</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10003_ses-V1_task-cuff_run-01_bold_timecourses.nii.gz</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10003_ses-V1_task-rest_run-01_bold_ic_maps.nii.gz</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10003_ses-V1_task-rest_run-01_bold_timecourses.nii.gz</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10003_ses-V1_task-rest_run-02_bold_ic_maps.nii.gz</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> sub-10003_ses-V1_task-rest_run-02_bold_timecourses.nii.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The IC maps are 4D files, with spatial dimensions matching the input file and the fourth dimension matching the number of non-artifactual components in the model (below, 105).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> fslinfo sub-10003_ses-V1_task-cuff_run-01_bold_ic_maps.nii.gz</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">data_type</span>   FLOAT32</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">dim1</span>        97</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">dim2</span>        115</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">dim3</span>        97</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">dim4</span>        105</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">datatype</span>    16</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pixdim1</span>     2.000000</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">pixdim2</span>     2.000000</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">pixdim3</span>     2.000000</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">pixdim4</span>     0.000000</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ex">cal_max</span>     0.000000</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ex">cal_min</span>     0.000000</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ex">file_type</span>   NIFTI-1+</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The timecourse files are 2D arrays, with columns corresponding to the number of non-artifacual components in the model and the rows corresponding to each timepoint<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;The original fMRIs have 450 timepoints, but in all analyses, the first 15 are excluded to remove Non-Steady State volumes. For details, see <span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>.</p><div id="ref-sadil_acute_2024" class="csl-entry" role="listitem">
-Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J., DeLano, M. C., Ford, J. C., Gattu, R., Guo, X., Harris, R. E., Ichesco, E., Johnson, M. A., Jung, H., Kahn, A. B., Kaplan, C. M., Leloudas, N., Lindquist, M. A., Luo, Q., … Chronic Pain Signatures Consortium, T. A. to. (2024). Image processing in the acute to chronic pain signatures (A2CPS) project. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2024.12.19.627509">https://doi.org/10.1101/2024.12.19.627509</a>
-</div></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> fslinfo sub-10003_ses-V1_task-cuff_run-01_bold_timecourses.nii.gz</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">data_type</span>   FLOAT32</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">dim1</span>        435</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">dim2</span>        105</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">dim3</span>        1</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">dim4</span>        1</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">datatype</span>    16</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pixdim1</span>     2.000000</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">pixdim2</span>     2.000000</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ex">pixdim3</span>     2.000000</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ex">pixdim4</span>     0.000000</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="ex">cal_max</span>     0.000000</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="ex">cal_min</span>     0.000000</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="ex">file_type</span>   NIFTI-1+</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Many analyses will be based on either these spatial maps or timecourses <a href="#sec-additional-gift" class="quarto-xref">but see&nbsp;<span>12.0.3</span></a>. For example, let’s use these components to search for a possible effect of systematic low-frequency oscillations <span class="citation" data-cites="tong_low_2019">(<a href="references.html#ref-tong_low_2019" role="doc-biblioref">Tong et al., 2019</a>)</span>. These oscillations have been hypothesized to increase the total functional connectivity (that is, the sum of the all connectivity between each pair of components) throughout a scan <span class="citation" data-cites="korponay_brain_2024">(<a href="references.html#ref-korponay_brain_2024" role="doc-biblioref">Korponay et al., 2024</a>)</span>. So, does the moment-by-moment total connectivity increase during a scan?</p>
-<div class="no-row-height column-margin column-container"><div id="ref-tong_low_2019" class="csl-entry" role="listitem">
-Tong, Y., Hocke, L. M., &amp; Frederick, B. B. (2019). Low frequency systemic hemodynamic <span>“noise”</span> in resting state BOLD fMRI: Characteristics, causes, implications, mitigation strategies, and applications. <em>Frontiers in Neuroscience</em>, <em>13</em>, 787. <a href="https://doi.org/10.3389/fnins.2019.00787">https://doi.org/10.3389/fnins.2019.00787</a>
-</div><div id="ref-korponay_brain_2024" class="csl-entry" role="listitem">
-Korponay, C., Janes, A. C., &amp; Frederick, B. B. (2024). Brain-wide functional connectivity artifactually inflates throughout functional magnetic resonance imaging scans. <em>Nature Human Behaviour</em>, <em>8</em>(8), 1568–1580. <a href="https://doi.org/10.1038/s41562-024-01908-6">https://doi.org/10.1038/s41562-024-01908-6</a>
-</div></div><p>First, define a helper function for estimating the rolling correlation. We’ll use a window of 25 timepoints, which, given the 0.8 second Repetition Time, corresponds to 20 seconds.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>do_cor <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">width =</span> <span class="dv">25</span>) {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  rho <span class="ot">&lt;-</span> <span class="fu">roll_cor</span>(x, y, <span class="at">width =</span> width)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">rho =</span> rho, <span class="at">t =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x))</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Next, add a helper function for taking</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>get_total_correlation <span class="ot">&lt;-</span> <span class="cf">function</span>(file) {</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  timecourse <span class="ot">&lt;-</span> <span class="fu">readNifti</span>(file)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">crossing</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">src =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(timecourse),</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">dst =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(timecourse)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(dst <span class="sc">&gt;</span> src) <span class="sc">|&gt;</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">correlations =</span> <span class="fu">map2</span>(</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        src,</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        dst,</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">do_cor</span>(timecourse[, .x], timecourse[, .y])</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unnest</span>(correlations) <span class="sc">|&gt;</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na.omit</span>() <span class="sc">|&gt;</span> <span class="co"># NAs caused by not having enough timepoints for window</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">total_connectivity =</span> <span class="fu">sum</span>(<span class="fu">atanh</span>(rho)), <span class="at">.by =</span> t)</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Use these helper functions to calculate the total connectivity for each REST1 scan.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">crossing</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">dir_ls</span>(</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi"</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">recurse =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">glob =</span> <span class="st">"*rest_run-01*timecourses.nii.gz"</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_connectivity =</span> <span class="fu">map</span>(file, get_total_correlation)) <span class="sc">|&gt;</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(total_connectivity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>And now, plot.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">t =</span> t <span class="sc">*</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> <span class="co"># convert to seconds</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">med_total_connectivity =</span> <span class="fu">median</span>(total_connectivity), <span class="at">.by =</span> t) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> med_total_connectivity)) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Total Connectivity"</span>) <span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Time (seconds)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="gift_files/figure-html/mainplot-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Median Total Connectivity. Total connectivity is the sum of the atanh of all pairs of correlations. The median is taken across scans.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>For the REST1 scans, the sum of connectivity appears to increase by around <span class="math inline">\(150/130 = 15\%\)</span>, which is consistent with the presence of systematic low-frequency oscillations.</p>
+<section id="extract-data" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">7.1.2</span> Extract Data</h3>
+<p>For a detailed description of the files produced by fMRIPrep, please review their documentation: https://fmriprep.org/en/stable/outputs.html.</p>
 </section>
-<section id="sec-additional-gift" class="level3 page-columns page-full" data-number="12.0.3">
-<h3 data-number="12.0.3" class="anchored" data-anchor-id="sec-additional-gift"><span class="header-section-number">12.0.3</span> Additional Outputs</h3>
-<p>For analyses that require the full set of raw GIFT outputs, please see the most deeply nested “derivatives folder”</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi/derivatives <span class="kw">|</span> <span class="fu">head</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-cuff_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-cuff_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-rest_run-01_bold_neuromark_fmri_2.1_modelorder-multi</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010_ses-V1_task-rest_run-02_bold_neuromark_fmri_2.1_modelorder-multi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>In this folder, there is a single subfolder corresponding to the outputs for each individual run<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. For details on these files, please see the <a href="https://github.com/trendscenter/gift">the GIFT documentation</a>.</p>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Although GIFT can facilitate group-level analyses, the A2CPS derivatives include only the run-level components.</p></div></div></section>
-<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">12.1</span> Considerations While Working on the Project</h2>
-<section id="variability-across-scanners" class="level3" data-number="12.1.1">
-<h3 data-number="12.1.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">12.1.1</span> Variability Across Scanners</h3>
+</section>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">7.2</span> Considerations While Working on the Project</h2>
+<section id="sec-synthstrip" class="level3 page-columns page-full" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="sec-synthstrip"><span class="header-section-number">7.2.1</span> Brain Masking</h3>
+<p>As a part of release 2.x, a custom brain mask was on the raw structural scan with <a href="https://surfer.nmr.mgh.harvard.edu/docs/synthstrip/">SynthStrip</a> <span class="citation" data-cites="hoopes_synthstrip_2022">(<a href="references.html#ref-hoopes_synthstrip_2022" role="doc-biblioref">Hoopes et al., 2022</a>)</span>. SynthStrip is a cutting edge tool that can efficiently and accurately extract brains in a wide variety of challenging situations. Our use of SynthStrip was inspired by <a href="https://qsiprep.readthedocs.io/en/latest/">QSIprep</a>. However, while conducting quality control on the spatial normalization templates, we discovered that SynthStrip interacts poorly with the normalization tool used by fMRIPrep (and QSIPrep). For details of the issue, see: https://github.com/PennLINC/qsiprep/issues/954. The basic issue is that, while SynthStrip is effective at stripping the skull from an image, its default configuration leaves CSF and dura intact, which interferes with normalization to a template that does not include those materials (that is, a template that is only a brain). While we expect that the issue is relatively minor and have not observed obvious issues in the downstream products, this will be addressed in a future release (expected: 3.0). If you would like to evaluate the masks produced by SynthStrip, they are in <code>mris/derivatives/synthstrip</code>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-hoopes_synthstrip_2022" class="csl-entry" role="listitem">
+Hoopes, A., Mora, J. S., Dalca, A. V., Fischl, B., &amp; Hoffmann, M. (2022). <span>SynthStrip</span>: Skull-stripping for any brain image. <em>NeuroImage</em>, <em>260</em>, 119474. <a href="https://doi.org/10.1016/j.neuroimage.2022.119474">https://doi.org/10.1016/j.neuroimage.2022.119474</a>
+</div></div></section>
+<section id="variability-across-scanners" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">7.2.2</span> Variability Across Scanners</h3>
 <p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
-<section id="data-quality" class="level3" data-number="12.1.2">
-<h3 data-number="12.1.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">12.1.2</span> Data Quality</h3>
+<section id="data-quality" class="level3" data-number="7.2.3">
+<h3 data-number="7.2.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">7.2.3</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
-<section id="data-generation" class="level3 page-columns page-full" data-number="12.1.3">
-<h3 data-number="12.1.3" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">12.1.3</span> Data Generation</h3>
-<p>The GIFT outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/gift_app">gift_app</a> component of the A2CPS Imaging pipeline. Prior to NeuroMark, the resting-state fMRI data were minimally preprocessed (<span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>), and then resampled to 2.4mm isotropic voxel size to ensure identical dimensions across all subjects. After resampling, volumes were spatially smoothed using a Gaussian kernel with a full width at half maximum of 6mm. NeuroMark was then applied separately for each resting-state run from each subject and separately for each template. The NeuroMark pipeline included the following configuration options: brain masking using the default mask plus intracranial volume, coregistration of the functional data to a functional template in MNI space (separate from the registration performed during minimal preprocessing), removal of the first 15 volumes (i.e., dummy scans), bandpass filtering (0.01-0.15Hz), removal of the mean per timepoint, multivariate-objective optimization ICA with reference <span class="citation" data-cites="du_group_2013">(<a href="references.html#ref-du_group_2013" role="doc-biblioref">Du &amp; Fan, 2013</a>)</span>, and z-score scaling of results. The NeuroMark outputs include, separately for each template applied to each resting-state run from each subject, the timecourses and spatial maps of each intrinsic component network, functional network connectivity estimates, summary reports, and visualizations of the networks.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-du_group_2013" class="csl-entry" role="listitem">
-Du, Y., &amp; Fan, Y. (2013). Group information guided ICA for fMRI data analysis. <em>Neuroimage</em>, <em>69</em>, 157–197. <a href="https://doi.org/10.1016/j.neuroimage.2012.11.008">https://doi.org/10.1016/j.neuroimage.2012.11.008</a>
+<section id="data-generation" class="level3 page-columns page-full" data-number="7.2.4">
+<h3 data-number="7.2.4" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">7.2.4</span> Data Generation</h3>
+<p>These outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/fmriprep_app">fmriprep_app</a>.</p>
+<p>Results included in this manuscript come from preprocessing performed using <em>fMRIPrep</em> 24.1.1 (<span class="citation" data-cites="fmriprep1">Esteban et al. (<a href="references.html#ref-fmriprep1" role="doc-biblioref">2019</a>)</span>; <span class="citation" data-cites="fmriprep2">Esteban et al. (<a href="references.html#ref-fmriprep2" role="doc-biblioref">2018</a>)</span>; RRID:SCR_016216), which is based on <em>Nipype</em> 1.8.6 (<span class="citation" data-cites="nipype1">K. Gorgolewski et al. (<a href="references.html#ref-nipype1" role="doc-biblioref">2011</a>)</span>; <span class="citation" data-cites="nipype2">K. J. Gorgolewski et al. (<a href="references.html#ref-nipype2" role="doc-biblioref">2018</a>)</span>; RRID:SCR_002502).</p>
+<div class="no-row-height column-margin column-container"><div id="ref-fmriprep1" class="csl-entry" role="listitem">
+Esteban, O., Markiewicz, C., Blair, R. W., Moodie, C., Isik, A. I., Erramuzpe Aliaga, A., Kent, J., Goncalves, M., DuPre, E., Snyder, M., Oya, H., Ghosh, S., Wright, J., Durnez, J., Poldrack, R., &amp; Gorgolewski, K. J. (2019). <span class="nocase">fMRIPrep</span>: A robust preprocessing pipeline for functional <span>MRI</span>. <em>Nature Methods</em>, <em>16</em>, 111–116. <a href="https://doi.org/10.1038/s41592-018-0235-4">https://doi.org/10.1038/s41592-018-0235-4</a>
+</div><div id="ref-fmriprep2" class="csl-entry" role="listitem">
+Esteban, O., Blair, R., Markiewicz, C. J., Berleant, S. L., Moodie, C., Ma, F., Isik, A. I., Erramuzpe, A., Kent, M., James D. andGoncalves, DuPre, E., Sitek, K. R., Gomez, D. E. P., Lurie, D. J., Ye, Z., Poldrack, R. A., &amp; Gorgolewski, K. J. (2018). fMRIPrep 24.1.1. <em>Software</em>. <a href="https://doi.org/10.5281/zenodo.852659">https://doi.org/10.5281/zenodo.852659</a>
+</div><div id="ref-nipype1" class="csl-entry" role="listitem">
+Gorgolewski, K., Burns, C. D., Madison, C., Clark, D., Halchenko, Y. O., Waskom, M. L., &amp; Ghosh, S. (2011). Nipype: A flexible, lightweight and extensible neuroimaging data processing framework in python. <em>Frontiers in Neuroinformatics</em>, <em>5</em>, 13. <a href="https://doi.org/10.3389/fninf.2011.00013">https://doi.org/10.3389/fninf.2011.00013</a>
+</div><div id="ref-nipype2" class="csl-entry" role="listitem">
+Gorgolewski, K. J., Esteban, O., Markiewicz, C. J., Ziegler, E., Ellis, D. G., Notter, M. P., Jarecka, D., Johnson, H., Burns, C., Manhães-Savio, A., Hamalainen, C., Yvernault, B., Salo, T., Jordan, K., Goncalves, M., Waskom, M., Clark, D., Wong, J., Loney, F., … Ghosh, S. (2018). Nipype. <em>Software</em>. <a href="https://doi.org/10.5281/zenodo.596855">https://doi.org/10.5281/zenodo.596855</a>
+</div></div><section id="preprocessing-of-b0-inhomogeneity-mappings" class="level4 page-columns page-full" data-number="7.2.4.1">
+<h4 data-number="7.2.4.1" class="anchored" data-anchor-id="preprocessing-of-b0-inhomogeneity-mappings"><span class="header-section-number">7.2.4.1</span> Preprocessing of B<sub>0</sub> inhomogeneity mappings</h4>
+<p>A <em>B<sub>0</sub></em>-nonuniformity map (or <em>fieldmap</em>) was estimated based on two (or more) echo-planar imaging (EPI) references with <code>topup</code> (<span class="citation" data-cites="topup">Andersson et al. (<a href="references.html#ref-topup" role="doc-biblioref">2003</a>)</span>; FSL None).</p>
+<div class="no-row-height column-margin column-container"><div id="ref-topup" class="csl-entry" role="listitem">
+Andersson, J. L. R., Skare, S., &amp; Ashburner, J. (2003). How to correct susceptibility distortions in spin-echo echo-planar images: Application to diffusion tensor imaging. <em>NeuroImage</em>, <em>20</em>(2), 870–888. <a href="https://doi.org/10.1016/S1053-8119(03)00336-7">https://doi.org/10.1016/S1053-8119(03)00336-7</a>
 </div></div></section>
-<section id="citations" class="level3 page-columns page-full" data-number="12.1.4">
-<h3 data-number="12.1.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">12.1.4</span> Citations</h3>
+<section id="anatomical-data-preprocessing" class="level4 page-columns page-full" data-number="7.2.4.2">
+<h4 data-number="7.2.4.2" class="anchored" data-anchor-id="anatomical-data-preprocessing"><span class="header-section-number">7.2.4.2</span> Anatomical data preprocessing</h4>
+<p>The T1w image was corrected for intensity non-uniformity (INU) with <code>N4BiasFieldCorrection</code> <span class="citation" data-cites="n4">(<a href="references.html#ref-n4" role="doc-biblioref">Tustison et al., 2010</a>)</span>, distributed with ANTs 2.5.3 <span class="citation" data-cites="ants">(<a href="references.html#ref-ants" role="doc-biblioref">Avants et al., 2008</a>, RRID:SCR_004757)</span>, and used as T1w-reference throughout the workflow. A pre-computed brain mask was provided as input and used throughout the workflow <a href="#sec-synthstrip" class="quarto-xref"><span>Section 7.2.1</span></a>. Brain tissue segmentation of cerebrospinal fluid (CSF), white-matter (WM) and gray-matter (GM) was performed on the brain-extracted T1w using <code>fast</code> <span class="citation" data-cites="fsl_fast">(FSL (version unknown), RRID:SCR_002823, <a href="references.html#ref-fsl_fast" role="doc-biblioref">Zhang et al., 2001</a>)</span>. Brain surfaces were reconstructed using <code>recon-all</code> <span class="citation" data-cites="fs_reconall">(FreeSurfer 7.3.2, RRID:SCR_001847, <a href="references.html#ref-fs_reconall" role="doc-biblioref">Dale et al., 1999</a>)</span>, and the brain mask estimated previously was refined with a custom variation of the method to reconcile ANTs-derived and FreeSurfer-derived segmentations of the cortical gray-matter of Mindboggle <span class="citation" data-cites="mindboggle">(RRID:SCR_002438, <a href="references.html#ref-mindboggle" role="doc-biblioref">Klein et al., 2017</a>)</span>. Volume-based spatial normalization to two standard spaces (MNI152NLin2009cAsym, MNI152NLin6Asym) was performed through nonlinear registration with <code>antsRegistration</code> (ANTs 2.5.3), using brain-extracted versions of both T1w reference and the T1w template. The following templates were were selected for spatial normalization and accessed with <em>TemplateFlow</em> <span class="citation" data-cites="templateflow">(24.2.0, <a href="references.html#ref-templateflow" role="doc-biblioref">Ciric et al., 2022</a>)</span>: <em>ICBM 152 Nonlinear Asymmetrical template version 2009c</em> [<span class="citation" data-cites="mni152nlin2009casym">Fonov et al. (<a href="references.html#ref-mni152nlin2009casym" role="doc-biblioref">2009</a>)</span>, RRID:SCR_008796; TemplateFlow ID: MNI152NLin2009cAsym], <em>FSL’s MNI ICBM 152 non-linear 6th Generation Asymmetric Average Brain Stereotaxic Registration Model</em> [<span class="citation" data-cites="mni152nlin6asym">Evans et al. (<a href="references.html#ref-mni152nlin6asym" role="doc-biblioref">2012</a>)</span>, RRID:SCR_002823; TemplateFlow ID: MNI152NLin6Asym]. <em>Grayordinate</em> “dscalar” files containing 91k samples were resampled onto fsLR using the Connectome Workbench <span class="citation" data-cites="hcppipelines">(<a href="references.html#ref-hcppipelines" role="doc-biblioref">Glasser et al., 2013</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-n4" class="csl-entry" role="listitem">
+Tustison, N. J., Avants, B. B., Cook, P. A., Zheng, Y., Egan, A., Yushkevich, P. A., &amp; Gee, J. C. (2010). N4ITK: Improved N3 bias correction. <em>IEEE Transactions on Medical Imaging</em>, <em>29</em>(6), 1310–1320. <a href="https://doi.org/10.1109/TMI.2010.2046908">https://doi.org/10.1109/TMI.2010.2046908</a>
+</div><div id="ref-ants" class="csl-entry" role="listitem">
+Avants, B. B., Epstein, C. L., Grossman, M., &amp; Gee, J. C. (2008). Symmetric diffeomorphic image registration with cross-correlation: Evaluating automated labeling of elderly and neurodegenerative brain. <em>Medical Image Analysis</em>, <em>12</em>(1), 26–41. <a href="https://doi.org/10.1016/j.media.2007.06.004">https://doi.org/10.1016/j.media.2007.06.004</a>
+</div><div id="ref-fsl_fast" class="csl-entry" role="listitem">
+Zhang, Y., Brady, M., &amp; Smith, S. (2001). Segmentation of brain <span>MR</span> images through a hidden markov random field model and the expectation-maximization algorithm. <em>IEEE Transactions on Medical Imaging</em>, <em>20</em>(1), 45–57. <a href="https://doi.org/10.1109/42.906424">https://doi.org/10.1109/42.906424</a>
+</div><div id="ref-fs_reconall" class="csl-entry" role="listitem">
+Dale, A. M., Fischl, B., &amp; Sereno, M. I. (1999). Cortical surface-based analysis: I. Segmentation and surface reconstruction. <em>NeuroImage</em>, <em>9</em>(2), 179–194. <a href="https://doi.org/10.1006/nimg.1998.0395">https://doi.org/10.1006/nimg.1998.0395</a>
+</div><div id="ref-mindboggle" class="csl-entry" role="listitem">
+Klein, A., Ghosh, S. S., Bao, F. S., Giard, J., Häme, Y., Stavsky, E., Lee, N., Rossa, B., Reuter, M., Neto, E. C., &amp; Keshavan, A. (2017). Mindboggling morphometry of human brains. <em>PLOS Computational Biology</em>, <em>13</em>(2), e1005350. <a href="https://doi.org/10.1371/journal.pcbi.1005350">https://doi.org/10.1371/journal.pcbi.1005350</a>
+</div><div id="ref-templateflow" class="csl-entry" role="listitem">
+Ciric, R., Thompson, W. H., Lorenz, R., Goncalves, M., MacNicol, E., Markiewicz, C. J., Halchenko, Y. O., Ghosh, S. S., Gorgolewski, K. J., Poldrack, R. A., &amp; Esteban, O. (2022). <span>TemplateFlow</span>: <span>FAIR</span>-sharing of multi-scale, multi-species brain models. <em>Nature Methods</em>, <em>19</em>, 1568–1571. <a href="https://doi.org/10.1038/s41592-022-01681-2">https://doi.org/10.1038/s41592-022-01681-2</a>
+</div><div id="ref-mni152nlin2009casym" class="csl-entry" role="listitem">
+Fonov, V., Evans, A., McKinstry, R., Almli, C., &amp; Collins, D. (2009). Unbiased nonlinear average age-appropriate brain templates from birth to adulthood. <em>NeuroImage</em>, <em>47, Supplement 1</em>, S102. <a href="https://doi.org/10.1016/S1053-8119(09)70884-5">https://doi.org/10.1016/S1053-8119(09)70884-5</a>
+</div><div id="ref-mni152nlin6asym" class="csl-entry" role="listitem">
+Evans, A., Janke, A., Collins, D., &amp; Baillet, S. (2012). Brain templates and atlases. <em>NeuroImage</em>, <em>62</em>(2), 911–922. <a href="https://doi.org/10.1016/j.neuroimage.2012.01.024">https://doi.org/10.1016/j.neuroimage.2012.01.024</a>
+</div></div></section>
+<section id="functional-data-preprocessing" class="level4 page-columns page-full" data-number="7.2.4.3">
+<h4 data-number="7.2.4.3" class="anchored" data-anchor-id="functional-data-preprocessing"><span class="header-section-number">7.2.4.3</span> Functional data preprocessing</h4>
+<p class="page-columns page-full">For each of the 4 BOLD runs found per subject (across all tasks and sessions), the following preprocessing was performed. First, a reference volume was generated, using a custom methodology of <em>fMRIPrep</em>, for use in head motion correction. Head-motion parameters with respect to the BOLD reference (transformation matrices, and six corresponding rotation and translation parameters) are estimated before any spatiotemporal filtering using <code>mcflirt</code> <span class="citation page-columns page-full" data-cites="mcflirt">(FSL <ver>, <a href="references.html#ref-mcflirt" role="doc-biblioref">Jenkinson et al., 2002</a>)</ver></span></p><div class="no-row-height column-margin column-container"></div>. The estimated <em>fieldmap</em> was then aligned with rigid-registration to the target EPI (echo-planar imaging) reference run. The field coefficients were mapped on to the reference EPI using the transform. The BOLD reference was then co-registered to the T1w reference using <code>bbregister</code> (FreeSurfer) which implements boundary-based registration <span class="citation" data-cites="bbr">(<a href="references.html#ref-bbr" role="doc-biblioref">Greve &amp; Fischl, 2009</a>)</span>. Co-registration was configured with six degrees of freedom. Several confounding time-series were calculated based on the <em>preprocessed BOLD</em>: framewise displacement (FD), DVARS and three region-wise global signals. FD was computed using two formulations following Power (absolute sum of relative motions, <span class="citation" data-cites="power_fd_dvars">Power et al. (<a href="references.html#ref-power_fd_dvars" role="doc-biblioref">2014</a>)</span>) and Jenkinson (relative root mean square displacement between affines, <span class="citation" data-cites="mcflirt">Jenkinson et al. (<a href="references.html#ref-mcflirt" role="doc-biblioref">2002</a>)</span>). FD and DVARS are calculated for each functional run, both using their implementations in <em>Nipype</em> <span class="citation" data-cites="power_fd_dvars">(following the definitions by <a href="references.html#ref-power_fd_dvars" role="doc-biblioref">Power et al., 2014</a>)</span>. The three global signals are extracted within the CSF, the WM, and the whole-brain masks. Additionally, a set of physiological regressors were extracted to allow for component-based noise correction <span class="citation" data-cites="compcor">(<em>CompCor</em>, <a href="references.html#ref-compcor" role="doc-biblioref">Behzadi et al., 2007</a>)</span>. Principal components are estimated after high-pass filtering the <em>preprocessed BOLD</em> time-series (using a discrete cosine filter with 128s cut-off) for the two <em>CompCor</em> variants: temporal (tCompCor) and anatomical (aCompCor). tCompCor components are then calculated from the top 2% variable voxels within the brain mask. For aCompCor, three probabilistic masks (CSF, WM and combined CSF+WM) are generated in anatomical space. The implementation differs from that of Behzadi et al.&nbsp;in that instead of eroding the masks by 2 pixels on BOLD space, a mask of pixels that likely contain a volume fraction of GM is subtracted from the aCompCor masks. This mask is obtained by dilating a GM mask extracted from the FreeSurfer’s <em>aseg</em> segmentation, and it ensures components are not extracted from voxels containing a minimal fraction of GM. Finally, these masks are resampled into BOLD space and binarized by thresholding at 0.99 (as in the original implementation). Components are also calculated separately within the WM and CSF masks. For each CompCor decomposition, the <em>k</em> components with the largest singular values are retained, such that the retained components’ time series are sufficient to explain 50 percent of variance across the nuisance mask (CSF, WM, combined, or temporal). The remaining components are dropped from consideration.<p></p>
+<div class="no-row-height column-margin column-container"><div id="ref-bbr" class="csl-entry" role="listitem">
+Greve, D. N., &amp; Fischl, B. (2009). Accurate and robust brain image alignment using boundary-based registration. <em>NeuroImage</em>, <em>48</em>(1), 63–72. <a href="https://doi.org/10.1016/j.neuroimage.2009.06.060">https://doi.org/10.1016/j.neuroimage.2009.06.060</a>
+</div><div id="ref-power_fd_dvars" class="csl-entry" role="listitem">
+Power, J. D., Mitra, A., Laumann, T. O., Snyder, A. Z., Schlaggar, B. L., &amp; Petersen, S. E. (2014). Methods to detect, characterize, and remove motion artifact in resting state fMRI. <em>NeuroImage</em>, <em>84</em>(Supplement C), 320–341. <a href="https://doi.org/10.1016/j.neuroimage.2013.08.048">https://doi.org/10.1016/j.neuroimage.2013.08.048</a>
+</div><div id="ref-mcflirt" class="csl-entry" role="listitem">
+Jenkinson, M., Bannister, P., Brady, M., &amp; Smith, S. (2002). Improved optimization for the robust and accurate linear registration and motion correction of brain images. <em>NeuroImage</em>, <em>17</em>(2), 825–841. <a href="https://doi.org/10.1006/nimg.2002.1132">https://doi.org/10.1006/nimg.2002.1132</a>
+</div><div id="ref-compcor" class="csl-entry" role="listitem">
+Behzadi, Y., Restom, K., Liau, J., &amp; Liu, T. T. (2007). A component based noise correction method (<span>CompCor</span>) for <span>BOLD</span> and perfusion based fMRI. <em>NeuroImage</em>, <em>37</em>(1), 90–101. <a href="https://doi.org/10.1016/j.neuroimage.2007.04.042">https://doi.org/10.1016/j.neuroimage.2007.04.042</a>
+</div><div id="ref-confounds_satterthwaite_2013" class="csl-entry" role="listitem">
+Satterthwaite, T. D., Elliott, M. A., Gerraty, R. T., Ruparel, K., Loughead, J., Calkins, M. E., Eickhoff, S. B., Hakonarson, H., Gur, R. C., Gur, R. E., &amp; Wolf, D. H. (2013). <span class="nocase">An improved framework for confound regression and filtering for control of motion artifact in the preprocessing of resting-state functional connectivity data</span>. <em>NeuroImage</em>, <em>64</em>(1), 240–256. <a href="https://doi.org/10.1016/j.neuroimage.2012.08.052">https://doi.org/10.1016/j.neuroimage.2012.08.052</a>
+</div><div id="ref-patriat_improved_2017" class="csl-entry" role="listitem">
+Patriat, R., Reynolds, R. C., &amp; Birn, R. M. (2017). An improved model of motion-related signal changes in <span class="nocase">fMRI</span>. <em>NeuroImage</em>, <em>144, Part A</em>, 74–82. <a href="https://doi.org/10.1016/j.neuroimage.2016.08.051">https://doi.org/10.1016/j.neuroimage.2016.08.051</a>
+</div><div id="ref-hcppipelines" class="csl-entry" role="listitem">
+Glasser, M. F., Sotiropoulos, S. N., Wilson, J. A., Coalson, T. S., Fischl, B., Andersson, J. L., Xu, J., Jbabdi, S., Webster, M., Polimeni, J. R., Van Essen, D. C., &amp; Jenkinson, M. (2013). The minimal preprocessing pipelines for the human connectome project. <em>NeuroImage</em>, <em>80</em>, 105–124. <a href="https://doi.org/10.1016/j.neuroimage.2013.04.127">https://doi.org/10.1016/j.neuroimage.2013.04.127</a>
+</div></div><p>The head-motion estimates calculated in the correction step were also placed within the corresponding confounds file. The confound time series derived from head motion estimates and global signals were expanded with the inclusion of temporal derivatives and quadratic terms for each <span class="citation" data-cites="confounds_satterthwaite_2013">(<a href="references.html#ref-confounds_satterthwaite_2013" role="doc-biblioref">Satterthwaite et al., 2013</a>)</span>. Frames that exceeded a threshold of 0.5 mm FD or 1.5 standardized DVARS were annotated as motion outliers. Additional nuisance timeseries are calculated by means of principal components analysis of the signal found within a thin band (<em>crown</em>) of voxels around the edge of the brain, as proposed by <span class="citation" data-cites="patriat_improved_2017">(<a href="references.html#ref-patriat_improved_2017" role="doc-biblioref">Patriat et al., 2017</a>)</span>. The BOLD time-series were resampled onto the left/right-symmetric template “fsLR” using the Connectome Workbench <span class="citation" data-cites="hcppipelines">(<a href="references.html#ref-hcppipelines" role="doc-biblioref">Glasser et al., 2013</a>)</span>. <em>Grayordinates</em> files <span class="citation" data-cites="hcppipelines">(<a href="references.html#ref-hcppipelines" role="doc-biblioref">Glasser et al., 2013</a>)</span> containing 91k samples were also generated with surface data transformed directly to fsLR space and subcortical data transformed to 2 mm resolution MNI152NLin6Asym space. All resamplings can be performed with <em>a single interpolation step</em> by composing all the pertinent transformations (i.e.&nbsp;head-motion transform matrices, susceptibility distortion correction when available, and co-registrations to anatomical and output spaces). Gridded (volumetric) resamplings were performed using <code>nitransforms</code>, configured with cubic B-spline interpolation.</p>
+<p>Many internal operations of <em>fMRIPrep</em> use <em>Nilearn</em> 0.10.4 <span class="citation" data-cites="nilearn">(<a href="references.html#ref-nilearn" role="doc-biblioref">Abraham et al., 2014</a>, RRID:SCR_001362)</span>, mostly within the functional processing workflow. For more details of the pipeline, see <a href="https://fmriprep.readthedocs.io/en/latest/workflows.html" title="FMRIPrep's documentation">the section corresponding to workflows in <em>fMRIPrep</em>’s documentation</a>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-nilearn" class="csl-entry" role="listitem">
+Abraham, A., Pedregosa, F., Eickenberg, M., Gervais, P., Mueller, A., Kossaifi, J., Gramfort, A., Thirion, B., &amp; Varoquaux, G. (2014). Machine learning for neuroimaging with scikit-learn. <em>Frontiers in Neuroinformatics</em>, <em>8</em>. <a href="https://doi.org/10.3389/fninf.2014.00014">https://doi.org/10.3389/fninf.2014.00014</a>
+</div></div></section>
+</section>
+<section id="citations" class="level3 page-columns page-full" data-number="7.2.5">
+<h3 data-number="7.2.5" class="anchored" data-anchor-id="citations"><span class="header-section-number">7.2.5</span> Citations</h3>
 <p>If you use these products in your analyses, please cite the relevant papers written by members <a href="https://trendscenter.org/data/">TReNDS</a>.</p>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
@@ -910,13 +798,14 @@ Note
 Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, D., Vance, C. G. T., Dailey, D. L., Burns, J., Buvanendran, A., McCarthy, R. J., Jacobs, J., Zhou, X. J., Wixson, R., Balach, T., Brummett, C. M., Clauw, D., Colquhoun, D., Harte, S. E., … Wandner, L. D. (2022). Multi-site observational study to assess biomarkers for susceptibility or resilience to chronic pain: The acute to chronic pain signatures (A2CPS) study protocol. <em>Frontiers in Medicine</em>, <em>9</em>. <a href="https://doi.org/10.3389/fmed.2022.849214">https://doi.org/10.3389/fmed.2022.849214</a>
 </div></div><div class="no-row-height column-margin column-container"><div id="ref-sluka_predicting_2023" class="csl-entry" role="listitem">
 <span class="nocase">Sluka, K. A., Wager, T. D., Sutherland, S. P., Labosky, P. A., Balach, T., Bayman, E. O., Berardi, G., Brummett, C. M., Burns, J., Buvanendran, A., et al.</span> (2023). Predicting chronic postsurgical pain: Current evidence and a novel program to develop predictive biomarker signatures. <em>Pain</em>, <em>164</em>(9), 1912–1926. <a href="https://doi.org/10.1097/j.pain.0000000000002938">https://doi.org/10.1097/j.pain.0000000000002938</a>
+</div><div id="ref-sadil_acute_2024" class="csl-entry" role="listitem">
+Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J., DeLano, M. C., Ford, J. C., Gattu, R., Guo, X., Harris, R. E., Ichesco, E., Johnson, M. A., Jung, H., Kahn, A. B., Kaplan, C. M., Leloudas, N., Lindquist, M. A., Luo, Q., … Chronic Pain Signatures Consortium, T. A. to. (2024). Image processing in the acute to chronic pain signatures (A2CPS) project. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2024.12.19.627509">https://doi.org/10.1101/2024.12.19.627509</a>
 </div></div><p>When using neuroimaging derivatives, please also cite <span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>.</p>
 
 
 
 </section>
 </section>
-
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1334,13 +1223,13 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./fcn.html" class="pagination-link" aria-label="Functional Connectivity">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Functional Connectivity</span></span>
+      <a href="./freesurfer.html" class="pagination-link" aria-label="FreeSurfer Measures">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">FreeSurfer Measures</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./postgift.html" class="pagination-link" aria-label="ICA Connectivity">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">ICA Connectivity</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./fslanat.html" class="pagination-link" aria-label="FSL Anat">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">FSL Anat</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
