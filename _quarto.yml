@@ -19,6 +19,7 @@ book:
     - mri-idps.qmd
     - raw-mri.qmd
     - freesurfer.qmd
+    - fmriprep.qmd
     - fslanat.qmd
     - brainager.qmd
     - cat12.qmd
