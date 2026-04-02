@@ -95,9 +95,7 @@ Quantitatively, the dataset is in the upper quantiles of motion, which is to be 
 empirical_motion_cdf <- ecdf(all_bold$fd_mean)
 
 group_bold |>
-  mutate(
-    fd_quantile = empirical_motion_cdf(fd_mean)
-  ) |>
+  mutate(fd_quantile = empirical_motion_cdf(fd_mean)) |>
   ggplot(aes(x = fd_quantile)) +
   geom_histogram()
 

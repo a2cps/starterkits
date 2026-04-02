@@ -28,6 +28,7 @@ book:
     - postgift.qmd
     - mriqc.qmd
     - neural-pain-signatures.qmd
+    - mri-derivative-qc.qmd
     - faq.qmd
     - references.qmd
   appendices:
