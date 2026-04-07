@@ -1,0 +1,316 @@
+```{r lockfile, include=FALSE}
+renv::use(
+  askpass = "askpass@1.2.1",
+  base64enc = "base64enc@0.1-6",
+  bslib = "bslib@0.10.0",
+  cachem = "cachem@1.1.0",
+  class = "class@7.3-23",
+  classInt = "classInt@0.4-11",
+  cli = "cli@3.6.5",
+  collections = "collections@0.3.12",
+  cpp11 = "cpp11@0.5.3",
+  curl = "curl@7.0.0",
+  DBI = "DBI@1.3.0",
+  digest = "digest@0.6.39",
+  dplyr = "dplyr@1.2.0",
+  duckdb = "duckdb@1.5.1",
+  duckplyr = "duckplyr@1.2.1",
+  e1071 = "e1071@1.7-17",
+  evaluate = "evaluate@1.0.5",
+  farver = "farver@2.1.2",
+  fastmap = "fastmap@1.2.0",
+  fontawesome = "fontawesome@0.5.3",
+  fs = "fs@2.0.1",
+  generics = "generics@0.1.4",
+  ggplot2 = "ggplot2@4.0.2",
+  glue = "glue@1.8.0",
+  gtable = "gtable@0.3.6",
+  highr = "highr@0.12",
+  htmltools = "htmltools@0.5.9",
+  httr = "httr@1.4.8",
+  isoband = "isoband@0.3.0",
+  jquerylib = "jquerylib@0.1.4",
+  jsonlite = "jsonlite@2.0.0",
+  KernSmooth = "KernSmooth@2.23-26",
+  knitr = "knitr@1.51",
+  labeling = "labeling@0.4.3",
+  lifecycle = "lifecycle@1.0.5",
+  magick = "magick@2.9.1",
+  magrittr = "magrittr@2.0.4",
+  MASS = "MASS@7.3-65",
+  memoise = "memoise@2.0.1",
+  mime = "mime@0.13",
+  openssl = "openssl@2.3.5",
+  pillar = "pillar@1.11.1",
+  pkgconfig = "pkgconfig@2.0.3",
+  png = "png@0.1-9",
+  proceduralnames = "proceduralnames@0.2.2",
+  proxy = "proxy@0.4-29",
+  purrr = "purrr@1.2.1",
+  R6 = "R6@2.6.1",
+  rappdirs = "rappdirs@0.3.4",
+  RColorBrewer = "RColorBrewer@1.1-3",
+  Rcpp = "Rcpp@1.1.1",
+  renv = "renv@1.2.0",
+  rlang = "rlang@1.1.7",
+  rmarkdown = "rmarkdown@2.31",
+  s2 = "s2@1.1.9",
+  S7 = "S7@0.2.1",
+  sass = "sass@0.4.10",
+  scales = "scales@1.4.0",
+  sf = "sf@1.1-0",
+  stringi = "stringi@1.8.7",
+  stringr = "stringr@1.6.0",
+  sys = "sys@3.4.3",
+  terra = "terra@1.9-11",
+  terrainr = "terrainr@0.7.6",
+  tibble = "tibble@3.3.1",
+  tidyr = "tidyr@1.3.2",
+  tidyselect = "tidyselect@1.2.1",
+  tinytex = "tinytex@0.58",
+  unifir = "unifir@0.2.4",
+  units = "units@1.0-1",
+  utf8 = "utf8@1.2.6",
+  vctrs = "vctrs@0.7.2",
+  viridisLite = "viridisLite@0.4.3",
+  withr = "withr@3.0.2",
+  wk = "wk@0.9.5",
+  xfun = "xfun@0.57",
+  yaml = "yaml@2.3.12"
+)
+```
+
+# Manual Derivative QC {#mri-deriv-qc}
+
+```{r setup}
+library(dplyr)
+library(duckplyr)
+library(purrr)
+library(ggplot2)
+library(png)
+library(terrainr)
+```
+
+Most preprocessing pipelines fail on a subset of scans. For large-scale studies, failure rates of even a few percentage points can amount to dozens of scans. Although there are automated ways of detecting some pipeline failures, the data used to train failure detection algorithms are limited, so manual review remains essential. As of Release 3.0, a subset of the neuroimaging derivatives have undergone manual QC. This kit shows how the ratings are packaged.
+
+## Starting Project
+
+{{< include _snippets/mri-location.qmd >}}
+
+The Derivative QC metrics are underneath `derivatives/qc`. They consist of four tables.
+
+```{bash}
+#| eval: false
+$ ls mris/derivatives/qc/
+coordinate.parquet  image.parquet  rating.parquet  session.parquet
+```
+
+### Extract Data
+
+Two of these tables contain quality ratings (`rating.parquet` and `coordinate.parquet`), and the others contain metadata about the ratings (e.g., identity of the rater). Of the tables with quality information `rating.parquet` stores "overall" rating information. These are for ratings that reviewers can provide a categorical and judgement, identifying whether a target was created "successfully", whether target creation "failed", or whether the reviewer is "unsure". These kinds of ratings are used to assess coregistration and fractional anisotropy maps. Another kind of rating is stored in `coordinate.parquet`. These ratings refer not to the overall image but rather to specific points within the image that indicate a failure. Reviewers "click" on parts of the target that seem off (e.g., a misplaced tissue boundary), and the coordinates of those clicks are recorded.
+
+Let's look through the schema of each table.
+
+#### session
+
+This table contains information about the rating session (e.g., helpful for determining rater consistency).
+
+```{r session}
+read_parquet_duckdb("data/qc/session.parquet") |>
+  head()
+```
+
+- `id`: ID of session
+- `step`: ID indicating the kind of target being rated (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L9-L14)
+    - MASK = 0
+    - SPATIAL_NORMALIZATION = 1
+    - SURFACE_LOCALIZATION = 2
+    - FMAP_COREGISTRATION = 3
+    - DTIFIT = 4
+- `user`: ID user who was doing to rating (note: user id capturing currently exhibits some errors)
+- `created`: datetime stamp of when the session started
+
+#### image
+
+This table contains information about the to-be rated targets. 
+
+```{r image}
+read_parquet_duckdb("data/qc/image.parquet") |>
+  select(-img) |> # just for display purposes, so this webpage is not too big
+  head()
+```
+
+- `id`: ID of the to-be-rated image
+- `img`: binary large object (BLOB) containing the image
+- `slice`: indicator for which part of the image was displayed
+- `file1`: the main source file from which the image was derived (e.g., the name of the mask)
+- `file2`: supplementary file used to make the to-be-rated image (e.g., anatomical underlay)
+- `display`: ID indicating the orientation of the image (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L23-L26)
+    - X = 0
+    - Y = 1
+    - Z = 2
+- `step`: ID indicating the kind of target (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L9-L14)
+    - MASK = 0
+    - SPATIAL_NORMALIZATION = 1
+    - SURFACE_LOCALIZATION = 2
+    - FMAP_COREGISTRATION = 3
+    - DTIFIT = 4
+- `created`: when the image was created (helpful for determining version of the release)
+
+#### rating
+
+This table contains the ratings given as "overal" scores. They apply to ratings for targets fmap coregistration and dtifit.
+
+```{r rating}
+read_parquet_duckdb("data/qc/rating.parquet") |>
+  head()
+```
+
+- `id`: ID of each rating
+- `source_data_issue`: boolean indicating whether the reviewer noticed an issue with the raw data quality
+- `rating`: the rating provided (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L17-L20)
+    - PASS = 0
+    - UNSURE = 1
+    - FAIL = 2
+- img_id: ID of the image that was rated (see image.parquet)
+- session: ID of the rating session (see session.parquet)
+- notes: freeform text used to provide details about the rating
+- created: datetime stamp of when the rating was produced
+
+#### coordinate
+
+This table contains the coordinates that were clicked during reviews, locations indicating some source data issue. These were used to rate the mask, spatial normalization, and surface localization.
+
+```{r coordinate}
+read_parquet_duckdb("data/qc/coordinate.parquet") |>
+  head()
+```
+
+- `id`: ID of each clicked coordinate
+- `source_data_issue`: boolean indicating whether the reviewer noticed an issue with the raw data quality
+- `x`: horizontal coordinate of the target issue
+- `y`: vertical coordinate of the target issue
+- `img_id`: ID of the image that was rated (see image.parquet)
+- `session`: ID of the rating session (see session.parquet)
+- `notes`: freeform text used to provide details about the rating
+- `created`: datetime stamp of when the rating was produced
+
+Note: rows where the x and y coordinates are NA indicate that the reviewer did not observe any issues with the target (that is, these images were reviewed, but no problems were found).
+
+### Example Image Plotting
+
+Let's see how we can display the rated images. As an example, we'll look one of the spatial normalization images.
+
+```{r}
+
+# grab images associated with spatial normalization
+spatial_norm_images <- read_parquet_duckdb("data/qc/image.parquet") |>
+  filter(step == 1, display == 0) |>
+  select(id, img)
+
+# grab image with lots of clicks
+img_with_many_clicks <- read_parquet_duckdb("data/qc/coordinate.parquet") |>
+  filter(!is.na(x)) |>
+  semi_join(spatial_norm_images, by = join_by(img_id == id)) |>
+  summarize(n_clicks = n(), .by = c(img_id)) |>
+  slice_head(n = 1, by = n_clicks)
+img_with_many_clicks
+```
+
+We're going to need a helper function to convert the img BLOBs into a tibble for display with ggplot.
+
+```{r helper}
+to_tbl <- function(.i) {
+  apply(.i, 2, rgb) |>
+    as_tibble() |>
+    mutate(y = row_number()) |>
+    tidyr::pivot_longer(-y, names_to = "x") |>
+    mutate(
+      x = stringr::str_extract(x, "[[:digit:]]+") |> as.integer(),
+      y = max(y) - y + 1,
+      rgb = map(value, col2rgb),
+      r = map_dbl(rgb, pluck, 1),
+      g = map_dbl(rgb, pluck, 2),
+      b = map_dbl(rgb, pluck, 3)
+    )
+}
+```
+
+Now, return to the image.parquet file, do a filter join to get just a single row, select it, apply the helper, and plot.
+
+```{r showimg}
+# now show the associated blob
+read_parquet_duckdb("data/qc/image.parquet") |>
+  semi_join(img_with_many_clicks, by = join_by(id == img_id)) |>
+  pluck("img", 1) |>
+  readPNG() |>
+  to_tbl() |>
+  ggplot(aes(x = x, y = y)) +
+  geom_spatial_rgb(aes(r = r, g = g, b = b)) +
+  coord_fixed() +
+  theme_void()
+```
+
+By referring back to img.parquet file, we can see metadata about the source file.
+
+```{r imgmeta}
+read_parquet_duckdb("data/qc/image.parquet") |>
+  semi_join(img_with_many_clicks, by = join_by(id == img_id)) |>
+  select(-img)
+```
+
+### Use of Ratings to Exclude Images
+
+These ratings can be used to exclude images from analyses. Here, we show how to exclude all functional images that were generated from fieldmaps that were out of register.
+
+```{r}
+# grab all fieldmap images
+fmap_coregistration_images <- read_parquet_duckdb("data/qc/image.parquet") |>
+  filter(step == 3) |>
+  select(id, file1, file2, display)
+
+# search for all coregistrations that were marked as having failed
+definite_coregistration_failures <- read_parquet_duckdb(
+  "data/qc/rating.parquet"
+) |>
+  inner_join(fmap_coregistration_images, by = join_by(img_id == id)) |>
+  filter(rating == 2) |>
+  select(file1, file2, display) |>
+  # pluck out useful metadata from the image
+  mutate(
+    sub = stringr::str_extract(file1, "(?<=sub-)[[:digit:]]{5}") |>
+      as.integer(),
+    task = stringr::str_extract(file1, "cuff|rest"),
+    run = stringr::str_extract(file1, "(?<=run-0)[1|2]")
+  ) |>
+  distinct(sub, task, run) |>
+  collect()
+
+```
+
+How many failed coregistrations were there?
+
+```{r}
+nrow(definite_coregistration_failures)
+```
+
+This is the table that you'd use to exclude files from analyses.
+
+```{r}
+definite_coregistration_failures |>
+  head()
+```
+
+## Considerations While Working on the Project
+
+### Data Generation
+
+Derivative QC is a work in progress, and so we expect substantial improvements in subsequent releases. As of this release, only fieldmaps coregistrations have been exhaustively checked. In future releases, we expect more targets to be reviewed.
+
+Quality control was done with the A2CPS Derivative Image Review Tool (DIRT), which is under active development here: https://github.com/psadil/django-qcapp-ratings/tree/main/src/django_qcapp_ratings. 
+
+### Citations
+
+{{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.
