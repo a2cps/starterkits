@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; FSL Anat – A2CPS Starter Kits</title>
+<title>12&nbsp; Orientation Distribution Function Reconstruction – A2CPS Starter Kits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -88,8 +88,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./cat12.html" rel="next">
-<link href="./brainager.html" rel="prev">
+<link href="./fcn.html" rel="next">
+<link href="./qsiprep.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -141,37 +141,8 @@ gtag('js', new Date());
 gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<meta name="citation_title" content="[[7]{.chapter-number}&nbsp; [FSL Anat]{.chapter-title}]{#sec-fslanat .quarto-section-identifier}">
+<meta name="citation_title" content="[12]{.chapter-number}&nbsp; [Orientation Distribution Function Reconstruction]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Corticostriatal functional connectivity predicts transition to chronic back pain;,citation_author=Marwan N Baliki;,citation_author=Bogdan Petre;,citation_author=Souraya Torbey;,citation_author=Kristina M Herrmann;,citation_author=Lejian Huang;,citation_author=Thomas J Schnitzer;,citation_author=Howard L Fields;,citation_author=A Vania Apkarian;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=8;,citation_doi=10.1038/nn.3153;,citation_volume=15;,citation_journal_title=Nature neuroscience;,citation_publisher=Nature Publishing Group US New York;">
 <meta name="citation_reference" content="citation_title=MRI signatures of brain age and disease over the lifespan based on a deep brain network and 14 468 individuals worldwide;,citation_author=Vishnu M Bashyam;,citation_author=Guray Erus;,citation_author=Jimit Doshi;,citation_author=Mohamad Habes;,citation_author=Ilya M Nasrallah;,citation_author=Monica Truelove-Hill;,citation_author=Dhivya Srinivasan;,citation_author=Liz Mamourian;,citation_author=Raymond Pomponio;,citation_author=Yong Fan;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_issue=7;,citation_doi=10.1093/brain/awaa160;,citation_volume=143;,citation_journal_title=Brain;,citation_publisher=Oxford University Press;">
@@ -486,7 +457,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./fslanat.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">FSL Anat</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./reconstruction.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Orientation Distribution Function Reconstruction</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -564,7 +535,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./fslanat.html" class="sidebar-item-text sidebar-link active">
+  <a href="./fslanat.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">FSL Anat</span></span></a>
   </div>
 </li>
@@ -594,7 +565,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./reconstruction.html" class="sidebar-item-text sidebar-link">
+  <a href="./reconstruction.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Orientation Distribution Function Reconstruction</span></span></a>
   </div>
 </li>
@@ -715,17 +686,17 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">7.1</span> Starting Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">12.1</span> Starting Project</a>
   <ul class="collapse">
-  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">7.1.1</span> Locate data</a></li>
-  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">7.1.2</span> Extract data</a></li>
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">12.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">12.1.2</span> Extract Data</a></li>
   </ul></li>
-  <li><a href="#considerations-while-working-on-projects" id="toc-considerations-while-working-on-projects" class="nav-link" data-scroll-target="#considerations-while-working-on-projects"><span class="header-section-number">7.2</span> Considerations While Working on Projects</a>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">12.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">7.2.1</span> Variability Across Scanners</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">7.2.2</span> Data Quality</a></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">7.2.3</span> Methods</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">7.2.4</span> Citations</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">12.2.1</span> Data Generation</a></li>
+  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">12.2.2</span> Variability Across Scanners</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">12.2.3</span> Data Quality</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">12.2.4</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -736,7 +707,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-fslanat" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">FSL Anat</span></span></h1>
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Orientation Distribution Function Reconstruction</span></h1>
 </div>
 
 
@@ -753,545 +724,103 @@ window.Quarto = {
 </header>
 
 
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.png" class="img-fluid figure-img"></p>
-<figcaption>Subcortical Structures (source: https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html)</figcaption>
-</figure>
-</div>
-<p>The structural T1w scan in the A2CPS neuroimaging protocol is the source of several pre-specified biomarkers. Two of these biomarkers–the volumes of the hippocampi and amygdalae–are derived from a tool in the Functional Magnetic Resonance Imaging of the Brain (FMRIB) Software Library (FSL): <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html">FMRIB’s Integrated Registration and Segmentation Tool (FIRST)</a>. The A2CPS pipeline calls FIRST as a part of FSL standard pipeline for processing anatomical images (<a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html">fsl_anat</a>), which generates several outputs in addition to the biomarkers. This kit provides and overview of the outputs available from that pipeline.</p>
-<section id="starting-project" class="level2 page-columns page-full" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">7.1</span> Starting Project</h2>
-<section id="locate-data" class="level3" data-number="7.1.1">
-<h3 data-number="7.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">7.1.1</span> Locate data</h3>
-<p>In the release, data are stored underneath the <code>mris/derivatives</code> folder:</p>
+<p>One of the primary aims of collecting diffusion MRI data is to estimate the voxelwise Orientation Distribution Fuctions. These functions describe how water diffuses within each voxel. There are many different methods for reconstructing such functions. The A2CPS project relies on two methods, one that produces regional summary metrics, and another for tractography. This kit describes the former.</p>
+<section id="starting-project" class="level2 page-columns page-full" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">12.1</span> Starting Project</h2>
+<section id="locate-data" class="level3 page-columns page-full" data-number="12.1.1">
+<h3 data-number="12.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">12.1.1</span> Locate Data</h3>
+<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>These outputs are under <code>derivatives/qsirecon_fsl_dtifit</code>. There are three groups of outputs.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls qsirecon_fsl_dtifit</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">dtifit</span>  qsirecon-fsl  split_shells</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>These outputs were generated in sequence. First, the qsirecon-fsl were generated by the qsirecon workflow <a href="https://qsirecon.readthedocs.io/en/latest/builtin_workflows.html#reorient-fslstd"><code>reorient_fslstd</code></a>, which takes the outputs of <a href="qsiprep.html" class="quarto-xref"><span>Chapter 11</span></a> and reorients them into the format that is expected by the <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/index.html">FSL Diffusion Toolbox</a>. For details on the organization of that folder, see <a href="https://qsirecon.readthedocs.io/en/latest/outputs.html">the QSIRecon documentation</a>. Then, the <code>split_shells</code> outputs were generated. They contain the reoriented outputs, but split into different bvals. For example</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/fslanat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree <span class="at">-l</span> qsirecon_fsl_dtifit/split_shells/sub-10010</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">qsirecon_fsl_dtifit/split_shells/sub-10010</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> dwi</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b0_space-T1w_dwi.bval </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b0_space-T1w_dwi.bvec </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b0_space-T1w_dwi.nii.gz </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b1000_space-T1w_dwi.bval </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b1000_space-T1w_dwi.bvec </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b1000_space-T1w_dwi.nii.gz </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b2000_space-T1w_dwi.bval </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b2000_space-T1w_dwi.bvec </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b2000_space-T1w_dwi.nii.gz </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b3000_space-T1w_dwi.bval </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b3000_space-T1w_dwi.bvec </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b3000_space-T1w_dwi.nii.gz </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b500_space-T1w_dwi.bval </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10010_ses-V1_acq-b500_space-T1w_dwi.bvec </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> sub-10010_ses-V1_acq-b500_space-T1w_dwi.nii.gz </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span> directories, 15 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This folder contains all of the outputs for every participant, with subject folders of the form <code>sub-[recordid]_ses-[protocolid]_T1w.anat</code>. Detailed descriptions of the outputs are available in the <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html#outputs"><code>fsl_anat</code> documentation</a>.</p>
-<p>Many users will not need the raw <code>fsl_anat</code> outputs and can instead rely a table in which the subcortical measures have been aggregated: <code>fslanat.tsv</code>. A data dictionary for this table is available in the <code>fslanat.json</code> file, and also <a href="https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/fslanat.json">online</a>.</p>
-</section>
-<section id="extract-data" class="level3 page-columns page-full" data-number="7.1.2">
-<h3 data-number="7.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">7.1.2</span> Extract data</h3>
-<p>In this kit, we will compare volumetric measurements that are produced by both FIRST and FreeSurfer (<a href="freesurfer.html" class="quarto-xref"><span>Chapter 9</span></a>). In some circumstances, the volumes are largely interchangeable, but for some structures these tools are known to produce fairly different estimates of volume <span class="citation" data-cites="sadil_comparing_2024">(<a href="references.html#ref-sadil_comparing_2024" role="doc-biblioref">Sadil &amp; Lindquist, 2024</a>)</span>. Let’s replicate part of that analysis.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-sadil_comparing_2024" class="csl-entry" role="listitem">
-Sadil, P., &amp; Lindquist, M. A. (2024). Comparing automated subcortical volume estimation methods; amygdala volumes estimated by FSL and FreeSurfer have poor consistency. In <em>Human Brain Mapping</em> (No. 17; Vol. 45, p. e70027). <a href="https://doi.org/10.1002/hbm.70027">https://doi.org/10.1002/hbm.70027</a>
-</div></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agree)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>First, load in the cortical volumes provided by FSL.</p>
+<p>Finally, the <code>dtifit</code> outputs were generated by running FSL’s <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/dtifit.html"><code>dtifit</code></a> on different combinations of the bvalues.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fslanat <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/fslanat/fslanat.tsv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fslanat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 7%">
-<col style="width: 6%">
-<col style="width: 4%">
-<col style="width: 3%">
-<col style="width: 5%">
-<col style="width: 4%">
-<col style="width: 3%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 5%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 6%">
-<col style="width: 5%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 1%">
-<col style="width: 1%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: right;">Brain-Stem /4th Ventricle</th>
-<th style="text-align: right;">Left-Accumbens-area</th>
-<th style="text-align: right;">Left-Amygdala</th>
-<th style="text-align: right;">Left-Caudate</th>
-<th style="text-align: right;">Left-Hippocampus</th>
-<th style="text-align: right;">Left-Pallidum</th>
-<th style="text-align: right;">Left-Putamen</th>
-<th style="text-align: right;">Left-Thalamus-Proper</th>
-<th style="text-align: right;">Right-Accumbens-area</th>
-<th style="text-align: right;">Right-Amygdala</th>
-<th style="text-align: right;">Right-Caudate</th>
-<th style="text-align: right;">Right-Hippocampus</th>
-<th style="text-align: right;">Right-Pallidum</th>
-<th style="text-align: right;">Right-Putamen</th>
-<th style="text-align: right;">Right-Thalamus-Proper</th>
-<th style="text-align: right;">t1_to_mni_scaling</th>
-<th style="text-align: right;">t1_space_orig_volume</th>
-<th style="text-align: right;">t1_space_mni_volume</th>
-<th style="text-align: right;">sub</th>
-<th style="text-align: left;">ses</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">24714</td>
-<td style="text-align: right;">582</td>
-<td style="text-align: right;">1696</td>
-<td style="text-align: right;">3631</td>
-<td style="text-align: right;">3213</td>
-<td style="text-align: right;">2040</td>
-<td style="text-align: right;">4107</td>
-<td style="text-align: right;">8117</td>
-<td style="text-align: right;">426</td>
-<td style="text-align: right;">1132</td>
-<td style="text-align: right;">3634</td>
-<td style="text-align: right;">3206</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">4174</td>
-<td style="text-align: right;">7751</td>
-<td style="text-align: right;">0.514789</td>
-<td style="text-align: right;">1051418</td>
-<td style="text-align: right;">541258.4</td>
-<td style="text-align: right;">20034</td>
-<td style="text-align: left;">V1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20177</td>
-<td style="text-align: right;">497</td>
-<td style="text-align: right;">1472</td>
-<td style="text-align: right;">3309</td>
-<td style="text-align: right;">3951</td>
-<td style="text-align: right;">1681</td>
-<td style="text-align: right;">4385</td>
-<td style="text-align: right;">7400</td>
-<td style="text-align: right;">365</td>
-<td style="text-align: right;">1134</td>
-<td style="text-align: right;">3305</td>
-<td style="text-align: right;">3873</td>
-<td style="text-align: right;">1746</td>
-<td style="text-align: right;">4067</td>
-<td style="text-align: right;">7390</td>
-<td style="text-align: right;">0.515193</td>
-<td style="text-align: right;">1030126</td>
-<td style="text-align: right;">530713.7</td>
-<td style="text-align: right;">10767</td>
-<td style="text-align: left;">V1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">22711</td>
-<td style="text-align: right;">609</td>
-<td style="text-align: right;">1645</td>
-<td style="text-align: right;">2822</td>
-<td style="text-align: right;">4529</td>
-<td style="text-align: right;">1705</td>
-<td style="text-align: right;">4857</td>
-<td style="text-align: right;">7520</td>
-<td style="text-align: right;">308</td>
-<td style="text-align: right;">1300</td>
-<td style="text-align: right;">2876</td>
-<td style="text-align: right;">4219</td>
-<td style="text-align: right;">1598</td>
-<td style="text-align: right;">4128</td>
-<td style="text-align: right;">7253</td>
-<td style="text-align: right;">0.710936</td>
-<td style="text-align: right;">1015779</td>
-<td style="text-align: right;">722153.9</td>
-<td style="text-align: right;">20275</td>
-<td style="text-align: left;">V1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">21246</td>
-<td style="text-align: right;">394</td>
-<td style="text-align: right;">1164</td>
-<td style="text-align: right;">2863</td>
-<td style="text-align: right;">2414</td>
-<td style="text-align: right;">1620</td>
-<td style="text-align: right;">4274</td>
-<td style="text-align: right;">7011</td>
-<td style="text-align: right;">409</td>
-<td style="text-align: right;">1320</td>
-<td style="text-align: right;">2833</td>
-<td style="text-align: right;">3356</td>
-<td style="text-align: right;">1561</td>
-<td style="text-align: right;">3795</td>
-<td style="text-align: right;">6830</td>
-<td style="text-align: right;">0.968790</td>
-<td style="text-align: right;">944113</td>
-<td style="text-align: right;">914647.2</td>
-<td style="text-align: right;">10292</td>
-<td style="text-align: left;">V1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">24811</td>
-<td style="text-align: right;">625</td>
-<td style="text-align: right;">1366</td>
-<td style="text-align: right;">3152</td>
-<td style="text-align: right;">3429</td>
-<td style="text-align: right;">1967</td>
-<td style="text-align: right;">4824</td>
-<td style="text-align: right;">8532</td>
-<td style="text-align: right;">517</td>
-<td style="text-align: right;">1545</td>
-<td style="text-align: right;">3083</td>
-<td style="text-align: right;">3569</td>
-<td style="text-align: right;">1833</td>
-<td style="text-align: right;">4551</td>
-<td style="text-align: right;">7725</td>
-<td style="text-align: right;">0.544569</td>
-<td style="text-align: right;">1142600</td>
-<td style="text-align: right;">622224.5</td>
-<td style="text-align: right;">10826</td>
-<td style="text-align: left;">V1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">24092</td>
-<td style="text-align: right;">676</td>
-<td style="text-align: right;">1616</td>
-<td style="text-align: right;">2897</td>
-<td style="text-align: right;">4227</td>
-<td style="text-align: right;">1878</td>
-<td style="text-align: right;">4573</td>
-<td style="text-align: right;">9116</td>
-<td style="text-align: right;">553</td>
-<td style="text-align: right;">1416</td>
-<td style="text-align: right;">3080</td>
-<td style="text-align: right;">4447</td>
-<td style="text-align: right;">1903</td>
-<td style="text-align: right;">4665</td>
-<td style="text-align: right;">9040</td>
-<td style="text-align: right;">1.228005</td>
-<td style="text-align: right;">1224947</td>
-<td style="text-align: right;">1504241.0</td>
-<td style="text-align: right;">20104</td>
-<td style="text-align: left;">V1</td>
-</tr>
-</tbody>
-</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls qsirecon_fsl_dtifit/dtifit/</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">b1000</span>  b2000  b3000  multishell</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-</div>
-<p>In addition to subcortical volumetric information, that table contains a few fields related to the overall size of the brain (<code>t1_to_mni_scaling</code>, <code>t1_space_orig_volume</code>, <code>t1_space_mni_volume</code>). Drop those fields. To make it easier to join with FreeSurfer values, we’ll also unpivot the table into a wider format, and extract information about the hemisphere.</p>
+<p>Most of those are self-explanatory (e.g., the <code>b1000</code> subfolder contains the fits with the b1000 shell). The <code>multishell</code> outputs were generated from the full dMRI scan (that is, all shells). Which of these outputs to use is up to the individual researcher. According to the ABCD, the protocol and analysis plan on which A2CPS dMRI is based, <a href="https://docs.abcdstudy.org/latest/documentation/imaging/type_dmri.html#mr_y_dti">many researchers may prefer the multishell outputs</a>. That said, the tensor model is known to fit poorly to diffusion data with bvalues larger than about 1500 <span class="citation" data-cites="henriques_2021_diffusional">Jensen et al. (<a href="references.html#ref-jensen_2005_diffusional" role="doc-biblioref">2005</a>)</span>, which is a majority of this sequence. Given that, some researchers may prefer the b1000 outputs, but note that these are based on only 15 directions.</p>
+<div class="no-row-height column-margin column-container"></div><p>The contents of each of the <code>dtifit</code> subfolders are in a “bidsish” organization, containing <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/dtifit.html#outputs-of-dtifit">the standard outputs of <code>dtifit</code></a>, grouped by subject and session.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>subcort_fsl <span class="ot">&lt;-</span> fslanat <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">"t1_"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(sub, ses), <span class="at">values_to =</span> <span class="st">"volume"</span>, <span class="at">names_to =</span> <span class="st">"structure"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(structure, <span class="fu">c</span>(<span class="st">"hemisphere"</span>, <span class="st">"structure"</span>), <span class="at">sep =</span> <span class="st">"-"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(subcort_fsl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: right;">sub</th>
-<th style="text-align: left;">ses</th>
-<th style="text-align: left;">hemisphere</th>
-<th style="text-align: left;">structure</th>
-<th style="text-align: right;">volume</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">20034</td>
-<td style="text-align: left;">V1</td>
-<td style="text-align: left;">Brain</td>
-<td style="text-align: left;">Stem /4th Ventricle</td>
-<td style="text-align: right;">24714</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20034</td>
-<td style="text-align: left;">V1</td>
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Accumbens</td>
-<td style="text-align: right;">582</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20034</td>
-<td style="text-align: left;">V1</td>
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Amygdala</td>
-<td style="text-align: right;">1696</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20034</td>
-<td style="text-align: left;">V1</td>
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Caudate</td>
-<td style="text-align: right;">3631</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">20034</td>
-<td style="text-align: left;">V1</td>
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Hippocampus</td>
-<td style="text-align: right;">3213</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">20034</td>
-<td style="text-align: left;">V1</td>
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Pallidum</td>
-<td style="text-align: right;">2040</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>Now, grab the equivalent information from FreeSurfer.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>subcort_freesurfer <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/freesurfer/aseg.tsv"</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    StructName,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Thalamus|Putamen|Pallidum|Hippocampus|Amygdala|Accumbens"</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(StructName, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"hemisphere"</span>, <span class="st">"structure"</span>), <span class="at">sep =</span> <span class="st">"-"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">volume =</span> Volume_mm3, hemisphere, structure, sub, ses)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The tables may now be combined. Note that, while combining them, we add an additional column to keep track of which method produced the volume.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>subcort <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">fsl =</span> subcort_fsl, <span class="at">freesurfer =</span> subcort_freesurfer),</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"method"</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> method, <span class="at">values_from =</span> volume) <span class="sc">|&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="co"># not every structure is available in both methods, and not every participant has been processed by both pipelines</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check which structures we have available</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>subcort <span class="sc">|&gt;</span> <span class="fu">distinct</span>(structure)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">structure</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Accumbens</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Amygdala</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Hippocampus</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Pallidum</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Putamen</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Thalamus</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>To compare the structures, make a simple <a href="https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot">Bland-Altman plot</a>.</p>
-<div id="fig-ba" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-ba-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>subcort <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Average =</span> (fsl <span class="sc">+</span> freesurfer) <span class="sc">/</span> <span class="dv">2</span>, <span class="at">Difference =</span> fsl <span class="sc">-</span> freesurfer) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Average, <span class="at">y =</span> Difference)) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> structure <span class="sc">+</span> hemisphere, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">shape =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ba</span>() <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Difference (FSL - FreeSurfer)"</span>) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Average ([FSL + FreeSurfer]/2)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="fslanat_files/figure-html/plotting-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ba-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.1: Comparison of Subcortical Volumes as Estimated by FSL and FreeSurfer. Each dot corresponds to a single structure of a single participant. The blue lines span the 95% confidence interval around the difference of the two estimates of volume, and the red lines are confidence intervals around the limits of agreement.
-</figcaption>
-</figure>
-</div>
-<p>As expected, there are overal differences in how the estimates provided by the two structures <a href="#fig-ba" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>. We can quantify these differences using the intraclass correlation coefficient.</p>
-<div id="tbl-icc" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
-<figure class="quarto-float quarto-float-tbl figure page-columns page-full">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-icc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;7.1: Consistency of Subcortical Volumes. The lower and upper bounds are 95% Confidence intervals, and the estimate is for the intraclass correlation. By the conventions of <span class="citation" data-cites="mcgraw_forming_1996">McGraw &amp; Wong (<a href="references.html#ref-mcgraw_forming_1996" role="doc-biblioref">1996</a>)</span>, this is also known as the <span class="math inline">\(ICC(C,1)\)</span>.
-</figcaption>
-<div class="no-row-height column-margin column-container"><div id="ref-mcgraw_forming_1996" class="csl-entry" role="listitem">
-McGraw, K. O., &amp; Wong, S. P. (1996). Forming inferences about some intraclass correlation coefficients. <em>Psychological Methods</em>, <em>1</em>(1), 30. <a href="https://doi.org/10.1037/1082-989X.1.1.30">https://doi.org/10.1037/1082-989X.1.1.30</a>
-</div></div><div aria-describedby="tbl-icc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>subcort <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_nest</span>(hemisphere, structure) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fit =</span> <span class="fu">map</span>(</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      data,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">icc</span>(</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cbind</span>(.x<span class="sc">$</span>fsl, .x<span class="sc">$</span>freesurfer),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">model =</span> <span class="st">"twoway"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"consistency"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">unit =</span> <span class="st">"single"</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">map_dbl</span>(fit, pluck, <span class="st">"value"</span>),</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="fu">map_dbl</span>(fit, pluck, <span class="st">"lbound"</span>),</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper =</span> <span class="fu">map_dbl</span>(fit, pluck, <span class="st">"ubound"</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>data, <span class="sc">-</span>fit) <span class="sc">|&gt;</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(structure, hemisphere)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">hemisphere</th>
-<th style="text-align: left;">structure</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">lower</th>
-<th style="text-align: right;">upper</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Accumbens</td>
-<td style="text-align: right;">0.5545339</td>
-<td style="text-align: right;">0.5099570</td>
-<td style="text-align: right;">0.5961404</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Right</td>
-<td style="text-align: left;">Accumbens</td>
-<td style="text-align: right;">0.4525440</td>
-<td style="text-align: right;">0.4016893</td>
-<td style="text-align: right;">0.5006163</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Amygdala</td>
-<td style="text-align: right;">0.1712640</td>
-<td style="text-align: right;">0.1102848</td>
-<td style="text-align: right;">0.2309586</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Right</td>
-<td style="text-align: left;">Amygdala</td>
-<td style="text-align: right;">0.2097839</td>
-<td style="text-align: right;">0.1495811</td>
-<td style="text-align: right;">0.2684369</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Hippocampus</td>
-<td style="text-align: right;">0.5341598</td>
-<td style="text-align: right;">0.4882153</td>
-<td style="text-align: right;">0.5771516</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Right</td>
-<td style="text-align: left;">Hippocampus</td>
-<td style="text-align: right;">0.5844969</td>
-<td style="text-align: right;">0.5420350</td>
-<td style="text-align: right;">0.6239818</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Pallidum</td>
-<td style="text-align: right;">0.4685240</td>
-<td style="text-align: right;">0.4185594</td>
-<td style="text-align: right;">0.5156609</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Right</td>
-<td style="text-align: left;">Pallidum</td>
-<td style="text-align: right;">0.4980915</td>
-<td style="text-align: right;">0.4498653</td>
-<td style="text-align: right;">0.5434214</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Putamen</td>
-<td style="text-align: right;">0.5330968</td>
-<td style="text-align: right;">0.4870825</td>
-<td style="text-align: right;">0.5761597</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Right</td>
-<td style="text-align: left;">Putamen</td>
-<td style="text-align: right;">0.5511217</td>
-<td style="text-align: right;">0.5063117</td>
-<td style="text-align: right;">0.5929634</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Left</td>
-<td style="text-align: left;">Thalamus</td>
-<td style="text-align: right;">0.3977454</td>
-<td style="text-align: right;">0.3440988</td>
-<td style="text-align: right;">0.4488036</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Right</td>
-<td style="text-align: left;">Thalamus</td>
-<td style="text-align: right;">0.4593056</td>
-<td style="text-align: right;">0.4088233</td>
-<td style="text-align: right;">0.5069856</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</figure>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># within qsirecon_fsl_dtifit/dtifit/b1000</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree sub-10220</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10220</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> dwi</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_FA.nii.gz</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_L1.nii.gz</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_L2.nii.gz</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_L3.nii.gz</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_MD.nii.gz</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_MO.nii.gz</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_S0.nii.gz</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_sse.nii.gz</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_tensor.nii.gz</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_V1.nii.gz</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_V2.nii.gz</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> sub-10220_ses-V1_acq-b1000_space-T1w_dwi_V3.nii.gz</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span> directories, 12 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
+<section id="extract-data" class="level3" data-number="12.1.2">
+<h3 data-number="12.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">12.1.2</span> Extract Data</h3>
+<p>Most of these outputs are nifti images, and so any tool capable of reading them will work. Some neuroimaging graphical user interfaces also have built in tools for viewing the tensors. For example, by default the FSL viewer <a href="https://open.oxcin.ox.ac.uk/pages/fsl/fsleyes/fsleyes/userdoc/"><code>fsleyes</code></a> will accept as input a folder with <code>dtifit</code> outputs and by default <a href="https://open.oxcin.ox.ac.uk/pages/fsl/fsleyes/fsleyes/userdoc/overlays.html#tensor">display the estimated tensors</a>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> fsleyes dwi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>There are several options for refining the display. For example, <a href="https://open.oxcin.ox.ac.uk/pages/fsl/fsleyes/fsleyes/userdoc/overlays.html#vector">fsleyes can also produce variations on color FA maps</a>.</p>
 </section>
-<section id="considerations-while-working-on-projects" class="level2 page-columns page-full" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="considerations-while-working-on-projects"><span class="header-section-number">7.2</span> Considerations While Working on Projects</h2>
-<section id="variability-across-scanners" class="level3" data-number="7.2.1">
-<h3 data-number="7.2.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">7.2.1</span> Variability Across Scanners</h3>
+</section>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">12.2</span> Considerations While Working on the Project</h2>
+<section id="data-generation" class="level3 page-columns page-full" data-number="12.2.1">
+<h3 data-number="12.2.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">12.2.1</span> Data Generation</h3>
+<p>These outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/qsirecon-fsl_dtifit_app">qsirecon-fsl_dtifit_app</a>. As discussed above, the orientation distribution functions were reconstructed with the standard diffusion tensor imaging model, as estimated by FSL’s <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/dtifit.html">dtifit</a> (using the weighted-least squares option).</p>
+<p>For a good general introduction to DTI, see <a href="https://qsirecon.readthedocs.io/en/latest/models/dti.html#diffusion-tensor-imaging-dti">the QSIRecon documentation</a>.</p>
+<p>Note that the tensor model is known to fit poorly to diffusion data with bvalues larger than about 1500 <span class="citation" data-cites="henriques_2021_diffusional">Jensen et al. (<a href="references.html#ref-jensen_2005_diffusional" role="doc-biblioref">2005</a>)</span>. Several advanced models have been proposed, and the A2CPS neuroimaging DIRC is actively testing these. Outputs from another model are expected to be available in the release 4 series.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-jensen_2005_diffusional" class="csl-entry" role="listitem">
+Jensen, J. H., Helpern, J. A., Ramani, A., Lu, H., &amp; Kaczynski, K. (2005). Diffusional kurtosis imaging: The quantification of non-gaussian water diffusion by means of magnetic resonance imaging. <em>Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine</em>, <em>53</em>(6), 1432–1440. <a href="https://doi.org/10.1002/mrm.20508">https://doi.org/10.1002/mrm.20508</a>
+</div></div></section>
+<section id="variability-across-scanners" class="level3" data-number="12.2.2">
+<h3 data-number="12.2.2" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">12.2.2</span> Variability Across Scanners</h3>
 <p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
-<section id="data-quality" class="level3" data-number="7.2.2">
-<h3 data-number="7.2.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">7.2.2</span> Data Quality</h3>
+<section id="data-quality" class="level3" data-number="12.2.3">
+<h3 data-number="12.2.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">12.2.3</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
-<section id="methods" class="level3" data-number="7.2.3">
-<h3 data-number="7.2.3" class="anchored" data-anchor-id="methods"><span class="header-section-number">7.2.3</span> Methods</h3>
-<p>For a subset of participants, the standard <code>fsl_anat</code> pipeline needed to be modified.</p>
-<section id="field-of-view-estimation-in-uc" class="level4" data-number="7.2.3.1">
-<h4 data-number="7.2.3.1" class="anchored" data-anchor-id="field-of-view-estimation-in-uc"><span class="header-section-number">7.2.3.1</span> Field-of-View Estimation in UC</h4>
-<p>An early step in this pipeline involves estimating the field-of-view and cropping the image to a standard size. The cropping is done with the FSL tool <code>robustfov</code>, which uses a heuristic to first identify the most superior slice that could include the skull, uses a pre-specified distance in mm to select an inferior slice that is expected to be below the cerebellum, and crops everything outside of those slices. The heuristic is based on the quantiles of intensity values, but this heuristic was observed to often fail for data collected with SENSE.</p>
-<p>To accommodate scans that failed for this reason, a small amount of noise was added to the entire image, and then the field-of-view was estimated on this degraded image. The field-of-view was then applied to the original image, and that cropped image was provided to <code>fsl_anat</code> (with automated cropping disabled). This workaround was recommended by <a href="https://www.jiscmail.ac.uk/cgi-bin/wa-jisc.exe?A2=ind2307&amp;L=FSL&amp;D=0&amp;P=182032">Mark Jenkinson on the FSL Archives</a>, and it was applied to <a href="https://github.com/a2cps/mri_imaging_pipeline/blob/96f36b3a5cd9f9fa3c74d9239f1b864cdd603dfc/fslanat_actor/reactor.py#L26-L92">these subjects</a>.</p>
-</section>
-<section id="high-intensity-voxels" class="level4" data-number="7.2.3.2">
-<h4 data-number="7.2.3.2" class="anchored" data-anchor-id="high-intensity-voxels"><span class="header-section-number">7.2.3.2</span> High-Intensity Voxels</h4>
-<p>A subset of cases exhibited poor alignment to the standard space, with the misalignment driven by high-intensity voxels from outside of the brain. The extreme intensity values may have been driven by relatively high proportions of fatty tissue. For cases where these failures were identified, a mask was generated from the top 1% of voxels, which was then visually inspected to confirm that it did not include any voxels in the brain. That mask was then provided to <code>fsl_anat</code> as a “lesion” mask (via a hidden option), resulting in those voxels being ignored during alignment. In instances where the mask included brain voxels, the <code>fsl_anat</code> results were not included. The list of participants this fix was applied to is <a href="https://github.com/a2cps/mri_imaging_pipeline/blob/96f36b3a5cd9f9fa3c74d9239f1b864cdd603dfc/fslanat_actor/reactor.py#L94-L102">here</a>.</p>
-</section>
-</section>
-<section id="citations" class="level3 page-columns page-full" data-number="7.2.4">
-<h3 data-number="7.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">7.2.4</span> Citations</h3>
-<p>The fsl_anat pipeline relies on several tools that are the products of research by the FMRIB team. If you use these derivatives in your analyses, please follow the instructions for citations here: https://fsl.fmrib.ox.ac.uk/fsl/docs/index.html.</p>
-<p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
+<section id="citations" class="level3 page-columns page-full" data-number="12.2.4">
+<h3 data-number="12.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">12.2.4</span> Citations</h3>
+<p>The standard DTI reference is <span class="citation" data-cites="basser1994mr">Basser et al. (<a href="references.html#ref-basser1994mr" role="doc-biblioref">1994</a>)</span>. These outputs used a workflow from QSIRecon,</p>
+<div class="no-row-height column-margin column-container"><div id="ref-basser1994mr" class="csl-entry" role="listitem">
+Basser, P. J., Mattiello, J., &amp; LeBihan, D. (1994). MR diffusion tensor spectroscopy and imaging. <em>Biophysical Journal</em>, <em>66</em>(1), 259–267. <a href="https://doi.org/10.1016/S0006-3495(94)80775-1">https://doi.org/10.1016/S0006-3495(94)80775-1</a>
+</div></div><p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
 <p>Data were provided [in part] by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/ Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
 </blockquote>
@@ -1737,13 +1266,13 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./brainager.html" class="pagination-link" aria-label="Brain Age">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Brain Age</span></span>
+      <a href="./qsiprep.html" class="pagination-link" aria-label="QSIPrep">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">QSIPrep</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./cat12.html" class="pagination-link" aria-label="Voxel-Based Morphometry">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Voxel-Based Morphometry</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./fcn.html" class="pagination-link" aria-label="Functional Connectivity">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Functional Connectivity</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
