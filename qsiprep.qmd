@@ -5,7 +5,7 @@ library(readr)
 ```
 
 
-# QSIPrep
+# QSIPrep {#sec-qsiprep}
 
 Before being analyzed, structural and diffusion neuroimaging data undergo a core set of preprocessing steps. These steps include head motion correction, distortion correction, denoising, Gibbs unringing, coregistration (between structural and functional), and several others. The A2CPS project does this preprocessing with [QSIPrep](https://qsiprep.readthedocs.io/en/latest). The QSIPrep derivatives are useful when assessing the quality of preprocessing, or implementing a custom reconstruction or tracking algorithm. 
 

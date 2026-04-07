@@ -24,6 +24,7 @@ book:
     - freesurfer.qmd
     - fmriprep.qmd
     - qsiprep.qmd
+    - reconstruction.qmd
     - fcn.qmd
     - gift.qmd
     - postgift.qmd
