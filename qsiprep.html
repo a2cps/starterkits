@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>12&nbsp; Functional Connectivity – A2CPS Starter Kits</title>
+<title>11&nbsp; QSIPrep – A2CPS Starter Kits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -88,8 +88,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./gift.html" rel="next">
-<link href="./qsiprep.html" rel="prev">
+<link href="./fcn.html" rel="next">
+<link href="./fmriprep.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -141,8 +141,37 @@ gtag('js', new Date());
 gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta name="citation_title" content="[[12]{.chapter-number}&nbsp; [Functional Connectivity]{.chapter-title}]{#sec-functional-connectivity .quarto-section-identifier}">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta name="citation_title" content="[11]{.chapter-number}&nbsp; [QSIPrep]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Corticostriatal functional connectivity predicts transition to chronic back pain;,citation_author=Marwan N Baliki;,citation_author=Bogdan Petre;,citation_author=Souraya Torbey;,citation_author=Kristina M Herrmann;,citation_author=Lejian Huang;,citation_author=Thomas J Schnitzer;,citation_author=Howard L Fields;,citation_author=A Vania Apkarian;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=8;,citation_doi=10.1038/nn.3153;,citation_volume=15;,citation_journal_title=Nature neuroscience;,citation_publisher=Nature Publishing Group US New York;">
 <meta name="citation_reference" content="citation_title=MRI signatures of brain age and disease over the lifespan based on a deep brain network and 14 468 individuals worldwide;,citation_author=Vishnu M Bashyam;,citation_author=Guray Erus;,citation_author=Jimit Doshi;,citation_author=Mohamad Habes;,citation_author=Ilya M Nasrallah;,citation_author=Monica Truelove-Hill;,citation_author=Dhivya Srinivasan;,citation_author=Liz Mamourian;,citation_author=Raymond Pomponio;,citation_author=Yong Fan;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_issue=7;,citation_doi=10.1093/brain/awaa160;,citation_volume=143;,citation_journal_title=Brain;,citation_publisher=Oxford University Press;">
@@ -454,7 +483,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./fcn.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Functional Connectivity</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./qsiprep.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">QSIPrep</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -556,13 +585,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./qsiprep.html" class="sidebar-item-text sidebar-link">
+  <a href="./qsiprep.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">QSIPrep</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./fcn.html" class="sidebar-item-text sidebar-link active">
+  <a href="./fcn.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Functional Connectivity</span></span></a>
   </div>
 </li>
@@ -677,17 +706,17 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">12.1</span> Starting Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">11.1</span> Starting Project</a>
   <ul class="collapse">
-  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">12.1.1</span> Locate data</a></li>
-  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">12.1.2</span> Extract data</a></li>
-  <li><a href="#example-analysis-discriminability" id="toc-example-analysis-discriminability" class="nav-link" data-scroll-target="#example-analysis-discriminability"><span class="header-section-number">12.1.3</span> Example Analysis: Discriminability</a></li>
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">11.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">11.1.2</span> Extract Data</a></li>
   </ul></li>
-  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">12.2</span> Considerations While Working on the Project</a>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">11.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">12.2.1</span> Variability Across Scanners</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">12.2.2</span> Data Quality</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">12.2.3</span> Citations</a></li>
+  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">11.2.1</span> Variability Across Scanners</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">11.2.2</span> Data Quality</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">11.2.3</span> Data Generation</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">11.2.4</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -698,7 +727,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-functional-connectivity" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Functional Connectivity</span></span></h1>
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">QSIPrep</span></h1>
 </div>
 
 
@@ -715,382 +744,89 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>Functional connectivity is a measurement of how activity in different regions of the brain are related. It is calculated by reducing the voxelwise timeseries into a set of parceled timecourses and then calculating a measure of connectivity between those timecourses.</p>
-<p>This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations. For functional connectivity derived from independent components, see the GIFT starter kit (forthcoming).</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mgc)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<section id="starting-project" class="level2 page-columns page-full" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">12.1</span> Starting Project</h2>
-<section id="locate-data" class="level3 page-columns page-full" data-number="12.1.1">
-<h3 data-number="12.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">12.1.1</span> Locate data</h3>
+<p>Before being analyzed, structural and diffusion neuroimaging data undergo a core set of preprocessing steps. These steps include head motion correction, distortion correction, denoising, Gibbs unringing, coregistration (between structural and functional), and several others. The A2CPS project does this preprocessing with <a href="https://qsiprep.readthedocs.io/en/latest">QSIPrep</a>. The QSIPrep derivatives are useful when assessing the quality of preprocessing, or implementing a custom reconstruction or tracking algorithm.</p>
+<section id="starting-project" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">11.1</span> Starting Project</h2>
+<section id="locate-data" class="level3" data-number="11.1.1">
+<h3 data-number="11.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">11.1.1</span> Locate Data</h3>
 <p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The functional connectivity derivatives are underneath <code>mris/derivatives/fcn</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/fcn/</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cleaned</span>  confounds  confounds.json  connectivity  connectivity.json  timeseries  timeseries.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The functional connectivity data is in a tabular format in the folder <code>connectivity</code>. The A2CPS dataset includes functional connectivity from several atlases, estimated using multiple methods. For details on the atlases, see the data dictionary <code>connectivity.json</code>.</p>
-<p>To enable flexibility, the timeseries parcellations are also provided in the folder <code>timeseries</code>, with data dictionary <code>timeseries.json</code>. These enable analyses such as dynamic connectivity or calculation of alternative measures of connectivity (e.g., partial correlation).</p>
-<p>The tabular data comprise parquet files that have been partitioned in a <a href="https://hive.apache.org/">hive style</a>. That is, subfolder names contain column information (e.g., participant label).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree connectivity <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 20</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">connectivity</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> sub=10003</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── ses=V1</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     ├── task=cuff</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp; └── run=1</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     ├── atlas=difumo_dimension-1024_resolution-2mm</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; ├── estimator=empirical</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; │&nbsp;&nbsp; └── part-0.parquet</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; └── estimator=leodit_wolf</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp;     └── part-0.parquet</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     ├── atlas=difumo_dimension-64_resolution-2mm</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; ├── estimator=empirical</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; │&nbsp;&nbsp; └── part-0.parquet</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; └── estimator=leodit_wolf</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp;     └── part-0.parquet</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     ├── atlas=dmn</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; ├── estimator=empirical</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; │&nbsp;&nbsp; └── part-0.parquet</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp; └── estimator=leodit_wolf</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     │&nbsp;&nbsp;     │&nbsp;&nbsp;     └── part-0.parquet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The timeseries were extracted from the NIfTI files in <code>cleaned</code>, which are the outputs of fMRIPrep after band-pass filtering (0.01 - 0.1Hz), quadratic detrending, and nuisance regression (<span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>). The nuisance regressors are stored in the folder <code>confounds</code>.</p>
-<div class="no-row-height column-margin column-container"></div></section>
-<section id="extract-data" class="level3 page-columns page-full" data-number="12.1.2">
-<h3 data-number="12.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">12.1.2</span> Extract data</h3>
-<p>Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Network (DMN) atlas (the nodal coordinates were derived from <span class="citation" data-cites="baliki_corticostriatal_2012">Baliki et al. (<a href="references.html#ref-baliki_corticostriatal_2012" role="doc-biblioref">2012</a>)</span>). In this case, we’ll restrict results to connectivities generated with the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance">empirical estimator</a>.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-baliki_corticostriatal_2012" class="csl-entry" role="listitem">
-Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. J., Fields, H. L., &amp; Apkarian, A. V. (2012). Corticostriatal functional connectivity predicts transition to chronic back pain. <em>Nature Neuroscience</em>, <em>15</em>(8), 1117–1119. <a href="https://doi.org/10.1038/nn.3153">https://doi.org/10.1038/nn.3153</a>
-</div></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dmn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas <span class="sc">==</span> <span class="st">"dmn"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator <span class="sc">==</span> <span class="st">"empirical"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, source, target, connectivity) <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: right;">sub</th>
-<th style="text-align: right;">source</th>
-<th style="text-align: right;">target</th>
-<th style="text-align: right;">connectivity</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>Notice that the <code>source</code> and <code>target</code> fields are simply integer indices for this atlas. As specified in <code>connectivity.json</code>, information about these regions is available in one of the A2CPS GitHub repos. That table can be read directly from a URL.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The QSIPrep derivatives are underneath <code>derivatives/qsiprep-V1</code>. Let’s take a look.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dmn_labels <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://raw.githubusercontent.com/a2cps/functional_connectivity/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv"</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>dmn_labels</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: right;">region</th>
-<th style="text-align: left;">label</th>
-<th style="text-align: right;">x</th>
-<th style="text-align: right;">y</th>
-<th style="text-align: right;">z</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">mPFC</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: right;">-2</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">rNAC</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">-8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">rInsula</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">-6</td>
-<td style="text-align: right;">-2</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">S1/M1</td>
-<td style="text-align: right;">-32</td>
-<td style="text-align: right;">-34</td>
-<td style="text-align: right;">66</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>After reading in the labels, they can be merged with the functional connectivity results.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dmn_labeled <span class="ot">&lt;-</span> dmn <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(dmn_labels, <span class="at">by =</span> <span class="fu">join_by</span>(source <span class="sc">==</span> region)) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>source, <span class="sc">-</span>x, <span class="sc">-</span>y, <span class="sc">-</span>z) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">source =</span> label) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(dmn_labels, <span class="at">by =</span> <span class="fu">join_by</span>(target <span class="sc">==</span> region)) <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>target, <span class="sc">-</span>x, <span class="sc">-</span>y, <span class="sc">-</span>z) <span class="sc">|&gt;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">target =</span> label)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn_labeled)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: right;">sub</th>
-<th style="text-align: right;">connectivity</th>
-<th style="text-align: left;">source</th>
-<th style="text-align: left;">target</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/qsiprep-V1 <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003.html</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008.html</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010.html</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10011</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10011.html</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10013</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10013.html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="example-analysis-discriminability" class="level3 page-columns page-full" data-number="12.1.3">
-<h3 data-number="12.1.3" class="anchored" data-anchor-id="example-analysis-discriminability"><span class="header-section-number">12.1.3</span> Example Analysis: Discriminability</h3>
-<p>In this section, we show how the connectivity results could be used to calculate discriminability <span class="citation" data-cites="bridgeford_eliminating_2021">(<a href="references.html#ref-bridgeford_eliminating_2021" role="doc-biblioref"><span class="nocase">Bridgeford et al.</span>, 2021</a>)</span>, which is a multivariate measure of replicability like the intra-class correlation coefficient or fingerprinting. Discriminability ranges from 0 - 1, with 0.5 indicating something like an equal chance that the two scans from the same participants are as similar as the two scans from different participants, and 1 indicating that the two scans from the same participant are always more similar than two scans from differing participants.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-bridgeford_eliminating_2021" class="csl-entry" role="listitem">
-<span class="nocase">Bridgeford, E. W., Wang, S., Wang, Z., Xu, T., Craddock, C., Dey, J., Kiar, G., Gray-Roncal, W., Colantuoni, C., Douville, C., et al.</span> (2021). Eliminating accidental deviations to minimize generalization error and maximize replicability: Applications in connectomics and genomics. <em>PLoS Computational Biology</em>, <em>17</em>(9), e1009279. <a href="https://doi.org/10.1371/journal.pcbi.1009279">https://doi.org/10.1371/journal.pcbi.1009279</a>
-</div></div><p>We are going to assess whether a person’s connectivity matrix is consistent across runs, even across runs of different types (e.g., CUFF1 vs CUFF2, REST1 vs CUFF1).</p>
-<p>First, we need a list of participants that have all four scan types.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(sub, task, run) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(sub) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">==</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub) <span class="sc">|&gt;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>As usual, we should also restrict analyses to only those runs that are not “red”.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>red_fmri <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="fu">dir_ls</span>(<span class="st">"data/scans"</span>, <span class="at">glob =</span> <span class="st">"*tsv"</span>), <span class="at">na =</span> <span class="st">"n/a"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(filename, <span class="st">"task"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rating <span class="sc">==</span> <span class="st">"red"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="fu">str_extract</span>(filename, <span class="st">"(?&lt;=sub-)[[:digit:]]{5}"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as.integer</span>()</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(sub)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(red_fmri)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: right;">sub</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">10049</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10058</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10060</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10074</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10086</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10092</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>Of the list of participants with all four functional scans, filter out the participants for which any of the scans were red.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs_ok <span class="ot">&lt;-</span> subs_with_all_runs <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(red_fmri)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Use this to filter the connectivity results. We’ll select just one of the smaller DiFuMo atlases <span class="citation" data-cites="dadi_fine_2020">(<a href="references.html#ref-dadi_fine_2020" role="doc-biblioref">Dadi et al., 2020</a>)</span>. As before, we’ll stick with the empirical estimator.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-dadi_fine_2020" class="csl-entry" role="listitem">
-Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wassermann, D., Thirion, B., &amp; Mensch, A. (2020). Fine-grain atlases of functional modes for fMRI analysis. <em>NeuroImage</em>, <em>221</em>, 117126. <a href="https://doi.org/10.1016/j.neuroimage.2020.117126">https://doi.org/10.1016/j.neuroimage.2020.117126</a>
-</div></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fcn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas <span class="sc">==</span> <span class="st">"difumo_dimension-64_resolution-2mm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator <span class="sc">==</span> <span class="st">"empirical"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(subs_with_all_runs_ok, <span class="at">by =</span> <span class="fu">join_by</span>(sub)) <span class="sc">|&gt;</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">scan =</span> <span class="fu">str_c</span>(task, run)) <span class="sc">|&gt;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>atlas, <span class="sc">-</span>ses, <span class="sc">-</span>task, <span class="sc">-</span>run, <span class="sc">-</span>estimator) <span class="sc">|&gt;</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fcn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="kable-table">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: right;">source</th>
-<th style="text-align: right;">target</th>
-<th style="text-align: right;">connectivity</th>
-<th style="text-align: right;">sub</th>
-<th style="text-align: left;">scan</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0.0352251</td>
-<td style="text-align: right;">10010</td>
-<td style="text-align: left;">rest1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">0.3364920</td>
-<td style="text-align: right;">10010</td>
-<td style="text-align: left;">rest1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">0.3715636</td>
-<td style="text-align: right;">10010</td>
-<td style="text-align: left;">rest1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">-0.0007062</td>
-<td style="text-align: right;">10010</td>
-<td style="text-align: left;">rest1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">0.2097767</td>
-<td style="text-align: right;">10010</td>
-<td style="text-align: left;">rest1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">0.3638389</td>
-<td style="text-align: right;">10010</td>
-<td style="text-align: left;">rest1</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<p>Next, define some helper functions to break up the different parts of the analysis pipeline.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>get_scan_combinations <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">scans =</span> <span class="fu">c</span>(<span class="st">"rest1"</span>, <span class="st">"rest2"</span>, <span class="st">"cuff1"</span>, <span class="st">"cuff2"</span>),</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">.col1 =</span> scan1,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">.col2 =</span> scan2</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>) {</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">combn</span>(scans, <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>({{ .col1 }} <span class="sc">:</span><span class="er">=</span> V1, {{ .col2 }} <span class="sc">:</span><span class="er">=</span> V2)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>join_fcn_to_combinations <span class="ot">&lt;-</span> <span class="cf">function</span>(.data, fcn) {</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  fcn_nested <span class="ot">&lt;-</span> <span class="fu">group_nest</span>(fcn, scan)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  .data <span class="sc">|&gt;</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(fcn_nested, <span class="at">by =</span> <span class="fu">join_by</span>(scan1 <span class="sc">==</span> scan)) <span class="sc">|&gt;</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(fcn_nested, <span class="at">by =</span> <span class="fu">join_by</span>(scan2 <span class="sc">==</span> scan)) <span class="sc">|&gt;</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">map2</span>(</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        data.x,</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        data.y,</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">left_join</span>(.x, .y, <span class="at">by =</span> <span class="fu">join_by</span>(source, target, sub))</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">"data."</span>))</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>get_discr <span class="ot">&lt;-</span> <span class="cf">function</span>(.data) {</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> .data <span class="sc">|&gt;</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">feature =</span> <span class="fu">interaction</span>(source, target)) <span class="sc">|&gt;</span></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>source, <span class="sc">-</span>target) <span class="sc">|&gt;</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">"connectivity"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"feature"</span>)</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">discr.stat</span>(</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>(<span class="fu">select</span>(d, <span class="sc">-</span>sub, <span class="sc">-</span>name)),</span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>(<span class="fu">select</span>(d, sub))</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>discr</span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Apply these helper functions to the functional connectivity data, calculating discriminability.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>discriminability <span class="ot">&lt;-</span> <span class="fu">get_scan_combinations</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">join_fcn_to_combinations</span>(fcn) <span class="sc">|&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">discr =</span> <span class="fu">map_dbl</span>(data, get_discr)) <span class="sc">|&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>To review the results, plot the data. When plotting, let’s color the points based on whether the two scans are of the same type.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>discriminability <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">same_type =</span> (<span class="fu">str_detect</span>(scan1, <span class="st">"rest"</span>) <span class="sc">&amp;</span> <span class="fu">str_detect</span>(scan2, <span class="st">"rest"</span>)) <span class="sc">|</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">str_detect</span>(scan1, <span class="st">"cuff"</span>) <span class="sc">&amp;</span> <span class="fu">str_detect</span>(scan2, <span class="st">"cuff"</span>)),</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">scans =</span> <span class="fu">interaction</span>(scan1, scan2)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> scans, <span class="at">y =</span> discr, <span class="at">color =</span> same_type)) <span class="sc">+</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="fcn_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Overall, discriminability is around 0.8, with at most minor differences between different pairings of runs.</p>
+<section id="extract-data" class="level3" data-number="11.1.2">
+<h3 data-number="11.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">11.1.2</span> Extract Data</h3>
+<p>For a detailed description of the files produced by QSIPrep, please review <a href="https://qsiprep.readthedocs.io/en/latest/preprocessing.html#outputs-of-qsiprep">their documentation</a>.</p>
 </section>
 </section>
-<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">12.2</span> Considerations While Working on the Project</h2>
-<section id="variability-across-scanners" class="level3" data-number="12.2.1">
-<h3 data-number="12.2.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">12.2.1</span> Variability Across Scanners</h3>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">11.2</span> Considerations While Working on the Project</h2>
+<section id="variability-across-scanners" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">11.2.1</span> Variability Across Scanners</h3>
 <p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
-<section id="data-quality" class="level3" data-number="12.2.2">
-<h3 data-number="12.2.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">12.2.2</span> Data Quality</h3>
+<section id="data-quality" class="level3" data-number="11.2.2">
+<h3 data-number="11.2.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">11.2.2</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="12.2.3">
-<h3 data-number="12.2.3" class="anchored" data-anchor-id="citations"><span class="header-section-number">12.2.3</span> Citations</h3>
+<section id="data-generation" class="level3 page-columns page-full" data-number="11.2.3">
+<h3 data-number="11.2.3" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">11.2.3</span> Data Generation</h3>
+<p>These outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/qsiprep_app">qsiprep_app</a>.</p>
+<p>Preprocessing was performed using <em>QSIPrep</em> 0.21.5.dev0+g36b93fe.d20240504, which is based on <em>Nipype</em> 1.8.6 (<span class="citation" data-cites="nipype1">K. Gorgolewski et al. (<a href="references.html#ref-nipype1" role="doc-biblioref">2011</a>)</span>; <span class="citation" data-cites="nipype2">K. J. Gorgolewski et al. (<a href="references.html#ref-nipype2" role="doc-biblioref">2018</a>)</span>; RRID:SCR_002502).</p>
+<div class="no-row-height column-margin column-container"><div id="ref-nipype1" class="csl-entry" role="listitem">
+Gorgolewski, K., Burns, C. D., Madison, C., Clark, D., Halchenko, Y. O., Waskom, M. L., &amp; Ghosh, S. (2011). Nipype: A flexible, lightweight and extensible neuroimaging data processing framework in python. <em>Frontiers in Neuroinformatics</em>, <em>5</em>, 13. <a href="https://doi.org/10.3389/fninf.2011.00013">https://doi.org/10.3389/fninf.2011.00013</a>
+</div><div id="ref-nipype2" class="csl-entry" role="listitem">
+Gorgolewski, K. J., Esteban, O., Markiewicz, C. J., Ziegler, E., Ellis, D. G., Notter, M. P., Jarecka, D., Johnson, H., Burns, C., Manhães-Savio, A., Hamalainen, C., Yvernault, B., Salo, T., Jordan, K., Goncalves, M., Waskom, M., Clark, D., Wong, J., Loney, F., … Ghosh, S. (2018). Nipype. <em>Software</em>. <a href="https://doi.org/10.5281/zenodo.596855">https://doi.org/10.5281/zenodo.596855</a>
+</div></div><section id="anatomical-data-preprocessing" class="level4 page-columns page-full" data-number="11.2.3.1">
+<h4 data-number="11.2.3.1" class="anchored" data-anchor-id="anatomical-data-preprocessing"><span class="header-section-number">11.2.3.1</span> Anatomical data preprocessing</h4>
+<p>The T1-weighted (T1w) image was corrected for intensity non-uniformity (INU) using <code>N4BiasFieldCorrection</code> <span class="citation" data-cites="n4">(<a href="references.html#ref-n4" role="doc-biblioref">Tustison et al., 2010</a>, ANTs 2.4.3)</span>, and used as an anatomical reference throughout the workflow. The anatomical reference image was reoriented into AC-PC alignment via a 6-DOF transform extracted from a full Affine registration to the MNI152NLin2009cAsym template. A full nonlinear registration to the template from AC-PC space was estimated via symmetric nonlinear registration (SyN) using antsRegistration. Brain extraction was performed on the T1w image using SynthStrip <span class="citation" data-cites="hoopes_synthstrip_2022">(<a href="references.html#ref-hoopes_synthstrip_2022" role="doc-biblioref">Hoopes et al., 2022</a>)</span> and automated segmentation was performed using SynthSeg <span class="citation" data-cites="synthseg1">Billot, Magdamo, et al. (<a href="references.html#ref-synthseg2" role="doc-biblioref">2023</a>)</span> from FreeSurfer version 7.3.1.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-hoopes_synthstrip_2022" class="csl-entry" role="listitem">
+Hoopes, A., Mora, J. S., Dalca, A. V., Fischl, B., &amp; Hoffmann, M. (2022). <span>SynthStrip</span>: Skull-stripping for any brain image. <em>NeuroImage</em>, <em>260</em>, 119474. <a href="https://doi.org/10.1016/j.neuroimage.2022.119474">https://doi.org/10.1016/j.neuroimage.2022.119474</a>
+</div><div id="ref-synthseg2" class="csl-entry" role="listitem">
+Billot, B., Magdamo, C., Cheng, Y., Arnold, S. E., Das, S., &amp; Iglesias, J. E. (2023). Robust machine learning segmentation for large-scale analysis of heterogeneous clinical brain MRI datasets. <em>Proceedings of the National Academy of Sciences</em>, <em>120</em>(9), e2216399120.
+</div></div></section>
+<section id="diffusion-data-preprocessing" class="level4 page-columns page-full" data-number="11.2.3.2">
+<h4 data-number="11.2.3.2" class="anchored" data-anchor-id="diffusion-data-preprocessing"><span class="header-section-number">11.2.3.2</span> Diffusion data preprocessing</h4>
+<p>Any images with a b-value less than 100 s/mm^2 were treated as a <em>b</em>=0 image. Denoising using <code>patch2self</code> <span class="citation" data-cites="patch2self">(<a href="references.html#ref-patch2self" role="doc-biblioref">Fadnavis et al., 2020</a>)</span> was applied with settings based on developer recommendations. After <code>patch2self</code>, Gibbs unringing was performed using MRtrix3’s <code>mrdegibbs</code> <span class="citation" data-cites="mrdegibbs">(<a href="references.html#ref-mrdegibbs" role="doc-biblioref">Kellner et al., 2016</a>)</span>. Following unringing, the mean intensity of the DWI series was adjusted so all the mean intensity of the b=0 images matched across eachseparate DWI scanning sequence. B1 field inhomogeneity was corrected using <code>dwibiascorrect</code> from MRtrix3 with the N4 algorithm <span class="citation" data-cites="n4">(<a href="references.html#ref-n4" role="doc-biblioref">Tustison et al., 2010</a>)</span> after corrected images were resampled.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-patch2self" class="csl-entry" role="listitem">
+Fadnavis, S., Batson, J., &amp; Garyfallidis, E. (2020). Patch2Self: Denoising diffusion MRI with self-supervised learning​. <em>Advances in Neural Information Processing Systems</em>, <em>33</em>.
+</div><div id="ref-mrdegibbs" class="csl-entry" role="listitem">
+Kellner, E., Dhital, B., Kiselev, V. G., &amp; Reisert, M. (2016). Gibbs-ringing artifact removal based on local subvoxel-shifts. <em>Magnetic Resonance in Medicine</em>, <em>76</em>(5), 1574–1581.
+</div><div id="ref-n4" class="csl-entry" role="listitem">
+Tustison, N. J., Avants, B. B., Cook, P. A., Zheng, Y., Egan, A., Yushkevich, P. A., &amp; Gee, J. C. (2010). N4ITK: Improved N3 bias correction. <em>IEEE Transactions on Medical Imaging</em>, <em>29</em>(6), 1310–1320. <a href="https://doi.org/10.1109/TMI.2010.2046908">https://doi.org/10.1109/TMI.2010.2046908</a>
+</div><div id="ref-anderssoneddy" class="csl-entry" role="listitem">
+Andersson, J. L. R., &amp; Sotiropoulos, S. N. (2016). An integrated approach to correction for off-resonance effects and subject movement in diffusion MR imaging. <em>Neuroimage</em>, <em>125</em>, 1063–1078.
+</div><div id="ref-eddyrepol" class="csl-entry" role="listitem">
+Andersson, J. L. R., Graham, M. S., Zsoldos, E., &amp; Sotiropoulos, S. N. (2016). Incorporating outlier detection and replacement into a non-parametric framework for movement and distortion correction of diffusion MR images. <em>Neuroimage</em>, <em>141</em>, 556–572.
+</div></div><p>FSL (version None)’s eddy was used for head motion correction and Eddy current correction <span class="citation" data-cites="anderssoneddy">(<a href="references.html#ref-anderssoneddy" role="doc-biblioref">J. L. R. Andersson &amp; Sotiropoulos, 2016</a>)</span>. Eddy was configured with a <span class="math inline">\(q\)</span>-space smoothing factor of 10, a total of 5 iterations, and 1000 voxels used to estimate hyperparameters. A linear first level model and a linear second level model were used to characterize Eddy current-related spatial distortion. <span class="math inline">\(q\)</span>-space coordinates were forcefully assigned to shells. Field offset was attempted to be separated from subject movement. Shells were aligned post-eddy. Eddy’s outlier replacement was run <span class="citation" data-cites="eddyrepol">(<a href="references.html#ref-eddyrepol" role="doc-biblioref">J. L. R. Andersson et al., 2016</a>)</span>. Data were grouped by slice, only including values from slices determined to contain at least 250 intracerebral voxels. Groups deviating by more than 4 standard deviations from the prediction had their data replaced with imputed values.</p>
+<p>Data was collected with reversed phase-encode blips, resulting in pairs of images with distortions going in opposite directions. FSL’s TOPUP <span class="citation" data-cites="topup">(<a href="references.html#ref-topup" role="doc-biblioref">J. L. Andersson et al., 2003</a>)</span> was used to estimate a susceptibility-induced off-resonance field based on b=0 reference images with reversed phase encoding directions. The TOPUP-estimated fieldmap was incorporated into the Eddy current and head motion correction interpolation. Final interpolation was performed using the <code>jac</code> method.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-topup" class="csl-entry" role="listitem">
+Andersson, J. L., Skare, S., &amp; Ashburner, J. (2003). How to correct susceptibility distortions in spin-echo echo-planar images: Application to diffusion tensor imaging. <em>NeuroImage</em>, <em>20</em>(2), 870–888. <a href="https://doi.org/10.1016/S1053-8119(03)00336-7">https://doi.org/10.1016/S1053-8119(03)00336-7</a>
+</div><div id="ref-power_fd_dvars" class="csl-entry" role="listitem">
+Power, J. D., Mitra, A., Laumann, T. O., Snyder, A. Z., Schlaggar, B. L., &amp; Petersen, S. E. (2014). Methods to detect, characterize, and remove motion artifact in resting state fMRI. <em>NeuroImage</em>, <em>84</em>(Supplement C), 320–341. <a href="https://doi.org/10.1016/j.neuroimage.2013.08.048">https://doi.org/10.1016/j.neuroimage.2013.08.048</a>
+</div></div><p>Several confounding time-series were calculated based on the preprocessed DWI: framewise displacement (FD) using the implementation in <em>Nipype</em> <span class="citation" data-cites="power_fd_dvars">(following the definitions by <a href="references.html#ref-power_fd_dvars" role="doc-biblioref">Power et al., 2014</a>)</span>. The head-motion estimates calculated in the correction step were also placed within the corresponding confounds file. Slicewise cross correlation was also calculated. The DWI time-series were resampled to ACPC, generating a <em>preprocessed DWI run in ACPC space</em> with 1.7mm isotropic voxels.</p>
+<p>Many internal operations of <em>QSIPrep</em> use <em>Nilearn</em> 0.10.1 <span class="citation" data-cites="nilearn">(<a href="references.html#ref-nilearn" role="doc-biblioref">Abraham et al., 2014</a>, RRID:SCR_001362)</span> and <em>Dipy</em> <span class="citation" data-cites="dipy">(<a href="references.html#ref-dipy" role="doc-biblioref">Garyfallidis et al., 2014</a>)</span>. For more details of the pipeline, see <a href="https://qsiprep.readthedocs.io/en/latest/workflows.html" title="QSIPrep's documentation">the section corresponding to workflows in <em>QSIPrep</em>’s documentation</a>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-nilearn" class="csl-entry" role="listitem">
+Abraham, A., Pedregosa, F., Eickenberg, M., Gervais, P., Mueller, A., Kossaifi, J., Gramfort, A., Thirion, B., &amp; Varoquaux, G. (2014). Machine learning for neuroimaging with scikit-learn. <em>Frontiers in Neuroinformatics</em>, <em>8</em>. <a href="https://doi.org/10.3389/fninf.2014.00014">https://doi.org/10.3389/fninf.2014.00014</a>
+</div><div id="ref-dipy" class="csl-entry" role="listitem">
+Garyfallidis, E., Brett, M., Amirbekian, B., Rokem, A., Van Der Walt, S., Descoteaux, M., &amp; Nimmo-Smith, I. (2014). Dipy, a library for the analysis of diffusion MRI data. <em>Frontiers in Neuroinformatics</em>, <em>8</em>, 8.
+</div></div></section>
+</section>
+<section id="citations" class="level3 page-columns page-full" data-number="11.2.4">
+<h3 data-number="11.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">11.2.4</span> Citations</h3>
+<p>If you use these products in your analyses, please cite the relevant papers written by members <a href="https://trendscenter.org/data/">TReNDS</a>.</p>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
 <p>Data were provided [in part] by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/ Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
@@ -1537,13 +1273,13 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./qsiprep.html" class="pagination-link" aria-label="QSIPrep">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">QSIPrep</span></span>
+      <a href="./fmriprep.html" class="pagination-link" aria-label="fMRIPrep">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">fMRIPrep</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./gift.html" class="pagination-link" aria-label="Group ICA of fMRI Toolbox (GIFT)">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Group ICA of fMRI Toolbox (GIFT)</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./fcn.html" class="pagination-link" aria-label="Functional Connectivity">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Functional Connectivity</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
