@@ -18,11 +18,12 @@ book:
     - genomic_imputation.qmd
     - mri-idps.qmd
     - raw-mri.qmd
+    - brainager.qmd
+    - fslanat.qmd
+    - cat12.qmd
     - freesurfer.qmd
     - fmriprep.qmd
-    - fslanat.qmd
-    - brainager.qmd
-    - cat12.qmd
+    - qsiprep.qmd
     - fcn.qmd
     - gift.qmd
     - postgift.qmd

@@ -15,7 +15,7 @@ Before being analyzed, structural and functional neuroimaging data must undergo 
 
 {{< include _snippets/mri-location.qmd >}}
 
-The MRIQC metrics are underneath `derivatives/fmriprep`. Let's take a look.
+The fMRIPrep derivatives are underneath `derivatives/fmriprep`. Let's take a look.
 
 ```{bash}
 #| eval: false
@@ -34,7 +34,7 @@ sub-10008_ses-V1.html
 
 ### Extract Data
 
-For a detailed description of the files produced by fMRIPrep, please review their documentation: https://fmriprep.org/en/stable/outputs.html.
+For a detailed description of the files produced by fMRIPrep, please review [their documentation](https://fmriprep.org/en/stable/outputs.html).
 
 ## Considerations While Working on the Project
 
