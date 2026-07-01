@@ -26,6 +26,7 @@ book:
     - qsiprep.qmd
     - eddyqc.qmd
     - reconstruction.qmd
+    - postdtifit.qmd
     - fcn.qmd
     - gift.qmd
     - postgift.qmd

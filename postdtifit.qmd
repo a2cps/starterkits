@@ -1,0 +1,271 @@
+```{r lockfile, include=FALSE}
+renv::use(
+  agree          = "psadil/agree@c092e22ba1c8b3fdf4526b83bb850bbd901cc985",
+  base64enc      = "base64enc@0.1-6",
+  bit            = "bit@4.6.0",
+  bit64          = "bit64@4.8.2",
+  bslib          = "bslib@0.11.0",
+  cachem         = "cachem@1.1.0",
+  cli            = "cli@3.6.6",
+  clipr          = "clipr@0.8.1",
+  collections    = "collections@0.3.12",
+  cpp11          = "cpp11@0.5.5",
+  crayon         = "crayon@1.5.3",
+  DBI            = "DBI@1.3.0",
+  digest         = "digest@0.6.39",
+  distributional = "distributional@0.8.1",
+  dplyr          = "dplyr@1.2.1",
+  duckdb         = "duckdb@1.5.4.2",
+  duckplyr       = "duckplyr@1.2.1",
+  evaluate       = "evaluate@1.0.5",
+  farver         = "farver@2.1.2",
+  fastmap        = "fastmap@1.2.0",
+  fontawesome    = "fontawesome@0.5.3",
+  fs             = "fs@2.1.0",
+  generics       = "generics@0.1.4",
+  ggdist         = "ggdist@3.3.3",
+  ggplot2        = "ggplot2@4.0.3",
+  glue           = "glue@1.8.1",
+  gtable         = "gtable@0.3.6",
+  highr          = "highr@0.12",
+  hms            = "hms@1.1.4",
+  htmltools      = "htmltools@0.5.9",
+  isoband        = "isoband@0.3.0",
+  jquerylib      = "jquerylib@0.1.4",
+  jsonlite       = "jsonlite@2.0.0",
+  knitr          = "knitr@1.51",
+  labeling       = "labeling@0.4.3",
+  lifecycle      = "lifecycle@1.0.5",
+  magrittr       = "magrittr@2.0.5",
+  memoise        = "memoise@2.0.1",
+  mime           = "mime@0.13",
+  numDeriv       = "numDeriv@2016.8-1.1",
+  pillar         = "pillar@1.11.1",
+  pkgconfig      = "pkgconfig@2.0.3",
+  prettyunits    = "prettyunits@1.2.0",
+  progress       = "progress@1.2.3",
+  purrr          = "purrr@1.2.2",
+  quadprog       = "quadprog@1.5-8",
+  R6             = "R6@2.6.1",
+  rappdirs       = "rappdirs@0.3.4",
+  RColorBrewer   = "RColorBrewer@1.1-3",
+  Rcpp           = "Rcpp@1.1.1-1.1",
+  readr          = "readr@2.2.0",
+  renv           = "renv@1.2.3",
+  rlang          = "rlang@1.2.0",
+  rmarkdown      = "rmarkdown@2.31",
+  S7             = "S7@0.2.2",
+  sass           = "sass@0.4.10",
+  scales         = "scales@1.4.0",
+  stringi        = "stringi@1.8.7",
+  stringr        = "stringr@1.6.0",
+  tibble         = "tibble@3.3.1",
+  tidyr          = "tidyr@1.3.2",
+  tidyselect     = "tidyselect@1.2.1",
+  tinytex        = "tinytex@0.60",
+  tzdb           = "tzdb@0.5.0",
+  utf8           = "utf8@1.2.6",
+  vctrs          = "vctrs@0.7.3",
+  viridisLite    = "viridisLite@0.4.3",
+  vroom          = "vroom@1.7.1",
+  withr          = "withr@3.0.3",
+  xfun           = "xfun@0.59",
+  yaml           = "yaml@2.3.12"
+)
+```
+
+# Summarized Diffusion Tensor Fitting {#sec-postdtifit}
+
+```{r setup}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(duckplyr)
+library(fs)
+library(tidyr)
+library(ggdist)
+```
+
+The @sec-reconstruction products provide outputs in a raw format that will be familiar to many diffusion imaging experts. To facilitate analyses, A2CPS has repackaged those products into a tabular format. This kit covers the repackaged structure.
+
+## Starting Project
+
+### Locate Data
+
+{{< include _snippets/mri-location.qmd >}}
+
+The derivatives are underneath `derivatives/postdtifit`. Let's take a look.
+
+```{bash}
+#| eval: false
+$ ls postdtifit/
+diffusion_regional  diffusion_regional_stats  diffusion_regional_stats.json
+```
+
+### Extract Data
+
+The tabular data is in `diffusion_regional_stats`. As usual, the tables are in [parquet files](https://parquet.apache.org/) that have been partitioned in a [hive style](https://hive.apache.org/). Let's take a look at the data dictionary `diffusion_regional_stats.json`.
+
+```{json}
+{
+    "index": {
+        "LongName": "Index",
+        "Description": "Integer index of region in atlas"
+    },
+    "metric": {
+        "LongName": "Diffusion Metric",
+        "Description": "Scalar values derived from diffusion data",
+        "Levels": {
+            "FA": "Fractional Anisotropy",
+            "L1": "First Eigenvalue",
+            "L2": "Second Eigenvalue",
+            "L3": "Third Eigenvalue",
+            "MD": "Mean Diffusivity",
+            "MO": "Mode of Anisotropy"
+        },
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/docs/#/diffusion/dtifit?id=outputs-of-dtifit"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    },
+    "shells": {
+        "LongName": "B-Value Shells",
+        "Description": "Which b-value shells were included in the tensor model",
+        "Levels": {
+            "b1000": "Only the b=1000 shell (15 directions)",
+            "multishell": "All shells/b-values"
+        }
+    },
+    "roi": {
+        "LongName": "Region of Interest",
+        "Description": "Full name for the region of interest"
+    },
+    "mean": {
+        "LongName": "Mean",
+        "Description": "Average of the metric within given region"
+    },
+    "minimum": {
+        "LongName": "Minimum",
+        "Description": "Minimum of the metric within given region"
+    },
+    "maximum": {
+        "LongName": "Maximum",
+        "Description": "Maximum of the metric within given region"
+    }
+}
+```
+
+Next, peak at the table. 
+
+```{r loadstats}
+
+diffusion_regional_stats <- read_parquet_duckdb(
+  "data/postdtifit/diffusion_regional_stats"
+) |>
+  collect()
+
+head(diffusion_regional_stats)
+```
+
+From these, we see that many analyses will need some degree of filtering. For example, the table contains fits to two different sets of shells: only the b1000 or the multishell (that is, all) data. To get a feel for the data, let's see whether there's a difference in the tensor metrics across the two sets of shells. In particular, we'll focus on just one summary statitic, the regional mean value.
+
+First, drop minimum and maximum. Then, pivot the table on the shells.
+
+```{r head-shell-comparison}
+
+shell_comparison <- diffusion_regional_stats |>
+  select(-minimum, -maximum) |>
+  pivot_wider(names_from = "shells", values_from = "mean")
+
+head(shell_comparison)
+```
+
+To get a very high-level overview of the data, generate a [BA plot](https://en.wikipedia.org/wiki/Bland–Altman_plot). 
+
+::: {#fig-shell-comparison}
+
+```{r shell-comparison}
+#| fig-height: 7
+
+shell_comparison |>
+  mutate(
+    .average = (b1000 + multishell) / 2,
+    .difference = b1000 - multishell,
+    .by = c(metric, roi)
+  ) |>
+  ggplot(aes(y = .difference, x = .average)) +
+  facet_wrap(~metric, scales = "free") +
+  geom_point(alpha = 0.2) +
+  agree::geom_ba()
+```
+
+Differences in Tensor Values Between b1000 and Multishell data. Each panel is a different tensor metric. The x-axis is a mean average, and the y-axis is a difference. Points correspond to individual regions, sampled from individual scans.
+
+:::
+
+There are clear differences between the fits to the different shells! 
+
+A few potential sources for those differences may spring to mind: participant differences (including scan quality), regional differences, or scanner differences. In this case, we happen to know it's an effect of scan. Following @sec-rawdata-mri-qc-joining, let's exclude all scans that are rated "red".
+
+::: {#fig-shell-comparison2}
+
+```{r shell-comparison-not-red}
+red_dmri <- read_tsv(fs::dir_ls("data/scans", glob = "*tsv"), na = "n/a") |>
+  filter(stringr::str_detect(filename, "dwi.nii.gz")) |>
+  mutate(
+    sub = stringr::str_extract(filename, "(?<=sub-)[[:digit:]]+") |>
+      as.numeric()
+  ) |>
+  filter(rating == "red")
+
+shell_comparison |>
+  anti_join(red_dmri, by = join_by(sub)) |>
+  mutate(
+    .average = (b1000 + multishell) / 2,
+    .difference = b1000 - multishell,
+    .by = c(metric, roi)
+  ) |>
+  ggplot(aes(y = .difference, x = .average)) +
+  facet_wrap(~metric, scales = "free") +
+  geom_point(alpha = 0.2) +
+  agree::geom_ba()
+```
+
+Comparison of b1000 with Multishell Data, Excluding Lowest Quality Scans. The data are plotted as in @fig-shell-comparison. 
+
+:::
+
+The outliers appear to have been driven by scan quality. However, note that there are still clear differences between the two sets of shells. Which of these to choose will depend on the analysis. For an introduction to some considerations, see @sec-reconstruction.
+
+## Considerations While Working on the Project
+
+### Variability Across Scanners
+
+{{< include _snippets/mri-scanner-variability.qmd >}}
+
+### Data Quality
+
+{{< include _snippets/mri-qc.qmd >}}
+
+### Data Generation
+
+These outputs were generated by the [postdtifit_app](https://github.com/a2cps/mri_imaging_pipeline/tree/master/postdtifit_app). 
+
+### Citations
+
+If you use these products in your analyses, please cite the relevant papers from [FSL](https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/dtifit.html). Additionally, the standard DTI paper is @basser1994mr.
+
+{{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.
