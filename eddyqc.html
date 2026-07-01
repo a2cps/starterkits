@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10&nbsp; fMRIPrep – A2CPS Starter Kits</title>
+<title>12&nbsp; EDDY QC – A2CPS Starter Kits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -88,8 +88,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./qsiprep.html" rel="next">
-<link href="./freesurfer.html" rel="prev">
+<link href="./reconstruction.html" rel="next">
+<link href="./qsiprep.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -142,7 +142,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </script>
 
 
-<meta name="citation_title" content="[10]{.chapter-number}&nbsp; [fMRIPrep]{.chapter-title}">
+<meta name="citation_title" content="[[12]{.chapter-number}&nbsp; [EDDY QC]{.chapter-title}]{#sec-eddyqc .quarto-section-identifier}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Corticostriatal functional connectivity predicts transition to chronic back pain;,citation_author=Marwan N Baliki;,citation_author=Bogdan Petre;,citation_author=Souraya Torbey;,citation_author=Kristina M Herrmann;,citation_author=Lejian Huang;,citation_author=Thomas J Schnitzer;,citation_author=Howard L Fields;,citation_author=A Vania Apkarian;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=8;,citation_doi=10.1038/nn.3153;,citation_volume=15;,citation_journal_title=Nature neuroscience;,citation_publisher=Nature Publishing Group US New York;">
 <meta name="citation_reference" content="citation_title=MRI signatures of brain age and disease over the lifespan based on a deep brain network and 14 468 individuals worldwide;,citation_author=Vishnu M Bashyam;,citation_author=Guray Erus;,citation_author=Jimit Doshi;,citation_author=Mohamad Habes;,citation_author=Ilya M Nasrallah;,citation_author=Monica Truelove-Hill;,citation_author=Dhivya Srinivasan;,citation_author=Liz Mamourian;,citation_author=Raymond Pomponio;,citation_author=Yong Fan;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_issue=7;,citation_doi=10.1093/brain/awaa160;,citation_volume=143;,citation_journal_title=Brain;,citation_publisher=Oxford University Press;">
@@ -458,7 +458,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./fmriprep.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">fMRIPrep</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./eddyqc.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">EDDY QC</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -554,7 +554,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./fmriprep.html" class="sidebar-item-text sidebar-link active">
+  <a href="./fmriprep.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">fMRIPrep</span></span></a>
   </div>
 </li>
@@ -566,7 +566,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./eddyqc.html" class="sidebar-item-text sidebar-link">
+  <a href="./eddyqc.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">EDDY QC</span></span></a>
   </div>
 </li>
@@ -693,18 +693,17 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">10.1</span> Starting Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">12.1</span> Starting Project</a>
   <ul class="collapse">
-  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">10.1.1</span> Locate Data</a></li>
-  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">10.1.2</span> Extract Data</a></li>
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">12.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">12.1.2</span> Extract Data</a></li>
   </ul></li>
-  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">10.2</span> Considerations While Working on the Project</a>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">12.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#sec-synthstrip" id="toc-sec-synthstrip" class="nav-link" data-scroll-target="#sec-synthstrip"><span class="header-section-number">10.2.1</span> Brain Masking</a></li>
-  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">10.2.2</span> Variability Across Scanners</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">10.2.3</span> Data Quality</a></li>
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">10.2.4</span> Data Generation</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">10.2.5</span> Citations</a></li>
+  <li><a href="#effective-vs.-raw-cnr" id="toc-effective-vs.-raw-cnr" class="nav-link" data-scroll-target="#effective-vs.-raw-cnr"><span class="header-section-number">12.2.1</span> Effective vs.&nbsp;Raw CNR</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background"><span class="header-section-number">12.2.2</span> Background</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">12.2.3</span> Data Generation</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">12.2.4</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -715,7 +714,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">fMRIPrep</span></h1>
+<h1 class="title"><span id="sec-eddyqc" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">EDDY QC</span></span></h1>
 </div>
 
 
@@ -732,114 +731,184 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>Before being analyzed, structural and functional neuroimaging data must undergo a core set of preprocessing steps. The need for these preprocessing steps are relatively uncontroversial, and they include intensity non-uniformity correction (for structural), correction for motion across volumes (functional), coregistration (structural and functional), as well as several others. As such, these outputs are the result of a minimal preprocessing stream (acknowledging that the meaning of “minimal” differs between datasets). That is, these derivatives have not undergone many steps that are common in other preprocessing pipelines, such as denoising, nuisance regression, or scrubbing. If you need data that have gone through data cleaning, please see either <a href="fcn.html" class="quarto-xref"><span>Chapter 14</span></a> or <a href="neural-pain-signatures.html" class="quarto-xref"><span>Chapter 18</span></a>. The fMRIPrep derivatives are most useful for tasks like reviewing the quality of preprocessing, implementing your own cleaning pipeline, or working from HCP-style <a href="https://www.nitrc.org/projects/cifti/">CIFTI data</a>.</p>
-<section id="starting-project" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">10.1</span> Starting Project</h2>
-<section id="locate-data" class="level3" data-number="10.1.1">
-<h3 data-number="10.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">10.1.1</span> Locate Data</h3>
-<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The fMRIPrep derivatives are underneath <code>derivatives/fmriprep</code>. Let’s take a look.</p>
+<p>This kit reviews the key quality control metrics provided by <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html">FSL’s EDDY QC</a> <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>, which are included in A2CPS data releases. These metrics are not used in the automated rating of dMRI images, but they provide valuable information about the impacts of movement and magnetic susceptibility on a diffusion scan.</p>
+<div class="no-row-height column-margin column-container"></div><section id="starting-project" class="level2 page-columns page-full" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">12.1</span> Starting Project</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/fmriprep/ <span class="kw">|</span> <span class="fu">head</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dataset_description.json</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">desc-aparcaseg_dseg.tsv</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">desc-aseg_dseg.tsv</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">README</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1.html</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005_ses-V1.html</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1.html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<section id="locate-data" class="level3 page-columns page-full" data-number="12.1.1">
+<h3 data-number="12.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">12.1.1</span> Locate Data</h3>
+<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The outputs are organized by participant and session<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Note that the directory structure varies across participants, with some participants matching <code>sub-[recordid]/ses-[visit]/[contents]</code> and others matching <code>sub-[recordid]/ses-[visit]/eddyqc/[contents]</code>.</p></div></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/eddyqc/ <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10011</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10013</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10014</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10015</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10017</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10020</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10023</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree mris/derivatives/eddyqc/sub-10003</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> avg_b0_pe0.png</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> avg_b0.png</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> avg_b1000.png</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> avg_b2000.png</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> avg_b3000.png</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> avg_b500.png</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> cnr0000.nii.gz.png</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> cnr0001.nii.gz.png</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> cnr0002.nii.gz.png</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> cnr0003.nii.gz.png</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> cnr0004.nii.gz.png</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> qc.json</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> qc.pdf</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ref_list.png</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ref.txt</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> vdm.png</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> directory, 16 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The pdf is a visual report summarizing the scan quality, including tables with quantitative metrics and images indicating scan quality. The metrics are available in the json, along with metadata about the scan.</p>
 </section>
-<section id="extract-data" class="level3" data-number="10.1.2">
-<h3 data-number="10.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">10.1.2</span> Extract Data</h3>
-<p>For a detailed description of the files produced by fMRIPrep, please review <a href="https://fmriprep.org/en/stable/outputs.html">their documentation</a>.</p>
+<section id="extract-data" class="level3 page-columns page-full" data-number="12.1.2">
+<h3 data-number="12.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">12.1.2</span> Extract Data</h3>
+<p>Let’s collate the QC metrics into a single table. To do so, we recursively search for and read the <code>qc.json</code> files.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>qcs <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">src =</span> fs<span class="sc">::</span><span class="fu">dir_ls</span>(<span class="st">"data/eddyqc"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>, <span class="at">glob =</span> <span class="st">"*qc.json"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">qc =</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      src,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> jsonlite<span class="sc">::</span><span class="fu">read_json</span>(.x, <span class="at">simplifyVector =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">.progress =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># let's look at the fields on one of those qc.json files</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>qcs<span class="sc">$</span>qc[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">names</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "data_eddy_para"        "data_file_bvals"       "data_file_eddy"       
+ [4] "data_file_mask"        "data_no_PE_dirs"       "data_no_b0_vols"      
+ [7] "data_no_dw_vols"       "data_no_shells"        "data_protocol"        
+[10] "data_unique_bvals"     "data_unique_pes"       "data_vox_size"        
+[13] "eddy_input"            "eddy_input_flag"       "qc_cnr_avg"           
+[16] "qc_cnr_flag"           "qc_cnr_std"            "qc_field_flag"        
+[19] "qc_mot_abs"            "qc_mot_rel"            "qc_ol_flag"           
+[22] "qc_outliers_b"         "qc_outliers_pe"        "qc_outliers_tot"      
+[25] "qc_params_avg"         "qc_params_flag"        "qc_path"              
+[28] "qc_rss_flag"           "qc_s2v_params_avg_std" "qc_s2v_params_flag"   
+[31] "qc_vox_displ_std"     </code></pre>
+</div>
+</div>
+<p>In these <code>qc.json</code> files, there are three kinds of fields: <code>data_*</code> fields, which describe the scan, <code>eddy_*</code> fields, which describe how EDDY was configured, and <code>qc_*</code> fields, which summarize the scan quality. Let’s dig into <code>qc_cnr_avg</code>. That field is a vector with a length equal to the number of shells in the scan. The entries are the average angular Contrast-to-Noise ratio, which is a standardized measure of scan quality <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The first entry corresponds to the b0, and so it is really as signal-to-noise ratio rather than a traditional angular CNR.</p></div></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cnr <span class="ot">&lt;-</span> qcs <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">qc =</span> <span class="fu">map</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      qc,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">tibble</span>(<span class="at">CNR =</span> .x<span class="sc">$</span>qc_cnr_avg, <span class="at">b =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">500</span>, <span class="dv">1000</span>, <span class="dv">2000</span>, <span class="dv">3000</span>)),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(qc) <span class="sc">|&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(CNR <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="co"># 0 indicates some failure in calculation of the metric</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cnr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">src</th>
+<th style="text-align: right;">CNR</th>
+<th style="text-align: right;">b</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
+<td style="text-align: right;">3.29</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">500</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
+<td style="text-align: right;">8853030.29</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
+<td style="text-align: right;">2.44</td>
+<td style="text-align: right;">2000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
+<td style="text-align: right;">2.16</td>
+<td style="text-align: right;">3000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">data/eddyqc/sub-10008/ses-V1/qc.json</td>
+<td style="text-align: right;">11.36</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Now, plot the ratios by b-value.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cnr <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">b =</span> <span class="fu">factor</span>(b)) <span class="sc">|&gt;</span> <span class="co"># to make plotting nicer</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> b, <span class="at">x =</span> CNR)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dotsinterval</span>(<span class="at">quantiles =</span> <span class="dv">100</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="st">"CNR/SNR"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="eddyqc_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Generally, the angular CNR seems to increase with increasing b-value. There are also some outliers, which likely correspond to preprocessing failures.</p>
 </section>
 </section>
-<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">10.2</span> Considerations While Working on the Project</h2>
-<section id="sec-synthstrip" class="level3 page-columns page-full" data-number="10.2.1">
-<h3 data-number="10.2.1" class="anchored" data-anchor-id="sec-synthstrip"><span class="header-section-number">10.2.1</span> Brain Masking</h3>
-<p>As a part of release 2.x, a custom brain mask was on the raw structural scan with <a href="https://surfer.nmr.mgh.harvard.edu/docs/synthstrip/">SynthStrip</a> <span class="citation" data-cites="hoopes_synthstrip_2022">(<a href="references.html#ref-hoopes_synthstrip_2022" role="doc-biblioref">Hoopes et al., 2022</a>)</span>. SynthStrip is a cutting edge tool that can efficiently and accurately extract brains in a wide variety of challenging situations. Our use of SynthStrip was inspired by <a href="https://qsiprep.readthedocs.io/en/latest/">QSIprep</a>. However, while conducting quality control on the spatial normalization templates, we discovered that SynthStrip interacts poorly with the normalization tool used by fMRIPrep (and QSIPrep). For details of the issue, see: https://github.com/PennLINC/qsiprep/issues/954. The basic issue is that, while SynthStrip is effective at stripping the skull from an image, its default configuration leaves CSF and dura intact, which interferes with normalization to a template that does not include those materials (that is, a template that is only a brain). While we expect that the issue is relatively minor and have not observed obvious issues in the downstream products, this will be addressed in a future release (expected: 3.0). If you would like to evaluate the masks produced by SynthStrip, they are in <code>mris/derivatives/synthstrip</code>.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-hoopes_synthstrip_2022" class="csl-entry" role="listitem">
-Hoopes, A., Mora, J. S., Dalca, A. V., Fischl, B., &amp; Hoffmann, M. (2022). <span>SynthStrip</span>: Skull-stripping for any brain image. <em>NeuroImage</em>, <em>260</em>, 119474. <a href="https://doi.org/10.1016/j.neuroimage.2022.119474">https://doi.org/10.1016/j.neuroimage.2022.119474</a>
-</div></div></section>
-<section id="variability-across-scanners" class="level3" data-number="10.2.2">
-<h3 data-number="10.2.2" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">10.2.2</span> Variability Across Scanners</h3>
-<p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">12.2</span> Considerations While Working on the Project</h2>
+<section id="effective-vs.-raw-cnr" class="level3 page-columns page-full" data-number="12.2.1">
+<h3 data-number="12.2.1" class="anchored" data-anchor-id="effective-vs.-raw-cnr"><span class="header-section-number">12.2.1</span> Effective vs.&nbsp;Raw CNR</h3>
+<p>To enable comparisons of quality across datasets, it is recommended to convert the CNR values output by EDDY into “effective CNR” values by the square root of the number of acquired volumes and dividing it by the voxel volume <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"></div></section>
+<section id="background" class="level3 page-columns page-full" data-number="12.2.2">
+<h3 data-number="12.2.2" class="anchored" data-anchor-id="background"><span class="header-section-number">12.2.2</span> Background</h3>
+<p>For detailed information about all the QC metrics provided, please see official FSL documentation for <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html">EDDY QC</a>, along with the report <span class="citation" data-cites="bastiani_2019_automated">Bastiani et al. (<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">2019</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"></div></section>
+<section id="data-generation" class="level3" data-number="12.2.3">
+<h3 data-number="12.2.3" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">12.2.3</span> Data Generation</h3>
 </section>
-<section id="data-quality" class="level3" data-number="10.2.3">
-<h3 data-number="10.2.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">10.2.3</span> Data Quality</h3>
-<p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
-</section>
-<section id="data-generation" class="level3 page-columns page-full" data-number="10.2.4">
-<h3 data-number="10.2.4" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">10.2.4</span> Data Generation</h3>
-<p>These outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/fmriprep_app">fmriprep_app</a>.</p>
-<p>Results included in this manuscript come from preprocessing performed using <em>fMRIPrep</em> 24.1.1 (<span class="citation" data-cites="fmriprep1">Esteban et al. (<a href="references.html#ref-fmriprep1" role="doc-biblioref">2019</a>)</span>; <span class="citation" data-cites="fmriprep2">Esteban et al. (<a href="references.html#ref-fmriprep2" role="doc-biblioref">2018</a>)</span>; RRID:SCR_016216), which is based on <em>Nipype</em> 1.8.6 (<span class="citation" data-cites="nipype1">K. Gorgolewski et al. (<a href="references.html#ref-nipype1" role="doc-biblioref">2011</a>)</span>; <span class="citation" data-cites="nipype2">K. J. Gorgolewski et al. (<a href="references.html#ref-nipype2" role="doc-biblioref">2018</a>)</span>; RRID:SCR_002502).</p>
-<div class="no-row-height column-margin column-container"><div id="ref-fmriprep1" class="csl-entry" role="listitem">
-Esteban, O., Markiewicz, C., Blair, R. W., Moodie, C., Isik, A. I., Erramuzpe Aliaga, A., Kent, J., Goncalves, M., DuPre, E., Snyder, M., Oya, H., Ghosh, S., Wright, J., Durnez, J., Poldrack, R., &amp; Gorgolewski, K. J. (2019). <span class="nocase">fMRIPrep</span>: A robust preprocessing pipeline for functional <span>MRI</span>. <em>Nature Methods</em>, <em>16</em>, 111–116. <a href="https://doi.org/10.1038/s41592-018-0235-4">https://doi.org/10.1038/s41592-018-0235-4</a>
-</div><div id="ref-fmriprep2" class="csl-entry" role="listitem">
-Esteban, O., Blair, R., Markiewicz, C. J., Berleant, S. L., Moodie, C., Ma, F., Isik, A. I., Erramuzpe, A., Kent, M., James D. andGoncalves, DuPre, E., Sitek, K. R., Gomez, D. E. P., Lurie, D. J., Ye, Z., Poldrack, R. A., &amp; Gorgolewski, K. J. (2018). fMRIPrep 24.1.1. <em>Software</em>. <a href="https://doi.org/10.5281/zenodo.852659">https://doi.org/10.5281/zenodo.852659</a>
-</div><div id="ref-nipype1" class="csl-entry" role="listitem">
-Gorgolewski, K., Burns, C. D., Madison, C., Clark, D., Halchenko, Y. O., Waskom, M. L., &amp; Ghosh, S. (2011). Nipype: A flexible, lightweight and extensible neuroimaging data processing framework in python. <em>Frontiers in Neuroinformatics</em>, <em>5</em>, 13. <a href="https://doi.org/10.3389/fninf.2011.00013">https://doi.org/10.3389/fninf.2011.00013</a>
-</div><div id="ref-nipype2" class="csl-entry" role="listitem">
-Gorgolewski, K. J., Esteban, O., Markiewicz, C. J., Ziegler, E., Ellis, D. G., Notter, M. P., Jarecka, D., Johnson, H., Burns, C., Manhães-Savio, A., Hamalainen, C., Yvernault, B., Salo, T., Jordan, K., Goncalves, M., Waskom, M., Clark, D., Wong, J., Loney, F., … Ghosh, S. (2018). Nipype. <em>Software</em>. <a href="https://doi.org/10.5281/zenodo.596855">https://doi.org/10.5281/zenodo.596855</a>
-</div></div><section id="preprocessing-of-b0-inhomogeneity-mappings" class="level4 page-columns page-full" data-number="10.2.4.1">
-<h4 data-number="10.2.4.1" class="anchored" data-anchor-id="preprocessing-of-b0-inhomogeneity-mappings"><span class="header-section-number">10.2.4.1</span> Preprocessing of B<sub>0</sub> inhomogeneity mappings</h4>
-<p>A <em>B<sub>0</sub></em>-nonuniformity map (or <em>fieldmap</em>) was estimated based on two (or more) echo-planar imaging (EPI) references with <code>topup</code> (<span class="citation" data-cites="topup">Andersson et al. (<a href="references.html#ref-topup" role="doc-biblioref">2003</a>)</span>; FSL None).</p>
-<div class="no-row-height column-margin column-container"><div id="ref-topup" class="csl-entry" role="listitem">
-Andersson, J. L., Skare, S., &amp; Ashburner, J. (2003). How to correct susceptibility distortions in spin-echo echo-planar images: Application to diffusion tensor imaging. <em>NeuroImage</em>, <em>20</em>(2), 870–888. <a href="https://doi.org/10.1016/S1053-8119(03)00336-7">https://doi.org/10.1016/S1053-8119(03)00336-7</a>
-</div></div></section>
-<section id="anatomical-data-preprocessing" class="level4 page-columns page-full" data-number="10.2.4.2">
-<h4 data-number="10.2.4.2" class="anchored" data-anchor-id="anatomical-data-preprocessing"><span class="header-section-number">10.2.4.2</span> Anatomical data preprocessing</h4>
-<p>The T1w image was corrected for intensity non-uniformity (INU) with <code>N4BiasFieldCorrection</code> <span class="citation" data-cites="n4">(<a href="references.html#ref-n4" role="doc-biblioref">Tustison et al., 2010</a>)</span>, distributed with ANTs 2.5.3 <span class="citation" data-cites="ants">(<a href="references.html#ref-ants" role="doc-biblioref">Avants et al., 2008</a>, RRID:SCR_004757)</span>, and used as T1w-reference throughout the workflow. A pre-computed brain mask was provided as input and used throughout the workflow <a href="#sec-synthstrip" class="quarto-xref"><span>Section 10.2.1</span></a>. Brain tissue segmentation of cerebrospinal fluid (CSF), white-matter (WM) and gray-matter (GM) was performed on the brain-extracted T1w using <code>fast</code> <span class="citation" data-cites="fsl_fast">(FSL, RRID:SCR_002823, <a href="references.html#ref-fsl_fast" role="doc-biblioref">Zhang et al., 2001</a>)</span>. Brain surfaces were reconstructed using <code>recon-all</code> <span class="citation" data-cites="fs_reconall">(FreeSurfer 7.3.2, RRID:SCR_001847, <a href="references.html#ref-fs_reconall" role="doc-biblioref">Dale et al., 1999</a>)</span>, and the brain mask estimated previously was refined with a custom variation of the method to reconcile ANTs-derived and FreeSurfer-derived segmentations of the cortical gray-matter of Mindboggle <span class="citation" data-cites="mindboggle">(RRID:SCR_002438, <a href="references.html#ref-mindboggle" role="doc-biblioref">Klein et al., 2017</a>)</span>. Volume-based spatial normalization to two standard spaces (MNI152NLin2009cAsym, MNI152NLin6Asym) was performed through nonlinear registration with <code>antsRegistration</code> (ANTs 2.5.3), using brain-extracted versions of both T1w reference and the T1w template. The following templates were were selected for spatial normalization and accessed with <em>TemplateFlow</em> <span class="citation" data-cites="templateflow">(24.2.0, <a href="references.html#ref-templateflow" role="doc-biblioref">Ciric et al., 2022</a>)</span>: <em>ICBM 152 Nonlinear Asymmetrical template version 2009c</em> [<span class="citation" data-cites="mni152nlin2009casym">Fonov et al. (<a href="references.html#ref-mni152nlin2009casym" role="doc-biblioref">2009</a>)</span>, RRID:SCR_008796; TemplateFlow ID: MNI152NLin2009cAsym], <em>FSL’s MNI ICBM 152 non-linear 6th Generation Asymmetric Average Brain Stereotaxic Registration Model</em> [<span class="citation" data-cites="mni152nlin6asym">Evans et al. (<a href="references.html#ref-mni152nlin6asym" role="doc-biblioref">2012</a>)</span>, RRID:SCR_002823; TemplateFlow ID: MNI152NLin6Asym]. <em>Grayordinate</em> “dscalar” files containing 91k samples were resampled onto fsLR using the Connectome Workbench <span class="citation" data-cites="hcppipelines">(<a href="references.html#ref-hcppipelines" role="doc-biblioref">Glasser et al., 2013</a>)</span>.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-n4" class="csl-entry" role="listitem">
-Tustison, N. J., Avants, B. B., Cook, P. A., Zheng, Y., Egan, A., Yushkevich, P. A., &amp; Gee, J. C. (2010). N4ITK: Improved N3 bias correction. <em>IEEE Transactions on Medical Imaging</em>, <em>29</em>(6), 1310–1320. <a href="https://doi.org/10.1109/TMI.2010.2046908">https://doi.org/10.1109/TMI.2010.2046908</a>
-</div><div id="ref-ants" class="csl-entry" role="listitem">
-Avants, B. B., Epstein, C. L., Grossman, M., &amp; Gee, J. C. (2008). Symmetric diffeomorphic image registration with cross-correlation: Evaluating automated labeling of elderly and neurodegenerative brain. <em>Medical Image Analysis</em>, <em>12</em>(1), 26–41. <a href="https://doi.org/10.1016/j.media.2007.06.004">https://doi.org/10.1016/j.media.2007.06.004</a>
-</div><div id="ref-fsl_fast" class="csl-entry" role="listitem">
-Zhang, Y., Brady, M., &amp; Smith, S. (2001). Segmentation of brain <span>MR</span> images through a hidden markov random field model and the expectation-maximization algorithm. <em>IEEE Transactions on Medical Imaging</em>, <em>20</em>(1), 45–57. <a href="https://doi.org/10.1109/42.906424">https://doi.org/10.1109/42.906424</a>
-</div><div id="ref-fs_reconall" class="csl-entry" role="listitem">
-Dale, A. M., Fischl, B., &amp; Sereno, M. I. (1999). Cortical surface-based analysis: I. Segmentation and surface reconstruction. <em>NeuroImage</em>, <em>9</em>(2), 179–194. <a href="https://doi.org/10.1006/nimg.1998.0395">https://doi.org/10.1006/nimg.1998.0395</a>
-</div><div id="ref-mindboggle" class="csl-entry" role="listitem">
-Klein, A., Ghosh, S. S., Bao, F. S., Giard, J., Häme, Y., Stavsky, E., Lee, N., Rossa, B., Reuter, M., Neto, E. C., &amp; Keshavan, A. (2017). Mindboggling morphometry of human brains. <em>PLOS Computational Biology</em>, <em>13</em>(2), e1005350. <a href="https://doi.org/10.1371/journal.pcbi.1005350">https://doi.org/10.1371/journal.pcbi.1005350</a>
-</div><div id="ref-templateflow" class="csl-entry" role="listitem">
-Ciric, R., Thompson, W. H., Lorenz, R., Goncalves, M., MacNicol, E., Markiewicz, C. J., Halchenko, Y. O., Ghosh, S. S., Gorgolewski, K. J., Poldrack, R. A., &amp; Esteban, O. (2022). <span>TemplateFlow</span>: <span>FAIR</span>-sharing of multi-scale, multi-species brain models. <em>Nature Methods</em>, <em>19</em>, 1568–1571. <a href="https://doi.org/10.1038/s41592-022-01681-2">https://doi.org/10.1038/s41592-022-01681-2</a>
-</div><div id="ref-mni152nlin2009casym" class="csl-entry" role="listitem">
-Fonov, V., Evans, A., McKinstry, R., Almli, C., &amp; Collins, D. (2009). Unbiased nonlinear average age-appropriate brain templates from birth to adulthood. <em>NeuroImage</em>, <em>47, Supplement 1</em>, S102. <a href="https://doi.org/10.1016/S1053-8119(09)70884-5">https://doi.org/10.1016/S1053-8119(09)70884-5</a>
-</div><div id="ref-mni152nlin6asym" class="csl-entry" role="listitem">
-Evans, A., Janke, A., Collins, D., &amp; Baillet, S. (2012). Brain templates and atlases. <em>NeuroImage</em>, <em>62</em>(2), 911–922. <a href="https://doi.org/10.1016/j.neuroimage.2012.01.024">https://doi.org/10.1016/j.neuroimage.2012.01.024</a>
-</div></div></section>
-<section id="functional-data-preprocessing" class="level4 page-columns page-full" data-number="10.2.4.3">
-<h4 data-number="10.2.4.3" class="anchored" data-anchor-id="functional-data-preprocessing"><span class="header-section-number">10.2.4.3</span> Functional data preprocessing</h4>
-<p>For each of the 4 BOLD runs found per subject (across all tasks and sessions), the following preprocessing was performed. First, a reference volume was generated, using a custom methodology of <em>fMRIPrep</em>, for use in head motion correction. Head-motion parameters with respect to the BOLD reference (transformation matrices, and six corresponding rotation and translation parameters) are estimated before any spatiotemporal filtering using <code>mcflirt</code> <span class="citation" data-cites="mcflirt">(FSL, <a href="references.html#ref-mcflirt" role="doc-biblioref">Jenkinson et al., 2002</a>)</span>. The estimated <em>fieldmap</em> was then aligned with rigid-registration to the target EPI (echo-planar imaging) reference run. The field coefficients were mapped on to the reference EPI using the transform. The BOLD reference was then co-registered to the T1w reference using <code>bbregister</code> (FreeSurfer) which implements boundary-based registration <span class="citation" data-cites="bbr">(<a href="references.html#ref-bbr" role="doc-biblioref">Greve &amp; Fischl, 2009</a>)</span>. Co-registration was configured with six degrees of freedom. Several confounding time-series were calculated based on the <em>preprocessed BOLD</em>: framewise displacement (FD), DVARS and three region-wise global signals. FD was computed using two formulations following Power (absolute sum of relative motions, <span class="citation" data-cites="power_fd_dvars">Power et al. (<a href="references.html#ref-power_fd_dvars" role="doc-biblioref">2014</a>)</span>) and Jenkinson (relative root mean square displacement between affines, <span class="citation" data-cites="mcflirt">Jenkinson et al. (<a href="references.html#ref-mcflirt" role="doc-biblioref">2002</a>)</span>). FD and DVARS are calculated for each functional run, both using their implementations in <em>Nipype</em> <span class="citation" data-cites="power_fd_dvars">(following the definitions by <a href="references.html#ref-power_fd_dvars" role="doc-biblioref">Power et al., 2014</a>)</span>. The three global signals are extracted within the CSF, the WM, and the whole-brain masks. Additionally, a set of physiological regressors were extracted to allow for component-based noise correction <span class="citation" data-cites="compcor">(<em>CompCor</em>, <a href="references.html#ref-compcor" role="doc-biblioref">Behzadi et al., 2007</a>)</span>. Principal components are estimated after high-pass filtering the <em>preprocessed BOLD</em> time-series (using a discrete cosine filter with 128s cut-off) for the two <em>CompCor</em> variants: temporal (tCompCor) and anatomical (aCompCor). tCompCor components are then calculated from the top 2 percent variable voxels within the brain mask. For aCompCor, three probabilistic masks (CSF, WM and combined CSF+WM) are generated in anatomical space. The implementation differs from that of Behzadi et al.&nbsp;in that instead of eroding the masks by 2 pixels on BOLD space, a mask of pixels that likely contain a volume fraction of GM is subtracted from the aCompCor masks. This mask is obtained by dilating a GM mask extracted from the FreeSurfer’s <em>aseg</em> segmentation, and it ensures components are not extracted from voxels containing a minimal fraction of GM. Finally, these masks are resampled into BOLD space and binarized by thresholding at 0.99 (as in the original implementation). Components are also calculated separately within the WM and CSF masks. For each CompCor decomposition, the <em>k</em> components with the largest singular values are retained, such that the retained components’ time series are sufficient to explain 50 percent of variance across the nuisance mask (CSF, WM, combined, or temporal). The remaining components are dropped from consideration.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-mcflirt" class="csl-entry" role="listitem">
-Jenkinson, M., Bannister, P., Brady, M., &amp; Smith, S. (2002). Improved optimization for the robust and accurate linear registration and motion correction of brain images. <em>NeuroImage</em>, <em>17</em>(2), 825–841. <a href="https://doi.org/10.1006/nimg.2002.1132">https://doi.org/10.1006/nimg.2002.1132</a>
-</div><div id="ref-bbr" class="csl-entry" role="listitem">
-Greve, D. N., &amp; Fischl, B. (2009). Accurate and robust brain image alignment using boundary-based registration. <em>NeuroImage</em>, <em>48</em>(1), 63–72. <a href="https://doi.org/10.1016/j.neuroimage.2009.06.060">https://doi.org/10.1016/j.neuroimage.2009.06.060</a>
-</div><div id="ref-power_fd_dvars" class="csl-entry" role="listitem">
-Power, J. D., Mitra, A., Laumann, T. O., Snyder, A. Z., Schlaggar, B. L., &amp; Petersen, S. E. (2014). Methods to detect, characterize, and remove motion artifact in resting state fMRI. <em>NeuroImage</em>, <em>84</em>(Supplement C), 320–341. <a href="https://doi.org/10.1016/j.neuroimage.2013.08.048">https://doi.org/10.1016/j.neuroimage.2013.08.048</a>
-</div><div id="ref-compcor" class="csl-entry" role="listitem">
-Behzadi, Y., Restom, K., Liau, J., &amp; Liu, T. T. (2007). A component based noise correction method (<span>CompCor</span>) for <span>BOLD</span> and perfusion based fMRI. <em>NeuroImage</em>, <em>37</em>(1), 90–101. <a href="https://doi.org/10.1016/j.neuroimage.2007.04.042">https://doi.org/10.1016/j.neuroimage.2007.04.042</a>
-</div><div id="ref-confounds_satterthwaite_2013" class="csl-entry" role="listitem">
-Satterthwaite, T. D., Elliott, M. A., Gerraty, R. T., Ruparel, K., Loughead, J., Calkins, M. E., Eickhoff, S. B., Hakonarson, H., Gur, R. C., Gur, R. E., &amp; Wolf, D. H. (2013). <span class="nocase">An improved framework for confound regression and filtering for control of motion artifact in the preprocessing of resting-state functional connectivity data</span>. <em>NeuroImage</em>, <em>64</em>(1), 240–256. <a href="https://doi.org/10.1016/j.neuroimage.2012.08.052">https://doi.org/10.1016/j.neuroimage.2012.08.052</a>
-</div><div id="ref-patriat_improved_2017" class="csl-entry" role="listitem">
-Patriat, R., Reynolds, R. C., &amp; Birn, R. M. (2017). An improved model of motion-related signal changes in <span class="nocase">fMRI</span>. <em>NeuroImage</em>, <em>144, Part A</em>, 74–82. <a href="https://doi.org/10.1016/j.neuroimage.2016.08.051">https://doi.org/10.1016/j.neuroimage.2016.08.051</a>
-</div><div id="ref-hcppipelines" class="csl-entry" role="listitem">
-Glasser, M. F., Sotiropoulos, S. N., Wilson, J. A., Coalson, T. S., Fischl, B., Andersson, J. L., Xu, J., Jbabdi, S., Webster, M., Polimeni, J. R., Van Essen, D. C., &amp; Jenkinson, M. (2013). The minimal preprocessing pipelines for the human connectome project. <em>NeuroImage</em>, <em>80</em>, 105–124. <a href="https://doi.org/10.1016/j.neuroimage.2013.04.127">https://doi.org/10.1016/j.neuroimage.2013.04.127</a>
-</div></div><p>The head-motion estimates calculated in the correction step were also placed within the corresponding confounds file. The confound time series derived from head motion estimates and global signals were expanded with the inclusion of temporal derivatives and quadratic terms for each <span class="citation" data-cites="confounds_satterthwaite_2013">(<a href="references.html#ref-confounds_satterthwaite_2013" role="doc-biblioref">Satterthwaite et al., 2013</a>)</span>. Frames that exceeded a threshold of 0.5 mm FD or 1.5 standardized DVARS were annotated as motion outliers. Additional nuisance timeseries are calculated by means of principal components analysis of the signal found within a thin band (<em>crown</em>) of voxels around the edge of the brain, as proposed by <span class="citation" data-cites="patriat_improved_2017">(<a href="references.html#ref-patriat_improved_2017" role="doc-biblioref">Patriat et al., 2017</a>)</span>. The BOLD time-series were resampled onto the left/right-symmetric template “fsLR” using the Connectome Workbench <span class="citation" data-cites="hcppipelines">(<a href="references.html#ref-hcppipelines" role="doc-biblioref">Glasser et al., 2013</a>)</span>. <em>Grayordinates</em> files <span class="citation" data-cites="hcppipelines">(<a href="references.html#ref-hcppipelines" role="doc-biblioref">Glasser et al., 2013</a>)</span> containing 91k samples were also generated with surface data transformed directly to fsLR space and subcortical data transformed to 2 mm resolution MNI152NLin6Asym space. All resamplings can be performed with <em>a single interpolation step</em> by composing all the pertinent transformations (i.e.&nbsp;head-motion transform matrices, susceptibility distortion correction when available, and co-registrations to anatomical and output spaces). Gridded (volumetric) resamplings were performed using <code>nitransforms</code>, configured with cubic B-spline interpolation.</p>
-<p>Many internal operations of <em>fMRIPrep</em> use <em>Nilearn</em> 0.10.4 <span class="citation" data-cites="nilearn">(<a href="references.html#ref-nilearn" role="doc-biblioref">Abraham et al., 2014</a>, RRID:SCR_001362)</span>, mostly within the functional processing workflow. For more details of the pipeline, see <a href="https://fmriprep.readthedocs.io/en/latest/workflows.html" title="FMRIPrep's documentation">the section corresponding to workflows in <em>fMRIPrep</em>’s documentation</a>.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-nilearn" class="csl-entry" role="listitem">
-Abraham, A., Pedregosa, F., Eickenberg, M., Gervais, P., Mueller, A., Kossaifi, J., Gramfort, A., Thirion, B., &amp; Varoquaux, G. (2014). Machine learning for neuroimaging with scikit-learn. <em>Frontiers in Neuroinformatics</em>, <em>8</em>. <a href="https://doi.org/10.3389/fninf.2014.00014">https://doi.org/10.3389/fninf.2014.00014</a>
-</div></div></section>
-</section>
-<section id="citations" class="level3 page-columns page-full" data-number="10.2.5">
-<h3 data-number="10.2.5" class="anchored" data-anchor-id="citations"><span class="header-section-number">10.2.5</span> Citations</h3>
-<p>If you use these products in your analyses, please cite the relevant papers written by members <a href="https://trendscenter.org/data/">TReNDS</a>.</p>
-<p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
+<section id="citations" class="level3 page-columns page-full" data-number="12.2.4">
+<h3 data-number="12.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">12.2.4</span> Citations</h3>
+<p>If you use these derivatives please cite the EDDY QC paper <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-bastiani_2019_automated" class="csl-entry" role="listitem">
+Bastiani, M., Cottaar, M., Fitzgibbon, S. P., Suri, S., Alfaro-Almagro, F., Sotiropoulos, S. N., Jbabdi, S., &amp; Andersson, J. L. (2019). Automated quality control for within and between studies diffusion MRI data using a non-parametric framework for movement and distortion correction. <em>Neuroimage</em>, <em>184</em>, 801–812. <a href="https://doi.org/10.1016/j.neuroimage.2018.09.073">https://doi.org/10.1016/j.neuroimage.2018.09.073</a>
+</div></div><p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
 <p>Data were provided [in part] by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/ Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
 </blockquote>
@@ -868,6 +937,7 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
 
 </section>
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1285,13 +1355,13 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./freesurfer.html" class="pagination-link" aria-label="FreeSurfer Measures">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">FreeSurfer Measures</span></span>
+      <a href="./qsiprep.html" class="pagination-link" aria-label="QSIPrep">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">QSIPrep</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./qsiprep.html" class="pagination-link" aria-label="QSIPrep">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">QSIPrep</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./reconstruction.html" class="pagination-link" aria-label="Orientation Distribution Function Reconstruction">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Orientation Distribution Function Reconstruction</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
