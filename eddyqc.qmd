@@ -1,0 +1,196 @@
+```{r lockfile, include=FALSE}
+renv::use(
+  base64enc      = "base64enc@0.1-6",
+  bslib          = "bslib@0.10.0",
+  cachem         = "cachem@1.1.0",
+  cli            = "cli@3.6.5",
+  cpp11          = "cpp11@0.5.3",
+  digest         = "digest@0.6.39",
+  distributional = "distributional@0.7.0",
+  dplyr          = "dplyr@1.2.0",
+  evaluate       = "evaluate@1.0.5",
+  farver         = "farver@2.1.2",
+  fastmap        = "fastmap@1.2.0",
+  fontawesome    = "fontawesome@0.5.3",
+  fs             = "fs@2.0.1",
+  generics       = "generics@0.1.4",
+  ggdist         = "ggdist@3.3.3",
+  ggplot2        = "ggplot2@4.0.2",
+  glue           = "glue@1.8.0",
+  gtable         = "gtable@0.3.6",
+  highr          = "highr@0.12",
+  htmltools      = "htmltools@0.5.9",
+  isoband        = "isoband@0.3.0",
+  jquerylib      = "jquerylib@0.1.4",
+  jsonlite       = "jsonlite@2.0.0",
+  knitr          = "knitr@1.51",
+  labeling       = "labeling@0.4.3",
+  lifecycle      = "lifecycle@1.0.5",
+  magrittr       = "magrittr@2.0.4",
+  memoise        = "memoise@2.0.1",
+  mime           = "mime@0.13",
+  numDeriv       = "numDeriv@2016.8-1.1",
+  pillar         = "pillar@1.11.1",
+  pkgconfig      = "pkgconfig@2.0.3",
+  purrr          = "purrr@1.2.1",
+  quadprog       = "quadprog@1.5-8",
+  R6             = "R6@2.6.1",
+  rappdirs       = "rappdirs@0.3.4",
+  RColorBrewer   = "RColorBrewer@1.1-3",
+  Rcpp           = "Rcpp@1.1.1",
+  renv           = "renv@1.2.3",
+  rlang          = "rlang@1.1.7",
+  rmarkdown      = "rmarkdown@2.31",
+  S7             = "S7@0.2.1",
+  sass           = "sass@0.4.10",
+  scales         = "scales@1.4.0",
+  stringi        = "stringi@1.8.7",
+  stringr        = "stringr@1.6.0",
+  tibble         = "tibble@3.3.1",
+  tidyr          = "tidyr@1.3.2",
+  tidyselect     = "tidyselect@1.2.1",
+  tinytex        = "tinytex@0.58",
+  utf8           = "utf8@1.2.6",
+  vctrs          = "vctrs@0.7.2",
+  viridisLite    = "viridisLite@0.4.3",
+  withr          = "withr@3.0.2",
+  xfun           = "xfun@0.57",
+  yaml           = "yaml@2.3.12"
+)
+```
+
+# EDDY QC {#sec-eddyqc}
+
+This kit reviews the key quality control metrics provided by [FSL’s EDDY QC](https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html) [@bastiani_2019_automated], which are included in A2CPS data releases. These metrics are not used in the automated rating of dMRI images, but they provide valuable information about the impacts of movement and magnetic susceptibility on a diffusion scan. 
+
+## Starting Project
+
+```{r setup}
+library(dplyr)
+library(purrr)
+library(ggplot2)
+library(fs)
+library(tidyr)
+library(ggdist)
+```
+
+
+### Locate Data
+
+{{< include _snippets/mri-location.qmd >}}
+
+The outputs are organized by participant and session[^structure].
+
+[^structure]: Note that the directory structure varies across participants, with some participants matching `sub-[recordid]/ses-[visit]/[contents]` and others matching `sub-[recordid]/ses-[visit]/eddyqc/[contents]`.
+
+```{bash}
+#| eval: false
+$ ls mris/derivatives/eddyqc/ | head
+sub-10003
+sub-10008
+sub-10010
+sub-10011
+sub-10013
+sub-10014
+sub-10015
+sub-10017
+sub-10020
+sub-10023
+
+$ tree mris/derivatives/eddyqc/sub-10003
+sub-10003
+└── ses-V1
+    ├── avg_b0_pe0.png
+    ├── avg_b0.png
+    ├── avg_b1000.png
+    ├── avg_b2000.png
+    ├── avg_b3000.png
+    ├── avg_b500.png
+    ├── cnr0000.nii.gz.png
+    ├── cnr0001.nii.gz.png
+    ├── cnr0002.nii.gz.png
+    ├── cnr0003.nii.gz.png
+    ├── cnr0004.nii.gz.png
+    ├── qc.json
+    ├── qc.pdf
+    ├── ref_list.png
+    ├── ref.txt
+    └── vdm.png
+
+1 directory, 16 files
+```
+
+The pdf is a visual report summarizing the scan quality, including tables with quantitative metrics and images indicating scan quality. The metrics are available in the json, along with metadata about the scan.
+
+### Extract Data
+
+Let's collate the QC metrics into a single table. To do so, we recursively search for and read the `qc.json` files.
+
+```{r gather}
+qcs <- tibble(
+  src = fs::dir_ls("data/eddyqc", recurse = TRUE, glob = "*qc.json")
+) |>
+  mutate(
+    qc = purrr::map(
+      src,
+      ~ jsonlite::read_json(.x, simplifyVector = TRUE),
+      .progress = TRUE
+    )
+  )
+# let's look at the fields on one of those qc.json files
+qcs$qc[[1]] |> names()
+```
+
+In these `qc.json` files, there are three kinds of fields: `data_*` fields, which describe the scan, `eddy_*` fields, which describe how EDDY was configured, and `qc_*` fields, which summarize the scan quality. Let's dig into `qc_cnr_avg`. That field is a vector with a length equal to the number of shells in the scan. The entries are the average angular Contrast-to-Noise ratio, which is a standardized measure of scan quality [@bastiani_2019_automated][^cnr] 
+
+[^cnr]: The first entry corresponds to the b0, and so it is really as signal-to-noise ratio rather than a traditional angular CNR.
+
+```{r filter}
+cnr <- qcs |>
+  mutate(
+    qc = map(
+      qc,
+      ~ tibble(CNR = .x$qc_cnr_avg, b = c(0, 500, 1000, 2000, 3000)),
+    )
+  ) |>
+  unnest(qc) |>
+  filter(CNR > 0) # 0 indicates some failure in calculation of the metric
+head(cnr)
+```
+
+Now, plot the ratios by b-value.
+
+```{r}
+cnr |>
+  mutate(b = factor(b)) |> # to make plotting nicer
+  ggplot(aes(y = b, x = CNR)) +
+  stat_dotsinterval(quantiles = 100) +
+  scale_x_log10("CNR/SNR")
+```
+
+Generally, the angular CNR seems to increase with increasing b-value. There are also some outliers, which likely correspond to preprocessing failures. 
+
+
+## Considerations While Working on the Project
+
+### Effective vs. Raw CNR
+
+To enable comparisons of quality across datasets, it is recommended to convert the CNR values output by EDDY into "effective CNR" values by the square root of the number of acquired volumes and dividing it by the voxel volume [@bastiani_2019_automated]. 
+
+### Background
+
+For detailed information about all the QC metrics provided, please see official FSL documentation for [EDDY QC](https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html), along with the report @bastiani_2019_automated. 
+
+### Data Generation
+
+
+
+
+
+### Citations
+
+If you use these derivatives please cite the EDDY QC paper [@bastiani_2019_automated].
+
+{{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.
