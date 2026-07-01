@@ -18,7 +18,7 @@ The @sec-gift products provide outputs in a raw format that will be familiar to 
 
 {{< include _snippets/mri-location.qmd >}}
 
-The MRIQC metrics are underneath `derivatives/postgift`. Let's take a look.
+The derivatives are underneath `derivatives/postgift`. Let's take a look.
 
 ```{bash}
 #| eval: false
@@ -74,7 +74,6 @@ red_run1_scans <- read_tsv(dir_ls("data/scans", glob = "*tsv"), na = "n/a") |>
     sub = stringr::str_extract(filename, "[[:digit:]]{5}") |> as.integer()
   ) |>
   select(sub)
-
 ```
 
 ::: {#fig-falff}
@@ -101,10 +100,9 @@ run1_amplitudes_without_red <- run1_amplitudes |>
   anti_join(red_run1_scans, by = join_by(sub))
 
 run1_amplitudes |> do_ma_plot()
-
 ```
 
-Fractional Amplitude of Low Frequency Fluctuations. Each panel is a distinct component. The x-axis is a mean average, and the y-axis is a ratio of the two fALFFs. The 
+Fractional Amplitude of Low Frequency Fluctuations. Each panel is a distinct component. The x-axis is a mean average, and the y-axis is a ratio of the two fALFFs. 
 
 :::
 
