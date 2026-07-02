@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Imputed Genomics – A2CPS Starter Kits</title>
+<title>15&nbsp; Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques (BEDPOSTX) – A2CPS Starter Kits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -88,8 +88,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./mri-idps.html" rel="next">
-<link href="./genetic_variants.html" rel="prev">
+<link href="./fcn.html" rel="next">
+<link href="./postdtifit.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -142,7 +142,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </script>
 
 
-<meta name="citation_title" content="[[3]{.chapter-number}&nbsp; [Imputed Genomics]{.chapter-title}]{#sec-genomics .quarto-section-identifier}">
+<meta name="citation_title" content="[[15]{.chapter-number}&nbsp; [Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques (BEDPOSTX)]{.chapter-title}]{#sec-bedpostx .quarto-section-identifier}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Corticostriatal functional connectivity predicts transition to chronic back pain;,citation_author=Marwan N Baliki;,citation_author=Bogdan Petre;,citation_author=Souraya Torbey;,citation_author=Kristina M Herrmann;,citation_author=Lejian Huang;,citation_author=Thomas J Schnitzer;,citation_author=Howard L Fields;,citation_author=A Vania Apkarian;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=8;,citation_doi=10.1038/nn.3153;,citation_volume=15;,citation_journal_title=Nature neuroscience;,citation_publisher=Nature Publishing Group US New York;">
 <meta name="citation_reference" content="citation_title=MRI signatures of brain age and disease over the lifespan based on a deep brain network and 14 468 individuals worldwide;,citation_author=Vishnu M Bashyam;,citation_author=Guray Erus;,citation_author=Jimit Doshi;,citation_author=Mohamad Habes;,citation_author=Ilya M Nasrallah;,citation_author=Monica Truelove-Hill;,citation_author=Dhivya Srinivasan;,citation_author=Liz Mamourian;,citation_author=Raymond Pomponio;,citation_author=Yong Fan;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_issue=7;,citation_doi=10.1093/brain/awaa160;,citation_volume=143;,citation_journal_title=Brain;,citation_publisher=Oxford University Press;">
@@ -459,7 +459,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./genomic_imputation.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Imputed Genomics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bedpostx.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques (BEDPOSTX)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -513,7 +513,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./genomic_imputation.html" class="sidebar-item-text sidebar-link active">
+  <a href="./genomic_imputation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Imputed Genomics</span></span></a>
   </div>
 </li>
@@ -585,7 +585,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./bedpostx.html" class="sidebar-item-text sidebar-link">
+  <a href="./bedpostx.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques (BEDPOSTX)</span></span></a>
   </div>
 </li>
@@ -706,17 +706,18 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">3.1</span> Starting Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">15.1</span> Starting Project</a>
   <ul class="collapse">
-  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">3.1.1</span> Locate Data</a></li>
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">15.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">15.1.2</span> Extract Data</a></li>
   </ul></li>
-  <li><a href="#imputation-process" id="toc-imputation-process" class="nav-link" data-scroll-target="#imputation-process"><span class="header-section-number">3.2</span> Imputation Process</a>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">15.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#pre-imputation-data-preparation" id="toc-pre-imputation-data-preparation" class="nav-link" data-scroll-target="#pre-imputation-data-preparation"><span class="header-section-number">3.2.1</span> Pre-Imputation Data Preparation</a></li>
-  <li><a href="#imputation" id="toc-imputation" class="nav-link" data-scroll-target="#imputation"><span class="header-section-number">3.2.2</span> Imputation</a></li>
-  <li><a href="#post-imputation-quality-control" id="toc-post-imputation-quality-control" class="nav-link" data-scroll-target="#post-imputation-quality-control"><span class="header-section-number">3.2.3</span> Post-Imputation Quality Control</a></li>
-  <li><a href="#considerations-while-working-with-these-data" id="toc-considerations-while-working-with-these-data" class="nav-link" data-scroll-target="#considerations-while-working-with-these-data"><span class="header-section-number">3.2.4</span> Considerations while working with these data</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">3.2.5</span> Citations</a></li>
+  <li><a href="#additional-information" id="toc-additional-information" class="nav-link" data-scroll-target="#additional-information"><span class="header-section-number">15.2.1</span> Additional Information</a></li>
+  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">15.2.2</span> Variability Across Scanners</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">15.2.3</span> Data Quality</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">15.2.4</span> Data Generation</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">15.2.5</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -727,7 +728,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-genomics" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Imputed Genomics</span></span></h1>
+<h1 class="title"><span id="sec-bedpostx" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques (BEDPOSTX)</span></span></h1>
 </div>
 
 
@@ -744,246 +745,356 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>This page provides considerations for A2CPS projects that involve the Imputed Genomics Data.</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/df/Human_male_karyotpe_high_resolution.jpg" class="img-fluid" width="500"></p>
-<!-- This picture is free to share -->
-<p>The imputed genomic dataset expands single-nucleotide resolution variant data across the human genome, offering deeper and more comprehensive coverage. Genotype imputation aligns SNP array data with ancestry-specific reference haplotypes to infer untyped variants with high confidence. This process can be compared to filling in missing letters in a sentence based on contextual knowledge — for example:</p>
-<p>“T_e l_zy d_g j___ed _ver the _at.”</p>
-<p>Following imputation, the dataset increased from 690,126 to 11,016,319 genetic loci, spanning all 22 autosomes and the X chromosome for 1,375 participants. Prior to imputation, data were preprocessed and formatted for compatibility with the Imputation Server. Post-imputation, we applied rigorous quality control, excluding low-confidence variants and those with a minor allele frequency (MAF) below 1%.</p>
-<section id="starting-project" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">3.1</span> Starting Project</h2>
-<section id="locate-data" class="level3" data-number="3.1.1">
-<h3 data-number="3.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">3.1.1</span> Locate Data</h3>
-<p>On TACC, the data are stored underneath the releases. For example, data release <code>v2.1.0</code> is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The single-nucleotide polymorphisms are underneath the <code>omics/gene_variants</code> folder</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bed</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bim</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.fam</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.log</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.log</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.nosex</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_PCA_Ind_Info.csv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>These files are in the <a href="https://www.cog-genomics.org/plink/1.9/">PLINK</a> format.</p>
-<p>For more detail on Plink Binary File information and data extraction for genetic variant data, refer to the Genetic Variant starter kit.</p>
-</section>
-</section>
-<section id="imputation-process" class="level2 page-columns page-full" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="imputation-process"><span class="header-section-number">3.2</span> Imputation Process</h2>
-<p>The below procedures were performed with these data:</p>
-<p>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed</p>
-<p>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim</p>
-<p>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam</p>
-<p>(these files originally had base name A2CPS_Freeze_2, as reflected in the code below)</p>
-<section id="pre-imputation-data-preparation" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="pre-imputation-data-preparation"><span class="header-section-number">3.2.1</span> Pre-Imputation Data Preparation</h3>
-<p>Following the Data Preparation Process as outlined here:</p>
-<p><a href="https://topmedimpute.readthedocs.io/en/latest/prepare-your-data/">TOPMed Imputation Server Data Preparation</a></p>
-<details>
-<summary>
-Click to show the Pre-Imputation Data Processing Bash Script, which utilizes Plink 1.9
-</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> A2CPS_RL1-5_For_Imputation_F2</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Subset out Y Chromosome and MT DNA</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mkdir</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">./plink</span> <span class="at">--bfile</span> Freeze_2/A2CPS_Freeze_2 <span class="at">--chr</span> 1-23 <span class="at">--keep-allele-order</span> <span class="at">--make-bed</span> <span class="at">--out</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Run TOPMed Panel Check</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">./plink</span> <span class="at">--freq</span> <span class="at">--bfile</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2 <span class="at">--out</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">perl</span> HRC-1000G-check-bim-v4.3.0/HRC-1000G-check-bim.pl <span class="at">-b</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2.bim <span class="at">-f</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2.frq <span class="at">-r</span> CreateTOPMed/PASS.Variants.TOPMed_freeze5_hg38_dbSNP.tab <span class="at">-h</span></span>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>There are several ways to reconstruct the orientation distribution function of dMRI. One relatively simple method employed by A2CPS is presented in <a href="reconstruction.html" class="quarto-xref"><span>Chapter 13</span></a> (the tensor model). Another method employed by A2CPS is the provided by Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques with Crossing-Fibers (BedpostX). While the primary aim of the BedpostX derivatives is to support tractography (covered in another kit), the BedpostX derivatives may be interesting in some analyses (e.g., comparison of orientation distribution functions). This kit reviews the organization of those outputs.</p>
+<section id="starting-project" class="level2 page-columns page-full" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">15.1</span> Starting Project</h2>
+<section id="locate-data" class="level3" data-number="15.1.1">
+<h3 data-number="15.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">15.1.1</span> Locate Data</h3>
+<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The derivatives are underneath <code>derivatives/bedpostx</code>. Although BedpostX derivatives are not covered by BIDS, the derivatives are organized in a “bidsish” manner</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/bedpostx/ <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10011</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10013</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10014</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10015</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10017</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10020</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10023</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sh</span> ./A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/Run-plink.sh</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Sort GZ.VCF Files by Genomic Position</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mkdir</span> A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">23</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="ex">bcftools</span> sort ./A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2-updated-chr<span class="va">${chr}</span>.vcf.gz <span class="at">-Oz</span> <span class="at">-o</span> ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted/A2CPS_RL1-5_chr<span class="va">${chr}</span>_sorted.vcf.gz</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree <span class="at">-d</span> derivatives/bedpostx/sub-10003</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ex">derivatives/bedpostx/sub-10003</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> dwi.bedpostx</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> logs</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="ex">│&nbsp;&nbsp;</span> └── monitor</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> xfms</span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4. Add chr in front of chromosome number: "If your input data is GRCh38/hg38, please ensure chromosomes are encoded with prefix 'chr' (e.g. chr20)."</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mkdir</span> A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted_With_Chr</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">23</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">zcat</span> ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted/A2CPS_RL1-5_chr<span class="va">${chr}</span>_sorted.vcf.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'BEGIN {OFS="\t"} {if($0 !~ /^#/) $1="chr"$1; print}'</span> <span class="kw">|</span> <span class="ex">bgzip</span> <span class="at">-c</span> <span class="op">&gt;</span> ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted_With_Chr/A2CPS_RL1-5_chr<span class="va">${chr}</span>_sorted_with_chr.vcf.gz</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="ex">bvals</span>                     dyads1.nii.gz                dyads2_thr0.05.nii.gz        dyads3_thr0.05.nii.gz     mean_f0samples.nii.gz  mean_fsumsamples.nii.gz  mean_S0samples.nii.gz   mean_th3samples.nii.gz   merged_ph1samples.nii.gz  merged_th2samples.nii.gz  xfms</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="ex">bvecs</span>                     dyads2_dispersion.nii.gz     dyads3_dispersion.nii.gz     logs                      mean_f1samples.nii.gz  mean_ph1samples.nii.gz   mean_tausamples.nii.gz  merged_f1samples.nii.gz  merged_ph2samples.nii.gz  merged_th3samples.nii.gz</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="ex">commands.txt</span>              dyads2.nii.gz                dyads3.nii.gz                mean_dsamples.nii.gz      mean_f2samples.nii.gz  mean_ph2samples.nii.gz   mean_th1samples.nii.gz  merged_f2samples.nii.gz  merged_ph3samples.nii.gz  monitor</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="ex">dyads1_dispersion.nii.gz</span>  dyads2_thr0.05_modf2.nii.gz  dyads3_thr0.05_modf3.nii.gz  mean_d_stdsamples.nii.gz  mean_f3samples.nii.gz  mean_ph3samples.nii.gz   mean_th2samples.nii.gz  merged_f3samples.nii.gz  merged_th1samples.nii.gz  nodif_brain_mask.nii.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="imputation" class="level3" data-number="3.2.2">
-<h3 data-number="3.2.2" class="anchored" data-anchor-id="imputation"><span class="header-section-number">3.2.2</span> Imputation</h3>
-<p>After preparing the files, they were run through:</p>
-<p><a href="https://topmedimpute.readthedocs.io/en/latest/pipeline/">TOPMed Imputation Pipeline</a></p>
+<section id="extract-data" class="level3 page-columns page-full" data-number="15.1.2">
+<h3 data-number="15.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">15.1.2</span> Extract Data</h3>
+<p>The majority of these files are niftis that contain summaries of parameters for the model fit by BedpostX. This model attempts to uncover how fibers are oriented within voxels, how many fibers are present, and the diffusivity associated with each fiber. In this kit, we’ll make a plot of the most dominant (first) fiber orientation.</p>
+<p>First, let’s grab the <code>mean_f1samples</code> file, which is an estimate of how much of the diffusivity samples can be attributed to first fiber. For convenience and speed, we’ll just grab every fifth slice, and also restrict the field of view.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take every 10th slice</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> nio<span class="sc">::</span><span class="fu">to_tbl</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/bedpostx/sub-10003/ses-V1/dwi.bedpostx/mean_f1samples.nii.gz"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">measure =</span> <span class="st">"f1"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(k <span class="sc">%%</span> <span class="dv">5</span>), k <span class="sc">&gt;</span> <span class="dv">30</span>, k <span class="sc">&lt;</span> <span class="dv">80</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(f1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">i</th>
+<th style="text-align: right;">j</th>
+<th style="text-align: right;">k</th>
+<th style="text-align: right;">f1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The table is large and hard to understand at a glance, so it may be helpful to visualize the slices quickly.</p>
+<div id="fig-f1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-f1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> i, <span class="at">y =</span> j, <span class="at">fill =</span> f1)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>k) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_raster</span>() <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"turbo"</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bedpostx_files/figure-html/f1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-f1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15.1: Signal Contribution of the First Fiber. Higher values indicate stronger influence of the first fiber (e.g., in voxels that are better fit by even just a single fiber).
+</figcaption>
+</figure>
+</div>
+<p>Information about the fiber orientation is stored in the “dyads” file. Each of these dyad files is the mean of the principle diffusion direction, stored as a 3d vector; that is, the nifti files are 4d, with the third dimension corresponding to the x, y, and z coordinates. To visualize these vectors, we’re going to map the coordinates onto the Red Green Blue color space <span class="citation" data-cites="pajevic1999color">(for a discussion of color scales, see <a href="references.html#ref-pajevic1999color" role="doc-biblioref">Pajevic &amp; Pierpaoli, 1999</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-pajevic1999color" class="csl-entry" role="listitem">
+Pajevic, S., &amp; Pierpaoli, C. (1999). Color schemes to represent the orientation of anisotropic tissues from diffusion tensor data: Application to white matter fiber tract mapping in the human brain. <em>Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine</em>, <em>42</em>(3), 526–540. <a href="https://doi.org/10.1002/(SICI)1522-2594(199909)42:3%3C526::AID-MRM15%3E3.0.CO;2-J">https://doi.org/10.1002/(SICI)1522-2594(199909)42:3%3C526::AID-MRM15%3E3.0.CO;2-J</a>
+</div></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fl">1.8</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fiber <span class="ot">&lt;-</span> nio<span class="sc">::</span><span class="fu">to_tbl</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/bedpostx/sub-10003/ses-V1/dwi.bedpostx/dyads1.nii.gz"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(f1, <span class="at">by =</span> <span class="fu">join_by</span>(i, j, k)) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">value =</span> (<span class="fu">abs</span>(value) <span class="sc">*</span> f1)<span class="sc">^</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fl">1.8</span>) <span class="co"># gamma correction to make colors easier to see</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> t) <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span>, <span class="st">`</span><span class="at">3</span><span class="st">`</span>), <span class="sc">~</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(.x, <span class="dv">0</span>), <span class="dv">1</span>)),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">hex_color =</span> <span class="fu">rgb</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span>, <span class="st">`</span><span class="at">3</span><span class="st">`</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fiber)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">i</th>
+<th style="text-align: right;">j</th>
+<th style="text-align: right;">k</th>
+<th style="text-align: right;">f1</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: left;">hex_color</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">#000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">#000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">#000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">#000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">#000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">#000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Now, having associated each voxel with a color, we can make a raster of each slice. Before then, however, let’s do a bit of extra work to make a legend for the color scale.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_legend <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">500</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">500</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">radius =</span> <span class="fu">sqrt</span>(x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(radius <span class="sc">&lt;=</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> y<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">r =</span> (<span class="fu">abs</span>(x))<span class="sc">^</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fl">1.8</span>),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">g =</span> (<span class="fu">abs</span>(y))<span class="sc">^</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fl">1.8</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">b =</span> (<span class="fu">abs</span>(z))<span class="sc">^</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fl">1.8</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(r, g, b), <span class="sc">~</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(.x, <span class="dv">0</span>), <span class="dv">1</span>)),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">hex_color =</span> <span class="fu">rgb</span>(r, g, b)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>p_legend <span class="ot">&lt;-</span> df_legend <span class="sc">|&gt;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> hex_color)) <span class="sc">+</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_raster</span>() <span class="sc">+</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_identity</span>() <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>, <span class="fl">1.2</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>, <span class="fl">1.2</span>)) <span class="sc">+</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add anatomical orientation labels (adjust based on your data's specific orientation)</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"text"</span>,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fl">1.15</span>,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"L"</span>,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"text"</span>,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="sc">-</span><span class="fl">1.15</span>,</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"R"</span>,</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"text"</span>,</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="dv">0</span>,</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fl">1.15</span>,</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"A"</span>,</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    <span class="st">"text"</span>,</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="dv">0</span>,</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="sc">-</span><span class="fl">1.15</span>,</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"P"</span>,</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Title and context for the Z-axis</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"black"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"white"</span>),</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">9</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">10</span>))</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="fig-f1-orientation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-f1-orientation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>p_fiber <span class="ot">&lt;-</span> fiber <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> i, <span class="at">y =</span> j, <span class="at">fill =</span> hex_color)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>k) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_raster</span>() <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_identity</span>() <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"black"</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>p_fiber <span class="sc">+</span> p_legend <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bedpostx_files/figure-html/f1-orientation-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-f1-orientation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15.2: First Fiber Orientation. The colors correspond to different directions.
+</figcaption>
+</figure>
+</div>
 </section>
-<section id="post-imputation-quality-control" class="level3" data-number="3.2.3">
-<h3 data-number="3.2.3" class="anchored" data-anchor-id="post-imputation-quality-control"><span class="header-section-number">3.2.3</span> Post-Imputation Quality Control</h3>
-<ul>
-<li><p>Imputed variants with an imputation quality score (R²) less than 0.3 were excluded.</p></li>
-<li><p>Imputed variants with minor allele frequencies (MAF) below 0.01 were excluded to remove extremely rare variants.</p></li>
-<li><p>Imputed variants lacking rsIDs (denoted as ‘.’) or sharing duplicated genomic positions were excluded, as these caused issues during PLINK merging.</p></li>
-</ul>
 </section>
-<section id="considerations-while-working-with-these-data" class="level3" data-number="3.2.4">
-<h3 data-number="3.2.4" class="anchored" data-anchor-id="considerations-while-working-with-these-data"><span class="header-section-number">3.2.4</span> Considerations while working with these data</h3>
-<ul>
-<li><p>Population Structure still exists</p></li>
-<li><p>Researchers can choose to filter out variants based on other, standard QC measures that suit their studies.</p></li>
-</ul>
-<details>
-<summary>
-Click to show the Post-Imputation Quality Control Bash Script, which utilizes Plink 1.9
-</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Run post_imputation_qc.R </span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># This creates update_ids.txt, update_sexes.txt, and chr_${chr}/keep_ranges.txt,</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. MAKE Binary Files</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">./plink2</span> <span class="at">--vcf</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>.dose.vcf.gz dosage=DS <span class="at">--make-bed</span> <span class="at">--out</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. UPDATE IDs</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>   <span class="ex">./plink2</span> <span class="at">--bfile</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose <span class="at">--update-ids</span> update_ids.txt <span class="at">--make-bed</span> <span class="at">--out</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_updated_IDs</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. UPDATE SEXES</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>   <span class="ex">./plink2</span> <span class="at">--bfile</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_updated_IDs <span class="at">--update-sex</span> update_sexes.txt <span class="at">--make-bed</span> <span class="at">--out</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_updated_sexes</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Keep variants with (MAF &gt; 0.01 and R2 &gt; 0.3)</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="ex">./plink2</span> <span class="at">--bfile</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_updated_sexes <span class="at">--extract</span> range chr_<span class="va">${chr}</span>/keep_ranges.txt <span class="at">--make-bed</span> <span class="at">--out</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># X CHR #</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. MAKE Binary Files</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink2</span> <span class="at">--vcf</span> chr_X/chrX.dose.vcf.gz dosage=DS <span class="at">--make-bed</span> <span class="at">--update-sex</span> update_sexes_X.txt <span class="at">--out</span> chr_X/chrX_dose</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Update IDs</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink2</span> <span class="at">--bfile</span> chr_X/chrX_dose <span class="at">--make-bed</span> <span class="at">--update-ids</span> update_ids.txt <span class="at">--out</span> chr_X/chrX_updated_IDs</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 8. Keep only variants that passed QC</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink2</span> <span class="at">--bfile</span> chr_X/chrX_updated_IDs <span class="at">--extract</span> range chr_X/keep_ranges.txt <span class="at">--make-bed</span> <span class="at">--out</span> chr_X/chrX_dose_qced</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 9. Rename each file</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ./Imputation_QCed</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span> X<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mv</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced.bed Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced.bed</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mv</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced.bim Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced.bim</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mv</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced.fam Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced.fam</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mv</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced.log Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced.log</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="co"># 10. Identify SNPs that were duplicated during Imputation or have "." as their rsID</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="ex">duplicate.R</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="co"># 11. Drop Duplicate and "." SNPs. Merging files for a combined imputed dataset does not function with duplicates for genomic position or identifiers</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ./Imputation_QCed/No_Duplicates</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span> X<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>   <span class="ex">./plink</span> <span class="at">--bfile</span> Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced <span class="at">--exclude</span> Imputation_QCed/duplicate_snp_list.txt <span class="at">--make-bed</span> <span class="at">--out</span> Imputation_QCed/No_Duplicates/chr<span class="va">${chr}</span>_No_Duplicates</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="co"># 12. Drop Variants that are impossibly called for X Chromosome</span></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $3}'</span> Imputation_QCed/No_Duplicates/chrX_No_Duplicates.hh <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span> <span class="op">&gt;</span> Imputation_QCed/hh_snps_x_to_exclude.txt</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink</span> <span class="at">--bfile</span> Imputation_QCed/No_Duplicates/chrX_No_Duplicates <span class="at">--exclude</span> Imputation_QCed/hh_snps_x_to_exclude.txt <span class="at">--make-bed</span> <span class="at">--out</span> Imputation_QCed/No_Duplicates/chrX_imputed_qced_no_hh</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="co"># 13. Merge Chromosomes 1 - 22, X</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ./Imputation_QCed/Final</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink</span> <span class="at">--bfile</span> Imputation_QCed/No_Duplicates/chr1_No_Duplicates <span class="at">--merge-list</span> Imputation_QCed/a2cps_imputed_qc_merge_list.txt <span class="at">--make-bed</span> <span class="at">--out</span> Imputation_QCed/Final/A2CPS_Imputed_Genomics</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<section id="supplementary-qc-files-rscripts" class="level4" data-number="3.2.4.1">
-<h4 data-number="3.2.4.1" class="anchored" data-anchor-id="supplementary-qc-files-rscripts"><span class="header-section-number">3.2.4.1</span> Supplementary QC Files: RScripts</h4>
-<details>
-<summary>
-Click to show Supplementary RScript #1: Variant-Level QC Based on Quality Metrics(post_imputation_qc.R
-</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"./Imputation_Results/"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>chromosomes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>, <span class="st">"X"</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (chr <span class="cf">in</span> chromosomes) {</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  folder <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"chr_"</span>, chr)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(folder, <span class="fu">paste0</span>(<span class="st">"chr"</span>, chr, <span class="st">".info.gz"</span>))</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  dose <span class="ot">&lt;-</span> <span class="fu">fread</span>(file_path)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  dose[, <span class="fu">c</span>(<span class="st">"AF"</span>, <span class="st">"MAF"</span>, <span class="st">"AVG_CS"</span>, <span class="st">"R2"</span>) <span class="sc">:</span><span class="er">=</span> {</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    af      <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*AF=([^;]*).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, INFO)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    maf     <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*MAF=([^;]*).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, INFO)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    avg.cs  <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*AVG_CS=([^;]*).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, INFO)</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    r2      <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*R2=([^;]*).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, INFO)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="fu">as.numeric</span>(af), <span class="fu">as.numeric</span>(maf), <span class="fu">as.numeric</span>(avg.cs), <span class="fu">as.numeric</span>(r2))</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  }]</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  maf<span class="fl">.001</span> <span class="ot">&lt;-</span> dose[MAF <span class="sc">&gt;</span> <span class="fl">0.01</span>]</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  r2<span class="fl">.03</span> <span class="ot">&lt;-</span> maf<span class="fl">.001</span>[R2 <span class="sc">&gt;</span> <span class="fl">0.3</span>]</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setnames</span>(r2<span class="fl">.03</span>, <span class="st">"#CHROM"</span>, <span class="st">"CHROM"</span>, <span class="at">skip_absent=</span><span class="cn">TRUE</span>)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  r2<span class="fl">.03</span>[, chr <span class="sc">:</span><span class="er">=</span> <span class="fu">sub</span>(<span class="st">"^chr"</span>, <span class="st">""</span>, CHROM)]</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  r2<span class="fl">.03</span>[, start <span class="sc">:</span><span class="er">=</span> POS]</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  r2<span class="fl">.03</span>[, end <span class="sc">:</span><span class="er">=</span> POS]</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  keep_ranges <span class="ot">&lt;-</span> r2<span class="fl">.03</span>[, .(chr, start, end)]</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fwrite</span>(keep_ranges, <span class="fu">file.path</span>(folder, <span class="st">"keep_ranges.txt"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col.names =</span> <span class="cn">FALSE</span>, <span class="at">quote =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Update IDs </span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>fam <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./chr_1/chr1_dose.fam"</span>)</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>OldFID <span class="ot">&lt;-</span> fam<span class="sc">$</span>V1</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>OldIID <span class="ot">&lt;-</span> fam<span class="sc">$</span>V2</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>NewFID <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"^(.*?)_.*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, OldIID)</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>NewIID <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*?_(.*)"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, OldIID)</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>update_ids <span class="ot">&lt;-</span> <span class="fu">data.table</span>(OldFID, OldIID, NewFID, NewIID)</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(update_ids, <span class="st">"update_ids.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col.names =</span> <span class="cn">FALSE</span>, <span class="at">quote =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Update Sexes</span></span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>fam.og <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./A2CPS_RL1-5_For_Imputation_F2.fam"</span>)</span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>update_sexes <span class="ot">&lt;-</span> <span class="fu">data.table</span>(fam.og<span class="sc">$</span>V1, fam.og<span class="sc">$</span>V2, fam.og<span class="sc">$</span>V5)</span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(update_sexes, <span class="st">"update_sexes.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col.names =</span> <span class="cn">FALSE</span>, <span class="at">quote =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>fam.og <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./A2CPS_RL1-5_For_Imputation_F2.fam"</span>)</span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>fam.now <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./chr1_dose.fam"</span>)</span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>update_sexes <span class="ot">&lt;-</span> <span class="fu">data.table</span>(fam.now<span class="sc">$</span>V1, fam.now<span class="sc">$</span>V2, fam.og<span class="sc">$</span>V5)</span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(update_sexes, <span class="st">"update_sexes_X.txt"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">col.names =</span> <span class="cn">FALSE</span>, <span class="at">quote =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<details>
-<summary>
-Click to show Supplementary RScript #2: Merge Preparation (duplicate.r)
-</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"./Imputation_Results/Imputation_QCed/"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">V1=</span><span class="fu">character</span>(), <span class="at">V2=</span><span class="fu">character</span>(), <span class="at">V4=</span><span class="fu">integer</span>())</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (chr <span class="cf">in</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>, <span class="st">"X"</span>)) {</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"chr"</span>, chr, <span class="st">"_imputed_qced.bim"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(file_name, <span class="at">select =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>), <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  combined_data <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">list</span>(combined_data, dt), <span class="at">use.names =</span> <span class="cn">TRUE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>dup_pos <span class="ot">&lt;-</span> combined_data[, .N, by<span class="ot">=</span>.(V1, V4)][N <span class="sc">&gt;</span> <span class="dv">1</span>]</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>snps_dup_pos <span class="ot">&lt;-</span> combined_data[dup_pos, on<span class="ot">=</span>.(V1, V4), nomatch<span class="ot">=</span><span class="dv">0</span>, V2]</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>dup_snps <span class="ot">&lt;-</span> combined_data[, .N, by<span class="ot">=</span>V2][N <span class="sc">&gt;</span> <span class="dv">1</span>, V2]</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>snps_to_exclude <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(snps_dup_pos, dup_snps))</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(<span class="fu">as.data.table</span>(snps_to_exclude), <span class="st">"duplicate_snp_list.txt"</span>, <span class="at">col.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">15.2</span> Considerations While Working on the Project</h2>
+<section id="additional-information" class="level3" data-number="15.2.1">
+<h3 data-number="15.2.1" class="anchored" data-anchor-id="additional-information"><span class="header-section-number">15.2.1</span> Additional Information</h3>
+<p>For additional information on the BedpostX, see the <a href="https://www.youtube.com/watch?v=4dGC1kdNv1M">FSL tutorial video on youtube</a>. Additionally, the FSL Tractography Practical provides helpful information for visualizing the outputs of BedpostX with <a href="https://fsl.fmrib.ox.ac.uk/fslcourse/2019_Beijing/lectures/FDT/fdt2.html"><code>fsleyes</code></a>.</p>
 </section>
+<section id="variability-across-scanners" class="level3" data-number="15.2.2">
+<h3 data-number="15.2.2" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">15.2.2</span> Variability Across Scanners</h3>
+<p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="3.2.5">
-<h3 data-number="3.2.5" class="anchored" data-anchor-id="citations"><span class="header-section-number">3.2.5</span> Citations</h3>
+<section id="data-quality" class="level3" data-number="15.2.3">
+<h3 data-number="15.2.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">15.2.3</span> Data Quality</h3>
+<p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
+</section>
+<section id="data-generation" class="level3" data-number="15.2.4">
+<h3 data-number="15.2.4" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">15.2.4</span> Data Generation</h3>
+<p>These outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/bedpostx_app">bedpostx_app</a>.</p>
+</section>
+<section id="citations" class="level3 page-columns page-full" data-number="15.2.5">
+<h3 data-number="15.2.5" class="anchored" data-anchor-id="citations"><span class="header-section-number">15.2.5</span> Citations</h3>
+<p>If you use these products in your analyses, please cite the relevant papers from <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/bedpostx.html">FSL</a>.</p>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
 <p>Data were provided [in part] by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/ Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
@@ -1001,13 +1112,16 @@ Note
 <p>The following published papers should be cited when referring to A2CPS Protocol and Biomarkers: <span class="citation" data-cites="sluka_predicting_2023"><span class="nocase">Sluka et al.</span> (<a href="references.html#ref-sluka_predicting_2023" role="doc-biblioref">2023</a>)</span> <span class="citation" data-cites="berardi_multi_2022">Berardi et al. (<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">2022</a>)</span></p>
 </div>
 </div>
-
-
 <div class="no-row-height column-margin column-container"><div id="ref-berardi_multi_2022" class="csl-entry" role="listitem">
 Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, D., Vance, C. G. T., Dailey, D. L., Burns, J., Buvanendran, A., McCarthy, R. J., Jacobs, J., Zhou, X. J., Wixson, R., Balach, T., Brummett, C. M., Clauw, D., Colquhoun, D., Harte, S. E., … Wandner, L. D. (2022). Multi-site observational study to assess biomarkers for susceptibility or resilience to chronic pain: The acute to chronic pain signatures (A2CPS) study protocol. <em>Frontiers in Medicine</em>, <em>9</em>. <a href="https://doi.org/10.3389/fmed.2022.849214">https://doi.org/10.3389/fmed.2022.849214</a>
 </div></div><div class="no-row-height column-margin column-container"><div id="ref-sluka_predicting_2023" class="csl-entry" role="listitem">
 <span class="nocase">Sluka, K. A., Wager, T. D., Sutherland, S. P., Labosky, P. A., Balach, T., Bayman, E. O., Berardi, G., Brummett, C. M., Burns, J., Buvanendran, A., et al.</span> (2023). Predicting chronic postsurgical pain: Current evidence and a novel program to develop predictive biomarker signatures. <em>Pain</em>, <em>164</em>(9), 1912–1926. <a href="https://doi.org/10.1097/j.pain.0000000000002938">https://doi.org/10.1097/j.pain.0000000000002938</a>
-</div></div>
+</div><div id="ref-sadil_acute_2024" class="csl-entry" role="listitem">
+Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J., DeLano, M. C., Ford, J. C., Gattu, R., Guo, X., Harris, R. E., Ichesco, E., Johnson, M. A., Jung, H., Kahn, A. B., Kaplan, C. M., Leloudas, N., Lindquist, M. A., Luo, Q., … Chronic Pain Signatures Consortium, T. A. to. (2024). Image processing in the acute to chronic pain signatures (A2CPS) project. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2024.12.19.627509">https://doi.org/10.1101/2024.12.19.627509</a>
+</div></div><p>When using neuroimaging derivatives, please also cite <span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>.</p>
+
+
+
 </section>
 </section>
 
@@ -1427,13 +1541,13 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./genetic_variants.html" class="pagination-link" aria-label="Genetic Variant Data">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Genetic Variant Data</span></span>
+      <a href="./postdtifit.html" class="pagination-link" aria-label="Summarized Diffusion Tensor Fitting">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Summarized Diffusion Tensor Fitting</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./mri-idps.html" class="pagination-link" aria-label="MRI Image Derived Phenotypes">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MRI Image Derived Phenotypes</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./fcn.html" class="pagination-link" aria-label="Functional Connectivity">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Functional Connectivity</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
