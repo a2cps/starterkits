@@ -6,7 +6,7 @@ library(readr)
 
 # Orientation Distribution Function Reconstruction {#sec-reconstruction}
 
-One of the primary aims of collecting diffusion MRI data is to estimate the voxelwise Orientation Distribution Fuctions. These functions describe how water diffuses within each voxel. There are many different methods for reconstructing such functions. The A2CPS project relies on two methods, one that produces regional summary metrics, and another for tractography. This kit describes the former.
+One of the primary aims of collecting diffusion MRI data is to estimate the voxelwise Orientation Distribution Fuctions. These functions describe how water diffuses within each voxel. There are many different methods for reconstructing such functions. The A2CPS project relies on two methods, one that is the precursor for regional summary metrics, and another for tractography. This kit describes a precursor to the former. For the summary statistics themselves, see @sec-postdtifit. For the precursor to tractography, see @sec-bedpostx.
 
 ## Starting Project
 
@@ -116,7 +116,7 @@ Note that the tensor model is known to fit poorly to diffusion data with bvalues
 
 ### Citations
 
-The standard DTI reference is @basser1994mr. These outputs used a workflow from QSIRecon, 
+The standard DTI reference is @basser1994mr. 
 
 {{< include _snippets/a2cps_citations.qmd >}}
 

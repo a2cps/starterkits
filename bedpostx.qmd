@@ -1,0 +1,217 @@
+# Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques (BEDPOSTX) {#sec-bedpostx}
+
+```{r setup}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(patchwork)
+```
+
+There are several ways to reconstruct the orientation distribution function of dMRI. One relatively simple method employed by A2CPS is presented in @sec-reconstruction (the tensor model). Another method employed by A2CPS is the provided by Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques with Crossing-Fibers (BedpostX). While the primary aim of the BedpostX derivatives is to support tractography (covered in another kit), the BedpostX derivatives may be interesting in some analyses (e.g., comparison of orientation distribution functions). This kit reviews the organization of those outputs.
+
+## Starting Project
+
+### Locate Data
+
+{{< include _snippets/mri-location.qmd >}}
+
+The derivatives are underneath `derivatives/bedpostx`. Although BedpostX derivatives are not covered by BIDS, the derivatives are organized in a "bidsish" manner
+
+```{bash}
+#| eval: false
+$ ls derivatives/bedpostx/ | head
+sub-10003
+sub-10008
+sub-10010
+sub-10011
+sub-10013
+sub-10014
+sub-10015
+sub-10017
+sub-10020
+sub-10023
+
+$ tree -d derivatives/bedpostx/sub-10003
+derivatives/bedpostx/sub-10003
+└── ses-V1
+    └── dwi.bedpostx
+        ├── logs
+        │   └── monitor
+        └── xfms
+
+$ ls derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/
+bvals                     dyads1.nii.gz                dyads2_thr0.05.nii.gz        dyads3_thr0.05.nii.gz     mean_f0samples.nii.gz  mean_fsumsamples.nii.gz  mean_S0samples.nii.gz   mean_th3samples.nii.gz   merged_ph1samples.nii.gz  merged_th2samples.nii.gz  xfms
+bvecs                     dyads2_dispersion.nii.gz     dyads3_dispersion.nii.gz     logs                      mean_f1samples.nii.gz  mean_ph1samples.nii.gz   mean_tausamples.nii.gz  merged_f1samples.nii.gz  merged_ph2samples.nii.gz  merged_th3samples.nii.gz
+commands.txt              dyads2.nii.gz                dyads3.nii.gz                mean_dsamples.nii.gz      mean_f2samples.nii.gz  mean_ph2samples.nii.gz   mean_th1samples.nii.gz  merged_f2samples.nii.gz  merged_ph3samples.nii.gz  monitor
+dyads1_dispersion.nii.gz  dyads2_thr0.05_modf2.nii.gz  dyads3_thr0.05_modf3.nii.gz  mean_d_stdsamples.nii.gz  mean_f3samples.nii.gz  mean_ph3samples.nii.gz   mean_th2samples.nii.gz  merged_f3samples.nii.gz  merged_th1samples.nii.gz  nodif_brain_mask.nii.gz
+```
+
+### Extract Data
+
+The majority of these files are niftis that contain summaries of parameters for the model fit by BedpostX. This model attempts to uncover how fibers are oriented within voxels, how many fibers are present, and the diffusivity associated with each fiber. In this kit, we'll make a plot of the most dominant (first) fiber orientation.
+
+First, let's grab the `mean_f1samples` file, which is an estimate of how much of the diffusivity samples can be attributed to first fiber. For convenience and speed, we'll just grab every fifth slice, and also restrict the field of view.
+
+```{r load-f1}
+# take every 10th slice
+f1 <- nio::to_tbl(
+  "data/bedpostx/sub-10003/ses-V1/dwi.bedpostx/mean_f1samples.nii.gz",
+  measure = "f1"
+) |>
+  filter(!(k %% 5), k > 30, k < 80)
+
+head(f1)
+```
+
+The table is large and hard to understand at a glance, so it may be helpful to visualize the slices quickly.
+
+::: {#fig-f1}
+
+```{r f1}
+
+f1 |>
+  ggplot(aes(x = i, y = j, fill = f1)) +
+  facet_wrap(~k) +
+  geom_raster() +
+  scale_fill_viridis_c(option = "turbo") +
+  coord_fixed() +
+  theme_void()
+```
+
+Signal Contribution of the First Fiber. Higher values indicate stronger influence of the first fiber (e.g., in voxels that are better fit by even just a single fiber).
+
+:::
+
+Information about the fiber orientation is stored in the "dyads" file. Each of these dyad files is the mean of the principle diffusion direction, stored as a 3d vector; that is, the nifti files are 4d, with the third dimension corresponding to the x, y, and z coordinates. To visualize these vectors, we're going to map the coordinates onto the Red Green Blue color space [for a discussion of color scales, see @pajevic1999color].
+
+```{r }
+gamma <- 1.8
+fiber <- nio::to_tbl(
+  "data/bedpostx/sub-10003/ses-V1/dwi.bedpostx/dyads1.nii.gz"
+) |>
+  inner_join(f1, by = join_by(i, j, k)) |>
+  mutate(
+    value = (abs(value) * f1)^(1 / 1.8) # gamma correction to make colors easier to see
+  ) |>
+  pivot_wider(names_from = t) |>
+  mutate(
+    across(c(`1`, `2`, `3`), ~ pmin(pmax(.x, 0), 1)),
+    hex_color = rgb(`1`, `2`, `3`)
+  )
+
+head(fiber)
+```
+
+Now, having associated each voxel with a color, we can make a raster of each slice. Before then, however, let's do a bit of extra work to make a legend for the color scale.
+
+```{r}
+
+df_legend <- expand_grid(
+  x = seq(-1, 1, length.out = 500),
+  y = seq(-1, 1, length.out = 500)
+) |>
+  mutate(radius = sqrt(x^2 + y^2)) |>
+  filter(radius <= 1) |>
+  mutate(
+    z = sqrt(1 - x^2 - y^2),
+
+    r = (abs(x))^(1 / 1.8),
+    g = (abs(y))^(1 / 1.8),
+    b = (abs(z))^(1 / 1.8),
+
+    across(c(r, g, b), ~ pmin(pmax(.x, 0), 1)),
+    hex_color = rgb(r, g, b)
+  )
+
+p_legend <- df_legend |>
+  ggplot(aes(x = x, y = y, fill = hex_color)) +
+  geom_raster() +
+  scale_fill_identity() +
+  coord_fixed(xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2)) +
+  theme_void() +
+  # Add anatomical orientation labels (adjust based on your data's specific orientation)
+  annotate(
+    "text",
+    x = 1.15,
+    y = 0,
+    label = "L",
+    color = "white",
+    fontface = "bold"
+  ) +
+  annotate(
+    "text",
+    x = -1.15,
+    y = 0,
+    label = "R",
+    color = "white",
+    fontface = "bold"
+  ) +
+  annotate(
+    "text",
+    x = 0,
+    y = 1.15,
+    label = "A",
+    color = "white",
+    fontface = "bold"
+  ) +
+  annotate(
+    "text",
+    x = 0,
+    y = -1.15,
+    label = "P",
+    color = "white",
+    fontface = "bold"
+  ) +
+  # Title and context for the Z-axis
+  theme(
+    plot.background = element_rect(fill = "black", color = NA),
+    text = element_text(color = "white"),
+    plot.caption = element_text(hjust = 0.5, size = 9, margin = margin(t = 10))
+  )
+```
+
+::: {#fig-f1-orientation}
+
+```{r f1-orientation}
+#| fig-height: 7
+p_fiber <- fiber |>
+  ggplot(aes(x = i, y = j, fill = hex_color)) +
+  facet_wrap(~k) +
+  geom_raster() +
+  scale_fill_identity() +
+  coord_fixed() +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "black"))
+
+p_fiber + p_legend + plot_layout(heights = c(5, 1), nrow = 2)
+```
+
+First Fiber Orientation. The colors correspond to different directions.
+
+:::
+
+## Considerations While Working on the Project
+
+### Additional Information
+
+For additional information on the BedpostX, see the [FSL tutorial video on youtube](https://www.youtube.com/watch?v=4dGC1kdNv1M). Additionally, the FSL Tractography Practical provides helpful information for visualizing the outputs of BedpostX with [`fsleyes`](https://fsl.fmrib.ox.ac.uk/fslcourse/2019_Beijing/lectures/FDT/fdt2.html). 
+
+### Variability Across Scanners
+
+{{< include _snippets/mri-scanner-variability.qmd >}}
+
+### Data Quality
+
+{{< include _snippets/mri-qc.qmd >}}
+
+### Data Generation
+
+These outputs were generated by the [bedpostx_app](https://github.com/a2cps/mri_imaging_pipeline/tree/master/bedpostx_app). 
+
+### Citations
+
+If you use these products in your analyses, please cite the relevant papers from [FSL](https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/bedpostx.html). 
+
+{{< include _snippets/a2cps_citations.qmd >}}
+
+When using neuroimaging derivatives, please also cite @sadil_acute_2024.
