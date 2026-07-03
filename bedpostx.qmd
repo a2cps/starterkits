@@ -1,3 +1,65 @@
+```{r lockfile, include=FALSE}
+renv::use(
+  backports = "backports@1.5.1",
+  base64enc = "base64enc@0.1-6",
+  bslib = "bslib@0.11.0",
+  cachem = "cachem@1.1.0",
+  checkmate = "checkmate@2.3.4",
+  cli = "cli@3.6.6",
+  cpp11 = "cpp11@0.5.5",
+  digest = "digest@0.6.39",
+  dplyr = "dplyr@1.2.1",
+  evaluate = "evaluate@1.0.5",
+  farver = "farver@2.1.2",
+  fastmap = "fastmap@1.2.0",
+  fontawesome = "fontawesome@0.5.3",
+  fs = "fs@2.1.0",
+  generics = "generics@0.1.4",
+  ggplot2 = "ggplot2@4.0.3",
+  glue = "glue@1.8.1",
+  gtable = "gtable@0.3.6",
+  highr = "highr@0.12",
+  htmltools = "htmltools@0.5.9",
+  isoband = "isoband@0.3.0",
+  jquerylib = "jquerylib@0.1.4",
+  jsonlite = "jsonlite@2.0.0",
+  knitr = "knitr@1.51",
+  labeling = "labeling@0.4.3",
+  lifecycle = "lifecycle@1.0.5",
+  magrittr = "magrittr@2.0.5",
+  memoise = "memoise@2.0.1",
+  mime = "mime@0.13",
+  nio = "psadil/nio@756bfa1fee6ca4f3c33271b063b581bf90fb492b",
+  patchwork = "patchwork@1.3.2",
+  pillar = "pillar@1.11.1",
+  pkgconfig = "pkgconfig@2.0.3",
+  purrr = "purrr@1.2.2",
+  R6 = "R6@2.6.1",
+  rappdirs = "rappdirs@0.3.4",
+  RColorBrewer = "RColorBrewer@1.1-3",
+  Rcpp = "Rcpp@1.1.1-1.1",
+  renv = "renv@1.2.3",
+  rlang = "rlang@1.2.0",
+  rmarkdown = "rmarkdown@2.31",
+  RNifti = "RNifti@1.9.0",
+  S7 = "S7@0.2.2",
+  sass = "sass@0.4.10",
+  scales = "scales@1.4.0",
+  stringi = "stringi@1.8.7",
+  stringr = "stringr@1.6.0",
+  tibble = "tibble@3.3.1",
+  tidyr = "tidyr@1.3.2",
+  tidyselect = "tidyselect@1.2.1",
+  tinytex = "tinytex@0.60",
+  utf8 = "utf8@1.2.6",
+  vctrs = "vctrs@0.7.3",
+  viridisLite = "viridisLite@0.4.3",
+  withr = "withr@3.0.3",
+  xfun = "xfun@0.59",
+  yaml = "yaml@2.3.12"
+)
+```
+
 # Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques (BEDPOSTX) {#sec-bedpostx}
 
 ```{r setup}
@@ -7,7 +69,7 @@ library(tidyr)
 library(patchwork)
 ```
 
-There are several ways to reconstruct the orientation distribution function of dMRI. One relatively simple method employed by A2CPS is presented in @sec-reconstruction (the tensor model). Another method employed by A2CPS is the provided by Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques with Crossing-Fibers (BedpostX). While the primary aim of the BedpostX derivatives is to support tractography (covered in another kit), the BedpostX derivatives may be interesting in some analyses (e.g., comparison of orientation distribution functions). This kit reviews the organization of those outputs.
+There are several ways to reconstruct the orientation distribution function of dMRI. One relatively simple method employed by A2CPS is presented in @sec-reconstruction (the tensor model). Another method employed by A2CPS is the provided by Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques with Crossing-Fibers (BedpostX). While A2CPS uses BedpostX primarily as a step towards tractography (@sec-dwi-biomarker1), the BedpostX derivatives may be interesting in some analyses (e.g., comparison of orientation distribution functions and fiber orientation distributions). This kit reviews those outputs.
 
 ## Starting Project
 
@@ -15,7 +77,7 @@ There are several ways to reconstruct the orientation distribution function of d
 
 {{< include _snippets/mri-location.qmd >}}
 
-The derivatives are underneath `derivatives/bedpostx`. Although BedpostX derivatives are not covered by BIDS, the derivatives are organized in a "bidsish" manner
+The derivatives are underneath `derivatives/bedpostx`. Although BedpostX derivatives are not covered by BIDS, the derivatives are organized in a "BIDS-ish" manner
 
 ```{bash}
 #| eval: false
@@ -191,6 +253,10 @@ First Fiber Orientation. The colors correspond to different directions.
 :::
 
 ## Considerations While Working on the Project
+
+### Data Generation
+
+BedpostX was run with maximum of 3 fibers per voxel, and default weight (1), burn-in (1000), jumps (1250), and step samples (25) as well as estimating the noise floor and using Rician noise.
 
 ### Additional Information
 
