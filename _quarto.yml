@@ -28,6 +28,7 @@ book:
     - reconstruction.qmd
     - postdtifit.qmd
     - bedpostx.qmd
+    - dwi_biomarker1.qmd
     - fcn.qmd
     - gift.qmd
     - postgift.qmd

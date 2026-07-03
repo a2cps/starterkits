@@ -1,3 +1,54 @@
+```{r lockfile, include=FALSE}
+renv::use(
+  base64enc = "base64enc@0.1-6",
+  bit = "bit@4.6.0",
+  bit64 = "bit64@4.8.2",
+  bslib = "bslib@0.11.0",
+  cachem = "cachem@1.1.0",
+  cli = "cli@3.6.6",
+  clipr = "clipr@0.8.1",
+  cpp11 = "cpp11@0.5.5",
+  crayon = "crayon@1.5.3",
+  digest = "digest@0.6.39",
+  evaluate = "evaluate@1.0.5",
+  fastmap = "fastmap@1.2.0",
+  fontawesome = "fontawesome@0.5.3",
+  fs = "fs@2.1.0",
+  glue = "glue@1.8.1",
+  highr = "highr@0.12",
+  hms = "hms@1.1.4",
+  htmltools = "htmltools@0.5.9",
+  jquerylib = "jquerylib@0.1.4",
+  jsonlite = "jsonlite@2.0.0",
+  knitr = "knitr@1.51",
+  lifecycle = "lifecycle@1.0.5",
+  magrittr = "magrittr@2.0.5",
+  memoise = "memoise@2.0.1",
+  mime = "mime@0.13",
+  pillar = "pillar@1.11.1",
+  pkgconfig = "pkgconfig@2.0.3",
+  prettyunits = "prettyunits@1.2.0",
+  progress = "progress@1.2.3",
+  R6 = "R6@2.6.1",
+  rappdirs = "rappdirs@0.3.4",
+  readr = "readr@2.2.0",
+  renv = "renv@1.2.3",
+  rlang = "rlang@1.2.0",
+  rmarkdown = "rmarkdown@2.31",
+  sass = "sass@0.4.10",
+  tibble = "tibble@3.3.1",
+  tidyselect = "tidyselect@1.2.1",
+  tinytex = "tinytex@0.60",
+  tzdb = "tzdb@0.5.0",
+  utf8 = "utf8@1.2.6",
+  vctrs = "vctrs@0.7.3",
+  vroom = "vroom@1.7.1",
+  withr = "withr@3.0.3",
+  xfun = "xfun@0.59",
+  yaml = "yaml@2.3.12"
+)
+```
+
 
 ```{r setup}
 #| include: false
@@ -6,7 +57,7 @@ library(readr)
 
 # Orientation Distribution Function Reconstruction {#sec-reconstruction}
 
-One of the primary aims of collecting diffusion MRI data is to estimate the voxelwise Orientation Distribution Fuctions. These functions describe how water diffuses within each voxel. There are many different methods for reconstructing such functions. The A2CPS project relies on two methods, one that is the precursor for regional summary metrics, and another for tractography. This kit describes a precursor to the former. For the summary statistics themselves, see @sec-postdtifit. For the precursor to tractography, see @sec-bedpostx.
+One of the primary aims of collecting diffusion MRI data is to estimate or "reconstruct" the voxelwise Orientation Distribution Fuctions and Fiber Orientation Distributions. These functions describe how water diffuses within each voxel. There are many different methods for reconstructing such functions. The A2CPS project relies on two methods, one that is the precursor for regional summary metrics, and another for tractography. This kit describes a precursor to the former. For the summary statistics themselves, see @sec-postdtifit. For the precursor to tractography, see @sec-bedpostx.
 
 ## Starting Project
 
