@@ -112,16 +112,13 @@ library(arrow)
 library(dplyr)
 library(tidyr)
 
-open_dataset("data/signatures-by-run") |>
+open_dataset("data/signatures/signatures-by-run") |>
   filter(signature %in% c("grouppred_cvpcr", "137subjmap_weighted_mean")) |>
   filter(task == "cuff", run == 1) |>
   select(signature, value = correlation, sub, ses) |>
   collect() |>
   pivot_wider(names_from = signature) |>
-  rename(
-    SIIPS1 = `137subjmap_weighted_mean`,
-    NPS = `grouppred_cvpcr`
-  )
+  rename(SIIPS1 = `137subjmap_weighted_mean`, NPS = `grouppred_cvpcr`)
 ```
 
 
@@ -131,7 +128,7 @@ In python, a good choice is the [`polars`](https://docs.pola.rs/) library
 #| eval: FALSE
 import polars as pl
 
-pl.read_parquet("data/signatures-by-run").filter(
+pl.read_parquet("data/signatures/signatures-by-run").filter(
     pl.col("signature").is_in(["grouppred_cvpcr", "137subjmap_weighted_mean"])
 ).filter(pl.col("task") == "cuff", pl.col("run") == 1).rename(
     {"correlation": "value"}
@@ -140,12 +137,9 @@ pl.read_parquet("data/signatures-by-run").filter(
     "value",
     "sub",
     "ses",
-).pivot(
-    on="signature", index=["sub", "ses"]
-).rename(
+).pivot(on="signature", index=["sub", "ses"]).rename(
     {"grouppred_cvpcr": "NPS", "137subjmap_weighted_mean": "SIIPS1"}
 )
-
 ```
 
 ```bash

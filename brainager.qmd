@@ -127,9 +127,7 @@ baseline_ages <- read_csv(
 
 brainage <- ages_with_sub |>
   left_join(baseline_ages, by = join_by(sub == record_id)) |>
-  mutate(
-    brain_age_gap = brain.predicted_age - age
-  ) |>
+  mutate(brain_age_gap = brain.predicted_age - age) |>
   filter(!is.na(age)) # age not available for all participants
 brainage
 ```

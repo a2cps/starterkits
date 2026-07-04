@@ -133,10 +133,7 @@ Next, add a helper function for taking
 
 get_total_correlation <- function(file) {
   timecourse <- readNifti(file)
-  crossing(
-    src = 1:ncol(timecourse),
-    dst = 1:ncol(timecourse)
-  ) |>
+  crossing(src = 1:ncol(timecourse), dst = 1:ncol(timecourse)) |>
     filter(dst > src) |>
     mutate(
       correlations = map2(
@@ -149,7 +146,6 @@ get_total_correlation <- function(file) {
     na.omit() |> # NAs caused by not having enough timepoints for window
     summarise(total_connectivity = sum(atanh(rho)), .by = t)
 }
-
 ```
 
 Use these helper functions to calculate the total connectivity for each REST1 scan.

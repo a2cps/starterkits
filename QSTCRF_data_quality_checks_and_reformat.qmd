@@ -37,14 +37,18 @@ not_all_na <- function(x) any(!is.na(x))
 Read in QST data, We will call this qst
 
 ```{r, message=FALSE}
-qst <- read.csv(here("data", "qst", "qst-2024-11-06.csv")) %>%
-  retype()
+qst <- read.csv(here("data", "qst", "raw", "qst-2024-11-06.csv")) %>% retype()
 ```
 
 We will also read in Imaging data since the information on recalibration is recorded in the Imaging CRF. We will later merge field names related to recalibration with the imaging data.
 
 ```{r, message=FALSE}
-tka_img_4_qst <- read.csv(here("data", "imaging", "imaging-2024-11-06.csv")) %>%
+tka_img_4_qst <- read.csv(here(
+  "data",
+  "imaging",
+  "raw",
+  "imaging-2024-11-06.csv"
+)) %>%
   filter(redcap_repeat_instrument == "imaging_mcc1_v09") %>%
   select(
     record_id,
@@ -83,8 +87,7 @@ test_records <- c(
   "120000"
 )
 
-qst <- qst %>%
-  filter(!record_id %in% test_records)
+qst <- qst %>% filter(!record_id %in% test_records)
 ```
 
 Create a column for cohort type called "cohort"
@@ -107,6 +110,7 @@ Read in data dictionary and remove duplicate field names
 qst_dict <- read_csv(here(
   "data",
   "qst",
+  "raw",
   "qst-Data-Dictionary-2024-11-06.csv"
 )) %>%
   distinct(field_name, .keep_all = TRUE)
@@ -346,8 +350,7 @@ qerror8 <- qdata2 %>%
     index1 = case_when(
       (!is.na(pptindex1val) & !is.na(pptindex1val1)) |
         (!is.na(pptindex2val) & !is.na(pptindex2val1)) |
-        (!is.na(pptindex3val) & !is.na(pptindex3val1)) ~
-        1,
+        (!is.na(pptindex3val) & !is.na(pptindex3val1)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -377,8 +380,7 @@ qerror9 <- qdata2 %>%
     index2 = case_when(
       (is.na(pptindex1val) & is.na(pptindex1val1)) |
         (is.na(pptindex2val) & is.na(pptindex2val1)) |
-        (is.na(pptindex3val) & is.na(pptindex3val1)) ~
-        1,
+        (is.na(pptindex3val) & is.na(pptindex3val1)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -408,8 +410,7 @@ qerror10 <- qdata2 %>%
     remote1 = case_when(
       (!is.na(pptremote1val) & !is.na(pptremote1val1)) |
         (!is.na(pptremote2val) & !is.na(pptremote2val1)) |
-        (!is.na(pptremote3val) & !is.na(pptremote3val1)) ~
-        1,
+        (!is.na(pptremote3val) & !is.na(pptremote3val1)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -439,8 +440,7 @@ qerror11 <- qdata2 %>%
     remote2 = case_when(
       (is.na(pptremote1val) & is.na(pptremote1val1)) |
         (is.na(pptremote2val) & is.na(pptremote2val1)) |
-        (is.na(pptremote3val) & is.na(pptremote3val1)) ~
-        1,
+        (is.na(pptremote3val) & is.na(pptremote3val1)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -533,8 +533,7 @@ tka_ts_recoded <- tr.complete %>%
     trrep1 = case_when(
       (tscompleted == 1 | tscompleted == 2) &
         ts_contr_init1 == 0 &
-        ts_contr_fin1 == 0 ~
-        1,
+        ts_contr_fin1 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -542,8 +541,7 @@ tka_ts_recoded <- tr.complete %>%
     trrep2 = case_when(
       (tscompleted == 1 | tscompleted == 2) &
         ts_contr_init2 == 0 &
-        ts_contr_fin2 == 0 ~
-        1,
+        ts_contr_fin2 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -551,8 +549,7 @@ tka_ts_recoded <- tr.complete %>%
     trrep3 = case_when(
       (tscompleted == 1 | tscompleted == 2) &
         ts_contr_init3 == 0 &
-        ts_contr_fin3 == 0 ~
-        1,
+        ts_contr_fin3 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -566,8 +563,7 @@ tka_ts_recoded <- tr.complete %>%
     indrep1 = case_when(
       (tscompleted == 1 | tscompleted == 3) &
         ts_ind_init1 == 0 &
-        ts_ind_fin1 == 0 ~
-        1,
+        ts_ind_fin1 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -575,8 +571,7 @@ tka_ts_recoded <- tr.complete %>%
     indrep2 = case_when(
       (tscompleted == 1 | tscompleted == 3) &
         ts_ind_init2 == 0 &
-        ts_ind_fin2 == 0 ~
-        1,
+        ts_ind_fin2 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -584,8 +579,7 @@ tka_ts_recoded <- tr.complete %>%
     indrep3 = case_when(
       (tscompleted == 1 | tscompleted == 3) &
         ts_ind_init3 == 0 &
-        ts_ind_fin3 == 0 ~
-        1,
+        ts_ind_fin3 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -763,8 +757,7 @@ qerror19 <- tr.complete %>%
         (!is.na(tsinitialpainindexsclr2) & !is.na(tsinitialpainindexscl1r2)) |
         (!is.na(tsfinalpainindexsclr2) & !is.na(tsfinalpainindexscl1r2)) |
         (!is.na(tsinitialpainindexsclr3) & !is.na(tsinitialpainindexscl1r3)) |
-        (!is.na(tsfinalpainindexsclr3) & !is.na(tsfinalpainindexscl1r3)) ~
-        1,
+        (!is.na(tsfinalpainindexsclr3) & !is.na(tsfinalpainindexscl1r3)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -803,8 +796,7 @@ qerror22 <- tr.complete %>%
         is.na(tsinitialpainindexsclr3) &
         is.na(tsinitialpainindexscl1r3) &
         is.na(tsfinalpainindexsclr3) &
-        is.na(tsfinalpainindexscl1r3) ~
-        1,
+        is.na(tsfinalpainindexscl1r3) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -843,8 +835,7 @@ qerror23 <- tr.complete %>%
         is.na(tsinitialpainremsclr3) &
         is.na(tsinitialpainremscl1r3) &
         is.na(tsfinalpainremsclr3) &
-        is.na(tsfinalpainremscl1r3) ~
-        1,
+        is.na(tsfinalpainremscl1r3) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -877,8 +868,7 @@ qerror22 <- tr.complete %>%
         (!is.na(tsrep2initialpainrem) & !is.na(tsrep2initialpainrem_d)) |
         (!is.na(tsrep2finalpainrem) & !is.na(tsrep2finalpainrem_d)) |
         (!is.na(tsinitialpainremsclr3) & !is.na(tsinitialpainremscl1r3)) |
-        (!is.na(tsfinalpainremsclr3) & !is.na(tsfinalpainremscl1r3)) ~
-        1,
+        (!is.na(tsfinalpainremsclr3) & !is.na(tsfinalpainremscl1r3)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -1691,13 +1681,8 @@ qst_report <- bind_rows(qst_list) %>%
 ```{r}
 qst_report %>%
   gt() %>%
-  tab_header(
-    title = md("**TKA Cohort QST form Error Report**")
-  ) %>%
-  tab_options(
-    table.font.size = px(12),
-    column_labels.font.size = px(12)
-  ) %>%
+  tab_header(title = md("**TKA Cohort QST form Error Report**")) %>%
+  tab_options(table.font.size = px(12), column_labels.font.size = px(12)) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)
@@ -1734,6 +1719,7 @@ We will also read in Imaging data since the information on recalibration is reco
 thor_img_4_qst <- read_csv(here(
   "data",
   "imaging",
+  "raw",
   "imaging-2024-11-06.csv"
 )) %>%
   filter(redcap_repeat_instrument == "imaging_mcc2_v01") %>%
@@ -1943,8 +1929,7 @@ m2qerror7 <- qdatam2 %>%
     index1 = case_when(
       (!is.na(pptindxr1val) & !is.na(pptindxr1val_d)) |
         (!is.na(pptindxr2val) & !is.na(pptindxr2val_d)) |
-        (!is.na(pptindxr3val) & !is.na(pptindxr3val_d)) ~
-        1,
+        (!is.na(pptindxr3val) & !is.na(pptindxr3val_d)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -1974,8 +1959,7 @@ m2qerror8 <- qdatam2 %>%
     index2 = case_when(
       (is.na(pptindxr1val) & is.na(pptindxr1val_d)) |
         (is.na(pptindxr2val) & is.na(pptindxr2val_d)) |
-        (is.na(pptindxr3val) & is.na(pptindxr3val_d)) ~
-        1,
+        (is.na(pptindxr3val) & is.na(pptindxr3val_d)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2005,8 +1989,7 @@ m2qerror9 <- qdatam2 %>%
     remote1 = case_when(
       (!is.na(pptremoter1val) & !is.na(pptremoter1val_d)) |
         (!is.na(pptremoter2val) & !is.na(pptremoter2val_d)) |
-        (!is.na(pptremoter3val) & !is.na(pptremoter3val_d)) ~
-        1,
+        (!is.na(pptremoter3val) & !is.na(pptremoter3val_d)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2036,8 +2019,7 @@ m2qerror10 <- qdatam2 %>%
     remote2 = case_when(
       (is.na(pptremoter1val) & is.na(pptremoter1val_d)) |
         (is.na(pptremoter2val) & is.na(pptremoter2val_d)) |
-        (is.na(pptremoter3val) & is.na(pptremoter3val_d)) ~
-        1,
+        (is.na(pptremoter3val) & is.na(pptremoter3val_d)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2130,8 +2112,7 @@ thor_ts_recoded <- m2tr.complete %>%
     trrep1 = case_when(
       (tscompleted == 1 | tscompleted == 2) &
         ts_contr_init1 == 0 &
-        ts_contr_fin1 == 0 ~
-        1,
+        ts_contr_fin1 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2139,8 +2120,7 @@ thor_ts_recoded <- m2tr.complete %>%
     trrep2 = case_when(
       (tscompleted == 1 | tscompleted == 2) &
         ts_contr_init2 == 0 &
-        ts_contr_fin2 == 0 ~
-        1,
+        ts_contr_fin2 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2148,8 +2128,7 @@ thor_ts_recoded <- m2tr.complete %>%
     trrep3 = case_when(
       (tscompleted == 1 | tscompleted == 2) &
         ts_contr_init3 == 0 &
-        ts_contr_fin3 == 0 ~
-        1,
+        ts_contr_fin3 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2163,8 +2142,7 @@ thor_ts_recoded <- m2tr.complete %>%
     indrep1 = case_when(
       (tscompleted == 1 | tscompleted == 3) &
         ts_ind_init1 == 0 &
-        ts_ind_fin1 == 0 ~
-        1,
+        ts_ind_fin1 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2172,8 +2150,7 @@ thor_ts_recoded <- m2tr.complete %>%
     indrep2 = case_when(
       (tscompleted == 1 | tscompleted == 3) &
         ts_ind_init2 == 0 &
-        ts_ind_fin2 == 0 ~
-        1,
+        ts_ind_fin2 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2181,8 +2158,7 @@ thor_ts_recoded <- m2tr.complete %>%
     indrep3 = case_when(
       (tscompleted == 1 | tscompleted == 3) &
         ts_ind_init3 == 0 &
-        ts_ind_fin3 == 0 ~
-        1,
+        ts_ind_fin3 == 0 ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2360,8 +2336,7 @@ m2qerror20 <- m2tr.complete %>%
         (!is.na(tsindxr2initial) & !is.na(tsindxr2initial_d)) |
         (!is.na(tsindxr2final) & !is.na(tsindxr2final_d)) |
         (!is.na(tsindxr3initial) & !is.na(tsindxr3initial_d)) |
-        (!is.na(tsindxr3final) & !is.na(tsindxr3final_d)) ~
-        1,
+        (!is.na(tsindxr3final) & !is.na(tsindxr3final_d)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2400,8 +2375,7 @@ m2qerror21 <- m2tr.complete %>%
         is.na(tsindxr3initial) &
         is.na(tsindxr3initial_d) &
         is.na(tsindxr3final) &
-        is.na(tsindxr3final_d) ~
-        1,
+        is.na(tsindxr3final_d) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2440,8 +2414,7 @@ m2qerror22 <- m2tr.complete %>%
         is.na(tsremoter3initial) &
         is.na(tsremoter3initial_d) &
         is.na(tsremoter3final) &
-        is.na(tsremoter3final_d) ~
-        1,
+        is.na(tsremoter3final_d) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -2474,8 +2447,7 @@ m2qerror23 <- m2tr.complete %>%
         (!is.na(tsremoter2initial) & !is.na(tsremoter2initial_d)) |
         (!is.na(tsremoter2final) & !is.na(tsremoter2final_d)) |
         (!is.na(tsremoter3initial) & !is.na(tsremoter3initial_d)) |
-        (!is.na(tsremoter3final) & !is.na(tsremoter3final_d)) ~
-        1,
+        (!is.na(tsremoter3final) & !is.na(tsremoter3final_d)) ~ 1,
       TRUE ~ 0
     )
   ) %>%
@@ -3641,13 +3613,8 @@ m2qst_report <- bind_rows(m2qst_list) %>%
 ```{r}
 m2qst_report %>%
   gt() %>%
-  tab_header(
-    title = md("**Thoracotomy Cohort QST form Error Report**")
-  ) %>%
-  tab_options(
-    table.font.size = px(12),
-    column_labels.font.size = px(12)
-  ) %>%
+  tab_header(title = md("**Thoracotomy Cohort QST form Error Report**")) %>%
+  tab_options(table.font.size = px(12), column_labels.font.size = px(12)) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)

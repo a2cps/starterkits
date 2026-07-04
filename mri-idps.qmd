@@ -1,6 +1,6 @@
 # MRI Image Derived Phenotypes  {#sec-mri-idps}
 
-Often, researchers may wish to simply have a set of features that they can use to train and test predictive models. When those features are extracted from the neuroimaging data, we refer to them as image-derived phenotypes. This kit describes a subset of them that have been compiled into a single table. While this table of image-derived phenotypes does not emcompass all available measurements, they are often a good place to start analyses.
+Often, researchers may wish to simply have a set of features that they can use to train and test predictive models. When those features are extracted from the neuroimaging data, we refer to them as image-derived phenotypes. This kit describes a subset of them that have been compiled into a single table. While this table of image-derived phenotypes does not encompass all available measurements, they are often a good place to start analyses.
 
 The selection of phenotypes was based on those that are available within the UK Biobank [@miller_multimodal_2016], and they are derived from the structural and functional MRI scans (diffusion MRI phenotypes will be available in a subsequent release). A full data dictionary is available [here](https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/mri.json), and they are summarized below.
 

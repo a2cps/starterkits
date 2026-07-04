@@ -1,85 +1,3 @@
-```{r lockfile, include=FALSE}
-renv::use(
-  askpass = "askpass@1.2.1",
-  base64enc = "base64enc@0.1-6",
-  bslib = "bslib@0.10.0",
-  cachem = "cachem@1.1.0",
-  class = "class@7.3-23",
-  classInt = "classInt@0.4-11",
-  cli = "cli@3.6.5",
-  collections = "collections@0.3.12",
-  cpp11 = "cpp11@0.5.3",
-  curl = "curl@7.0.0",
-  DBI = "DBI@1.3.0",
-  digest = "digest@0.6.39",
-  dplyr = "dplyr@1.2.0",
-  duckdb = "duckdb@1.5.1",
-  duckplyr = "duckplyr@1.2.1",
-  e1071 = "e1071@1.7-17",
-  evaluate = "evaluate@1.0.5",
-  farver = "farver@2.1.2",
-  fastmap = "fastmap@1.2.0",
-  fontawesome = "fontawesome@0.5.3",
-  fs = "fs@2.0.1",
-  generics = "generics@0.1.4",
-  ggplot2 = "ggplot2@4.0.2",
-  glue = "glue@1.8.0",
-  gtable = "gtable@0.3.6",
-  highr = "highr@0.12",
-  htmltools = "htmltools@0.5.9",
-  httr = "httr@1.4.8",
-  isoband = "isoband@0.3.0",
-  jquerylib = "jquerylib@0.1.4",
-  jsonlite = "jsonlite@2.0.0",
-  KernSmooth = "KernSmooth@2.23-26",
-  knitr = "knitr@1.51",
-  labeling = "labeling@0.4.3",
-  lifecycle = "lifecycle@1.0.5",
-  magick = "magick@2.9.1",
-  magrittr = "magrittr@2.0.4",
-  MASS = "MASS@7.3-65",
-  memoise = "memoise@2.0.1",
-  mime = "mime@0.13",
-  openssl = "openssl@2.3.5",
-  pillar = "pillar@1.11.1",
-  pkgconfig = "pkgconfig@2.0.3",
-  png = "png@0.1-9",
-  proceduralnames = "proceduralnames@0.2.2",
-  proxy = "proxy@0.4-29",
-  purrr = "purrr@1.2.1",
-  R6 = "R6@2.6.1",
-  rappdirs = "rappdirs@0.3.4",
-  RColorBrewer = "RColorBrewer@1.1-3",
-  Rcpp = "Rcpp@1.1.1",
-  renv = "renv@1.2.0",
-  rlang = "rlang@1.1.7",
-  rmarkdown = "rmarkdown@2.31",
-  s2 = "s2@1.1.9",
-  S7 = "S7@0.2.1",
-  sass = "sass@0.4.10",
-  scales = "scales@1.4.0",
-  sf = "sf@1.1-0",
-  stringi = "stringi@1.8.7",
-  stringr = "stringr@1.6.0",
-  sys = "sys@3.4.3",
-  terra = "terra@1.9-11",
-  terrainr = "terrainr@0.7.6",
-  tibble = "tibble@3.3.1",
-  tidyr = "tidyr@1.3.2",
-  tidyselect = "tidyselect@1.2.1",
-  tinytex = "tinytex@0.58",
-  unifir = "unifir@0.2.4",
-  units = "units@1.0-1",
-  utf8 = "utf8@1.2.6",
-  vctrs = "vctrs@0.7.2",
-  viridisLite = "viridisLite@0.4.3",
-  withr = "withr@3.0.2",
-  wk = "wk@0.9.5",
-  xfun = "xfun@0.57",
-  yaml = "yaml@2.3.12"
-)
-```
-
 # Manual Derivative QC {#mri-deriv-qc}
 
 ```{r setup}
@@ -116,8 +34,7 @@ Let's look through the schema of each table.
 This table contains information about the rating session (e.g., helpful for determining rater consistency).
 
 ```{r session}
-read_parquet_duckdb("data/qc/session.parquet") |>
-  head()
+read_parquet_duckdb("data/qc/session.parquet") |> head()
 ```
 
 - `id`: ID of session
@@ -159,11 +76,10 @@ read_parquet_duckdb("data/qc/image.parquet") |>
 
 #### rating
 
-This table contains the ratings given as "overal" scores. They apply to ratings for targets fmap coregistration and dtifit.
+This table contains the ratings given as "overall" scores. They apply to ratings for targets fmap coregistration and dtifit.
 
 ```{r rating}
-read_parquet_duckdb("data/qc/rating.parquet") |>
-  head()
+read_parquet_duckdb("data/qc/rating.parquet") |> head()
 ```
 
 - `id`: ID of each rating
@@ -182,8 +98,7 @@ read_parquet_duckdb("data/qc/rating.parquet") |>
 This table contains the coordinates that were clicked during reviews, locations indicating some source data issue. These were used to rate the mask, spatial normalization, and surface localization.
 
 ```{r coordinate}
-read_parquet_duckdb("data/qc/coordinate.parquet") |>
-  head()
+read_parquet_duckdb("data/qc/coordinate.parquet") |> head()
 ```
 
 - `id`: ID of each clicked coordinate
@@ -285,7 +200,6 @@ definite_coregistration_failures <- read_parquet_duckdb(
   ) |>
   distinct(sub, task, run) |>
   collect()
-
 ```
 
 How many failed coregistrations were there?
@@ -297,8 +211,7 @@ nrow(definite_coregistration_failures)
 This is the table that you'd use to exclude files from analyses.
 
 ```{r}
-definite_coregistration_failures |>
-  head()
+definite_coregistration_failures |> head()
 ```
 
 ## Considerations While Working on the Project

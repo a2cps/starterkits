@@ -1,18 +1,17 @@
-
 # Functional Connectivity {#sec-functional-connectivity}
 
 Functional connectivity is a measurement of how activity in different regions of the brain are related. It is calculated by reducing the voxelwise timeseries into a set of parceled timecourses and then calculating a measure of connectivity between those timecourses. 
 
 This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations. For functional connectivity derived from independent components, see the GIFT starter kit (forthcoming).
 
-```{r}
+```{r setup}
 library(arrow)
 library(dplyr)
 library(tidyr)
 library(purrr)
 library(stringr)
-library(readr)
 library(fs)
+library(readr)
 library(mgc)
 library(ggplot2)
 ```
@@ -67,8 +66,8 @@ The timeseries were extracted from the NIfTI files in `cleaned`, which are the o
 
 Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Network (DMN) atlas (the nodal coordinates were derived from @baliki_corticostriatal_2012). In this case, we'll restrict results to connectivities generated with the [empirical estimator](https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance).
 
-```{r}
-dmn <- open_dataset("data/connectivity") |>
+```{r dmn}
+dmn <- open_dataset("data/fcn/connectivity") |>
   filter(atlas == "dmn") |>
   filter(estimator == "empirical") |>
   select(sub, source, target, connectivity) |>
@@ -78,7 +77,7 @@ head(dmn)
 
 Notice that the `source` and `target` fields are simply integer indices for this atlas. As specified in `connectivity.json`, information about these regions is available in one of the A2CPS GitHub repos. That table can be read directly from a URL.
 
-```{r}
+```{r dmn-labels}
 dmn_labels <- read_csv(
   "https://raw.githubusercontent.com/a2cps/functional_connectivity/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv"
 )
@@ -87,7 +86,7 @@ dmn_labels
 
 After reading in the labels, they can be merged with the functional connectivity results. 
 
-```{r}
+```{r dmn-labeled}
 dmn_labeled <- dmn |>
   left_join(dmn_labels, by = join_by(source == region)) |>
   select(-source, -x, -y, -z) |>
@@ -108,7 +107,7 @@ We are going to assess whether a person's connectivity matrix is consistent acro
 First, we need a list of participants that have all four scan types.
 
 ```{r}
-subs_with_all_runs <- open_dataset("data/connectivity") |>
+subs_with_all_runs <- open_dataset("data/fcn/connectivity") |>
   distinct(sub, task, run) |>
   count(sub) |>
   filter(n == 4) |>
@@ -119,12 +118,14 @@ subs_with_all_runs <- open_dataset("data/connectivity") |>
 As usual, we should also restrict analyses to only those runs that are not "red".
 
 ```{r}
-red_fmri <- read_tsv(dir_ls("data/scans", glob = "*tsv"), na = "n/a") |>
+red_fmri <- read_tsv(
+  dir_ls("data/rawdata", glob = "*scans.tsv", recurse = TRUE),
+  na = "n/a"
+) |>
   filter(str_detect(filename, "task")) |>
   filter(rating == "red") |>
   mutate(
-    sub = str_extract(filename, "(?<=sub-)[[:digit:]]{5}") |>
-      as.integer()
+    sub = str_extract(filename, "(?<=sub-)[[:digit:]]{5}") |> as.integer()
   ) |>
   distinct(sub)
 head(red_fmri)
@@ -133,14 +134,13 @@ head(red_fmri)
 Of the list of participants with all four functional scans, filter out the participants for which any of the scans were red.
 
 ```{r}
-subs_with_all_runs_ok <- subs_with_all_runs |>
-  anti_join(red_fmri)
+subs_with_all_runs_ok <- subs_with_all_runs |> anti_join(red_fmri)
 ```
 
 Use this to filter the connectivity results. We'll select just one of the smaller DiFuMo atlases [@dadi_fine_2020]. As before, we'll stick with the empirical estimator.
 
 ```{r}
-fcn <- open_dataset("data/connectivity") |>
+fcn <- open_dataset("data/fcn/connectivity") |>
   filter(atlas == "difumo_dimension-64_resolution-2mm") |>
   filter(estimator == "empirical") |>
   semi_join(subs_with_all_runs_ok, by = join_by(sub)) |>
@@ -186,10 +186,7 @@ get_discr <- function(.data) {
     pivot_longer(starts_with("connectivity")) |>
     pivot_wider(names_from = "feature")
 
-  discr.stat(
-    as.matrix(select(d, -sub, -name)),
-    as.matrix(select(d, sub))
-  )$discr
+  discr.stat(as.matrix(select(d, -sub, -name)), as.matrix(select(d, sub)))$discr
 }
 ```
 

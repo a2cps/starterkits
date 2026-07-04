@@ -34,6 +34,7 @@ We will call this psy_soc
 psy_soc <- read.csv(here(
   "data",
   "psychosocial",
+  "raw",
   "psychosocial-2024-11-06.csv"
 )) %>%
   filter(redcap_event_name == "baseline_visit_arm_1")
@@ -58,8 +59,7 @@ test_records <- c(
   "120000"
 )
 
-psy_soc <- psy_soc %>%
-  filter(!record_id %in% test_records)
+psy_soc <- psy_soc %>% filter(!record_id %in% test_records)
 ```
 
 Create a column for cohort type called "cohort"
@@ -82,6 +82,7 @@ Read in Data dictionary and remove duplicate field name
 psy_soc_dict <- read_csv(here(
   "data",
   "psychosocial",
+  "raw",
   "psychosocial-Data-Dictionary-2024-11-06.csv"
 )) %>%
   distinct(field_name, .keep_all = TRUE)
@@ -173,8 +174,7 @@ drop_vars <- c(
 ```
 
 ```{r}
-psy_soc1 <- psy_soc %>%
-  select(-all_of(drop_vars))
+psy_soc1 <- psy_soc %>% select(-all_of(drop_vars))
 ```
 
 The initial data had 521 field names, we now have 456 fields names after removing 65 field names not needed
@@ -463,17 +463,20 @@ bpi_body_map <- bpi_body_map %>%
   mutate(
     chest_or_breast_m = case_when(
       chest_or_breast == 0 & is.na(bpi_mbm_z3_rate) & is.na(bpi_mbm_z3_dur) ~ 0,
-      chest_or_breast == 1 & !is.na(bpi_mbm_z3_rate) & !is.na(bpi_mbm_z3_dur) ~
-        1,
+      chest_or_breast == 1 &
+        !is.na(bpi_mbm_z3_rate) &
+        !is.na(bpi_mbm_z3_dur) ~ 1,
       TRUE ~ 2
     )
   ) %>%
   mutate(
     abd_pelvis_groin_m = case_when(
-      abd_pelvis_groin == 0 & is.na(bpi_mbm_z4_rate) & is.na(bpi_mbm_z4_dur) ~
-        0,
-      abd_pelvis_groin == 1 & !is.na(bpi_mbm_z4_rate) & !is.na(bpi_mbm_z4_dur) ~
-        1,
+      abd_pelvis_groin == 0 &
+        is.na(bpi_mbm_z4_rate) &
+        is.na(bpi_mbm_z4_dur) ~ 0,
+      abd_pelvis_groin == 1 &
+        !is.na(bpi_mbm_z4_rate) &
+        !is.na(bpi_mbm_z4_dur) ~ 1,
       TRUE ~ 2
     )
   ) %>%
@@ -481,12 +484,10 @@ bpi_body_map <- bpi_body_map %>%
     right_shoulder_arm_wrist_m = case_when(
       right_shoulder_arm_wrist == 0 &
         is.na(bpi_mbm_z5_rate) &
-        is.na(bpi_mbm_z5_dur) ~
-        0,
+        is.na(bpi_mbm_z5_dur) ~ 0,
       right_shoulder_arm_wrist == 1 &
         !is.na(bpi_mbm_z5_rate) &
-        !is.na(bpi_mbm_z5_dur) ~
-        1,
+        !is.na(bpi_mbm_z5_dur) ~ 1,
       TRUE ~ 2
     )
   ) %>%
@@ -494,12 +495,10 @@ bpi_body_map <- bpi_body_map %>%
     left_shoulder_arm_wrist_m = case_when(
       left_shoulder_arm_wrist == 0 &
         is.na(bpi_mbm_z6_rate) &
-        is.na(bpi_mbm_z6_dur) ~
-        0,
+        is.na(bpi_mbm_z6_dur) ~ 0,
       left_shoulder_arm_wrist == 1 &
         !is.na(bpi_mbm_z6_rate) &
-        !is.na(bpi_mbm_z6_dur) ~
-        1,
+        !is.na(bpi_mbm_z6_dur) ~ 1,
       TRUE ~ 2
     )
   ) %>%
@@ -512,23 +511,23 @@ bpi_body_map <- bpi_body_map %>%
   ) %>%
   mutate(
     right_hip_leg_foot_m = case_when(
-      right_hip_leg_foot == 0 & is.na(bpi_mbm_z8_rate) & is.na(bpi_mbm_z8_dur) ~
-        0,
+      right_hip_leg_foot == 0 &
+        is.na(bpi_mbm_z8_rate) &
+        is.na(bpi_mbm_z8_dur) ~ 0,
       right_hip_leg_foot == 1 &
         !is.na(bpi_mbm_z8_rate) &
-        !is.na(bpi_mbm_z8_dur) ~
-        1,
+        !is.na(bpi_mbm_z8_dur) ~ 1,
       TRUE ~ 2
     )
   ) %>%
   mutate(
     left_hip_leg_foot_m = case_when(
-      left_hip_leg_foot == 0 & is.na(bpi_mbm_z9_rate) & is.na(bpi_mbm_z9_dur) ~
-        0,
+      left_hip_leg_foot == 0 &
+        is.na(bpi_mbm_z9_rate) &
+        is.na(bpi_mbm_z9_dur) ~ 0,
       left_hip_leg_foot == 1 &
         !is.na(bpi_mbm_z9_rate) &
-        !is.na(bpi_mbm_z9_dur) ~
-        1,
+        !is.na(bpi_mbm_z9_dur) ~ 1,
       TRUE ~ 2
     )
   ) %>%
@@ -923,8 +922,7 @@ Brief pain intensity -whole body pain assesses other pain intensity (excluding s
 Missing data pattern in bpi_body_pain
 
 ```{r}
-bpi_body_pain %>%
-  miss_var_summary()
+bpi_body_pain %>% miss_var_summary()
 ```
 
 There are 32 observations (4.12%) with no response to the question i.e null values for the field name "bpiworstpainratingexclss". We will create a variable "body_pain_intensity" and assign a value of 0 if a subject has not responded to the question, assign 1 if a subject has responded to the question
@@ -998,8 +996,7 @@ Missing data pattern in bpi_pain_intrf if bpiworstpainratingss is not 0
 
 ```{r}
 gg_miss_upset(
-  bpi_pain_intrf %>%
-    filter(bpiworstpainratingss != 0),
+  bpi_pain_intrf %>% filter(bpiworstpainratingss != 0),
   nsets = n_var_miss(bpi_pain_intrf),
   order.by = "degree",
   point.size = 1,
@@ -1200,20 +1197,20 @@ koos <- koos %>%
   mutate(qol_not_na = rowSums(!is.na(select(., all_of(qol))))) %>%
   mutate(
     new_pain_score = case_when(
-      pain_not_na >= 2 ~
-        100 - ((rowMeans(select(., all_of(pain)), na.rm = TRUE) * 100) / 4)
+      pain_not_na >= 2 ~ 100 -
+        ((rowMeans(select(., all_of(pain)), na.rm = TRUE) * 100) / 4)
     )
   ) %>%
   mutate(
     new_func_score = case_when(
-      func_not_na >= 2 ~
-        100 - ((rowMeans(select(., all_of(func)), na.rm = TRUE) * 100) / 4)
+      func_not_na >= 2 ~ 100 -
+        ((rowMeans(select(., all_of(func)), na.rm = TRUE) * 100) / 4)
     )
   ) %>%
   mutate(
     new_qol_score = case_when(
-      qol_not_na >= 2 ~
-        100 - ((rowMeans(select(., all_of(qol)), na.rm = TRUE) * 100) / 4)
+      qol_not_na >= 2 ~ 100 -
+        ((rowMeans(select(., all_of(qol)), na.rm = TRUE) * 100) / 4)
     )
   ) %>%
   mutate(new_pain_summary = rowMeans(select(., all_of(all_koos))))
@@ -1374,8 +1371,7 @@ Missing data pattern in gad. We will exclude "gad7difficulttowork" since the res
 
 ```{r}
 gg_miss_upset(
-  gad %>%
-    select(-gad7difficulttowork),
+  gad %>% select(-gad7difficulttowork),
   nsets = n_var_miss(gad),
   order.by = "degree",
   point.size = 1,
@@ -1434,15 +1430,19 @@ gad <- gad %>%
   filter(gad_not_na != 0) %>%
   mutate(
     mean_gad = case_when(
-      gad_diff == 1 | gad_diff == 3 ~
-        round(rowMeans(select(., all_of(gad_vector)), na.rm = TRUE))
+      gad_diff == 1 | gad_diff == 3 ~ round(rowMeans(
+        select(., all_of(gad_vector)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(gad_vector), ~ if_else(is.na(.), mean_gad, .))) %>%
   mutate(
     imputed_gad_score = case_when(
-      gad_diff == 1 | gad_diff == 3 ~
-        rowSums(select(., all_of(gad_vector)), na.rm = TRUE)
+      gad_diff == 1 | gad_diff == 3 ~ rowSums(
+        select(., all_of(gad_vector)),
+        na.rm = TRUE
+      )
     )
   )
 ```
@@ -1451,8 +1451,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  gad %>%
-    select(-gad7difficulttowork, -mean_gad, -imputed_gad_score),
+  gad %>% select(-gad7difficulttowork, -mean_gad, -imputed_gad_score),
   nsets = n_var_miss(gad),
   order.by = "degree",
   point.size = 1,
@@ -1480,8 +1479,7 @@ ggplot(gad_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-gad <- gad %>%
-  select(-gad_not_na, -mean_gad)
+gad <- gad %>% select(-gad_not_na, -mean_gad)
 ```
 
 #### New field name(s)
@@ -1601,12 +1599,7 @@ phq_vector <- c(
 
 phq <- phq %>%
   mutate(phq_not_na = rowSums(!is.na(select(., all_of(phq_vector))))) %>%
-  mutate(
-    phq_diff = case_when(
-      phq_not_na >= 6 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(phq_diff = case_when(phq_not_na >= 6 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(phq_diff = as.factor(phq_diff))
 ```
@@ -1617,8 +1610,10 @@ We will now replace missing values with the rounded mean of remaining items if p
 phq <- phq %>%
   mutate(
     mean_phq = case_when(
-      phq_diff == 1 ~
-        round(rowMeans(select(., all_of(phq_vector)), na.rm = TRUE))
+      phq_diff == 1 ~ round(rowMeans(
+        select(., all_of(phq_vector)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(phq_vector), ~ if_else(is.na(.), mean_phq, .))) %>%
@@ -1633,8 +1628,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  phq %>%
-    select(-mean_phq, -imputed_phq_score),
+  phq %>% select(-mean_phq, -imputed_phq_score),
   nsets = n_var_miss(phq),
   order.by = "degree",
   point.size = 1,
@@ -1662,8 +1656,7 @@ ggplot(phq_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-phq <- phq %>%
-  select(-phq_not_na, -mean_phq)
+phq <- phq %>% select(-phq_not_na, -mean_phq)
 ```
 
 #### New field name(s)
@@ -1778,12 +1771,7 @@ fabq_vector <- c(
 
 fabq <- fabq %>%
   mutate(fabq_not_na = rowSums(!is.na(select(., all_of(fabq_vector))))) %>%
-  mutate(
-    fabq_diff = case_when(
-      fabq_not_na >= 3 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(fabq_diff = case_when(fabq_not_na >= 3 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(fabq_diff = as.factor(fabq_diff))
 ```
@@ -1797,8 +1785,10 @@ fabq <- fabq %>%
   ) %>%
   mutate(
     mean_fabq = case_when(
-      fabq_diff == 1 ~
-        round(rowMeans(select(., all_of(fabq_vector)), na.rm = TRUE))
+      fabq_diff == 1 ~ round(rowMeans(
+        select(., all_of(fabq_vector)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(fabq_vector), ~ if_else(is.na(.), mean_fabq, .))) %>%
@@ -1841,8 +1831,7 @@ ggplot(fabq_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-fabq <- fabq %>%
-  select(-fabq_not_na, -mean_fabq)
+fabq <- fabq %>% select(-fabq_not_na, -mean_fabq)
 ```
 
 #### New field name(s)
@@ -1929,8 +1918,7 @@ Missing data pattern in pcs.
 
 ```{r}
 gg_miss_upset(
-  pcs %>%
-    select(-pcqtotalscoreval),
+  pcs %>% select(-pcqtotalscoreval),
   nsets = n_var_miss(pcs),
   order.by = "degree",
   point.size = 1,
@@ -1958,12 +1946,7 @@ pcs_vector <- c(
 
 pcs <- pcs %>%
   mutate(pcs_not_na = rowSums(!is.na(select(., all_of(pcs_vector))))) %>%
-  mutate(
-    pcs_diff = case_when(
-      pcs_not_na >= 5 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(pcs_diff = case_when(pcs_not_na >= 5 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(pcs_diff = as.factor(pcs_diff)) %>%
   filter(pcs_not_na != 0)
@@ -1978,8 +1961,10 @@ pcs <- pcs %>%
   ) %>%
   mutate(
     mean_pcs = case_when(
-      pcs_diff == 1 ~
-        round(rowMeans(select(., all_of(pcs_vector)), na.rm = TRUE))
+      pcs_diff == 1 ~ round(rowMeans(
+        select(., all_of(pcs_vector)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(pcs_vector), ~ if_else(is.na(.), mean_pcs, .))) %>%
@@ -1994,8 +1979,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  pcs %>%
-    select(-pcqtotalscoreval, -raw_pcs_score, -imputed_pcs_score),
+  pcs %>% select(-pcqtotalscoreval, -raw_pcs_score, -imputed_pcs_score),
   nsets = n_var_miss(pcs),
   order.by = "degree",
   point.size = 1,
@@ -2023,8 +2007,7 @@ ggplot(pcs_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-pcs <- pcs %>%
-  select(-pcs_not_na, -mean_pcs, -raw_pcs_score)
+pcs <- pcs %>% select(-pcs_not_na, -mean_pcs, -raw_pcs_score)
 ```
 
 #### New field name(s)
@@ -2109,8 +2092,7 @@ Missing data pattern in SSI, we will exclude "ssi_chronicyn" since the response 
 
 ```{r}
 gg_miss_upset(
-  ssi %>%
-    select(-ssi_chronicyn),
+  ssi %>% select(-ssi_chronicyn),
   nsets = n_var_miss(ssi),
   order.by = "degree",
   point.size = 1,
@@ -2358,12 +2340,7 @@ pdq_seven <- c(
 )
 pdq <- pdq %>%
   mutate(pdq_not_na = rowSums(!is.na(.[, pdq_seven]))) %>%
-  mutate(
-    pdq_diff = case_when(
-      pdq_not_na >= 5 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(pdq_diff = case_when(pdq_not_na >= 5 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(pdq_diff = as.factor(pdq_diff))
 ```
@@ -2377,8 +2354,10 @@ pdq <- pdq %>%
   ) %>%
   mutate(
     mean_pdq = case_when(
-      pdq_diff == 1 ~
-        round(rowMeans(select(., all_of(pdq_seven)), na.rm = TRUE))
+      pdq_diff == 1 ~ round(rowMeans(
+        select(., all_of(pdq_seven)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(pdq_seven), ~ if_else(is.na(.), mean_pdq, .))) %>%
@@ -2394,18 +2373,15 @@ Check missingness pattern after imputation
 ```{r}
 pdq_zero_imputed <- pdq_zero %>%
   mutate(pdq_not_na = rowSums(!is.na(.[, pdq_seven]))) %>%
-  mutate(
-    pdq_diff = case_when(
-      pdq_not_na >= 5 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(pdq_diff = case_when(pdq_not_na >= 5 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(pdq_diff = as.factor(pdq_diff)) %>%
   mutate(
     mean_pdq = case_when(
-      pdq_diff == 1 ~
-        round(rowMeans(select(., all_of(pdq_seven)), na.rm = TRUE))
+      pdq_diff == 1 ~ round(rowMeans(
+        select(., all_of(pdq_seven)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(pdq_seven), ~ if_else(is.na(.), mean_pdq, .))) %>%
@@ -2440,8 +2416,7 @@ ggplot(pdq_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-pdq <- pdq %>%
-  select(-pdq_not_na, -mean_pdq, -raw_pdq_score)
+pdq <- pdq %>% select(-pdq_not_na, -mean_pdq, -raw_pdq_score)
 ```
 
 #### Scoring:
@@ -2777,12 +2752,7 @@ prs_bhv_five <- c(
 
 prs <- prs %>%
   mutate(prs_bhv_not_na = rowSums(!is.na(select(., all_of(prs_bhv_five))))) %>%
-  mutate(
-    prs_bhv_diff = case_when(
-      prs_bhv_not_na >= 4 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(prs_bhv_diff = case_when(prs_bhv_not_na >= 4 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(prs_bhv_diff = as.factor(prs_bhv_diff))
 ```
@@ -2796,8 +2766,10 @@ prs <- prs %>%
   ) %>%
   mutate(
     mean_bhv_prs = case_when(
-      prs_bhv_diff == 1 ~
-        round(rowMeans(select(., all_of(prs_bhv_five)), na.rm = TRUE))
+      prs_bhv_diff == 1 ~ round(rowMeans(
+        select(., all_of(prs_bhv_five)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(prs_bhv_five), ~ if_else(is.na(.), mean_bhv_prs, .))) %>%
@@ -2847,8 +2819,7 @@ ggplot(prs_bhv_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-prs <- prs %>%
-  select(-prs_bhv_not_na, -mean_bhv_prs, -raw_bhv_score)
+prs <- prs %>% select(-prs_bhv_not_na, -mean_bhv_prs, -raw_bhv_score)
 ```
 
 #### Cognitive/Affective positivity: Handling missing data and scoring
@@ -2899,12 +2870,7 @@ prs_cog_nine <- c(
 
 prs <- prs %>%
   mutate(prs_cog_not_na = rowSums(!is.na(.[, prs_cog_nine]))) %>%
-  mutate(
-    prs_cog_diff = case_when(
-      prs_cog_not_na >= 7 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(prs_cog_diff = case_when(prs_cog_not_na >= 7 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(prs_cog_diff = as.factor(prs_cog_diff))
 ```
@@ -2918,8 +2884,10 @@ prs <- prs %>%
   ) %>%
   mutate(
     mean_cog_prs = case_when(
-      prs_cog_diff == 1 ~
-        round(rowMeans(select(., all_of(prs_cog_nine)), na.rm = TRUE))
+      prs_cog_diff == 1 ~ round(rowMeans(
+        select(., all_of(prs_cog_nine)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(prs_cog_nine), ~ if_else(is.na(.), mean_cog_prs, .))) %>%
@@ -2973,8 +2941,7 @@ ggplot(prs_cog_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-prs <- prs %>%
-  select(-prs_cog_not_na, -mean_cog_prs, -raw_prs_cog_score)
+prs <- prs %>% select(-prs_cog_not_na, -mean_cog_prs, -raw_prs_cog_score)
 ```
 
 #### Total PRS Score: Handling missing data and scoring
@@ -3041,12 +3008,7 @@ prs_fourteen <- c(
 
 prs <- prs %>%
   mutate(prs_not_na = rowSums(!is.na(.[, prs_fourteen]))) %>%
-  mutate(
-    prs_diff = case_when(
-      prs_not_na >= 10 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(prs_diff = case_when(prs_not_na >= 10 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(prs_diff = as.factor(prs_diff))
 ```
@@ -3060,8 +3022,10 @@ prs <- prs %>%
   ) %>%
   mutate(
     mean_prs = case_when(
-      prs_diff == 1 ~
-        round(rowMeans(select(., all_of(prs_fourteen)), na.rm = TRUE))
+      prs_diff == 1 ~ round(rowMeans(
+        select(., all_of(prs_fourteen)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(prs_fourteen), ~ if_else(is.na(.), mean_prs, .))) %>%
@@ -3111,8 +3075,7 @@ ggplot(prs_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-prs <- prs %>%
-  select(-prs_not_na, -mean_prs, -raw_prs_score)
+prs <- prs %>% select(-prs_not_na, -mean_prs, -raw_prs_score)
 ```
 
 #### New field name(s)
@@ -3286,8 +3249,7 @@ misci_ten <- c(
 )
 
 gg_miss_upset(
-  misci %>%
-    select(all_of(misci_ten)),
+  misci %>% select(all_of(misci_ten)),
   nsets = n_var_miss(misci),
   order.by = "degree",
   point.size = 1,
@@ -3303,12 +3265,7 @@ We will create a variable "misci_diff" and assign a value of 1 if there is a res
 ```{r}
 misci <- misci %>%
   mutate(misci_not_na = rowSums(!is.na(.[, misci_ten]))) %>%
-  mutate(
-    misci_diff = case_when(
-      misci_not_na >= 8 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(misci_diff = case_when(misci_not_na >= 8 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(misci_diff = as.factor(misci_diff))
 ```
@@ -3322,8 +3279,10 @@ misci <- misci %>%
   ) %>%
   mutate(
     mean_misci = case_when(
-      misci_diff == 1 ~
-        round(rowMeans(select(., all_of(misci_ten)), na.rm = TRUE))
+      misci_diff == 1 ~ round(rowMeans(
+        select(., all_of(misci_ten)),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(misci_ten), ~ if_else(is.na(.), mean_misci, .))) %>%
@@ -3338,8 +3297,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  misci %>%
-    select(all_of(misci_ten)),
+  misci %>% select(all_of(misci_ten)),
   nsets = n_var_miss(misci),
   order.by = "degree",
   point.size = 1,
@@ -3367,8 +3325,7 @@ ggplot(misci_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-misci <- misci %>%
-  select(-misci_not_na, -mean_misci, -raw_misci_score)
+misci <- misci %>% select(-misci_not_na, -mean_misci, -raw_misci_score)
 ```
 
 #### New field name(s)
@@ -3556,29 +3513,27 @@ Reverse code the items denoted by "R": We can accomplish this by subtracting the
 
 ```{r}
 bfi <- bfi %>%
-  mutate(
-    across(
-      .cols = c(
-        bfi2squietscl,
-        bfi2stakechargescl,
-        bfi2slessactivescl,
-        bfi2suncaringscl,
-        bfi2srudescl,
-        bfi2sfaultwithothersscl,
-        bfi2sdisorganizedscl,
-        bfi2sdifficultstartscl,
-        bfi2scarelessscl,
-        bfi2srelaxedscl,
-        bfi2ssecurescl,
-        bfi2sstableemotionscl,
-        bfi2sfewartinterestscl,
-        bfi2sllittleinterestscl,
-        bfi2slittlecreativityscl
-      ),
-      .fns = \(x) 6 - x,
-      .names = "{.col}_reverse"
-    )
-  )
+  mutate(across(
+    .cols = c(
+      bfi2squietscl,
+      bfi2stakechargescl,
+      bfi2slessactivescl,
+      bfi2suncaringscl,
+      bfi2srudescl,
+      bfi2sfaultwithothersscl,
+      bfi2sdisorganizedscl,
+      bfi2sdifficultstartscl,
+      bfi2scarelessscl,
+      bfi2srelaxedscl,
+      bfi2ssecurescl,
+      bfi2sstableemotionscl,
+      bfi2sfewartinterestscl,
+      bfi2sllittleinterestscl,
+      bfi2slittlecreativityscl
+    ),
+    .fns = \(x) 6 - x,
+    .names = "{.col}_reverse"
+  ))
 
 # credit: P.Sadil
 ```
@@ -3600,8 +3555,7 @@ extra_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>%
-    select(all_of(extra_vector)),
+  bfi %>% select(all_of(extra_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3670,8 +3624,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>%
-    select(all_of(extra_vector)),
+  bfi %>% select(all_of(extra_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3717,8 +3670,7 @@ ggplot(bfi_ext_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>%
-  select(-raw_extraversion_score)
+bfi <- bfi %>% select(-raw_extraversion_score)
 ```
 
 #### **Agreeableness**
@@ -3738,8 +3690,7 @@ agree_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>%
-    select(all_of(agree_vector)),
+  bfi %>% select(all_of(agree_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3808,8 +3759,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>%
-    select(all_of(agree_vector)),
+  bfi %>% select(all_of(agree_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3855,8 +3805,7 @@ ggplot(bfi_agree_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>%
-  select(-raw_agreeableness_score)
+bfi <- bfi %>% select(-raw_agreeableness_score)
 ```
 
 #### **Conscientiousness**
@@ -3876,8 +3825,7 @@ cons_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>%
-    select(all_of(cons_vector)),
+  bfi %>% select(all_of(cons_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3946,8 +3894,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>%
-    select(all_of(cons_vector)),
+  bfi %>% select(all_of(cons_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3993,8 +3940,7 @@ ggplot(bfi_cons_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>%
-  select(-raw_cons_score)
+bfi <- bfi %>% select(-raw_cons_score)
 ```
 
 #### **Negative Emotionality**
@@ -4014,8 +3960,7 @@ emotion_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>%
-    select(all_of(emotion_vector)),
+  bfi %>% select(all_of(emotion_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -4084,8 +4029,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>%
-    select(all_of(emotion_vector)),
+  bfi %>% select(all_of(emotion_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -4131,8 +4075,7 @@ ggplot(bfi_emo_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>%
-  select(-raw_emotional_score)
+bfi <- bfi %>% select(-raw_emotional_score)
 ```
 
 #### **Open-Mindedness**
@@ -4152,8 +4095,7 @@ open_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>%
-    select(all_of(open_vector)),
+  bfi %>% select(all_of(open_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -4222,8 +4164,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>%
-    select(all_of(open_vector)),
+  bfi %>% select(all_of(open_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -4269,8 +4210,7 @@ ggplot(bfi_open_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>%
-  select(-raw_open_score)
+bfi <- bfi %>% select(-raw_open_score)
 ```
 
 #### New field name(s)
@@ -4648,12 +4588,7 @@ dts_vector <- c(
 
 dts <- dts %>%
   mutate(dts_not_na = rowSums(!is.na(.[, dts_vector]))) %>%
-  mutate(
-    dts_diff = case_when(
-      dts_not_na >= 13 ~ 1,
-      TRUE ~ 0
-    )
-  ) %>%
+  mutate(dts_diff = case_when(dts_not_na >= 13 ~ 1, TRUE ~ 0)) %>%
   as_tibble() %>%
   mutate(dts_diff = as.factor(dts_diff))
 ```
@@ -4670,21 +4605,19 @@ dts <- dts %>%
   ) %>%
   mutate(
     mean_dts = case_when(
-      dts_diff == 1 ~
-        round(rowMeans(
-          select(., all_of(dts_vector)) * (select(., all_of(dts_vector)) != 96),
-          na.rm = TRUE
-        ))
+      dts_diff == 1 ~ round(rowMeans(
+        select(., all_of(dts_vector)) * (select(., all_of(dts_vector)) != 96),
+        na.rm = TRUE
+      ))
     )
   ) %>%
   mutate(across(all_of(dts_vector), ~ if_else(is.na(.), mean_dts, .))) %>%
   mutate(
     imputed_dts_score = case_when(
-      dts_diff == 1 ~
-        rowSums(
-          select(., all_of(dts_vector)) * (select(., all_of(dts_vector)) != 96),
-          na.rm = TRUE
-        )
+      dts_diff == 1 ~ rowSums(
+        select(., all_of(dts_vector)) * (select(., all_of(dts_vector)) != 96),
+        na.rm = TRUE
+      )
     )
   )
 ```
@@ -4693,8 +4626,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  dts %>%
-    select(-imputed_dts_score, -mean_dts),
+  dts %>% select(-imputed_dts_score, -mean_dts),
   nsets = n_var_miss(dts),
   order.by = "degree",
   point.size = 1,
@@ -4722,8 +4654,7 @@ ggplot(dts_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-dts <- dts %>%
-  select(-dts_not_na, -mean_dts, raw_dts_score)
+dts <- dts %>% select(-dts_not_na, -mean_dts, raw_dts_score)
 ```
 
 #### New field name(s):
@@ -4811,34 +4742,16 @@ Missing values cannot be imputed, we well compute aerobic activity score based o
 ```{r}
 rapa <- rapa %>%
   mutate(
-    rapa_rarly1 = case_when(
-      rapa_rarly == 1 ~ 1,
-      TRUE ~ rapa_rarly
-    ),
-    rapa_light1 = case_when(
-      rapa_light == 1 ~ 2,
-      TRUE ~ rapa_light
-    ),
+    rapa_rarly1 = case_when(rapa_rarly == 1 ~ 1, TRUE ~ rapa_rarly),
+    rapa_light1 = case_when(rapa_light == 1 ~ 2, TRUE ~ rapa_light),
     rapa_lightweekly1 = case_when(
       rapa_lightweekly == 1 ~ 3,
       TRUE ~ rapa_lightweekly
     ),
-    rapa_mod1 = case_when(
-      rapa_mod == 1 ~ 4,
-      TRUE ~ rapa_mod
-    ),
-    rapa_vig1 = case_when(
-      rapa_vig == 1 ~ 4,
-      TRUE ~ rapa_vig
-    ),
-    rapa_modweekly1 = case_when(
-      rapa_modweekly == 1 ~ 5,
-      TRUE ~ rapa_modweekly
-    ),
-    rapa_vigweekly1 = case_when(
-      rapa_vigweekly == 1 ~ 5,
-      TRUE ~ rapa_vigweekly
-    ),
+    rapa_mod1 = case_when(rapa_mod == 1 ~ 4, TRUE ~ rapa_mod),
+    rapa_vig1 = case_when(rapa_vig == 1 ~ 4, TRUE ~ rapa_vig),
+    rapa_modweekly1 = case_when(rapa_modweekly == 1 ~ 5, TRUE ~ rapa_modweekly),
+    rapa_vigweekly1 = case_when(rapa_vigweekly == 1 ~ 5, TRUE ~ rapa_vigweekly),
     rapa_aerobic_score = pmax(
       rapa_rarly1,
       rapa_light1,
