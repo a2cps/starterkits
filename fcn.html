@@ -759,8 +759,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mgc)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -805,7 +805,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="no-row-height column-margin column-container"><div id="ref-baliki_corticostriatal_2012" class="csl-entry" role="listitem">
 Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. J., Fields, H. L., &amp; Apkarian, A. V. (2012). Corticostriatal functional connectivity predicts transition to chronic back pain. <em>Nature Neuroscience</em>, <em>15</em>(8), 1117–1119. <a href="https://doi.org/10.1038/nn.3153">https://doi.org/10.1038/nn.3153</a>
 </div></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dmn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dmn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/fcn/connectivity"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas <span class="sc">==</span> <span class="st">"dmn"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator <span class="sc">==</span> <span class="st">"empirical"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, source, target, connectivity) <span class="sc">|&gt;</span></span>
@@ -813,7 +813,7 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
-<table class="caption-top">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">sub</th>
@@ -823,6 +823,42 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0673808</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-0.1257357</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.5103927</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.1419079</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.0563561</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.3056342</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -893,7 +929,7 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn_labeled)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
-<table class="caption-top">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">sub</th>
@@ -903,6 +939,42 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">0.0673808</td>
+<td style="text-align: left;">mPFC</td>
+<td style="text-align: left;">rNAC</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">-0.1257357</td>
+<td style="text-align: left;">mPFC</td>
+<td style="text-align: left;">rInsula</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">-0.5103927</td>
+<td style="text-align: left;">mPFC</td>
+<td style="text-align: left;">S1/M1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">0.1419079</td>
+<td style="text-align: left;">rNAC</td>
+<td style="text-align: left;">rInsula</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">-0.0563561</td>
+<td style="text-align: left;">rNAC</td>
+<td style="text-align: left;">S1/M1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10003</td>
+<td style="text-align: right;">0.3056342</td>
+<td style="text-align: left;">rInsula</td>
+<td style="text-align: left;">S1/M1</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -917,7 +989,7 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 </div></div><p>We are going to assess whether a person’s connectivity matrix is consistent across runs, even across runs of different types (e.g., CUFF1 vs CUFF2, REST1 vs CUFF1).</p>
 <p>First, we need a list of participants that have all four scan types.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/fcn/connectivity"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(sub, task, run) <span class="sc">|&gt;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(sub) <span class="sc">|&gt;</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">==</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
@@ -926,15 +998,17 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 </div>
 <p>As usual, we should also restrict analyses to only those runs that are not “red”.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>red_fmri <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="fu">dir_ls</span>(<span class="st">"data/scans"</span>, <span class="at">glob =</span> <span class="st">"*tsv"</span>), <span class="at">na =</span> <span class="st">"n/a"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(filename, <span class="st">"task"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rating <span class="sc">==</span> <span class="st">"red"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="fu">str_extract</span>(filename, <span class="st">"(?&lt;=sub-)[[:digit:]]{5}"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as.integer</span>()</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(sub)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(red_fmri)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>red_fmri <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir_ls</span>(<span class="st">"data/rawdata"</span>, <span class="at">glob =</span> <span class="st">"*scans.tsv"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">na =</span> <span class="st">"n/a"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(filename, <span class="st">"task"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rating <span class="sc">==</span> <span class="st">"red"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="fu">str_extract</span>(filename, <span class="st">"(?&lt;=sub-)[[:digit:]]{5}"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(sub)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(red_fmri)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -945,22 +1019,22 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">10049</td>
-</tr>
-<tr class="even">
 <td style="text-align: right;">10058</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10060</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">10074</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">10086</td>
+<td style="text-align: right;">10077</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">10092</td>
+<td style="text-align: right;">10086</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10097</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10103</td>
 </tr>
 </tbody>
 </table>
@@ -969,14 +1043,13 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 </div>
 <p>Of the list of participants with all four functional scans, filter out the participants for which any of the scans were red.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs_ok <span class="ot">&lt;-</span> subs_with_all_runs <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(red_fmri)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs_ok <span class="ot">&lt;-</span> subs_with_all_runs <span class="sc">|&gt;</span> <span class="fu">anti_join</span>(red_fmri)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Use this to filter the connectivity results. We’ll select just one of the smaller DiFuMo atlases <span class="citation" data-cites="dadi_fine_2020">(<a href="references.html#ref-dadi_fine_2020" role="doc-biblioref">Dadi et al., 2020</a>)</span>. As before, we’ll stick with the empirical estimator.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-dadi_fine_2020" class="csl-entry" role="listitem">
 Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wassermann, D., Thirion, B., &amp; Mensch, A. (2020). Fine-grain atlases of functional modes for fMRI analysis. <em>NeuroImage</em>, <em>221</em>, 117126. <a href="https://doi.org/10.1016/j.neuroimage.2020.117126">https://doi.org/10.1016/j.neuroimage.2020.117126</a>
 </div></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fcn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/connectivity"</span>) <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fcn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/fcn/connectivity"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas <span class="sc">==</span> <span class="st">"difumo_dimension-64_resolution-2mm"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator <span class="sc">==</span> <span class="st">"empirical"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(subs_with_all_runs_ok, <span class="at">by =</span> <span class="fu">join_by</span>(sub)) <span class="sc">|&gt;</span></span>
@@ -1000,43 +1073,43 @@ Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wasserma
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: right;">0.0352251</td>
-<td style="text-align: right;">10010</td>
+<td style="text-align: right;">0.5848027</td>
+<td style="text-align: right;">10036</td>
 <td style="text-align: left;">rest1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">11</td>
-<td style="text-align: right;">0.3364920</td>
-<td style="text-align: right;">10010</td>
+<td style="text-align: right;">0.3350044</td>
+<td style="text-align: right;">10036</td>
 <td style="text-align: left;">rest1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">12</td>
-<td style="text-align: right;">0.3715636</td>
-<td style="text-align: right;">10010</td>
+<td style="text-align: right;">0.6414157</td>
+<td style="text-align: right;">10036</td>
 <td style="text-align: left;">rest1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">13</td>
-<td style="text-align: right;">-0.0007062</td>
-<td style="text-align: right;">10010</td>
+<td style="text-align: right;">0.7579995</td>
+<td style="text-align: right;">10036</td>
 <td style="text-align: left;">rest1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">14</td>
-<td style="text-align: right;">0.2097767</td>
-<td style="text-align: right;">10010</td>
+<td style="text-align: right;">0.4691165</td>
+<td style="text-align: right;">10036</td>
 <td style="text-align: left;">rest1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">15</td>
-<td style="text-align: right;">0.3638389</td>
-<td style="text-align: right;">10010</td>
+<td style="text-align: right;">0.6910802</td>
+<td style="text-align: right;">10036</td>
 <td style="text-align: left;">rest1</td>
 </tr>
 </tbody>
@@ -1079,11 +1152,8 @@ Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wasserma
 <span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">"connectivity"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"feature"</span>)</span>
 <span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">discr.stat</span>(</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>(<span class="fu">select</span>(d, <span class="sc">-</span>sub, <span class="sc">-</span>name)),</span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>(<span class="fu">select</span>(d, sub))</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>discr</span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">discr.stat</span>(<span class="fu">as.matrix</span>(<span class="fu">select</span>(d, <span class="sc">-</span>sub, <span class="sc">-</span>name)), <span class="fu">as.matrix</span>(<span class="fu">select</span>(d, sub)))<span class="sc">$</span>discr</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Apply these helper functions to the functional connectivity data, calculating discriminability.</p>
 <div class="cell">
@@ -1107,7 +1177,7 @@ Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wasserma
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="fcn_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="fcn_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

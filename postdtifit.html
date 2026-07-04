@@ -943,7 +943,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>From these, we see that many analyses will need some degree of filtering. For example, the table contains fits to two different sets of shells: only the b1000 or the multishell (that is, all) data. To get a feel for the data, let’s see whether there’s a difference in the tensor metrics across the two sets of shells. In particular, we’ll focus on just one summary statitic, the regional mean value.</p>
+<p>From these, we see that many analyses will need some degree of filtering. For example, the table contains fits to two different sets of shells: only the b1000 or the multishell (that is, all) data. To get a feel for the data, let’s see whether there’s a difference in the tensor metrics across the two sets of shells. In particular, we’ll focus on just one summary statistic, the regional mean value.</p>
 <p>First, drop minimum and maximum. Then, pivot the table on the shells.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>shell_comparison <span class="ot">&lt;-</span> diffusion_regional_stats <span class="sc">|&gt;</span></span>
@@ -1086,7 +1086,7 @@ Figure&nbsp;14.1: Differences in Tensor Values Between b1000 and Multishell data
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> .difference, <span class="at">x =</span> .average)) <span class="sc">+</span></span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>metric, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  agree<span class="sc">::</span><span class="fu">geom_ba</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ba</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

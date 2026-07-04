@@ -776,8 +776,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h4 data-number="22.1.1.1" class="anchored" data-anchor-id="session"><span class="header-section-number">22.1.1.1</span> session</h4>
 <p>This table contains information about the rating session (e.g., helpful for determining rater consistency).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_parquet_duckdb</span>(<span class="st">"data/qc/session.parquet"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_parquet_duckdb</span>(<span class="st">"data/qc/session.parquet"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -960,10 +959,9 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </section>
 <section id="rating" class="level4" data-number="22.1.1.3">
 <h4 data-number="22.1.1.3" class="anchored" data-anchor-id="rating"><span class="header-section-number">22.1.1.3</span> rating</h4>
-<p>This table contains the ratings given as “overal” scores. They apply to ratings for targets fmap coregistration and dtifit.</p>
+<p>This table contains the ratings given as “overall” scores. They apply to ratings for targets fmap coregistration and dtifit.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_parquet_duckdb</span>(<span class="st">"data/qc/rating.parquet"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_parquet_duckdb</span>(<span class="st">"data/qc/rating.parquet"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -1066,8 +1064,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h4 data-number="22.1.1.4" class="anchored" data-anchor-id="coordinate"><span class="header-section-number">22.1.1.4</span> coordinate</h4>
 <p>This table contains the coordinates that were clicked during reviews, locations indicating some source data issue. These were used to rate the mask, spatial normalization, and surface localization.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_parquet_duckdb</span>(<span class="st">"data/qc/coordinate.parquet"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_parquet_duckdb</span>(<span class="st">"data/qc/coordinate.parquet"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -1199,7 +1196,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">15820</td>
+<td style="text-align: right;">2784</td>
 <td style="text-align: right;">8</td>
 </tr>
 </tbody>
@@ -1253,13 +1250,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
+<col style="width: 4%">
 <col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 56%">
+<col style="width: 57%">
 <col style="width: 5%">
 <col style="width: 6%">
 <col style="width: 4%">
-<col style="width: 16%">
+<col style="width: 17%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1274,13 +1271,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">15820</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">sub-20045_ses-V1_space-MNI152NLin2009cAsym_desc-preproc_T1w.nii.gz</td>
+<td style="text-align: right;">2784</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">sub-10168_ses-V1_space-MNI152NLin2009cAsym_desc-preproc_T1w.nii.gz</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: left;">2025-07-28 13:44:04</td>
+<td style="text-align: left;">2025-07-28 01:58:29</td>
 </tr>
 </tbody>
 </table>
@@ -1323,8 +1320,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 <p>This is the table that you’d use to exclude files from analyses.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>definite_coregistration_failures <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>definite_coregistration_failures <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -1337,32 +1333,32 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">10165</td>
-<td style="text-align: left;">rest</td>
-<td style="text-align: left;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">10222</td>
-<td style="text-align: left;">rest</td>
-<td style="text-align: left;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">10516</td>
+<td style="text-align: right;">10066</td>
 <td style="text-align: left;">cuff</td>
 <td style="text-align: left;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">20045</td>
+<td style="text-align: right;">10185</td>
 <td style="text-align: left;">rest</td>
 <td style="text-align: left;">2</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">20078</td>
+<td style="text-align: right;">10355</td>
 <td style="text-align: left;">rest</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10912</td>
+<td style="text-align: left;">cuff</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20241</td>
+<td style="text-align: left;">cuff</td>
 <td style="text-align: left;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">10609</td>
+<td style="text-align: right;">20241</td>
 <td style="text-align: left;">rest</td>
 <td style="text-align: left;">1</td>
 </tr>

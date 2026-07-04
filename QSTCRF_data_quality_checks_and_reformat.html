@@ -776,29 +776,33 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h3 data-number="H.2.1" class="anchored" data-anchor-id="quantitative-sensory-testing-qst"><span class="header-section-number">H.2.1</span> Quantitative Sensory Testing (QST)</h3>
 <p>Read in QST data, We will call this qst</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>qst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"qst"</span>, <span class="st">"qst-2024-11-06.csv"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">retype</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>qst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"qst"</span>, <span class="st">"raw"</span>, <span class="st">"qst-2024-11-06.csv"</span>)) <span class="sc">%&gt;%</span> <span class="fu">retype</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We will also read in Imaging data since the information on recalibration is recorded in the Imaging CRF. We will later merge field names related to recalibration with the imaging data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tka_img_4_qst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"imaging"</span>, <span class="st">"imaging-2024-11-06.csv"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(redcap_repeat_instrument <span class="sc">==</span> <span class="st">"imaging_mcc1_v09"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    redcap_event_name,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    fmricuffcontrarecal,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    fmricuffcalfpressurerecal,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    fmricuffipyn,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    fmricuffcompletescl,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    imaging_mcc1_v09_complete</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(imaging_mcc1_v09_complete <span class="sc">==</span> <span class="dv">2</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(redcap_repeat_instance)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(record_id, redcap_event_name) <span class="sc">%&gt;%</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">1</span>, redcap_repeat_instance) <span class="sc">%&gt;%</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(not_all_na))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tka_img_4_qst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"imaging"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"imaging-2024-11-06.csv"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(redcap_repeat_instrument <span class="sc">==</span> <span class="st">"imaging_mcc1_v09"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    redcap_event_name,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    fmricuffcontrarecal,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    fmricuffcalfpressurerecal,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    fmricuffipyn,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    fmricuffcompletescl,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    imaging_mcc1_v09_complete</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(imaging_mcc1_v09_complete <span class="sc">==</span> <span class="dv">2</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(redcap_repeat_instance)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(record_id, redcap_event_name) <span class="sc">%&gt;%</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">1</span>, redcap_repeat_instance) <span class="sc">%&gt;%</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(not_all_na))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Remove test records</p>
 <div class="cell">
@@ -818,8 +822,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"120000"</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>qst <span class="ot">&lt;-</span> qst <span class="sc">%&gt;%</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>record_id <span class="sc">%in%</span> test_records)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>qst <span class="ot">&lt;-</span> qst <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>record_id <span class="sc">%in%</span> test_records)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Create a column for cohort type called “cohort”</p>
 <div class="cell">
@@ -839,9 +842,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>qst_dict <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"qst"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"qst-Data-Dictionary-2024-11-06.csv"</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(field_name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"qst-Data-Dictionary-2024-11-06.csv"</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(field_name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="new-field-names" class="level3" data-number="H.2.3">
@@ -1061,24 +1065,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">index1 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>      (<span class="sc">!</span><span class="fu">is.na</span>(pptindex1val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptindex1val1)) <span class="sc">|</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptindex2val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptindex2val1)) <span class="sc">|</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptindex3val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptindex3val1)) <span class="sc">~</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(index1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Remote site was checked but PPT information was filled out for the index site"</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptindex3val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptindex3val1)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(index1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Remote site was checked but PPT information was filled out for the index site"</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-9" class="level5" data-number="H.2.5.0.9">
@@ -1091,24 +1094,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">index2 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">is.na</span>(pptindex1val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptindex1val1)) <span class="sc">|</span></span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptindex2val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptindex2val1)) <span class="sc">|</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptindex3val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptindex3val1)) <span class="sc">~</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(index2 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Both sites were checked but PPT information was not filled out for the index site"</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptindex3val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptindex3val1)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(index2 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Both sites were checked but PPT information was not filled out for the index site"</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-10" class="level5" data-number="H.2.5.0.10">
@@ -1121,24 +1123,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">remote1 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>      (<span class="sc">!</span><span class="fu">is.na</span>(pptremote1val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptremote1val1)) <span class="sc">|</span></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptremote2val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptremote2val1)) <span class="sc">|</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptremote3val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptremote3val1)) <span class="sc">~</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(remote1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Index site was checked but PPT information was filled out for the remote site"</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptremote3val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptremote3val1)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(remote1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Index site was checked but PPT information was filled out for the remote site"</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-11" class="level5" data-number="H.2.5.0.11">
@@ -1151,24 +1152,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">remote2 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">is.na</span>(pptremote1val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptremote1val1)) <span class="sc">|</span></span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptremote2val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptremote2val1)) <span class="sc">|</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptremote3val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptremote3val1)) <span class="sc">~</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(remote2 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Both sites were checked but PPT information was not filled out for the remote site"</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptremote3val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptremote3val1)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(remote2 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Both sites were checked but PPT information was not filled out for the remote site"</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-12" class="level5" data-number="H.2.5.0.12">
@@ -1240,69 +1240,63 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep1 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
 <span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        ts_contr_init1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep2 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>        ts_contr_init2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep3 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
-<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>        ts_contr_init3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init1 =</span> tsrep1initialpainindex <span class="sc">-</span> tsrep1initialpainindex_d) <span class="sc">%&gt;%</span></span>
-<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin1 =</span> tsrep1finalpainindex <span class="sc">-</span> tsrep1finalpainindex_d) <span class="sc">%&gt;%</span></span>
-<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init2 =</span> tsinitialpainindexsclr2 <span class="sc">-</span> tsinitialpainindexscl1r2) <span class="sc">%&gt;%</span></span>
-<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin2 =</span> tsfinalpainindexsclr2 <span class="sc">-</span> tsfinalpainindexscl1r2) <span class="sc">%&gt;%</span></span>
-<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init3 =</span> tsinitialpainindexsclr3 <span class="sc">-</span> tsinitialpainindexscl1r3) <span class="sc">%&gt;%</span></span>
-<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin3 =</span> tsfinalpainindexsclr3 <span class="sc">-</span> tsfinalpainindexscl1r3) <span class="sc">%&gt;%</span></span>
-<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep1 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
-<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>        ts_ind_init1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep2 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
-<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>        ts_ind_init2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep3 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
-<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a>        ts_ind_init3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb26-65"><a href="#cb26-65" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb26-66"><a href="#cb26-66" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>        ts_contr_init2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>        ts_contr_init3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init1 =</span> tsrep1initialpainindex <span class="sc">-</span> tsrep1initialpainindex_d) <span class="sc">%&gt;%</span></span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin1 =</span> tsrep1finalpainindex <span class="sc">-</span> tsrep1finalpainindex_d) <span class="sc">%&gt;%</span></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init2 =</span> tsinitialpainindexsclr2 <span class="sc">-</span> tsinitialpainindexscl1r2) <span class="sc">%&gt;%</span></span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin2 =</span> tsfinalpainindexsclr2 <span class="sc">-</span> tsfinalpainindexscl1r2) <span class="sc">%&gt;%</span></span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init3 =</span> tsinitialpainindexsclr3 <span class="sc">-</span> tsinitialpainindexscl1r3) <span class="sc">%&gt;%</span></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin3 =</span> tsfinalpainindexsclr3 <span class="sc">-</span> tsfinalpainindexscl1r3) <span class="sc">%&gt;%</span></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep1 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>        ts_ind_init1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>        ts_ind_init2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
+<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>        ts_ind_init3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">one_rem =</span> <span class="fu">case_when</span>(trrep1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> trrep2 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> trrep3 <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>)</span>
+<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb26-65"><a href="#cb26-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-66"><a href="#cb26-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">one_ind =</span> <span class="fu">case_when</span>(indrep1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> indrep2 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> indrep3 <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>)</span>
 <span id="cb26-67"><a href="#cb26-67" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb26-68"><a href="#cb26-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb26-69"><a href="#cb26-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">one_rem =</span> <span class="fu">case_when</span>(trrep1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> trrep2 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> trrep3 <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>)</span>
-<span id="cb26-70"><a href="#cb26-70" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb26-71"><a href="#cb26-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb26-72"><a href="#cb26-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">one_ind =</span> <span class="fu">case_when</span>(indrep1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> indrep2 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> indrep3 <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>)</span>
-<span id="cb26-73"><a href="#cb26-73" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb26-74"><a href="#cb26-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">one_rep =</span> <span class="fu">case_when</span>(one_rem <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> one_ind <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-68"><a href="#cb26-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">one_rep =</span> <span class="fu">case_when</span>(one_rem <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> one_ind <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="flag-14" class="level5" data-number="H.2.6.0.1">
 <h5 data-number="H.2.6.0.1" class="anchored" data-anchor-id="flag-14"><span class="header-section-number">H.2.6.0.1</span> Flag 14:</h5>
@@ -1461,24 +1455,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsinitialpainindexsclr2) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsinitialpainindexscl1r2)) <span class="sc">|</span></span>
 <span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainindexsclr2) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainindexscl1r2)) <span class="sc">|</span></span>
 <span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsinitialpainindexsclr3) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsinitialpainindexscl1r3)) <span class="sc">|</span></span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainindexsclr3) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainindexscl1r3)) <span class="sc">~</span></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.index1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Remote site was checked but pain ratings were filled out for the index site"</span></span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainindexsclr3) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainindexscl1r3)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.index1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Remote site was checked but pain ratings were filled out for the index site"</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-22" class="level5" data-number="H.2.6.0.9">
@@ -1500,24 +1493,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsinitialpainindexsclr3) <span class="sc">&amp;</span></span>
 <span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsinitialpainindexscl1r3) <span class="sc">&amp;</span></span>
 <span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsfinalpainindexsclr3) <span class="sc">&amp;</span></span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsfinalpainindexscl1r3) <span class="sc">~</span></span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.bothindex1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Both sites were checked but pain ratings were not filled out for the index site"</span></span>
-<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsfinalpainindexscl1r3) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.bothindex1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Both sites were checked but pain ratings were not filled out for the index site"</span></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-23" class="level5" data-number="H.2.6.0.10">
@@ -1539,24 +1531,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsinitialpainremsclr3) <span class="sc">&amp;</span></span>
 <span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsinitialpainremscl1r3) <span class="sc">&amp;</span></span>
 <span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsfinalpainremsclr3) <span class="sc">&amp;</span></span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsfinalpainremscl1r3) <span class="sc">~</span></span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.bothrem1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Both sites were checked but pain ratings were not filled out for the remote site"</span></span>
-<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsfinalpainremscl1r3) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.bothrem1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Both sites were checked but pain ratings were not filled out for the remote site"</span></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-24" class="level5" data-number="H.2.6.0.11">
@@ -1572,24 +1563,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsrep2initialpainrem) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsrep2initialpainrem_d)) <span class="sc">|</span></span>
 <span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsrep2finalpainrem) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsrep2finalpainrem_d)) <span class="sc">|</span></span>
 <span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsinitialpainremsclr3) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsinitialpainremscl1r3)) <span class="sc">|</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainremsclr3) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainremscl1r3)) <span class="sc">~</span></span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.remote1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:index site was checked but pain ratings were filled out for the remote site"</span></span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainremsclr3) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsfinalpainremscl1r3)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.remote1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:index site was checked but pain ratings were filled out for the remote site"</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-25" class="level5" data-number="H.2.6.0.12">
@@ -2352,35 +2342,30 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>qst_report <span class="sc">%&gt;%</span></span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">md</span>(<span class="st">"**TKA Cohort QST form Error Report**"</span>)</span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(</span>
-<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">table.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>),</span>
-<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_labels.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>)</span>
-<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
-<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#F4F4F4"</span>)),</span>
-<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
-<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="fu">md</span>(<span class="st">"**TKA Cohort QST form Error Report**"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(<span class="at">table.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>), <span class="at">column_labels.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#F4F4F4"</span>)),</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="dvowzsthsf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dvowzsthsf table {
+<div id="pxoeuwqgwu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pxoeuwqgwu table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dvowzsthsf thead, #dvowzsthsf tbody, #dvowzsthsf tfoot, #dvowzsthsf tr, #dvowzsthsf td, #dvowzsthsf th {
+#pxoeuwqgwu thead, #pxoeuwqgwu tbody, #pxoeuwqgwu tfoot, #pxoeuwqgwu tr, #pxoeuwqgwu td, #pxoeuwqgwu th {
   border-style: none;
 }
 
-#dvowzsthsf p {
+#pxoeuwqgwu p {
   margin: 0;
   padding: 0;
 }
 
-#dvowzsthsf .gt_table {
+#pxoeuwqgwu .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2406,12 +2391,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-left-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_caption {
+#pxoeuwqgwu .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dvowzsthsf .gt_title {
+#pxoeuwqgwu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2423,7 +2408,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-bottom-width: 0;
 }
 
-#dvowzsthsf .gt_subtitle {
+#pxoeuwqgwu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2435,7 +2420,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-top-width: 0;
 }
 
-#dvowzsthsf .gt_heading {
+#pxoeuwqgwu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2447,13 +2432,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-right-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_bottom_border {
+#pxoeuwqgwu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_col_headings {
+#pxoeuwqgwu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2468,7 +2453,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-right-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_col_heading {
+#pxoeuwqgwu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -2488,7 +2473,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   overflow-x: hidden;
 }
 
-#dvowzsthsf .gt_column_spanner_outer {
+#pxoeuwqgwu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -2500,15 +2485,15 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 4px;
 }
 
-#dvowzsthsf .gt_column_spanner_outer:first-child {
+#pxoeuwqgwu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dvowzsthsf .gt_column_spanner_outer:last-child {
+#pxoeuwqgwu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dvowzsthsf .gt_column_spanner {
+#pxoeuwqgwu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2520,11 +2505,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   width: 100%;
 }
 
-#dvowzsthsf .gt_spanner_row {
+#pxoeuwqgwu .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dvowzsthsf .gt_group_heading {
+#pxoeuwqgwu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2550,7 +2535,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   text-align: left;
 }
 
-#dvowzsthsf .gt_empty_group_heading {
+#pxoeuwqgwu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2565,15 +2550,15 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   vertical-align: middle;
 }
 
-#dvowzsthsf .gt_from_md > :first-child {
+#pxoeuwqgwu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dvowzsthsf .gt_from_md > :last-child {
+#pxoeuwqgwu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dvowzsthsf .gt_row {
+#pxoeuwqgwu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2592,7 +2577,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   overflow-x: hidden;
 }
 
-#dvowzsthsf .gt_stub {
+#pxoeuwqgwu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2605,7 +2590,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#dvowzsthsf .gt_stub_row_group {
+#pxoeuwqgwu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2619,15 +2604,15 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   vertical-align: top;
 }
 
-#dvowzsthsf .gt_row_group_first td {
+#pxoeuwqgwu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dvowzsthsf .gt_row_group_first th {
+#pxoeuwqgwu .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dvowzsthsf .gt_summary_row {
+#pxoeuwqgwu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2637,16 +2622,16 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#dvowzsthsf .gt_first_summary_row {
+#pxoeuwqgwu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_first_summary_row.thick {
+#pxoeuwqgwu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dvowzsthsf .gt_last_summary_row {
+#pxoeuwqgwu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2656,7 +2641,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-bottom-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_grand_summary_row {
+#pxoeuwqgwu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2666,7 +2651,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#dvowzsthsf .gt_first_grand_summary_row {
+#pxoeuwqgwu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2676,7 +2661,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-top-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_last_grand_summary_row_top {
+#pxoeuwqgwu .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2686,11 +2671,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-bottom-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_striped {
+#pxoeuwqgwu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dvowzsthsf .gt_table_body {
+#pxoeuwqgwu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2699,7 +2684,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-bottom-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_footnotes {
+#pxoeuwqgwu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2713,7 +2698,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-right-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_footnote {
+#pxoeuwqgwu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2722,7 +2707,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#dvowzsthsf .gt_sourcenotes {
+#pxoeuwqgwu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2736,7 +2721,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-right-color: #D3D3D3;
 }
 
-#dvowzsthsf .gt_sourcenote {
+#pxoeuwqgwu .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2744,72 +2729,72 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#dvowzsthsf .gt_left {
+#pxoeuwqgwu .gt_left {
   text-align: left;
 }
 
-#dvowzsthsf .gt_center {
+#pxoeuwqgwu .gt_center {
   text-align: center;
 }
 
-#dvowzsthsf .gt_right {
+#pxoeuwqgwu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dvowzsthsf .gt_font_normal {
+#pxoeuwqgwu .gt_font_normal {
   font-weight: normal;
 }
 
-#dvowzsthsf .gt_font_bold {
+#pxoeuwqgwu .gt_font_bold {
   font-weight: bold;
 }
 
-#dvowzsthsf .gt_font_italic {
+#pxoeuwqgwu .gt_font_italic {
   font-style: italic;
 }
 
-#dvowzsthsf .gt_super {
+#pxoeuwqgwu .gt_super {
   font-size: 65%;
 }
 
-#dvowzsthsf .gt_footnote_marks {
+#pxoeuwqgwu .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dvowzsthsf .gt_asterisk {
+#pxoeuwqgwu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dvowzsthsf .gt_indent_1 {
+#pxoeuwqgwu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dvowzsthsf .gt_indent_2 {
+#pxoeuwqgwu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dvowzsthsf .gt_indent_3 {
+#pxoeuwqgwu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dvowzsthsf .gt_indent_4 {
+#pxoeuwqgwu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dvowzsthsf .gt_indent_5 {
+#pxoeuwqgwu .gt_indent_5 {
   text-indent: 25px;
 }
 
-#dvowzsthsf .katex-display {
+#pxoeuwqgwu .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#dvowzsthsf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#pxoeuwqgwu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -4724,26 +4709,27 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>thor_img_4_qst <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
 <span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"imaging"</span>,</span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"imaging-2024-11-06.csv"</span></span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
-<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(redcap_repeat_instrument <span class="sc">==</span> <span class="st">"imaging_mcc2_v01"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>    redcap_event_name,</span>
-<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>    fmricuffcontrarecal,</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"imaging-2024-11-06.csv"</span></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(redcap_repeat_instrument <span class="sc">==</span> <span class="st">"imaging_mcc2_v01"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>    redcap_event_name,</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
 <span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>    fmricuffcontrarecal,</span>
-<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>    fmricuffcalfpressurerecal,</span>
-<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a>    fmricuffipyn,</span>
-<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a>    fmricuffcompletescl,</span>
-<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>    imaging_mcc2_v01_complete</span>
-<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(imaging_mcc2_v01_complete <span class="sc">==</span> <span class="dv">2</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(redcap_repeat_instance)) <span class="sc">%&gt;%</span></span>
-<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(record_id, redcap_event_name) <span class="sc">%&gt;%</span></span>
-<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">1</span>, redcap_repeat_instance) <span class="sc">%&gt;%</span></span>
-<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(not_all_na))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>    fmricuffcontrarecal,</span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a>    fmricuffcalfpressurerecal,</span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a>    fmricuffipyn,</span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>    fmricuffcompletescl,</span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a>    imaging_mcc2_v01_complete</span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(imaging_mcc2_v01_complete <span class="sc">==</span> <span class="dv">2</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(redcap_repeat_instance)) <span class="sc">%&gt;%</span></span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(record_id, redcap_event_name) <span class="sc">%&gt;%</span></span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">1</span>, redcap_repeat_instance) <span class="sc">%&gt;%</span></span>
+<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb66-24"><a href="#cb66-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(not_all_na))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>keep subjects from the Thoracotomy cohort, with the most recent baseline visit and merge with QST data.</p>
 <div class="cell">
@@ -4918,24 +4904,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">index1 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>      (<span class="sc">!</span><span class="fu">is.na</span>(pptindxr1val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptindxr1val_d)) <span class="sc">|</span></span>
 <span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptindxr2val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptindxr2val_d)) <span class="sc">|</span></span>
-<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptindxr3val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptindxr3val_d)) <span class="sc">~</span></span>
-<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(index1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Remote site was checked but PPT information was filled out for the index site"</span></span>
-<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb75-16"><a href="#cb75-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb75-18"><a href="#cb75-18" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb75-19"><a href="#cb75-19" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb75-20"><a href="#cb75-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb75-21"><a href="#cb75-21" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb75-22"><a href="#cb75-22" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb75-23"><a href="#cb75-23" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb75-24"><a href="#cb75-24" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptindxr3val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptindxr3val_d)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(index1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Remote site was checked but PPT information was filled out for the index site"</span></span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb75-16"><a href="#cb75-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb75-18"><a href="#cb75-18" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb75-19"><a href="#cb75-19" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb75-20"><a href="#cb75-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb75-21"><a href="#cb75-21" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb75-22"><a href="#cb75-22" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb75-23"><a href="#cb75-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-8-1" class="level5" data-number="H.2.9.0.8">
@@ -4948,24 +4933,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">index2 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">is.na</span>(pptindxr1val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptindxr1val_d)) <span class="sc">|</span></span>
 <span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptindxr2val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptindxr2val_d)) <span class="sc">|</span></span>
-<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptindxr3val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptindxr3val_d)) <span class="sc">~</span></span>
-<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(index2 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Both sites were checked but PPT information was not filled out for the index site"</span></span>
-<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb76-17"><a href="#cb76-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb76-18"><a href="#cb76-18" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb76-19"><a href="#cb76-19" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb76-20"><a href="#cb76-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb76-21"><a href="#cb76-21" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb76-22"><a href="#cb76-22" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb76-23"><a href="#cb76-23" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb76-24"><a href="#cb76-24" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptindxr3val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptindxr3val_d)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(index2 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Both sites were checked but PPT information was not filled out for the index site"</span></span>
+<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb76-17"><a href="#cb76-17" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb76-18"><a href="#cb76-18" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb76-19"><a href="#cb76-19" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb76-20"><a href="#cb76-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb76-21"><a href="#cb76-21" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb76-22"><a href="#cb76-22" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb76-23"><a href="#cb76-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-9-1" class="level5" data-number="H.2.9.0.9">
@@ -4978,24 +4962,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">remote1 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>      (<span class="sc">!</span><span class="fu">is.na</span>(pptremoter1val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptremoter1val_d)) <span class="sc">|</span></span>
 <span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptremoter2val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptremoter2val_d)) <span class="sc">|</span></span>
-<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptremoter3val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptremoter3val_d)) <span class="sc">~</span></span>
-<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(remote1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Index site was checked but PPT information was filled out for the remote site"</span></span>
-<span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb77-19"><a href="#cb77-19" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb77-20"><a href="#cb77-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb77-21"><a href="#cb77-21" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb77-22"><a href="#cb77-22" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb77-23"><a href="#cb77-23" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb77-24"><a href="#cb77-24" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(pptremoter3val) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pptremoter3val_d)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(remote1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Index site was checked but PPT information was filled out for the remote site"</span></span>
+<span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb77-19"><a href="#cb77-19" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb77-20"><a href="#cb77-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb77-21"><a href="#cb77-21" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb77-22"><a href="#cb77-22" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb77-23"><a href="#cb77-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-10-1" class="level5" data-number="H.2.9.0.10">
@@ -5008,24 +4991,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">remote2 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">is.na</span>(pptremoter1val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptremoter1val_d)) <span class="sc">|</span></span>
 <span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptremoter2val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptremoter2val_d)) <span class="sc">|</span></span>
-<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptremoter3val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptremoter3val_d)) <span class="sc">~</span></span>
-<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(remote2 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Both sites were checked but PPT information was not filled out for the remote site"</span></span>
-<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb78-19"><a href="#cb78-19" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb78-20"><a href="#cb78-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb78-21"><a href="#cb78-21" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb78-22"><a href="#cb78-22" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb78-23"><a href="#cb78-23" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb78-24"><a href="#cb78-24" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">is.na</span>(pptremoter3val) <span class="sc">&amp;</span> <span class="fu">is.na</span>(pptremoter3val_d)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(remote2 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"PPT: Both sites were checked but PPT information was not filled out for the remote site"</span></span>
+<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb78-19"><a href="#cb78-19" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb78-20"><a href="#cb78-20" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb78-21"><a href="#cb78-21" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb78-22"><a href="#cb78-22" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb78-23"><a href="#cb78-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-11-1" class="level5" data-number="H.2.9.0.11">
@@ -5097,69 +5079,63 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep1 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
 <span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>        ts_contr_init1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb82-12"><a href="#cb82-12" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb82-13"><a href="#cb82-13" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb82-14"><a href="#cb82-14" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb82-15"><a href="#cb82-15" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb82-16"><a href="#cb82-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb82-17"><a href="#cb82-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb82-18"><a href="#cb82-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep2 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb82-19"><a href="#cb82-19" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
-<span id="cb82-20"><a href="#cb82-20" aria-hidden="true" tabindex="-1"></a>        ts_contr_init2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb82-21"><a href="#cb82-21" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb82-22"><a href="#cb82-22" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb82-23"><a href="#cb82-23" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb82-24"><a href="#cb82-24" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb82-25"><a href="#cb82-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb82-26"><a href="#cb82-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb82-27"><a href="#cb82-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep3 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb82-28"><a href="#cb82-28" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
-<span id="cb82-29"><a href="#cb82-29" aria-hidden="true" tabindex="-1"></a>        ts_contr_init3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb82-30"><a href="#cb82-30" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb82-31"><a href="#cb82-31" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb82-32"><a href="#cb82-32" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb82-33"><a href="#cb82-33" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb82-34"><a href="#cb82-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb82-35"><a href="#cb82-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init1 =</span> tsindxr1initial <span class="sc">-</span> tsindxr1initial_d) <span class="sc">%&gt;%</span></span>
-<span id="cb82-36"><a href="#cb82-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin1 =</span> tsindxr1final <span class="sc">-</span> tsindxr1final_d) <span class="sc">%&gt;%</span></span>
-<span id="cb82-37"><a href="#cb82-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init2 =</span> tsindxr2initial <span class="sc">-</span> tsindxr2initial_d) <span class="sc">%&gt;%</span></span>
-<span id="cb82-38"><a href="#cb82-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin2 =</span> tsindxr2final <span class="sc">-</span> tsindxr2final_d) <span class="sc">%&gt;%</span></span>
-<span id="cb82-39"><a href="#cb82-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init3 =</span> tsindxr3initial <span class="sc">-</span> tsindxr3initial_d) <span class="sc">%&gt;%</span></span>
-<span id="cb82-40"><a href="#cb82-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin3 =</span> tsindxr3final <span class="sc">-</span> tsindxr3final_d) <span class="sc">%&gt;%</span></span>
-<span id="cb82-41"><a href="#cb82-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb82-42"><a href="#cb82-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep1 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb82-43"><a href="#cb82-43" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
-<span id="cb82-44"><a href="#cb82-44" aria-hidden="true" tabindex="-1"></a>        ts_ind_init1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb82-45"><a href="#cb82-45" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb82-46"><a href="#cb82-46" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb82-47"><a href="#cb82-47" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb82-48"><a href="#cb82-48" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb82-49"><a href="#cb82-49" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb82-50"><a href="#cb82-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb82-51"><a href="#cb82-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep2 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb82-52"><a href="#cb82-52" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
-<span id="cb82-53"><a href="#cb82-53" aria-hidden="true" tabindex="-1"></a>        ts_ind_init2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb82-54"><a href="#cb82-54" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb82-55"><a href="#cb82-55" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb82-56"><a href="#cb82-56" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb82-57"><a href="#cb82-57" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb82-58"><a href="#cb82-58" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb82-59"><a href="#cb82-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb82-60"><a href="#cb82-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep3 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb82-61"><a href="#cb82-61" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
-<span id="cb82-62"><a href="#cb82-62" aria-hidden="true" tabindex="-1"></a>        ts_ind_init3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
-<span id="cb82-63"><a href="#cb82-63" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span></span>
-<span id="cb82-64"><a href="#cb82-64" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb82-65"><a href="#cb82-65" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb82-66"><a href="#cb82-66" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb82-12"><a href="#cb82-12" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb82-13"><a href="#cb82-13" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb82-14"><a href="#cb82-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb82-15"><a href="#cb82-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb82-16"><a href="#cb82-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb82-17"><a href="#cb82-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb82-18"><a href="#cb82-18" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
+<span id="cb82-19"><a href="#cb82-19" aria-hidden="true" tabindex="-1"></a>        ts_contr_init2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb82-20"><a href="#cb82-20" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb82-21"><a href="#cb82-21" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb82-22"><a href="#cb82-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb82-23"><a href="#cb82-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb82-24"><a href="#cb82-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb82-25"><a href="#cb82-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">trrep3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb82-26"><a href="#cb82-26" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">&amp;</span></span>
+<span id="cb82-27"><a href="#cb82-27" aria-hidden="true" tabindex="-1"></a>        ts_contr_init3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb82-28"><a href="#cb82-28" aria-hidden="true" tabindex="-1"></a>        ts_contr_fin3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb82-29"><a href="#cb82-29" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb82-30"><a href="#cb82-30" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb82-31"><a href="#cb82-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb82-32"><a href="#cb82-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init1 =</span> tsindxr1initial <span class="sc">-</span> tsindxr1initial_d) <span class="sc">%&gt;%</span></span>
+<span id="cb82-33"><a href="#cb82-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin1 =</span> tsindxr1final <span class="sc">-</span> tsindxr1final_d) <span class="sc">%&gt;%</span></span>
+<span id="cb82-34"><a href="#cb82-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init2 =</span> tsindxr2initial <span class="sc">-</span> tsindxr2initial_d) <span class="sc">%&gt;%</span></span>
+<span id="cb82-35"><a href="#cb82-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin2 =</span> tsindxr2final <span class="sc">-</span> tsindxr2final_d) <span class="sc">%&gt;%</span></span>
+<span id="cb82-36"><a href="#cb82-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_init3 =</span> tsindxr3initial <span class="sc">-</span> tsindxr3initial_d) <span class="sc">%&gt;%</span></span>
+<span id="cb82-37"><a href="#cb82-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ts_ind_fin3 =</span> tsindxr3final <span class="sc">-</span> tsindxr3final_d) <span class="sc">%&gt;%</span></span>
+<span id="cb82-38"><a href="#cb82-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb82-39"><a href="#cb82-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep1 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb82-40"><a href="#cb82-40" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
+<span id="cb82-41"><a href="#cb82-41" aria-hidden="true" tabindex="-1"></a>        ts_ind_init1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb82-42"><a href="#cb82-42" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin1 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb82-43"><a href="#cb82-43" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb82-44"><a href="#cb82-44" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb82-45"><a href="#cb82-45" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb82-46"><a href="#cb82-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb82-47"><a href="#cb82-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb82-48"><a href="#cb82-48" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
+<span id="cb82-49"><a href="#cb82-49" aria-hidden="true" tabindex="-1"></a>        ts_ind_init2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb82-50"><a href="#cb82-50" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin2 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb82-51"><a href="#cb82-51" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb82-52"><a href="#cb82-52" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb82-53"><a href="#cb82-53" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb82-54"><a href="#cb82-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb82-55"><a href="#cb82-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">indrep3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb82-56"><a href="#cb82-56" aria-hidden="true" tabindex="-1"></a>      (tscompleted <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> tscompleted <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">&amp;</span></span>
+<span id="cb82-57"><a href="#cb82-57" aria-hidden="true" tabindex="-1"></a>        ts_ind_init3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb82-58"><a href="#cb82-58" aria-hidden="true" tabindex="-1"></a>        ts_ind_fin3 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb82-59"><a href="#cb82-59" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb82-60"><a href="#cb82-60" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb82-61"><a href="#cb82-61" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb82-62"><a href="#cb82-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb82-63"><a href="#cb82-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">one_rem =</span> <span class="fu">case_when</span>(trrep1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> trrep2 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> trrep3 <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>)</span>
+<span id="cb82-64"><a href="#cb82-64" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb82-65"><a href="#cb82-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb82-66"><a href="#cb82-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">one_ind =</span> <span class="fu">case_when</span>(indrep1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> indrep2 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> indrep3 <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>)</span>
 <span id="cb82-67"><a href="#cb82-67" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb82-68"><a href="#cb82-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb82-69"><a href="#cb82-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">one_rem =</span> <span class="fu">case_when</span>(trrep1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> trrep2 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> trrep3 <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>)</span>
-<span id="cb82-70"><a href="#cb82-70" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb82-71"><a href="#cb82-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb82-72"><a href="#cb82-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">one_ind =</span> <span class="fu">case_when</span>(indrep1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> indrep2 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> indrep3 <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>)</span>
-<span id="cb82-73"><a href="#cb82-73" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb82-74"><a href="#cb82-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">one_rep =</span> <span class="fu">case_when</span>(one_rem <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> one_ind <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb82-68"><a href="#cb82-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">one_rep =</span> <span class="fu">case_when</span>(one_rem <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> one_ind <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="flag-13-1" class="level5" data-number="H.2.10.0.1">
 <h5 data-number="H.2.10.0.1" class="anchored" data-anchor-id="flag-13-1"><span class="header-section-number">H.2.10.0.1</span> Flag 13:</h5>
@@ -5318,24 +5294,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsindxr2initial) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsindxr2initial_d)) <span class="sc">|</span></span>
 <span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsindxr2final) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsindxr2final_d)) <span class="sc">|</span></span>
 <span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsindxr3initial) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsindxr3initial_d)) <span class="sc">|</span></span>
-<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsindxr3final) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsindxr3final_d)) <span class="sc">~</span></span>
-<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.index1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Remote site was checked but pain ratings were filled out for the index site"</span></span>
-<span id="cb90-18"><a href="#cb90-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb90-19"><a href="#cb90-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb90-20"><a href="#cb90-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb90-21"><a href="#cb90-21" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb90-22"><a href="#cb90-22" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb90-23"><a href="#cb90-23" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb90-24"><a href="#cb90-24" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb90-25"><a href="#cb90-25" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb90-26"><a href="#cb90-26" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb90-27"><a href="#cb90-27" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsindxr3final) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsindxr3final_d)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.index1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Remote site was checked but pain ratings were filled out for the index site"</span></span>
+<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb90-18"><a href="#cb90-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-19"><a href="#cb90-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb90-20"><a href="#cb90-20" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb90-21"><a href="#cb90-21" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb90-22"><a href="#cb90-22" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb90-23"><a href="#cb90-23" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb90-24"><a href="#cb90-24" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb90-25"><a href="#cb90-25" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb90-26"><a href="#cb90-26" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-21-1" class="level5" data-number="H.2.10.0.9">
@@ -5357,24 +5332,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb91-13"><a href="#cb91-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsindxr3initial) <span class="sc">&amp;</span></span>
 <span id="cb91-14"><a href="#cb91-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsindxr3initial_d) <span class="sc">&amp;</span></span>
 <span id="cb91-15"><a href="#cb91-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsindxr3final) <span class="sc">&amp;</span></span>
-<span id="cb91-16"><a href="#cb91-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsindxr3final_d) <span class="sc">~</span></span>
-<span id="cb91-17"><a href="#cb91-17" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb91-18"><a href="#cb91-18" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb91-19"><a href="#cb91-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb91-20"><a href="#cb91-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb91-21"><a href="#cb91-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.bothindex1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb91-22"><a href="#cb91-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb91-23"><a href="#cb91-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Both sites were checked but pain ratings were not filled out for the index site"</span></span>
-<span id="cb91-24"><a href="#cb91-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb91-25"><a href="#cb91-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb91-26"><a href="#cb91-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb91-27"><a href="#cb91-27" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb91-28"><a href="#cb91-28" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb91-29"><a href="#cb91-29" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb91-30"><a href="#cb91-30" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb91-31"><a href="#cb91-31" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb91-32"><a href="#cb91-32" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb91-33"><a href="#cb91-33" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb91-16"><a href="#cb91-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsindxr3final_d) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb91-17"><a href="#cb91-17" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb91-18"><a href="#cb91-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb91-19"><a href="#cb91-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb91-20"><a href="#cb91-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.bothindex1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb91-21"><a href="#cb91-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb91-22"><a href="#cb91-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Both sites were checked but pain ratings were not filled out for the index site"</span></span>
+<span id="cb91-23"><a href="#cb91-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb91-24"><a href="#cb91-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb91-25"><a href="#cb91-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb91-26"><a href="#cb91-26" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb91-27"><a href="#cb91-27" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb91-28"><a href="#cb91-28" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb91-29"><a href="#cb91-29" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb91-30"><a href="#cb91-30" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb91-31"><a href="#cb91-31" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb91-32"><a href="#cb91-32" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-22-1" class="level5" data-number="H.2.10.0.10">
@@ -5396,24 +5370,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsremoter3initial) <span class="sc">&amp;</span></span>
 <span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsremoter3initial_d) <span class="sc">&amp;</span></span>
 <span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsremoter3final) <span class="sc">&amp;</span></span>
-<span id="cb92-16"><a href="#cb92-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsremoter3final_d) <span class="sc">~</span></span>
-<span id="cb92-17"><a href="#cb92-17" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb92-18"><a href="#cb92-18" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb92-19"><a href="#cb92-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb92-20"><a href="#cb92-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb92-21"><a href="#cb92-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.bothrem1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb92-22"><a href="#cb92-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb92-23"><a href="#cb92-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Both sites were checked but pain ratings were not filled out for the remote site"</span></span>
-<span id="cb92-24"><a href="#cb92-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb92-25"><a href="#cb92-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb92-26"><a href="#cb92-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb92-27"><a href="#cb92-27" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb92-28"><a href="#cb92-28" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb92-29"><a href="#cb92-29" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb92-30"><a href="#cb92-30" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb92-31"><a href="#cb92-31" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb92-32"><a href="#cb92-32" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb92-33"><a href="#cb92-33" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb92-16"><a href="#cb92-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(tsremoter3final_d) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb92-17"><a href="#cb92-17" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb92-18"><a href="#cb92-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb92-19"><a href="#cb92-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb92-20"><a href="#cb92-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.bothrem1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb92-21"><a href="#cb92-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb92-22"><a href="#cb92-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:Both sites were checked but pain ratings were not filled out for the remote site"</span></span>
+<span id="cb92-23"><a href="#cb92-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb92-24"><a href="#cb92-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb92-25"><a href="#cb92-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb92-26"><a href="#cb92-26" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb92-27"><a href="#cb92-27" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb92-28"><a href="#cb92-28" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb92-29"><a href="#cb92-29" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb92-30"><a href="#cb92-30" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb92-31"><a href="#cb92-31" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb92-32"><a href="#cb92-32" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-23-1" class="level5" data-number="H.2.10.0.11">
@@ -5429,24 +5402,23 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsremoter2initial) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsremoter2initial_d)) <span class="sc">|</span></span>
 <span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsremoter2final) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsremoter2final_d)) <span class="sc">|</span></span>
 <span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsremoter3initial) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsremoter3initial_d)) <span class="sc">|</span></span>
-<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsremoter3final) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsremoter3final_d)) <span class="sc">~</span></span>
-<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>,</span>
-<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.remote1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:index site was checked but pain ratings were filled out for the remote site"</span></span>
-<span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb93-19"><a href="#cb93-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb93-20"><a href="#cb93-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb93-21"><a href="#cb93-21" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
-<span id="cb93-22"><a href="#cb93-22" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
-<span id="cb93-23"><a href="#cb93-23" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
-<span id="cb93-24"><a href="#cb93-24" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
-<span id="cb93-25"><a href="#cb93-25" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
-<span id="cb93-26"><a href="#cb93-26" aria-hidden="true" tabindex="-1"></a>    errors</span>
-<span id="cb93-27"><a href="#cb93-27" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>        (<span class="sc">!</span><span class="fu">is.na</span>(tsremoter3final) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(tsremoter3final_d)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ts.remote1 <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_type =</span> <span class="st">"TS:index site was checked but pain ratings were filled out for the remote site"</span></span>
+<span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">errors =</span> <span class="st">"error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb93-19"><a href="#cb93-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb93-20"><a href="#cb93-20" aria-hidden="true" tabindex="-1"></a>    record_id,</span>
+<span id="cb93-21"><a href="#cb93-21" aria-hidden="true" tabindex="-1"></a>    redcap_data_access_group,</span>
+<span id="cb93-22"><a href="#cb93-22" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instrument,</span>
+<span id="cb93-23"><a href="#cb93-23" aria-hidden="true" tabindex="-1"></a>    redcap_repeat_instance,</span>
+<span id="cb93-24"><a href="#cb93-24" aria-hidden="true" tabindex="-1"></a>    error_type,</span>
+<span id="cb93-25"><a href="#cb93-25" aria-hidden="true" tabindex="-1"></a>    errors</span>
+<span id="cb93-26"><a href="#cb93-26" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="flag-24-1" class="level5" data-number="H.2.10.0.12">
@@ -6545,35 +6517,30 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a>m2qst_report <span class="sc">%&gt;%</span></span>
 <span id="cb134-2"><a href="#cb134-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb134-3"><a href="#cb134-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb134-4"><a href="#cb134-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">md</span>(<span class="st">"**Thoracotomy Cohort QST form Error Report**"</span>)</span>
-<span id="cb134-5"><a href="#cb134-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb134-6"><a href="#cb134-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(</span>
-<span id="cb134-7"><a href="#cb134-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">table.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>),</span>
-<span id="cb134-8"><a href="#cb134-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_labels.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>)</span>
-<span id="cb134-9"><a href="#cb134-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb134-10"><a href="#cb134-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
-<span id="cb134-11"><a href="#cb134-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#F4F4F4"</span>)),</span>
-<span id="cb134-12"><a href="#cb134-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
-<span id="cb134-13"><a href="#cb134-13" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb134-3"><a href="#cb134-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="fu">md</span>(<span class="st">"**Thoracotomy Cohort QST form Error Report**"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb134-4"><a href="#cb134-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(<span class="at">table.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>), <span class="at">column_labels.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb134-5"><a href="#cb134-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb134-6"><a href="#cb134-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#F4F4F4"</span>)),</span>
+<span id="cb134-7"><a href="#cb134-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
+<span id="cb134-8"><a href="#cb134-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="lnuxpwmfhz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lnuxpwmfhz table {
+<div id="mbegdtohgc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mbegdtohgc table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lnuxpwmfhz thead, #lnuxpwmfhz tbody, #lnuxpwmfhz tfoot, #lnuxpwmfhz tr, #lnuxpwmfhz td, #lnuxpwmfhz th {
+#mbegdtohgc thead, #mbegdtohgc tbody, #mbegdtohgc tfoot, #mbegdtohgc tr, #mbegdtohgc td, #mbegdtohgc th {
   border-style: none;
 }
 
-#lnuxpwmfhz p {
+#mbegdtohgc p {
   margin: 0;
   padding: 0;
 }
 
-#lnuxpwmfhz .gt_table {
+#mbegdtohgc .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -6599,12 +6566,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-left-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_caption {
+#mbegdtohgc .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lnuxpwmfhz .gt_title {
+#mbegdtohgc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -6616,7 +6583,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-bottom-width: 0;
 }
 
-#lnuxpwmfhz .gt_subtitle {
+#mbegdtohgc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -6628,7 +6595,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-top-width: 0;
 }
 
-#lnuxpwmfhz .gt_heading {
+#mbegdtohgc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -6640,13 +6607,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-right-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_bottom_border {
+#mbegdtohgc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_col_headings {
+#mbegdtohgc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -6661,7 +6628,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-right-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_col_heading {
+#mbegdtohgc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -6681,7 +6648,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   overflow-x: hidden;
 }
 
-#lnuxpwmfhz .gt_column_spanner_outer {
+#mbegdtohgc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -6693,15 +6660,15 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 4px;
 }
 
-#lnuxpwmfhz .gt_column_spanner_outer:first-child {
+#mbegdtohgc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lnuxpwmfhz .gt_column_spanner_outer:last-child {
+#mbegdtohgc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lnuxpwmfhz .gt_column_spanner {
+#mbegdtohgc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -6713,11 +6680,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   width: 100%;
 }
 
-#lnuxpwmfhz .gt_spanner_row {
+#mbegdtohgc .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lnuxpwmfhz .gt_group_heading {
+#mbegdtohgc .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -6743,7 +6710,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   text-align: left;
 }
 
-#lnuxpwmfhz .gt_empty_group_heading {
+#mbegdtohgc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -6758,15 +6725,15 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   vertical-align: middle;
 }
 
-#lnuxpwmfhz .gt_from_md > :first-child {
+#mbegdtohgc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lnuxpwmfhz .gt_from_md > :last-child {
+#mbegdtohgc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lnuxpwmfhz .gt_row {
+#mbegdtohgc .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -6785,7 +6752,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   overflow-x: hidden;
 }
 
-#lnuxpwmfhz .gt_stub {
+#mbegdtohgc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -6798,7 +6765,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#lnuxpwmfhz .gt_stub_row_group {
+#mbegdtohgc .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -6812,15 +6779,15 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   vertical-align: top;
 }
 
-#lnuxpwmfhz .gt_row_group_first td {
+#mbegdtohgc .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lnuxpwmfhz .gt_row_group_first th {
+#mbegdtohgc .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lnuxpwmfhz .gt_summary_row {
+#mbegdtohgc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -6830,16 +6797,16 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#lnuxpwmfhz .gt_first_summary_row {
+#mbegdtohgc .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_first_summary_row.thick {
+#mbegdtohgc .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lnuxpwmfhz .gt_last_summary_row {
+#mbegdtohgc .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -6849,7 +6816,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-bottom-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_grand_summary_row {
+#mbegdtohgc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -6859,7 +6826,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#lnuxpwmfhz .gt_first_grand_summary_row {
+#mbegdtohgc .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -6869,7 +6836,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-top-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_last_grand_summary_row_top {
+#mbegdtohgc .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -6879,11 +6846,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-bottom-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_striped {
+#mbegdtohgc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lnuxpwmfhz .gt_table_body {
+#mbegdtohgc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -6892,7 +6859,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-bottom-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_footnotes {
+#mbegdtohgc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -6906,7 +6873,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-right-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_footnote {
+#mbegdtohgc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -6915,7 +6882,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#lnuxpwmfhz .gt_sourcenotes {
+#mbegdtohgc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -6929,7 +6896,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   border-right-color: #D3D3D3;
 }
 
-#lnuxpwmfhz .gt_sourcenote {
+#mbegdtohgc .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -6937,72 +6904,72 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   padding-right: 5px;
 }
 
-#lnuxpwmfhz .gt_left {
+#mbegdtohgc .gt_left {
   text-align: left;
 }
 
-#lnuxpwmfhz .gt_center {
+#mbegdtohgc .gt_center {
   text-align: center;
 }
 
-#lnuxpwmfhz .gt_right {
+#mbegdtohgc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lnuxpwmfhz .gt_font_normal {
+#mbegdtohgc .gt_font_normal {
   font-weight: normal;
 }
 
-#lnuxpwmfhz .gt_font_bold {
+#mbegdtohgc .gt_font_bold {
   font-weight: bold;
 }
 
-#lnuxpwmfhz .gt_font_italic {
+#mbegdtohgc .gt_font_italic {
   font-style: italic;
 }
 
-#lnuxpwmfhz .gt_super {
+#mbegdtohgc .gt_super {
   font-size: 65%;
 }
 
-#lnuxpwmfhz .gt_footnote_marks {
+#mbegdtohgc .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lnuxpwmfhz .gt_asterisk {
+#mbegdtohgc .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lnuxpwmfhz .gt_indent_1 {
+#mbegdtohgc .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lnuxpwmfhz .gt_indent_2 {
+#mbegdtohgc .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lnuxpwmfhz .gt_indent_3 {
+#mbegdtohgc .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lnuxpwmfhz .gt_indent_4 {
+#mbegdtohgc .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lnuxpwmfhz .gt_indent_5 {
+#mbegdtohgc .gt_indent_5 {
   text-indent: 25px;
 }
 
-#lnuxpwmfhz .katex-display {
+#mbegdtohgc .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#lnuxpwmfhz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mbegdtohgc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>

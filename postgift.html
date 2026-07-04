@@ -786,15 +786,11 @@ Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-
 </div></div><p>Let’s take a look at just the amplitudes.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>amplitude <span class="ot">&lt;-</span> <span class="fu">read_parquet_duckdb</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir_ls</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/postgift/amplitude"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">recurse =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">glob =</span> <span class="st">"*parquet"</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">prudence =</span> <span class="st">"lavish"</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(amplitude)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir_ls</span>(<span class="st">"data/postgift/amplitude"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>, <span class="at">glob =</span> <span class="st">"*parquet"</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">prudence =</span> <span class="st">"lavish"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(amplitude)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -811,56 +807,56 @@ Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">2.061823</td>
+<td style="text-align: right;">8.6803043</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">rest</td>
+<td style="text-align: left;">cuff</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">18.220871</td>
+<td style="text-align: right;">2.5310234</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">rest</td>
+<td style="text-align: left;">cuff</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">2.286946</td>
+<td style="text-align: right;">0.9546282</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">rest</td>
+<td style="text-align: left;">cuff</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">9.823509</td>
+<td style="text-align: right;">53.1176045</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">rest</td>
+<td style="text-align: left;">cuff</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">1.624792</td>
+<td style="text-align: right;">4.0454076</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">rest</td>
+<td style="text-align: left;">cuff</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">1.383541</td>
+<td style="text-align: right;">9.4316464</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">rest</td>
+<td style="text-align: left;">cuff</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>

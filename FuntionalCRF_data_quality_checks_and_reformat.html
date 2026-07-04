@@ -798,9 +798,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>func <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing-2024-11-06.csv"</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">retype</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing-2024-11-06.csv"</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">retype</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Remove test records</p>
 <div class="cell">
@@ -820,8 +821,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"120000"</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>func <span class="ot">&lt;-</span> func <span class="sc">%&gt;%</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>record_id <span class="sc">%in%</span> test_records)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>func <span class="ot">&lt;-</span> func <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>record_id <span class="sc">%in%</span> test_records)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Create a column for cohort type called “cohort”</p>
 <div class="cell">
@@ -841,9 +841,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>func_dict <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing-Data-Dictionary-2024-11-06.csv"</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(field_name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing-Data-Dictionary-2024-11-06.csv"</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(field_name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="new-field-names" class="level3" data-number="F.2.4">
@@ -1226,8 +1227,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <h6 data-number="F.2.5.2.9.3" class="anchored" data-anchor-id="tsts-test-mep"><span class="header-section-number">F.2.5.2.9.3</span> 5TSTS Test MEP:</h6>
 <p>MEP 5TSTS test = Final pain rating - Initial pain rating</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>tka_func <span class="ot">&lt;-</span> tka_func <span class="sc">%&gt;%</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mep_5tsts =</span> tstspostpainscl <span class="sc">-</span> tstsprepainscl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>tka_func <span class="ot">&lt;-</span> tka_func <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">mep_5tsts =</span> tstspostpainscl <span class="sc">-</span> tstsprepainscl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -1274,35 +1274,30 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>tka_func_report <span class="sc">%&gt;%</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">md</span>(<span class="st">"**TKA Functional Assessment Error Report**"</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">table.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>),</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_labels.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>)</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#F4F4F4"</span>)),</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="fu">md</span>(<span class="st">"**TKA Functional Assessment Error Report**"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(<span class="at">table.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>), <span class="at">column_labels.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#F4F4F4"</span>)),</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="qwslbzxjci" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qwslbzxjci table {
+<div id="enusfpkkir" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#enusfpkkir table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qwslbzxjci thead, #qwslbzxjci tbody, #qwslbzxjci tfoot, #qwslbzxjci tr, #qwslbzxjci td, #qwslbzxjci th {
+#enusfpkkir thead, #enusfpkkir tbody, #enusfpkkir tfoot, #enusfpkkir tr, #enusfpkkir td, #enusfpkkir th {
   border-style: none;
 }
 
-#qwslbzxjci p {
+#enusfpkkir p {
   margin: 0;
   padding: 0;
 }
 
-#qwslbzxjci .gt_table {
+#enusfpkkir .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1328,12 +1323,12 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-left-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_caption {
+#enusfpkkir .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qwslbzxjci .gt_title {
+#enusfpkkir .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1345,7 +1340,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-width: 0;
 }
 
-#qwslbzxjci .gt_subtitle {
+#enusfpkkir .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1357,7 +1352,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-top-width: 0;
 }
 
-#qwslbzxjci .gt_heading {
+#enusfpkkir .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1369,13 +1364,13 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_bottom_border {
+#enusfpkkir .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_col_headings {
+#enusfpkkir .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1390,7 +1385,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_col_heading {
+#enusfpkkir .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -1410,7 +1405,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   overflow-x: hidden;
 }
 
-#qwslbzxjci .gt_column_spanner_outer {
+#enusfpkkir .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -1422,15 +1417,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 4px;
 }
 
-#qwslbzxjci .gt_column_spanner_outer:first-child {
+#enusfpkkir .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qwslbzxjci .gt_column_spanner_outer:last-child {
+#enusfpkkir .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qwslbzxjci .gt_column_spanner {
+#enusfpkkir .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1442,11 +1437,11 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   width: 100%;
 }
 
-#qwslbzxjci .gt_spanner_row {
+#enusfpkkir .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qwslbzxjci .gt_group_heading {
+#enusfpkkir .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1472,7 +1467,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   text-align: left;
 }
 
-#qwslbzxjci .gt_empty_group_heading {
+#enusfpkkir .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1487,15 +1482,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   vertical-align: middle;
 }
 
-#qwslbzxjci .gt_from_md > :first-child {
+#enusfpkkir .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qwslbzxjci .gt_from_md > :last-child {
+#enusfpkkir .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qwslbzxjci .gt_row {
+#enusfpkkir .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1514,7 +1509,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   overflow-x: hidden;
 }
 
-#qwslbzxjci .gt_stub {
+#enusfpkkir .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1527,7 +1522,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#qwslbzxjci .gt_stub_row_group {
+#enusfpkkir .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1541,15 +1536,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   vertical-align: top;
 }
 
-#qwslbzxjci .gt_row_group_first td {
+#enusfpkkir .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qwslbzxjci .gt_row_group_first th {
+#enusfpkkir .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qwslbzxjci .gt_summary_row {
+#enusfpkkir .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1559,16 +1554,16 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#qwslbzxjci .gt_first_summary_row {
+#enusfpkkir .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_first_summary_row.thick {
+#enusfpkkir .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qwslbzxjci .gt_last_summary_row {
+#enusfpkkir .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1578,7 +1573,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_grand_summary_row {
+#enusfpkkir .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1588,7 +1583,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#qwslbzxjci .gt_first_grand_summary_row {
+#enusfpkkir .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1598,7 +1593,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-top-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_last_grand_summary_row_top {
+#enusfpkkir .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1608,11 +1603,11 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_striped {
+#enusfpkkir .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qwslbzxjci .gt_table_body {
+#enusfpkkir .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1621,7 +1616,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_footnotes {
+#enusfpkkir .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1635,7 +1630,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_footnote {
+#enusfpkkir .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1644,7 +1639,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#qwslbzxjci .gt_sourcenotes {
+#enusfpkkir .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1658,7 +1653,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#qwslbzxjci .gt_sourcenote {
+#enusfpkkir .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1666,72 +1661,72 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#qwslbzxjci .gt_left {
+#enusfpkkir .gt_left {
   text-align: left;
 }
 
-#qwslbzxjci .gt_center {
+#enusfpkkir .gt_center {
   text-align: center;
 }
 
-#qwslbzxjci .gt_right {
+#enusfpkkir .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qwslbzxjci .gt_font_normal {
+#enusfpkkir .gt_font_normal {
   font-weight: normal;
 }
 
-#qwslbzxjci .gt_font_bold {
+#enusfpkkir .gt_font_bold {
   font-weight: bold;
 }
 
-#qwslbzxjci .gt_font_italic {
+#enusfpkkir .gt_font_italic {
   font-style: italic;
 }
 
-#qwslbzxjci .gt_super {
+#enusfpkkir .gt_super {
   font-size: 65%;
 }
 
-#qwslbzxjci .gt_footnote_marks {
+#enusfpkkir .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qwslbzxjci .gt_asterisk {
+#enusfpkkir .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qwslbzxjci .gt_indent_1 {
+#enusfpkkir .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qwslbzxjci .gt_indent_2 {
+#enusfpkkir .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qwslbzxjci .gt_indent_3 {
+#enusfpkkir .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qwslbzxjci .gt_indent_4 {
+#enusfpkkir .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qwslbzxjci .gt_indent_5 {
+#enusfpkkir .gt_indent_5 {
   text-indent: 25px;
 }
 
-#qwslbzxjci .katex-display {
+#enusfpkkir .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#qwslbzxjci div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#enusfpkkir div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2227,8 +2222,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 </div>
 <p>Keep records of subjects who completed the test.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>m2frfunc3 <span class="ot">&lt;-</span> thor_func <span class="sc">%&gt;%</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ftdbctestcmpltyn <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>m2frfunc3 <span class="ot">&lt;-</span> thor_func <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ftdbctestcmpltyn <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="flag-1-1" class="level5" data-number="F.2.6.0.1">
 <h5 data-number="F.2.6.0.1" class="anchored" data-anchor-id="flag-1-1"><span class="header-section-number">F.2.6.0.1</span> Flag 1:</h5>
@@ -2355,32 +2349,29 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"**Thoracotomy Cohort Functional Assessment Error Report: No Errors**"</span></span>
 <span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(</span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">table.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>),</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">column_labels.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>)</span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#F4F4F4"</span>)),</span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(<span class="at">table.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>), <span class="at">column_labels.font.size =</span> <span class="fu">px</span>(<span class="dv">12</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#F4F4F4"</span>)),</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="nxvjzdepgd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#nxvjzdepgd table {
+<div id="taiinkdbud" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#taiinkdbud table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#nxvjzdepgd thead, #nxvjzdepgd tbody, #nxvjzdepgd tfoot, #nxvjzdepgd tr, #nxvjzdepgd td, #nxvjzdepgd th {
+#taiinkdbud thead, #taiinkdbud tbody, #taiinkdbud tfoot, #taiinkdbud tr, #taiinkdbud td, #taiinkdbud th {
   border-style: none;
 }
 
-#nxvjzdepgd p {
+#taiinkdbud p {
   margin: 0;
   padding: 0;
 }
 
-#nxvjzdepgd .gt_table {
+#taiinkdbud .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2406,12 +2397,12 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-left-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_caption {
+#taiinkdbud .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#nxvjzdepgd .gt_title {
+#taiinkdbud .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2423,7 +2414,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-width: 0;
 }
 
-#nxvjzdepgd .gt_subtitle {
+#taiinkdbud .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2435,7 +2426,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-top-width: 0;
 }
 
-#nxvjzdepgd .gt_heading {
+#taiinkdbud .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2447,13 +2438,13 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_bottom_border {
+#taiinkdbud .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_col_headings {
+#taiinkdbud .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2468,7 +2459,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_col_heading {
+#taiinkdbud .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -2488,7 +2479,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   overflow-x: hidden;
 }
 
-#nxvjzdepgd .gt_column_spanner_outer {
+#taiinkdbud .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -2500,15 +2491,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 4px;
 }
 
-#nxvjzdepgd .gt_column_spanner_outer:first-child {
+#taiinkdbud .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nxvjzdepgd .gt_column_spanner_outer:last-child {
+#taiinkdbud .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nxvjzdepgd .gt_column_spanner {
+#taiinkdbud .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2520,11 +2511,11 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   width: 100%;
 }
 
-#nxvjzdepgd .gt_spanner_row {
+#taiinkdbud .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#nxvjzdepgd .gt_group_heading {
+#taiinkdbud .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2550,7 +2541,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   text-align: left;
 }
 
-#nxvjzdepgd .gt_empty_group_heading {
+#taiinkdbud .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2565,15 +2556,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   vertical-align: middle;
 }
 
-#nxvjzdepgd .gt_from_md > :first-child {
+#taiinkdbud .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nxvjzdepgd .gt_from_md > :last-child {
+#taiinkdbud .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nxvjzdepgd .gt_row {
+#taiinkdbud .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2592,7 +2583,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   overflow-x: hidden;
 }
 
-#nxvjzdepgd .gt_stub {
+#taiinkdbud .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2605,7 +2596,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#nxvjzdepgd .gt_stub_row_group {
+#taiinkdbud .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2619,15 +2610,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   vertical-align: top;
 }
 
-#nxvjzdepgd .gt_row_group_first td {
+#taiinkdbud .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nxvjzdepgd .gt_row_group_first th {
+#taiinkdbud .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#nxvjzdepgd .gt_summary_row {
+#taiinkdbud .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2637,16 +2628,16 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#nxvjzdepgd .gt_first_summary_row {
+#taiinkdbud .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_first_summary_row.thick {
+#taiinkdbud .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nxvjzdepgd .gt_last_summary_row {
+#taiinkdbud .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2656,7 +2647,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_grand_summary_row {
+#taiinkdbud .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2666,7 +2657,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#nxvjzdepgd .gt_first_grand_summary_row {
+#taiinkdbud .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2676,7 +2667,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-top-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_last_grand_summary_row_top {
+#taiinkdbud .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2686,11 +2677,11 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_striped {
+#taiinkdbud .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nxvjzdepgd .gt_table_body {
+#taiinkdbud .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2699,7 +2690,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_footnotes {
+#taiinkdbud .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2713,7 +2704,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_footnote {
+#taiinkdbud .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2722,7 +2713,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#nxvjzdepgd .gt_sourcenotes {
+#taiinkdbud .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2736,7 +2727,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#nxvjzdepgd .gt_sourcenote {
+#taiinkdbud .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2744,72 +2735,72 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#nxvjzdepgd .gt_left {
+#taiinkdbud .gt_left {
   text-align: left;
 }
 
-#nxvjzdepgd .gt_center {
+#taiinkdbud .gt_center {
   text-align: center;
 }
 
-#nxvjzdepgd .gt_right {
+#taiinkdbud .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nxvjzdepgd .gt_font_normal {
+#taiinkdbud .gt_font_normal {
   font-weight: normal;
 }
 
-#nxvjzdepgd .gt_font_bold {
+#taiinkdbud .gt_font_bold {
   font-weight: bold;
 }
 
-#nxvjzdepgd .gt_font_italic {
+#taiinkdbud .gt_font_italic {
   font-style: italic;
 }
 
-#nxvjzdepgd .gt_super {
+#taiinkdbud .gt_super {
   font-size: 65%;
 }
 
-#nxvjzdepgd .gt_footnote_marks {
+#taiinkdbud .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#nxvjzdepgd .gt_asterisk {
+#taiinkdbud .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nxvjzdepgd .gt_indent_1 {
+#taiinkdbud .gt_indent_1 {
   text-indent: 5px;
 }
 
-#nxvjzdepgd .gt_indent_2 {
+#taiinkdbud .gt_indent_2 {
   text-indent: 10px;
 }
 
-#nxvjzdepgd .gt_indent_3 {
+#taiinkdbud .gt_indent_3 {
   text-indent: 15px;
 }
 
-#nxvjzdepgd .gt_indent_4 {
+#taiinkdbud .gt_indent_4 {
   text-indent: 20px;
 }
 
-#nxvjzdepgd .gt_indent_5 {
+#taiinkdbud .gt_indent_5 {
   text-indent: 25px;
 }
 
-#nxvjzdepgd .katex-display {
+#taiinkdbud .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#nxvjzdepgd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#taiinkdbud div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
