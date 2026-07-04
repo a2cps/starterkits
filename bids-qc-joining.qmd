@@ -18,7 +18,7 @@ library(stringr)
 First, start by loading the table of FreeSurfer outputs. In this example, the cortical parcellations will be used.
 
 ```{r}
-aparc <- read_tsv("data/aparc.tsv")
+aparc <- read_tsv("data/freesurfer/aparc.tsv")
 aparc
 ```
 
@@ -43,7 +43,7 @@ fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz	n/a
 To load the files, first list them all with [`fs::dir_ls`](https://fs.r-lib.org/reference/dir_ls.html).
 
 ```{r}
-scan_files <- dir_ls("data/scans", glob = "*tsv")
+scan_files <- dir_ls("data/rawdata/", glob = "*scans.tsv", recurse = TRUE)
 head(scan_files)
 ```
 
@@ -57,15 +57,13 @@ scans
 Ratings will be used to exclude some FreeSurfer products, and so we only need the ratings for the T1w scans.
 
 ```{r}
-t1w_ratings <- scans |>
-  filter(str_detect(filename, "T1w"))
+t1w_ratings <- scans |> filter(str_detect(filename, "T1w"))
 ```
 
 In this example, all scans with a rating "red" will be excluded, so filter for those scans.
 
 ```{r}
-red_t1w <- t1w_ratings |>
-  filter(rating == "red")
+red_t1w <- t1w_ratings |> filter(rating == "red")
 red_t1w
 ```
 
@@ -74,8 +72,7 @@ The FreeSurfer rows are defined by the entities sub and ses, so extract these fr
 ```{r}
 red_t1w_w_entities <- red_t1w |>
   mutate(
-    sub = str_extract(filename, "(?<=sub-)[[:digit:]]{5}") |>
-      as.integer(),
+    sub = str_extract(filename, "(?<=sub-)[[:digit:]]{5}") |> as.integer(),
     ses = str_extract(filename, "V[13]")
   )
 ```
@@ -83,8 +80,7 @@ red_t1w_w_entities <- red_t1w |>
 Finally, this table with red ratings can be used to exclude participants with a low quality T1w scan.
 
 ```{r}
-aparc_wo_red <- aparc |>
-  anti_join(red_t1w_w_entities, by = join_by(sub, ses))
+aparc_wo_red <- aparc |> anti_join(red_t1w_w_entities, by = join_by(sub, ses))
 aparc_wo_red
 ```
 

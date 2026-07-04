@@ -41,16 +41,26 @@ not_all_na <- function(x) any(!is.na(x))
 Read in Imaging data, We will call this img
 
 ```{r, message=FALSE}
-img <- read_csv(here("data", "imaging", "imaging-2024-11-06.csv"))
+img <- read_csv(here("data", "imaging", "raw", "imaging-2024-11-06.csv"))
 ```
 
 We will read in QST data since the information on cuff contraindication is recorded in the QST data. We will later merge field names related to cuff contraindication with the imaging data.
 
 ```{r message=FALSE}
 # read_csv function results in parsing errors, we will use read.csv instead
-tka_img_qst <- read.csv(here("data", "QST", "qst-2024-11-06.csv")) %>%
+tka_img_qst <- read.csv(here("data", "qst", "raw", "qst-2024-11-06.csv")) %>%
   filter(redcap_repeat_instrument == "qst_mcc1_v03") %>%
-  select(record_id, redcap_event_name, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, fmricuffcontrayn, fmricuffcalfpressure, fmricuffcalfpressure2, qst_mcc1_v03_complete) %>%
+  select(
+    record_id,
+    redcap_event_name,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    fmricuffcontrayn,
+    fmricuffcalfpressure,
+    fmricuffcalfpressure2,
+    qst_mcc1_v03_complete
+  ) %>%
   filter(qst_mcc1_v03_complete == 2 & !is.na(redcap_repeat_instance)) %>%
   group_by(record_id, redcap_event_name) %>%
   top_n(1, redcap_repeat_instance) %>%
@@ -67,17 +77,35 @@ mask <- read_csv(here("data", "imaging", "mask.csv"))
 Remove test records
 
 ```{r}
-test_records <- c("10000", "15000", "20000", "25000", "40000", "50000", "60000", "70000", "80000", "90000", "100000", "110000", "120000")
+test_records <- c(
+  "10000",
+  "15000",
+  "20000",
+  "25000",
+  "40000",
+  "50000",
+  "60000",
+  "70000",
+  "80000",
+  "90000",
+  "100000",
+  "110000",
+  "120000"
+)
 
-img <- img %>%
-  filter(!record_id %in% test_records)
+img <- img %>% filter(!record_id %in% test_records)
 ```
 
 Create a column for cohort type called "cohort"
 
 ```{r message =FALSE}
 img <- img %>%
-  mutate(cohort = case_when(record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA", TRUE ~ "Thoracic"))
+  mutate(
+    cohort = case_when(
+      record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA",
+      TRUE ~ "Thoracic"
+    )
+  )
 ```
 
 ### Data Dictionary
@@ -85,7 +113,13 @@ img <- img %>%
 Read in data dictionary and remove duplicate field names
 
 ```{r message=FALSE}
-img_dict <- read_csv(here("data", "imaging", "imaging-Data-Dictionary-2024-11-06.csv")) %>% distinct(field_name, .keep_all = TRUE)
+img_dict <- read_csv(here(
+  "data",
+  "imaging",
+  "raw",
+  "imaging-Data-Dictionary-2024-11-06.csv"
+)) %>%
+  distinct(field_name, .keep_all = TRUE)
 ```
 
 ### New field name(s):
@@ -134,26 +168,89 @@ Proposed solution for data release 2.0: For the IDs above, we compared the time 
 
 ```{r}
 img <- img %>%
-  filter(!(record_id == 10747 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 10796 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 25068 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 25079 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 25080 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 25090 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 25122 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2 | redcap_repeat_instance == 3)) %>%
-  filter(!(record_id == 25161 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 25171 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 25216 & redcap_repeat_instrument == "imaging_items_v11" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 20226 & redcap_repeat_instrument == "imaging_items_v01" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 20302 & redcap_repeat_instrument == "imaging_items_v01" & redcap_repeat_instance == 2)) %>%
-  filter(!(record_id == 20144 & redcap_repeat_instrument == "imaging_items_v01" & redcap_repeat_instance == 2))
+  filter(
+    !(record_id == 10747 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 10796 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 25068 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 25079 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 25080 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 25090 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 25122 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2 |
+      redcap_repeat_instance == 3)
+  ) %>%
+  filter(
+    !(record_id == 25161 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 25171 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 25216 &
+      redcap_repeat_instrument == "imaging_items_v11" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 20226 &
+      redcap_repeat_instrument == "imaging_items_v01" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 20302 &
+      redcap_repeat_instrument == "imaging_items_v01" &
+      redcap_repeat_instance == 2)
+  ) %>%
+  filter(
+    !(record_id == 20144 &
+      redcap_repeat_instrument == "imaging_items_v01" &
+      redcap_repeat_instance == 2)
+  )
 ```
 
 ### TKA Cohort Imaging
 
 ```{r}
 tka_img <- img %>%
-  select(record_id, guid, redcap_data_access_group, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance, starts_with("fmri"), imaging_mcc1_v09_complete, cohort)
+  select(
+    record_id,
+    guid,
+    redcap_data_access_group,
+    redcap_event_name,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    starts_with("fmri"),
+    imaging_mcc1_v09_complete,
+    cohort
+  )
 ```
 
 keep subjects from the TKA cohort, with the most recent baseline visit and merge with QST data.
@@ -169,7 +266,11 @@ tka_img <- tka_img %>%
   select(where(not_all_na))
 
 
-tka_img <- left_join(tka_img, tka_img_qst, by = intersect(names(tka_img), names(tka_img_qst)))
+tka_img <- left_join(
+  tka_img,
+  tka_img_qst,
+  by = intersect(names(tka_img), names(tka_img_qst))
+)
 ```
 
 keep subjects marked as "Yes, all scans were completed" or "Yes, but only the scans indicated below were completed"
@@ -187,9 +288,18 @@ In subjects with cuff not contraindicated in the QST form, check if the cuff sit
 irerror1 <- irdf.complete %>%
   filter(fmricuffcompletescl == 1 | fmricuffcpyn == 1 | fmricuffipyn == 1) %>%
   filter(is.na(fmricuffleg) & fmricuffcontrayn != 1) %>%
-  add_column(error_type = "In subjects with cuff not contraindicated in the QST form, check if the cuff site was entered for subjects who underwent fMRI individualized pressure and/or fMRI standard pressure") %>%
+  add_column(
+    error_type = "In subjects with cuff not contraindicated in the QST form, check if the cuff site was entered for subjects who underwent fMRI individualized pressure and/or fMRI standard pressure"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 2:
@@ -198,11 +308,27 @@ If some scans were completed, check if the type of completed scans were specifie
 
 ```{r}
 irerror2 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 2 & (is.na(fmricufft1yn) | is.na(fmricuffdwiyn) | is.na(fmricuffrest1yn) |
-    is.na(fmricuffipyn) | is.na(fmricuffcpyn) | is.na(fmricuffrest2yn))) %>%
-  add_column(error_type = "some scans were completed but type was not specified") %>%
+  filter(
+    fmricuffcompletescl == 2 &
+      (is.na(fmricufft1yn) |
+        is.na(fmricuffdwiyn) |
+        is.na(fmricuffrest1yn) |
+        is.na(fmricuffipyn) |
+        is.na(fmricuffcpyn) |
+        is.na(fmricuffrest2yn))
+  ) %>%
+  add_column(
+    error_type = "some scans were completed but type was not specified"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 3:
@@ -213,12 +339,35 @@ In subjects marked as "Yes, all scans were completed" OR "Yes, but only the scan
 irerror3 <- irdf.complete %>%
   filter(!is.na(fmricuffleg)) %>%
   filter(fmricuffcontrarecal == 1) %>%
-  mutate(pressure_diff = fmricuffcalfpressurerecal - fmricuffcalfpressurerecal2) %>%
+  mutate(
+    pressure_diff = fmricuffcalfpressurerecal - fmricuffcalfpressurerecal2
+  ) %>%
   filter(pressure_diff != 0 | is.na(pressure_diff)) %>%
-  select(record_id, redcap_event_name, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, fmricuffcompletescl, redcap_event_name, fmricuffcontrarecal, fmricuffleg, fmricuffcalfpressurerecal, fmricuffcalfpressurerecal2) %>%
-  add_column(error_type = "Mismatch between recalibration pressures or missing values") %>%
+  select(
+    record_id,
+    redcap_event_name,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    fmricuffcompletescl,
+    redcap_event_name,
+    fmricuffcontrarecal,
+    fmricuffleg,
+    fmricuffcalfpressurerecal,
+    fmricuffcalfpressurerecal2
+  ) %>%
+  add_column(
+    error_type = "Mismatch between recalibration pressures or missing values"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 4:
@@ -229,12 +378,37 @@ In subjects with T1 scanning, check if the quality of the T1 scan was rated on t
 
 ```{r}
 irerror4 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricufft1yn) & fmricufft1yn == 1)) %>%
-  filter(is.na(fmricufft1techrating) | fmricufft1repeated == 1 & is.na(fmricufft1techrating2)) %>%
-  select(record_id, redcap_event_name, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, fmricuffcompletescl, redcap_event_name, fmricuffcontrarecal, fmricuffleg, fmricuffcalfpressurerecal, fmricuffcalfpressurerecal2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 & !is.na(fmricufft1yn) & fmricufft1yn == 1)
+  ) %>%
+  filter(
+    is.na(fmricufft1techrating) |
+      fmricufft1repeated == 1 & is.na(fmricufft1techrating2)
+  ) %>%
+  select(
+    record_id,
+    redcap_event_name,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    fmricuffcompletescl,
+    redcap_event_name,
+    fmricuffcontrarecal,
+    fmricuffleg,
+    fmricuffcalfpressurerecal,
+    fmricuffcalfpressurerecal2
+  ) %>%
   add_column(error_type = "T1 scan quality not rated") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 5:
@@ -245,13 +419,27 @@ In subjects with resting-state scan performed, check if there were missing value
 
 ```{r}
 irerror5 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
   mutate(surg.pain.diff1 = fmricuffrestpainss - fmricuffrestpainss2) %>%
   filter(surg.pain.diff1 != 0 | is.na(surg.pain.diff1)) %>%
   as_tibble() %>%
-  add_column(error_type = "Before resting-state scan performed: Check if there were missing values for surgical site pain or if there was a mismatch between entries for surgical site pain") %>%
+  add_column(
+    error_type = "Before resting-state scan performed: Check if there were missing values for surgical site pain or if there was a mismatch between entries for surgical site pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 6:
@@ -262,13 +450,27 @@ In subjects with resting-state scan performed, check if there were missing value
 
 ```{r}
 irerror6 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
   mutate(all.pain.diff1 = fmricuffrestpainovrall - fmricuffrestpainovrall2) %>%
   filter(all.pain.diff1 != 0 | is.na(all.pain.diff1)) %>%
   as_tibble() %>%
-  add_column(error_type = "Before resting-state scan performed, check if there were missing values for overall body pain or was a mismatch between entries for overall body pain") %>%
+  add_column(
+    error_type = "Before resting-state scan performed, check if there were missing values for overall body pain or was a mismatch between entries for overall body pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 7:
@@ -279,13 +481,30 @@ In subjects with resting-state scan performed, check if there were missing value
 
 ```{r}
 irerror7 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
-  mutate(surg.pain.diff2 = fmricuffcurrpainaftfirstscanss - fmricuffcurrpainaftfirstscanss2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
+  mutate(
+    surg.pain.diff2 = fmricuffcurrpainaftfirstscanss -
+      fmricuffcurrpainaftfirstscanss2
+  ) %>%
   filter(surg.pain.diff2 != 0 | is.na(surg.pain.diff2)) %>%
   as_tibble() %>%
-  add_column(error_type = "After first resting-state scan performed, check if there were missing values for surgical site pain or was a mismatch between entries for surgical site pain") %>%
+  add_column(
+    error_type = "After first resting-state scan performed, check if there were missing values for surgical site pain or was a mismatch between entries for surgical site pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 8:
@@ -296,13 +515,30 @@ Check if there were missing values for overall body pain or if there was a misma
 
 ```{r}
 irerror8 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
-  mutate(all.pain.diff2 = fmricuffcurrpainaftfirstscanovrall - fmricuffcurrpainaftfirstscanovrall2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
+  mutate(
+    all.pain.diff2 = fmricuffcurrpainaftfirstscanovrall -
+      fmricuffcurrpainaftfirstscanovrall2
+  ) %>%
   filter(all.pain.diff2 != 0 | is.na(all.pain.diff2)) %>%
   as_tibble() %>%
-  add_column(error_type = "After resting-state scan performed, check if there were missing values for overall body pain or if there was a mismatch between entries for overall body pain") %>%
+  add_column(
+    error_type = "After resting-state scan performed, check if there were missing values for overall body pain or if there was a mismatch between entries for overall body pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 9:
@@ -313,13 +549,30 @@ Check if baseline cuff pain was missing in subjects with fMRI individualized and
 
 ```{r}
 irerror9 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
   filter(fmricuffipyn == 1 & fmricuffcpyn == 1) %>%
-  mutate(cuff.pain.diff1 = fmricuffcurrpainaftfirstscancp - fmricuffcurrpainaftfirstscancp2) %>%
+  mutate(
+    cuff.pain.diff1 = fmricuffcurrpainaftfirstscancp -
+      fmricuffcurrpainaftfirstscancp2
+  ) %>%
   filter(cuff.pain.diff1 != 0 | is.na(cuff.pain.diff1)) %>%
-  add_column(error_type = "Check if baseline cuff pain was missing in subjects with fMRI individualized and standard pressures performed") %>%
+  add_column(
+    error_type = "Check if baseline cuff pain was missing in subjects with fMRI individualized and standard pressures performed"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 10:
@@ -330,12 +583,24 @@ Check if there are missing values or mismatch between cuff pain at the beginning
 
 ```{r}
 irerror10 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffipyn) & fmricuffipyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 & !is.na(fmricuffipyn) & fmricuffipyn == 1)
+  ) %>%
   mutate(cuff.begin.diff1 = fmricuffpainbegin - fmricuffpainbegin2) %>%
   filter(cuff.begin.diff1 != 0 | is.na(cuff.begin.diff1)) %>%
-  add_column(error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch between cuff pain at the beginning of the scan") %>%
+  add_column(
+    error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch between cuff pain at the beginning of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 11:
@@ -346,13 +611,25 @@ Check if there are missing values or mismatch between cuff pain during mid scan.
 
 ```{r}
 irerror11 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffipyn) & fmricuffipyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 & !is.na(fmricuffipyn) & fmricuffipyn == 1)
+  ) %>%
   mutate(cuff.mid.diff1 = fmricuffpainmid - fmricuffpainmid2) %>%
   filter(cuff.mid.diff1 != 0 | is.na(cuff.mid.diff1)) %>%
   as_tibble() %>%
-  add_column(error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch during mid scan") %>%
+  add_column(
+    error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch during mid scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 12:
@@ -363,12 +640,23 @@ Check if there are missing values or mismatch between cuff pain at the end of th
 
 ```{r}
 irerror12 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffipyn) & fmricuffipyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 | (!is.na(fmricuffipyn) & fmricuffipyn == 1)
+  ) %>%
   mutate(cuff.end.diff1 = fmricuffpainend - fmricuffpainend2) %>%
   filter(cuff.end.diff1 != 0 | is.na(cuff.end.diff1)) %>%
-  add_column(error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch between cuff pain at the end of the scan") %>%
+  add_column(
+    error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch between cuff pain at the end of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 13:
@@ -379,12 +667,23 @@ Check if there are missing values or mismatch between cuff pain at the beginning
 
 ```{r}
 irerror13 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffcpyn) & fmricuffcpyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 | (!is.na(fmricuffcpyn) & fmricuffcpyn == 1)
+  ) %>%
   mutate(cuff.begin.diff2 = fmricuffpaincpbegin - fmricuffpaincpbegin2) %>%
   filter(cuff.begin.diff2 != 0 | is.na(cuff.begin.diff2)) %>%
-  add_column(error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain at the beginning of the scan") %>%
+  add_column(
+    error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain at the beginning of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 14:
@@ -395,12 +694,23 @@ Check if there are missing values or mismatch between cuff pain during mid scan.
 
 ```{r}
 irerror14 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffcpyn) & fmricuffcpyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 | (!is.na(fmricuffcpyn) & fmricuffcpyn == 1)
+  ) %>%
   mutate(cuff.mid.diff2 = fmricuffpaincpmid - fmricuffpaincpmid2) %>%
   filter(cuff.mid.diff2 != 0 | is.na(cuff.mid.diff2)) %>%
-  add_column(error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain during mid scan") %>%
+  add_column(
+    error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain during mid scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 15:
@@ -411,13 +721,24 @@ Check if there are missing values or mismatch between cuff pain at the end of th
 
 ```{r}
 irerror15 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffcpyn) & fmricuffcpyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 | (!is.na(fmricuffcpyn) & fmricuffcpyn == 1)
+  ) %>%
   mutate(cuff.end.diff2 = fmricuffpaincpend - fmricuffpaincpend2) %>%
   filter(cuff.end.diff2 != 0 | is.na(cuff.end.diff2)) %>%
   as_tibble() %>%
-  add_column(error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain at the end of the scan") %>%
+  add_column(
+    error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain at the end of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 16:
@@ -428,12 +749,28 @@ Check if there are missing values or mismatch between residual cuff pain at the 
 
 ```{r}
 irerror16 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffcpyn) & fmricuffcpyn == 1 & fmricuffrest2yn == 1) | (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)) %>%
-  mutate(rest.cuff.begin.diff1 = fmricuffpainrestscanbegin - fmricuffpainrestscanbegin2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (!is.na(fmricuffcpyn) & fmricuffcpyn == 1 & fmricuffrest2yn == 1) |
+      (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)
+  ) %>%
+  mutate(
+    rest.cuff.begin.diff1 = fmricuffpainrestscanbegin -
+      fmricuffpainrestscanbegin2
+  ) %>%
   filter(rest.cuff.begin.diff1 != 0 | is.na(rest.cuff.begin.diff1)) %>%
-  add_column(error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain at the beginning of the scan") %>%
+  add_column(
+    error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain at the beginning of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 17:
@@ -444,12 +781,27 @@ Check if there are missing values or mismatch between residual cuff pain during 
 
 ```{r}
 irerror17 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffcpyn) & fmricuffcpyn == 1 & fmricuffrest2yn == 1) | (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)) %>%
-  mutate(rest.cuff.mid.diff1 = fmricuffpainrestscanmid - fmricuffpainrestscanmid2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (!is.na(fmricuffcpyn) & fmricuffcpyn == 1 & fmricuffrest2yn == 1) |
+      (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)
+  ) %>%
+  mutate(
+    rest.cuff.mid.diff1 = fmricuffpainrestscanmid - fmricuffpainrestscanmid2
+  ) %>%
   filter(rest.cuff.mid.diff1 != 0 | is.na(rest.cuff.mid.diff1)) %>%
-  add_column(error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain during mid scan") %>%
+  add_column(
+    error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain during mid scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 18:
@@ -460,12 +812,27 @@ Check if there are missing values or mismatch between residual cuff pain at the 
 
 ```{r}
 irerror18 <- irdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffcpyn) & fmricuffcpyn == 1 & fmricuffrest2yn == 1) | (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)) %>%
-  mutate(rest.cuff.end.diff1 = fmricuffpainrestscanend - fmricuffpainrestscanend2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (!is.na(fmricuffcpyn) & fmricuffcpyn == 1 & fmricuffrest2yn == 1) |
+      (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)
+  ) %>%
+  mutate(
+    rest.cuff.end.diff1 = fmricuffpainrestscanend - fmricuffpainrestscanend2
+  ) %>%
   filter(rest.cuff.end.diff1 != 0 | is.na(rest.cuff.end.diff1)) %>%
-  add_column(error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain at the end of the scan") %>%
+  add_column(
+    error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain at the end of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 19:
@@ -476,12 +843,25 @@ Check if there are missing values or mismatch between surgical site pain
 
 ```{r}
 irerror19 <- irdf.complete %>%
-  filter((!is.na(fmricuffrest2yn) & fmricuffrest2yn == 1) | fmricuffcompletescl == 1) %>%
-  mutate(surg.diff3 = fmricuffpainaftlastscanss - fmricuffpainaftlastscanss2) %>%
+  filter(
+    (!is.na(fmricuffrest2yn) & fmricuffrest2yn == 1) | fmricuffcompletescl == 1
+  ) %>%
+  mutate(
+    surg.diff3 = fmricuffpainaftlastscanss - fmricuffpainaftlastscanss2
+  ) %>%
   filter(surg.diff3 != 0 | is.na(surg.diff3)) %>%
-  add_column(error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between surgical site pain") %>%
+  add_column(
+    error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between surgical site pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 20:
@@ -490,12 +870,25 @@ After last resting fMRI scan: Check if there are missing values or mismatch betw
 
 ```{r}
 irerror20 <- irdf.complete %>%
-  filter((!is.na(fmricuffrest2yn) & fmricuffrest2yn == 1) | fmricuffcompletescl == 1) %>%
-  mutate(body.diff3 = fmricuffpainaftlastscanany - fmricuffpainaftlastscanany2) %>%
+  filter(
+    (!is.na(fmricuffrest2yn) & fmricuffrest2yn == 1) | fmricuffcompletescl == 1
+  ) %>%
+  mutate(
+    body.diff3 = fmricuffpainaftlastscanany - fmricuffpainaftlastscanany2
+  ) %>%
   filter(body.diff3 != 0 | is.na(body.diff3)) %>%
-  add_column(error_type = "After last resting fMRI scan:Check if there are missing values or mismatch between overall body pain") %>%
+  add_column(
+    error_type = "After last resting fMRI scan:Check if there are missing values or mismatch between overall body pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 21:
@@ -508,9 +901,18 @@ irerror21 <- tka_img %>%
   filter(is.na(fmricuffcompletescl)) %>%
   filter(fmricuffdicuploaded == 1) %>%
   as_tibble() %>%
-  add_column(error_type = "IF a visit is marked complete and DICOM files were uploaded, check if  Test Completed (fmricuffcompletescl) is missing") %>%
+  add_column(
+    error_type = "IF a visit is marked complete and DICOM files were uploaded, check if  Test Completed (fmricuffcompletescl) is missing"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 22
@@ -522,13 +924,29 @@ tka_img <- left_join(tka_img, mask, by = intersect(names(tka_img), names(mask)))
 
 irerror22 <- tka_img %>%
   filter(imaging_mcc1_v09_complete == 2) %>%
-  filter(fmricuffcompletescl == 1 | fmricufft1yn == 1 | fmricuffdwiyn == 1 | fmricuffrest1yn == 1 |
-    fmricuffipyn == 1 | fmricuffcpyn == 1 | fmricuffrest2yn == 1) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      fmricufft1yn == 1 |
+      fmricuffdwiyn == 1 |
+      fmricuffrest1yn == 1 |
+      fmricuffipyn == 1 |
+      fmricuffcpyn == 1 |
+      fmricuffrest2yn == 1
+  ) %>%
   filter(is.na(fmri_face_mask)) %>%
-  add_column(error_type = "Check if any of the scans were completed but information on mask worn was missing") %>%
+  add_column(
+    error_type = "Check if any of the scans were completed but information on mask worn was missing"
+  ) %>%
   add_column(errors = "error") %>%
   filter(after_mask == "yes") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Create Imaging error report for the TKA cohort.
@@ -549,13 +967,8 @@ m1img_report <- bind_rows(m1img_list) %>%
 ```{r}
 m1img_report %>%
   gt() %>%
-  tab_header(
-    title = md("**TKA Imaging Error Report**")
-  ) %>%
-  tab_options(
-    table.font.size = px(12),
-    column_labels.font.size = px(12)
-  ) %>%
+  tab_header(title = md("**TKA Imaging Error Report**")) %>%
+  tab_options(table.font.size = px(12), column_labels.font.size = px(12)) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)
@@ -569,20 +982,49 @@ Save "tka_img" and updated data dictionary as .csv filea in the folder named "re
 ```{r warning=FALSE}
 #| eval: false
 
-write_csv(tka_img, file = here::here("data", "imaging", "Reformatted", "reformatted_tka_img.csv"))
+write_csv(
+  tka_img,
+  file = here::here("data", "imaging", "Reformatted", "reformatted_tka_img.csv")
+)
 
-write_csv(img_dict, file = here::here("data", "imaging", "Reformatted", "updated_img_dict.csv"))
+write_csv(
+  img_dict,
+  file = here::here("data", "imaging", "Reformatted", "updated_img_dict.csv")
+)
 ```
 
 ### Thoracotomy Cohort Imaging
 
 ```{r message=FALSE}
 thor_img <- img %>%
-  select(record_id, guid, redcap_data_access_group, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance, starts_with("fmri"), imaging_mcc2_v01_complete, cohort)
+  select(
+    record_id,
+    guid,
+    redcap_data_access_group,
+    redcap_event_name,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    starts_with("fmri"),
+    imaging_mcc2_v01_complete,
+    cohort
+  )
 # read_csv function results in parsing errors, we will use read.csv instead
-thor_img_qst <- read.csv(here("data", "QST", "qst-2024-11-06.csv")) %>%
-  filter(redcap_repeat_instrument == "qst_mcc1_v03" & !is.na(redcap_repeat_instance)) %>%
-  select(record_id, redcap_event_name, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, cuffpfmricontrainddomyn, cuffpfmricontraindyn, fmricuffcalfpressure, fmricuffcalfpressure2, qst_mcc1_v03_complete) %>%
+thor_img_qst <- read.csv(here("data", "qst", "raw", "qst-2024-11-06.csv")) %>%
+  filter(
+    redcap_repeat_instrument == "qst_mcc1_v03" & !is.na(redcap_repeat_instance)
+  ) %>%
+  select(
+    record_id,
+    redcap_event_name,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    cuffpfmricontrainddomyn,
+    cuffpfmricontraindyn,
+    fmricuffcalfpressure,
+    fmricuffcalfpressure2,
+    qst_mcc1_v03_complete
+  ) %>%
   filter(qst_mcc1_v03_complete == 2) %>%
   group_by(record_id, redcap_event_name) %>%
   top_n(1, redcap_repeat_instance) %>%
@@ -603,7 +1045,11 @@ thor_img <- thor_img %>%
   select(where(not_all_na))
 
 
-thor_img <- left_join(thor_img, thor_img_qst, by = intersect(names(thor_img), names(thor_img_qst)))
+thor_img <- left_join(
+  thor_img,
+  thor_img_qst,
+  by = intersect(names(thor_img), names(thor_img_qst))
+)
 ```
 
 keep subjects marked as "Yes, all scans were completed" or "Yes, but only the scans indicated below were completed" for fmricuffcompletescl.
@@ -620,10 +1066,22 @@ In subjects with cuff not contraindicated in the QST form, check if cuff site wa
 ```{r}
 tirerror1 <- tirdf.complete %>%
   filter(fmricuffcompletescl == 1 | fmricuffspyn == 1 | fmricuffipyn == 1) %>%
-  filter(is.na(fmricuffleg) & (cuffpfmricontrainddomyn != 1 | cuffpfmricontraindyn != 1)) %>%
-  add_column(error_type = "In subjects with cuff not contraindicated in the QST form, check if cuff site was entered for subjects who underwent fMRI individualized pressure and/or fMRI standard pressure") %>%
+  filter(
+    is.na(fmricuffleg) &
+      (cuffpfmricontrainddomyn != 1 | cuffpfmricontraindyn != 1)
+  ) %>%
+  add_column(
+    error_type = "In subjects with cuff not contraindicated in the QST form, check if cuff site was entered for subjects who underwent fMRI individualized pressure and/or fMRI standard pressure"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 2:
@@ -632,10 +1090,27 @@ If some scans were completed, check if the type of completed scans were specifie
 
 ```{r}
 tirerror2 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 2 & (is.na(fmricufft1yn) | is.na(fmricuffdwiyn) | is.na(fmricuffrest1yn) | is.na(fmricuffipyn) | is.na(fmricuffspyn) | is.na(fmricuffrest2yn))) %>%
-  add_column(error_type = "some scans were completed but type was not specified") %>%
+  filter(
+    fmricuffcompletescl == 2 &
+      (is.na(fmricufft1yn) |
+        is.na(fmricuffdwiyn) |
+        is.na(fmricuffrest1yn) |
+        is.na(fmricuffipyn) |
+        is.na(fmricuffspyn) |
+        is.na(fmricuffrest2yn))
+  ) %>%
+  add_column(
+    error_type = "some scans were completed but type was not specified"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 3:
@@ -646,12 +1121,35 @@ In subjects marked as "Yes, all scans were completed" OR "Yes, but only the scan
 tirerror3 <- tirdf.complete %>%
   filter(!is.na(fmricuffleg)) %>%
   filter(fmricuffcontrarecal == 1) %>%
-  mutate(pressure_diff = fmricuffcalfpressurerecal - fmricuffcalfpressurerecal2) %>%
+  mutate(
+    pressure_diff = fmricuffcalfpressurerecal - fmricuffcalfpressurerecal2
+  ) %>%
   filter(pressure_diff != 0 | is.na(pressure_diff)) %>%
-  select(record_id, redcap_event_name, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, fmricuffcompletescl, redcap_event_name, fmricuffcontrarecal, fmricuffleg, fmricuffcalfpressurerecal, fmricuffcalfpressurerecal2) %>%
-  add_column(error_type = "Mismatch between recalibration pressures or missing values") %>%
+  select(
+    record_id,
+    redcap_event_name,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    fmricuffcompletescl,
+    redcap_event_name,
+    fmricuffcontrarecal,
+    fmricuffleg,
+    fmricuffcalfpressurerecal,
+    fmricuffcalfpressurerecal2
+  ) %>%
+  add_column(
+    error_type = "Mismatch between recalibration pressures or missing values"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 4:
@@ -662,12 +1160,37 @@ In subjects with T1 scanning, check if the quality of the T1 scan was rated on t
 
 ```{r}
 tirerror4 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricufft1yn) & fmricufft1yn == 1)) %>%
-  filter(is.na(fmricufft1techrating) | fmricufft1repeated == 1 & is.na(fmricufft1techrating2)) %>%
-  select(record_id, redcap_event_name, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, fmricuffcompletescl, redcap_event_name, fmricuffcontrarecal, fmricuffleg, fmricuffcalfpressurerecal, fmricuffcalfpressurerecal2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 & !is.na(fmricufft1yn) & fmricufft1yn == 1)
+  ) %>%
+  filter(
+    is.na(fmricufft1techrating) |
+      fmricufft1repeated == 1 & is.na(fmricufft1techrating2)
+  ) %>%
+  select(
+    record_id,
+    redcap_event_name,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    fmricuffcompletescl,
+    redcap_event_name,
+    fmricuffcontrarecal,
+    fmricuffleg,
+    fmricuffcalfpressurerecal,
+    fmricuffcalfpressurerecal2
+  ) %>%
   add_column(error_type = "T1 scan quality not rated") %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 5:
@@ -678,13 +1201,27 @@ In subjects with resting-state scan performed, check if there were missing value
 
 ```{r}
 tirerror5 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
   mutate(surg.pain.diff1 = fmricuffrestpainss - fmricuffrestpainss2) %>%
   filter(surg.pain.diff1 != 0 | is.na(surg.pain.diff1)) %>%
   as_tibble() %>%
-  add_column(error_type = "Before resting-state scan performed: Check if there were missing values for surgical site pain or if there was a mismatch between entries for surgical site pain") %>%
+  add_column(
+    error_type = "Before resting-state scan performed: Check if there were missing values for surgical site pain or if there was a mismatch between entries for surgical site pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 6:
@@ -695,13 +1232,27 @@ In subjects with resting-state scan performed, check if there were missing value
 
 ```{r}
 tirerror6 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
   mutate(all.pain.diff1 = fmricuffrestpainovrall - fmricuffrestpainovrall2) %>%
   filter(all.pain.diff1 != 0 | is.na(all.pain.diff1)) %>%
   as_tibble() %>%
-  add_column(error_type = "Before resting-state scan performed, check if there were missing values for overall body pain or was a mismatch between entries for overall body pain") %>%
+  add_column(
+    error_type = "Before resting-state scan performed, check if there were missing values for overall body pain or was a mismatch between entries for overall body pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 7:
@@ -712,13 +1263,30 @@ In subjects with resting-state scan performed, check if there were missing value
 
 ```{r}
 tirerror7 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
-  mutate(surg.pain.diff2 = fmricuffcurrpainaftfirstscanss - fmricuffcurrpainaftfirstscanss2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
+  mutate(
+    surg.pain.diff2 = fmricuffcurrpainaftfirstscanss -
+      fmricuffcurrpainaftfirstscanss2
+  ) %>%
   filter(surg.pain.diff2 != 0 | is.na(surg.pain.diff2)) %>%
   as_tibble() %>%
-  add_column(error_type = "After first resting-state scan performed, check if there were missing values for surgical site pain or was a mismatch between entries for surgical site pain") %>%
+  add_column(
+    error_type = "After first resting-state scan performed, check if there were missing values for surgical site pain or was a mismatch between entries for surgical site pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 8:
@@ -729,13 +1297,30 @@ Check if there were missing values for overall body pain or if there was a misma
 
 ```{r}
 tirerror8 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
-  mutate(all.pain.diff2 = fmricuffcurrpainaftfirstscanovrall - fmricuffcurrpainaftfirstscanovrall2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
+  mutate(
+    all.pain.diff2 = fmricuffcurrpainaftfirstscanovrall -
+      fmricuffcurrpainaftfirstscanovrall2
+  ) %>%
   filter(all.pain.diff2 != 0 | is.na(all.pain.diff2)) %>%
   as_tibble() %>%
-  add_column(error_type = "After resting-state scan performed, check if there were missing values for overall body pain or if was a mismatch between entries  for overall body pain") %>%
+  add_column(
+    error_type = "After resting-state scan performed, check if there were missing values for overall body pain or if was a mismatch between entries  for overall body pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 9:
@@ -746,13 +1331,30 @@ Check if baseline cuff pain was missing in subjects with fMRI individualized and
 
 ```{r}
 tirerror9 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffrest1yn) & fmricuffrest1yn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 &
+        !is.na(fmricuffrest1yn) &
+        fmricuffrest1yn == 1)
+  ) %>%
   filter(fmricuffipyn == 1 & fmricuffspyn == 1) %>%
-  mutate(cuff.pain.diff1 = fmricuffcurrpainaftfirstscancuff - fmricuffcurrpainaftfirstscancuff2) %>%
+  mutate(
+    cuff.pain.diff1 = fmricuffcurrpainaftfirstscancuff -
+      fmricuffcurrpainaftfirstscancuff2
+  ) %>%
   filter(cuff.pain.diff1 != 0 | is.na(cuff.pain.diff1)) %>%
-  add_column(error_type = "Check if baseline cuff pain was missing in subjects with fMRI individualized and standard pressures performed") %>%
+  add_column(
+    error_type = "Check if baseline cuff pain was missing in subjects with fMRI individualized and standard pressures performed"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 10:
@@ -763,12 +1365,24 @@ Check if there are missing values or mismatch between cuff pain at the beginning
 
 ```{r}
 tirerror10 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffipyn) & fmricuffipyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 & !is.na(fmricuffipyn) & fmricuffipyn == 1)
+  ) %>%
   mutate(cuff.begin.diff1 = fmricuffpainbegin - fmricuffpainbegin2) %>%
   filter(cuff.begin.diff1 != 0 | is.na(cuff.begin.diff1)) %>%
-  add_column(error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch between cuff pain at the beginning of the scan") %>%
+  add_column(
+    error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch between cuff pain at the beginning of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 11:
@@ -779,13 +1393,25 @@ Check if there are missing values or mismatch between cuff pain during mid scan.
 
 ```{r}
 tirerror11 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (fmricuffcompletescl == 2 & !is.na(fmricuffipyn) & fmricuffipyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (fmricuffcompletescl == 2 & !is.na(fmricuffipyn) & fmricuffipyn == 1)
+  ) %>%
   mutate(cuff.mid.diff1 = fmricuffpainmid - fmricuffpainmid2) %>%
   filter(cuff.mid.diff1 != 0 | is.na(cuff.mid.diff1)) %>%
   as_tibble() %>%
-  add_column(error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch during mid scan") %>%
+  add_column(
+    error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch during mid scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 12:
@@ -796,12 +1422,23 @@ Check if there are missing values or mismatch between cuff pain at the end of th
 
 ```{r}
 tirerror12 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffipyn) & fmricuffipyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 | (!is.na(fmricuffipyn) & fmricuffipyn == 1)
+  ) %>%
   mutate(cuff.end.diff1 = fmricuffpainend - fmricuffpainend2) %>%
   filter(cuff.end.diff1 != 0 | is.na(cuff.end.diff1)) %>%
-  add_column(error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch between cuff pain at the end of the scan") %>%
+  add_column(
+    error_type = "After first cuff fMRI scan (personalized cuff pressure):check if there are missing values or mismatch between cuff pain at the end of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 13:
@@ -812,12 +1449,23 @@ Check if there are missing values or mismatch between cuff pain at the beginning
 
 ```{r}
 tirerror13 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffspyn) & fmricuffspyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 | (!is.na(fmricuffspyn) & fmricuffspyn == 1)
+  ) %>%
   mutate(cuff.begin.diff2 = fmricuffpaincpbegin - fmricuffpaincpbegin2) %>%
   filter(cuff.begin.diff2 != 0 | is.na(cuff.begin.diff2)) %>%
-  add_column(error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain at the beginning of the scan") %>%
+  add_column(
+    error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain at the beginning of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 14:
@@ -828,12 +1476,23 @@ Check if there are missing values or mismatch between cuff pain during mid scan.
 
 ```{r}
 tirerror14 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffspyn) & fmricuffspyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 | (!is.na(fmricuffspyn) & fmricuffspyn == 1)
+  ) %>%
   mutate(cuff.mid.diff2 = fmricuffpaincpmid - fmricuffpaincpmid2) %>%
   filter(cuff.mid.diff2 != 0 | is.na(cuff.mid.diff2)) %>%
-  add_column(error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain during mid scan") %>%
+  add_column(
+    error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain during mid scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 15:
@@ -844,13 +1503,24 @@ Check if there are missing values or mismatch between cuff pain at the end of th
 
 ```{r}
 tirerror15 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffspyn) & fmricuffspyn == 1)) %>%
+  filter(
+    fmricuffcompletescl == 1 | (!is.na(fmricuffspyn) & fmricuffspyn == 1)
+  ) %>%
   mutate(cuff.end.diff2 = fmricuffpaincpend - fmricuffpaincpend2) %>%
   filter(cuff.end.diff2 != 0 | is.na(cuff.end.diff2)) %>%
   as_tibble() %>%
-  add_column(error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain at the end of the scan") %>%
+  add_column(
+    error_type = "After second cuff fMRI scan (constant 120 mmHg pressure):Check if there are missing values or mismatch between cuff pain at the end of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 16:
@@ -861,12 +1531,28 @@ Check if there are missing values or mismatch between residual cuff pain at the 
 
 ```{r}
 tirerror16 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffspyn) & fmricuffspyn == 1 & fmricuffrest2yn == 1) | (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)) %>%
-  mutate(rest.cuff.begin.diff1 = fmricuffpainrestscanbegin - fmricuffpainrestscanbegin2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (!is.na(fmricuffspyn) & fmricuffspyn == 1 & fmricuffrest2yn == 1) |
+      (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)
+  ) %>%
+  mutate(
+    rest.cuff.begin.diff1 = fmricuffpainrestscanbegin -
+      fmricuffpainrestscanbegin2
+  ) %>%
   filter(rest.cuff.begin.diff1 != 0 | is.na(rest.cuff.begin.diff1)) %>%
-  add_column(error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain at the beginning of the scan") %>%
+  add_column(
+    error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain at the beginning of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 17:
@@ -877,12 +1563,27 @@ Check if there are missing values or mismatch between residual cuff pain during 
 
 ```{r}
 tirerror17 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffspyn) & fmricuffspyn == 1 & fmricuffrest2yn == 1) | (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)) %>%
-  mutate(rest.cuff.mid.diff1 = fmricuffpainrestscanmid - fmricuffpainrestscanmid2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (!is.na(fmricuffspyn) & fmricuffspyn == 1 & fmricuffrest2yn == 1) |
+      (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)
+  ) %>%
+  mutate(
+    rest.cuff.mid.diff1 = fmricuffpainrestscanmid - fmricuffpainrestscanmid2
+  ) %>%
   filter(rest.cuff.mid.diff1 != 0 | is.na(rest.cuff.mid.diff1)) %>%
-  add_column(error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain during mid scan") %>%
+  add_column(
+    error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain during mid scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 18:
@@ -893,12 +1594,27 @@ Check if there are missing values or mismatch between residual cuff pain at the 
 
 ```{r}
 tirerror18 <- tirdf.complete %>%
-  filter(fmricuffcompletescl == 1 | (!is.na(fmricuffspyn) & fmricuffspyn == 1 & fmricuffrest2yn == 1) | (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)) %>%
-  mutate(rest.cuff.end.diff1 = fmricuffpainrestscanend - fmricuffpainrestscanend2) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      (!is.na(fmricuffspyn) & fmricuffspyn == 1 & fmricuffrest2yn == 1) |
+      (!is.na(fmricuffipyn) & fmricuffipyn == 1 & fmricuffrest2yn == 1)
+  ) %>%
+  mutate(
+    rest.cuff.end.diff1 = fmricuffpainrestscanend - fmricuffpainrestscanend2
+  ) %>%
   filter(rest.cuff.end.diff1 != 0 | is.na(rest.cuff.end.diff1)) %>%
-  add_column(error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain at the end of the scan") %>%
+  add_column(
+    error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between residual cuff pain at the end of the scan"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 19:
@@ -909,12 +1625,25 @@ Check if there are missing values or mismatch between surgical site pain
 
 ```{r}
 tirerror19 <- tirdf.complete %>%
-  filter((!is.na(fmricuffrest2yn) & fmricuffrest2yn == 1) | fmricuffcompletescl == 1) %>%
-  mutate(surg.diff3 = fmricuffpainaftlastscanss - fmricuffpainaftlastscanss2) %>%
+  filter(
+    (!is.na(fmricuffrest2yn) & fmricuffrest2yn == 1) | fmricuffcompletescl == 1
+  ) %>%
+  mutate(
+    surg.diff3 = fmricuffpainaftlastscanss - fmricuffpainaftlastscanss2
+  ) %>%
   filter(surg.diff3 != 0 | is.na(surg.diff3)) %>%
-  add_column(error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between surgical site pain") %>%
+  add_column(
+    error_type = "After last resting fMRI scan: Check if there are missing values or mismatch between surgical site pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 20:
@@ -923,12 +1652,25 @@ After last resting fMRI scan: Check if there are missing values or mismatch betw
 
 ```{r}
 tirerror20 <- tirdf.complete %>%
-  filter((!is.na(fmricuffrest2yn) & fmricuffrest2yn == 1) | fmricuffcompletescl == 1) %>%
-  mutate(body.diff3 = fmricuffpainaftlastscanany - fmricuffpainaftlastscanany2) %>%
+  filter(
+    (!is.na(fmricuffrest2yn) & fmricuffrest2yn == 1) | fmricuffcompletescl == 1
+  ) %>%
+  mutate(
+    body.diff3 = fmricuffpainaftlastscanany - fmricuffpainaftlastscanany2
+  ) %>%
   filter(body.diff3 != 0 | is.na(body.diff3)) %>%
-  add_column(error_type = "After last resting fMRI scan:Check if there are missing values or mismatch between overall body pain") %>%
+  add_column(
+    error_type = "After last resting fMRI scan:Check if there are missing values or mismatch between overall body pain"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 21:
@@ -941,9 +1683,18 @@ tirerror21 <- thor_img %>%
   filter(is.na(fmricuffcompletescl)) %>%
   filter(fmricuffdicuploaded == 1) %>%
   as_tibble() %>%
-  add_column(error_type = "If a visit is marked complete and DICOM files were uploaded, check if  Test Completed (fmricuffcompletescl) is missing") %>%
+  add_column(
+    error_type = "If a visit is marked complete and DICOM files were uploaded, check if  Test Completed (fmricuffcompletescl) is missing"
+  ) %>%
   add_column(errors = "error") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Flag 22
@@ -951,18 +1702,38 @@ tirerror21 <- thor_img %>%
 Check if any of the scans were completed but information on "mask worn" was missing. We will first merge with the "mask" data to account for visits that occurred before the question related to make use was implemented.
 
 ```{r}
-thor_img <- left_join(thor_img, mask, by = intersect(names(thor_img), names(mask)))
+thor_img <- left_join(
+  thor_img,
+  mask,
+  by = intersect(names(thor_img), names(mask))
+)
 
 
 tirerror22 <- thor_img %>%
   filter(imaging_mcc2_v01_complete == 2) %>%
-  filter(fmricuffcompletescl == 1 | fmricufft1yn == 1 | fmricuffdwiyn == 1 | fmricuffrest1yn == 1 |
-    fmricuffipyn == 1 | fmricuffspyn == 1 | fmricuffrest2yn == 1) %>%
+  filter(
+    fmricuffcompletescl == 1 |
+      fmricufft1yn == 1 |
+      fmricuffdwiyn == 1 |
+      fmricuffrest1yn == 1 |
+      fmricuffipyn == 1 |
+      fmricuffspyn == 1 |
+      fmricuffrest2yn == 1
+  ) %>%
   filter(is.na(fmri_face_mask)) %>%
-  add_column(error_type = "Check if any of the scans were completed but information on mask worn was missing") %>%
+  add_column(
+    error_type = "Check if any of the scans were completed but information on mask worn was missing"
+  ) %>%
   add_column(errors = "error") %>%
   filter(after_mask == "yes") %>%
-  select(record_id, redcap_data_access_group, redcap_repeat_instrument, redcap_repeat_instance, error_type, errors)
+  select(
+    record_id,
+    redcap_data_access_group,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    error_type,
+    errors
+  )
 ```
 
 ##### Create Imaging error report for the Thoracotomy cohort.
@@ -983,13 +1754,8 @@ m2img_report <- bind_rows(m2img_list) %>%
 ```{r}
 m2img_report %>%
   gt() %>%
-  tab_header(
-    title = md("**Thoracotomy Cohort Imaging Error Report**")
-  ) %>%
-  tab_options(
-    table.font.size = px(12),
-    column_labels.font.size = px(12)
-  ) %>%
+  tab_header(title = md("**Thoracotomy Cohort Imaging Error Report**")) %>%
+  tab_options(table.font.size = px(12), column_labels.font.size = px(12)) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)
@@ -1003,16 +1769,37 @@ Save "thor_img" and data dictionary as .csv files in the folder named "reformatt
 ```{r warning=FALSE}
 #| eval: false
 
-write_csv(thor_img, file = here::here("data", "imaging", "Reformatted", "reformatted_thor_img.csv"))
+write_csv(
+  thor_img,
+  file = here::here(
+    "data",
+    "imaging",
+    "Reformatted",
+    "reformatted_thor_img.csv"
+  )
+)
 
-write_csv(img_dict, file = here::here("data", "imaging", "Reformatted", "updated_img_dict.csv"))
+write_csv(
+  img_dict,
+  file = here::here("data", "imaging", "Reformatted", "updated_img_dict.csv")
+)
 ```
 
 ### TKA cohort Imaging Items v1.1 form:
 
 ```{r}
 tka_img_items <- img %>%
-  select(record_id, guid, redcap_data_access_group, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance, starts_with("img"), imaging_items_v11_complete, cohort)
+  select(
+    record_id,
+    guid,
+    redcap_data_access_group,
+    redcap_event_name,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    starts_with("img"),
+    imaging_items_v11_complete,
+    cohort
+  )
 ```
 
 keep subjects from the TKA cohort, with the most recent baseline visit.
@@ -1035,14 +1822,32 @@ Save "tka_img_items" and data dictionary as .csv files in the folder named "Refo
 ```{r warning=FALSE}
 #| eval: false
 
-write_csv(tka_img_items, file = here::here("data", "imaging", "Reformatted", "reformatted_tka_img_items.csv"))
+write_csv(
+  tka_img_items,
+  file = here::here(
+    "data",
+    "imaging",
+    "Reformatted",
+    "reformatted_tka_img_items.csv"
+  )
+)
 ```
 
 ### <!--#  -->Thoracotomy cohort Imaging Items v1.1 form: form:
 
 ```{r}
 thor_img_items <- img %>%
-  select(record_id, guid, redcap_data_access_group, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance, starts_with("img"), imaging_items_v01_complete, cohort)
+  select(
+    record_id,
+    guid,
+    redcap_data_access_group,
+    redcap_event_name,
+    redcap_repeat_instrument,
+    redcap_repeat_instance,
+    starts_with("img"),
+    imaging_items_v01_complete,
+    cohort
+  )
 ```
 
 keep subjects from the TKA cohort, with the most recent baseline visit.
@@ -1065,6 +1870,14 @@ Save "thor_meds" and data dictionary as .csv files in the folder named "Reformat
 ```{r warning=FALSE}
 #| eval: false
 
-write_csv(thor_img_items, file = here::here("data", "imaging", "Reformatted", "reformatted_thor_img_items.csv"))
+write_csv(
+  thor_img_items,
+  file = here::here(
+    "data",
+    "imaging",
+    "Reformatted",
+    "reformatted_thor_img_items.csv"
+  )
+)
 ```
 

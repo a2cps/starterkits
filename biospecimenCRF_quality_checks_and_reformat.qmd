@@ -37,7 +37,7 @@ not_all_na <- function(x) any(!is.na(x))
 Read in Biospecimen collection data, We will call this bio
 
 ```{r, message=FALSE}
-bio <- read_csv(here("data", "blood-draw", "blood-draw-2024-11-06.csv"))
+bio <- read_csv(here("data", "blood-draw", "raw", "blood-draw-2024-11-06.csv"))
 ```
 
 Remove test records
@@ -59,8 +59,7 @@ test_records <- c(
   "120000"
 )
 
-bio <- bio %>%
-  filter(!record_id %in% test_records)
+bio <- bio %>% filter(!record_id %in% test_records)
 ```
 
 Create a column for cohort type called "cohort"
@@ -83,6 +82,7 @@ Read in data dictionary and remove duplicate field names
 bio_dict <- read_csv(here(
   "data",
   "blood-draw",
+  "raw",
   "blood-draw-Data-Dictionary-2024-11-06.csv"
 )) %>%
   distinct(field_name, .keep_all = TRUE)
@@ -136,8 +136,7 @@ bio <- bio %>%
     redcap_repeat_instance = case_when(
       record_id == 25172 &
         redcap_repeat_instrument == "current_medications_v02" &
-        redcap_repeat_instance == 1 ~
-        2,
+        redcap_repeat_instance == 1 ~ 2,
       TRUE ~ redcap_repeat_instance
     )
   ) %>%
@@ -145,8 +144,7 @@ bio <- bio %>%
     redcap_repeat_instance = case_when(
       record_id == 25204 &
         redcap_repeat_instrument == "current_medications_v02" &
-        redcap_repeat_instance == 1 ~
-        2,
+        redcap_repeat_instance == 1 ~ 2,
       TRUE ~ redcap_repeat_instance
     )
   ) %>%
@@ -160,8 +158,7 @@ bio <- bio %>%
     redcap_repeat_instance = case_when(
       record_id == 25239 &
         redcap_repeat_instrument == "current_medications_v02" &
-        redcap_repeat_instance == 1 ~
-        2,
+        redcap_repeat_instance == 1 ~ 2,
       TRUE ~ redcap_repeat_instance
     )
   ) %>%
@@ -174,8 +171,7 @@ bio <- bio %>%
     redcap_repeat_instance = case_when(
       record_id == 25094 &
         redcap_repeat_instrument == "current_medications_v02" &
-        redcap_repeat_instance == 2 ~
-        1,
+        redcap_repeat_instance == 2 ~ 1,
       TRUE ~ redcap_repeat_instance
     )
   ) %>%
@@ -183,8 +179,7 @@ bio <- bio %>%
     redcap_repeat_instance = case_when(
       record_id == 25108 &
         redcap_repeat_instrument == "current_medications_v02" &
-        redcap_repeat_instance == 2 ~
-        3,
+        redcap_repeat_instance == 2 ~ 3,
       TRUE ~ redcap_repeat_instance
     )
   )
@@ -350,13 +345,8 @@ br_report <- bind_rows(br_list) %>%
 ```{r}
 br_report %>%
   gt() %>%
-  tab_header(
-    title = md("**TKA Biospecimen collection form Error Report**")
-  ) %>%
-  tab_options(
-    table.font.size = px(12),
-    column_labels.font.size = px(12)
-  ) %>%
+  tab_header(title = md("**TKA Biospecimen collection form Error Report**")) %>%
+  tab_options(table.font.size = px(12), column_labels.font.size = px(12)) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)
@@ -551,10 +541,7 @@ tbr_report %>%
       "**Thoracotomy Cohort Biospecimen collection form Error Report**"
     )
   ) %>%
-  tab_options(
-    table.font.size = px(12),
-    column_labels.font.size = px(12)
-  ) %>%
+  tab_options(table.font.size = px(12), column_labels.font.size = px(12)) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)

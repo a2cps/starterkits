@@ -43,6 +43,7 @@ We will call this `func`
 func <- read.csv(here(
   "data",
   "functional-testing",
+  "raw",
   "functional-testing-2024-11-06.csv"
 )) %>%
   retype()
@@ -67,8 +68,7 @@ test_records <- c(
   "120000"
 )
 
-func <- func %>%
-  filter(!record_id %in% test_records)
+func <- func %>% filter(!record_id %in% test_records)
 ```
 
 Create a column for cohort type called "cohort"
@@ -91,6 +91,7 @@ Read in data dictionary and remove duplicate field names
 func_dict <- read_csv(here(
   "data",
   "functional-testing",
+  "raw",
   "functional-testing-Data-Dictionary-2024-11-06.csv"
 )) %>%
   distinct(field_name, .keep_all = TRUE)
@@ -496,8 +497,7 @@ tka_func <- tka_func %>%
 MEP 5TSTS test = Final pain rating - Initial pain rating
 
 ```{r}
-tka_func <- tka_func %>%
-  mutate(mep_5tsts = tstspostpainscl - tstsprepainscl)
+tka_func <- tka_func %>% mutate(mep_5tsts = tstspostpainscl - tstsprepainscl)
 ```
 
 ##### New field name(s):
@@ -545,13 +545,8 @@ tka_func_report <- bind_rows(func_list) %>%
 ```{r}
 tka_func_report %>%
   gt() %>%
-  tab_header(
-    title = md("**TKA Functional Assessment Error Report**")
-  ) %>%
-  tab_options(
-    table.font.size = px(12),
-    column_labels.font.size = px(12)
-  ) %>%
+  tab_header(title = md("**TKA Functional Assessment Error Report**")) %>%
+  tab_options(table.font.size = px(12), column_labels.font.size = px(12)) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)
@@ -620,8 +615,7 @@ thor_func <- thor_func %>%
 Keep records of subjects who completed the test.
 
 ```{r}
-m2frfunc3 <- thor_func %>%
-  filter(ftdbctestcmpltyn == 1)
+m2frfunc3 <- thor_func %>% filter(ftdbctestcmpltyn == 1)
 ```
 
 ##### Flag 1:
@@ -755,10 +749,7 @@ thor_func_report %>%
       "**Thoracotomy Cohort Functional Assessment Error Report: No Errors**"
     )
   ) %>%
-  tab_options(
-    table.font.size = px(12),
-    column_labels.font.size = px(12)
-  ) %>%
+  tab_options(table.font.size = px(12), column_labels.font.size = px(12)) %>%
   tab_style(
     style = list(cell_fill(color = "#F4F4F4")),
     locations = cells_body(columns = record_id)

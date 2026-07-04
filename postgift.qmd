@@ -39,11 +39,7 @@ Let's take a look at just the amplitudes.
 ```{r loadfalff}
 
 amplitude <- read_parquet_duckdb(
-  dir_ls(
-    "data/postgift/amplitude",
-    recurse = TRUE,
-    glob = "*parquet"
-  ),
+  dir_ls("data/postgift/amplitude", recurse = TRUE, glob = "*parquet"),
   prudence = "lavish"
 )
 
