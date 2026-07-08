@@ -722,8 +722,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   <ul class="collapse">
   <li><a href="#effective-vs.-raw-cnr" id="toc-effective-vs.-raw-cnr" class="nav-link" data-scroll-target="#effective-vs.-raw-cnr"><span class="header-section-number">12.2.1</span> Effective vs.&nbsp;Raw CNR</a></li>
   <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background"><span class="header-section-number">12.2.2</span> Background</a></li>
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">12.2.3</span> Data Generation</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">12.2.4</span> Citations</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">12.2.3</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -751,8 +750,9 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>This kit reviews the key quality control metrics provided by <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html">FSL’s EDDY QC</a> <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>, which are included in A2CPS data releases. These metrics are not used in the automated rating of dMRI images, but they provide valuable information about the impacts of movement and magnetic susceptibility on a diffusion scan.</p>
-<div class="no-row-height column-margin column-container"></div><section id="starting-project" class="level2 page-columns page-full" data-number="12.1">
+<p>This kit reviews the key quality control metrics provided by <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html">FSL’s EDDY QC</a> <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>, which are included in A2CPS data releases.</p>
+<div class="no-row-height column-margin column-container"></div><p>Diffusion MRI (dMRI) is highly sensitive to macroscopic head motion and to eddy currents—rapidly changing magnetic gradients that cause geometric distortions and blurring in the reconstructed images. FSL’s EDDY tool is a gold-standard approach for correcting these artifacts. As a byproduct of the correction process, EDDY generates several quantitative quality control metrics. While these metrics are not used in the automated rating of dMRI images in A2CPS, they provide valuable, objective information about the severity of movement and magnetic susceptibility artifacts on a scan (e.g., Contrast-to-Noise Ratio).</p>
+<section id="starting-project" class="level2 page-columns page-full" data-number="12.1">
 <h2 data-number="12.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">12.1</span> Starting Project</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -920,11 +920,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h3 data-number="12.2.2" class="anchored" data-anchor-id="background"><span class="header-section-number">12.2.2</span> Background</h3>
 <p>For detailed information about all the QC metrics provided, please see official FSL documentation for <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html">EDDY QC</a>, along with the report <span class="citation" data-cites="bastiani_2019_automated">Bastiani et al. (<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">2019</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"></div></section>
-<section id="data-generation" class="level3" data-number="12.2.3">
-<h3 data-number="12.2.3" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">12.2.3</span> Data Generation</h3>
-</section>
-<section id="citations" class="level3 page-columns page-full" data-number="12.2.4">
-<h3 data-number="12.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">12.2.4</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="12.2.3">
+<h3 data-number="12.2.3" class="anchored" data-anchor-id="citations"><span class="header-section-number">12.2.3</span> Citations</h3>
 <p>If you use these derivatives please cite the EDDY QC paper <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-bastiani_2019_automated" class="csl-entry" role="listitem">
 Bastiani, M., Cottaar, M., Fitzgibbon, S. P., Suri, S., Alfaro-Almagro, F., Sotiropoulos, S. N., Jbabdi, S., &amp; Andersson, J. L. (2019). Automated quality control for within and between studies diffusion MRI data using a non-parametric framework for movement and distortion correction. <em>Neuroimage</em>, <em>184</em>, 801–812. <a href="https://doi.org/10.1016/j.neuroimage.2018.09.073">https://doi.org/10.1016/j.neuroimage.2018.09.073</a>

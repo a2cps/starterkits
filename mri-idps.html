@@ -142,7 +142,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </script>
 
 
-<meta name="citation_title" content="[[4]{.chapter-number}&nbsp; [MRI Image Derived Phenotypes ]{.chapter-title}]{#sec-mri-idps .quarto-section-identifier}">
+<meta name="citation_title" content="[[4]{.chapter-number}&nbsp; [MRI Image Derived Phenotypes]{.chapter-title}]{#sec-mri-idps .quarto-section-identifier}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Corticostriatal functional connectivity predicts transition to chronic back pain;,citation_author=Marwan N Baliki;,citation_author=Bogdan Petre;,citation_author=Souraya Torbey;,citation_author=Kristina M Herrmann;,citation_author=Lejian Huang;,citation_author=Thomas J Schnitzer;,citation_author=Howard L Fields;,citation_author=A Vania Apkarian;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=8;,citation_doi=10.1038/nn.3153;,citation_volume=15;,citation_journal_title=Nature neuroscience;,citation_publisher=Nature Publishing Group US New York;">
 <meta name="citation_reference" content="citation_title=MRI signatures of brain age and disease over the lifespan based on a deep brain network and 14 468 individuals worldwide;,citation_author=Vishnu M Bashyam;,citation_author=Guray Erus;,citation_author=Jimit Doshi;,citation_author=Mohamad Habes;,citation_author=Ilya M Nasrallah;,citation_author=Monica Truelove-Hill;,citation_author=Dhivya Srinivasan;,citation_author=Liz Mamourian;,citation_author=Raymond Pomponio;,citation_author=Yong Fan;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_issue=7;,citation_doi=10.1093/brain/awaa160;,citation_volume=143;,citation_journal_title=Brain;,citation_publisher=Oxford University Press;">
@@ -713,18 +713,18 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#smri" id="toc-smri" class="nav-link active" data-scroll-target="#smri"><span class="header-section-number">4.1</span> sMRI</a></li>
-  <li><a href="#fmri" id="toc-fmri" class="nav-link" data-scroll-target="#fmri"><span class="header-section-number">4.2</span> fMRI</a></li>
-  <li><a href="#starting-project" id="toc-starting-project" class="nav-link" data-scroll-target="#starting-project"><span class="header-section-number">4.3</span> Starting Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">4.1</span> Starting Project</a>
   <ul class="collapse">
-  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">4.3.1</span> Locate Data</a></li>
-  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">4.3.2</span> Extract Data</a></li>
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">4.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">4.1.2</span> Extract Data</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">4.1.3</span> Data Quality</a></li>
+  <li><a href="#cross-modality-links" id="toc-cross-modality-links" class="nav-link" data-scroll-target="#cross-modality-links"><span class="header-section-number">4.1.4</span> Cross-Modality Links</a></li>
   </ul></li>
-  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">4.4</span> Considerations While Working on the Project</a>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">4.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">4.4.1</span> Variability Across Scanners</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">4.4.2</span> Data Quality</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">4.4.3</span> Citations</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">4.2.1</span> Data Generation</a></li>
+  <li><a href="#other" id="toc-other" class="nav-link" data-scroll-target="#other"><span class="header-section-number">4.2.2</span> Other</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">4.2.3</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -752,45 +752,32 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>Often, researchers may wish to simply have a set of features that they can use to train and test predictive models. When those features are extracted from the neuroimaging data, we refer to them as image-derived phenotypes. This kit describes a subset of them that have been compiled into a single table. While this table of image-derived phenotypes does not encompass all available measurements, they are often a good place to start analyses.</p>
-<p>The selection of phenotypes was based on those that are available within the UK Biobank <span class="citation" data-cites="miller_multimodal_2016">(<a href="references.html#ref-miller_multimodal_2016" role="doc-biblioref"><span class="nocase">Miller et al.</span>, 2016</a>)</span>, and they are derived from the structural and functional MRI scans (diffusion MRI phenotypes will be available in a subsequent release). A full data dictionary is available <a href="https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/mri.json">here</a>, and they are summarized below.</p>
+<p>Often, researchers may wish to simply have a set of features that they can use to train and test predictive models. When those features are extracted from neuroimaging data, we refer to them as Image-Derived Phenotypes (IDPs). For an excellent overview of how IDPs are generated and used in large-scale studies, see the <a href="https://www.fmrib.ox.ac.uk/ukbiobank/index.html">UK Biobank Brain Imaging Documentation</a>.</p>
+<p>This kit describes a subset of IDPs that have been compiled into a single table. While this table does not encompass all available measurements, it is a great place to start your analyses. The selection of phenotypes was based on those available within the UK Biobank <span class="citation" data-cites="miller_multimodal_2016">(<a href="references.html#ref-miller_multimodal_2016" role="doc-biblioref"><span class="nocase">Miller et al.</span>, 2016</a>)</span>, derived from structural and functional MRI scans (diffusion MRI phenotypes will be available in a subsequent release). A full data dictionary is available <a href="https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/mri.json">here</a>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-miller_multimodal_2016" class="csl-entry" role="listitem">
 <span class="nocase">Miller, K. L., Alfaro-Almagro, F., Bangerter, N. K., Thomas, D. L., Yacoub, E., Xu, J., Bartsch, A. J., Jbabdi, S., Sotiropoulos, S. N., Andersson, J. L., et al.</span> (2016). Multimodal population brain imaging in the UK biobank prospective epidemiological study. <em>Nature Neuroscience</em>, <em>19</em>(11), 1523–1536. <a href="https://doi.org/10.1038/nn.4393">https://doi.org/10.1038/nn.4393</a>
-</div></div><section id="smri" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="smri"><span class="header-section-number">4.1</span> sMRI</h2>
-<ul>
-<li>15 measures (volumetric) from <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html">FSL’s FIRST</a></li>
-<li>1 scaling factor and 2 volumes from <a href="fslanat.html" class="quarto-xref"><span>Chapter 7</span></a></li>
-<li>24 global measures from <a href="freesurfer.html" class="quarto-xref"><span>Chapter 9</span></a></li>
-</ul>
-</section>
-<section id="fmri" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="fmri"><span class="header-section-number">4.2</span> fMRI</h2>
-<ul>
-<li>104 nodal fraction of low-frequency fluctuation values from the NeuroMark 2.1 multi-resolution components (<a href="postgift.html" class="quarto-xref"><span>Chapter 19</span></a>), for each of the four functional scans</li>
-<li>5460 connectivities from NeuroMark 2.1 multi-resolution functional connectivity matrices (<a href="postgift.html" class="quarto-xref"><span>Chapter 19</span></a>), for each of the four functional scans</li>
-</ul>
-</section>
-<section id="starting-project" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">4.3</span> Starting Project</h2>
-<section id="locate-data" class="level3" data-number="4.3.1">
-<h3 data-number="4.3.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">4.3.1</span> Locate Data</h3>
+</div></div><p>These IDPs include: - <strong>sMRI</strong>: 15 volumetric measures from <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html">FSL’s FIRST</a>, 3 global measures from <a href="fslanat.html" class="quarto-xref"><span>Chapter 7</span></a>, and 24 global measures from <a href="freesurfer.html" class="quarto-xref"><span>Chapter 9</span></a>. - <strong>fMRI</strong>: 104 nodal fractional amplitude of low-frequency fluctuation (fALFF) values and 5460 functional connectivities from the NeuroMark 2.1 multi-resolution components (<a href="postgift.html" class="quarto-xref"><span>Chapter 19</span></a>), for each of the four functional scans.</p>
+<section id="starting-project" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">4.1</span> Starting Project</h2>
+<section id="locate-data" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">4.1.1</span> Locate Data</h3>
 <p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The table, <code>mri.tsv</code>, is in a file are underneath the folder <code>idp</code>. Let’s take a look.</p>
+<p>The primary IDP table, <code>mri.tsv</code>, is located underneath the <code>idp</code> folder. Let’s take a look.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls idp/</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mask_volumes.json</span>  mask_volumes.tsv  mri.json  mri.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Even though this is only a subset of the available neuroimaging derivatives, there are many fields.</p>
+<p>Even though this represents only a subset of all possible neuroimaging derivatives, the table is quite wide because it contains features extracted across many brain regions and multiple functional tasks.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> awk <span class="st">'{print NF; exit}'</span> idp/mri.tsv </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">21886</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="extract-data" class="level3" data-number="4.3.2">
-<h3 data-number="4.3.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">4.3.2</span> Extract Data</h3>
-<p>Any function capable of parsing tab-separated value files can load in this data. Here, let’s take the participant identifier and the REST1 fALFF measurements.</p>
+<section id="extract-data" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">4.1.2</span> Extract Data</h3>
+<p>Because this table is saved as a tab-separated values (<code>tsv</code>) file, any software capable of reading delimited text can load it. However, because it contains tens of thousands of columns, it is often best practice to load only the specific features you need for your analysis.</p>
+<p>For example, if we are only interested in the resting state (REST1) fALFF measurements for our participants, we can select just the <code>sub</code> (participant identifier) column and any column matching that specific functional task.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">read_tsv</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/idp/mri.tsv"</span>,</span>
@@ -1665,19 +1652,27 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 </section>
-</section>
-<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">4.4</span> Considerations While Working on the Project</h2>
-<section id="variability-across-scanners" class="level3" data-number="4.4.1">
-<h3 data-number="4.4.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">4.4.1</span> Variability Across Scanners</h3>
-<p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
-</section>
-<section id="data-quality" class="level3" data-number="4.4.2">
-<h3 data-number="4.4.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">4.4.2</span> Data Quality</h3>
+<section id="data-quality" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">4.1.3</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="4.4.3">
-<h3 data-number="4.4.3" class="anchored" data-anchor-id="citations"><span class="header-section-number">4.4.3</span> Citations</h3>
+<section id="cross-modality-links" class="level3" data-number="4.1.4">
+<h3 data-number="4.1.4" class="anchored" data-anchor-id="cross-modality-links"><span class="header-section-number">4.1.4</span> Cross-Modality Links</h3>
+<p>The <code>sub</code> column in <code>mri.tsv</code> represents the participant’s unique identifier. This identifier matches the <code>biospecimen_id</code> or equivalent IDs used in other modalities (such as psychosocial or genetics), allowing you to merge these neuroimaging features with other datasets.</p>
+</section>
+</section>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">4.2</span> Considerations While Working on the Project</h2>
+<section id="data-generation" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">4.2.1</span> Data Generation</h3>
+<p>These image-derived phenotypes were not generated by a single pipeline, but rather aggregated from several validated neuroimaging tools. Structural IDPs were primarily generated using <a href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki">FSL</a> and <a href="https://freesurfer.net/">FreeSurfer</a>, while functional IDPs were derived using the <a href="https://trendscenter.org/software/gift/">NeuroMark 2.1</a> independent component analysis pipeline. For deeper dives into how each of these derivatives was produced, see the respective starter kits linked in the introduction.</p>
+</section>
+<section id="other" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="other"><span class="header-section-number">4.2.2</span> Other</h3>
+<p><strong>Variability Across Scanners</strong> Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
+</section>
+<section id="citations" class="level3 page-columns page-full" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="citations"><span class="header-section-number">4.2.3</span> Citations</h3>
 <p>If you use these results, please cite the MRIQC report <span class="citation" data-cites="esteban_mriqc_2017">(<a href="references.html#ref-esteban_mriqc_2017" role="doc-biblioref">Esteban et al., 2017</a>)</span> and all relevant citations of the pipeline configuration.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-esteban_mriqc_2017" class="csl-entry" role="listitem">
 Esteban, O., Birman, D., Schaer, M., Koyejo, O. O., Poldrack, R. A., &amp; Gorgolewski, K. J. (2017). MRIQC: Advancing the automatic prediction of image quality in MRI from unseen sites. <em>PloS One</em>, <em>12</em>(9), e0184661. <a href="https://doi.org/10.1371/journal.pone.0184661">https://doi.org/10.1371/journal.pone.0184661</a>

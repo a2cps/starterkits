@@ -716,14 +716,14 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">3.1</span> Starting Project</a>
   <ul class="collapse">
   <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">3.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">3.1.2</span> Extract Data</a></li>
   </ul></li>
-  <li><a href="#imputation-process" id="toc-imputation-process" class="nav-link" data-scroll-target="#imputation-process"><span class="header-section-number">3.2</span> Imputation Process</a>
+  <li><a href="#considerations-while-working-with-these-data" id="toc-considerations-while-working-with-these-data" class="nav-link" data-scroll-target="#considerations-while-working-with-these-data"><span class="header-section-number">3.2</span> Considerations while working with these data</a>
   <ul class="collapse">
-  <li><a href="#pre-imputation-data-preparation" id="toc-pre-imputation-data-preparation" class="nav-link" data-scroll-target="#pre-imputation-data-preparation"><span class="header-section-number">3.2.1</span> Pre-Imputation Data Preparation</a></li>
-  <li><a href="#imputation" id="toc-imputation" class="nav-link" data-scroll-target="#imputation"><span class="header-section-number">3.2.2</span> Imputation</a></li>
-  <li><a href="#post-imputation-quality-control" id="toc-post-imputation-quality-control" class="nav-link" data-scroll-target="#post-imputation-quality-control"><span class="header-section-number">3.2.3</span> Post-Imputation Quality Control</a></li>
-  <li><a href="#considerations-while-working-with-these-data" id="toc-considerations-while-working-with-these-data" class="nav-link" data-scroll-target="#considerations-while-working-with-these-data"><span class="header-section-number">3.2.4</span> Considerations while working with these data</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">3.2.5</span> Citations</a></li>
+  <li><a href="#population-structure" id="toc-population-structure" class="nav-link" data-scroll-target="#population-structure"><span class="header-section-number">3.2.1</span> Population Structure</a></li>
+  <li><a href="#custom-filtering" id="toc-custom-filtering" class="nav-link" data-scroll-target="#custom-filtering"><span class="header-section-number">3.2.2</span> Custom Filtering</a></li>
+  <li><a href="#data-generation-imputation-process" id="toc-data-generation-imputation-process" class="nav-link" data-scroll-target="#data-generation-imputation-process"><span class="header-section-number">3.2.3</span> Data Generation (Imputation Process)</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">3.2.4</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -756,7 +756,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <!-- This picture is free to share -->
 <p>The imputed genomic dataset expands single-nucleotide resolution variant data across the human genome, offering deeper and more comprehensive coverage. Genotype imputation aligns SNP array data with ancestry-specific reference haplotypes to infer untyped variants with high confidence. This process can be compared to filling in missing letters in a sentence based on contextual knowledge — for example:</p>
 <p>“T_e l_zy d_g j___ed _ver the _at.”</p>
-<p>Following imputation, the dataset increased from 690,126 to 11,016,319 genetic loci, spanning all 22 autosomes and the X chromosome for 1,375 participants. Prior to imputation, data were preprocessed and formatted for compatibility with the Imputation Server. Post-imputation, we applied rigorous quality control, excluding low-confidence variants and those with a minor allele frequency (MAF) below 1%.</p>
+<p>Imputation is particularly important in genetic association studies because it allows researchers to identify disease-associated loci that were not directly genotyped, facilitating meta-analyses across different studies that may have used different SNP arrays. For a deeper dive into the methodology and importance of imputation, see the <a href="https://topmedimpute.readthedocs.io/en/latest/">TOPMed Imputation Server Documentation</a>.</p>
+<p>Following imputation in this dataset, the number of genetic loci increased from 690,126 to 11,016,319, spanning all 22 autosomes and the X chromosome for 1,375 participants. Prior to imputation, data were preprocessed and formatted for compatibility with the Imputation Server. Post-imputation, we applied rigorous quality control, excluding low-confidence variants and those with a minor allele frequency (MAF) below 1%.</p>
 <section id="starting-project" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">3.1</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="3.1.1">
@@ -776,20 +777,34 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.nosex</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_PCA_Ind_Info.csv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>These files are in the <a href="https://www.cog-genomics.org/plink/1.9/">PLINK</a> format.</p>
-<p>For more detail on Plink Binary File information and data extraction for genetic variant data, refer to the Genetic Variant starter kit.</p>
+</section>
+<section id="extract-data" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">3.1.2</span> Extract Data</h3>
+<p>To access the variant data efficiently, you should use <code>plink2</code> (or <code>plink</code> 1.9). Plink can rapidly subset massive genomic datasets to pull only the specific variants or participants you need for an analysis. For more detail on Plink Binary File information and data extraction for genetic variant data, refer to the <a href="./genetic_variants.html">Genetic Variant starter kit</a>.</p>
 </section>
 </section>
-<section id="imputation-process" class="level2 page-columns page-full" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="imputation-process"><span class="header-section-number">3.2</span> Imputation Process</h2>
+<section id="considerations-while-working-with-these-data" class="level2 page-columns page-full" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="considerations-while-working-with-these-data"><span class="header-section-number">3.2</span> Considerations while working with these data</h2>
+<section id="population-structure" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="population-structure"><span class="header-section-number">3.2.1</span> Population Structure</h3>
+<p>Even after rigorous QC, population structure still exists within the dataset. Systematic differences in ancestry between groups can lead to spurious associations in genetic analyses. You should generally include genetic principal components as covariates in any downstream analyses (e.g., Polygenic Risk Scores or Genome-Wide Association Studies).</p>
+</section>
+<section id="custom-filtering" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="custom-filtering"><span class="header-section-number">3.2.2</span> Custom Filtering</h3>
+<p>Researchers can choose to filter out variants based on other, standard QC measures that suit their specific study designs. The data provided here represents a strong baseline, but it may require additional tailoring depending on your research question.</p>
+</section>
+<section id="data-generation-imputation-process" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="data-generation-imputation-process"><span class="header-section-number">3.2.3</span> Data Generation (Imputation Process)</h3>
 <p>The below procedures were performed with these data:</p>
-<p>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed</p>
-<p>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim</p>
-<p>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam</p>
-<p>(these files originally had base name A2CPS_Freeze_2, as reflected in the code below)</p>
-<section id="pre-imputation-data-preparation" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="pre-imputation-data-preparation"><span class="header-section-number">3.2.1</span> Pre-Imputation Data Preparation</h3>
-<p>Following the Data Preparation Process as outlined here:</p>
-<p><a href="https://topmedimpute.readthedocs.io/en/latest/prepare-your-data/">TOPMed Imputation Server Data Preparation</a></p>
+<ul>
+<li><code>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed</code></li>
+<li><code>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim</code></li>
+<li><code>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam</code></li>
+</ul>
+<p><em>(Note: These files originally had the base name A2CPS_Freeze_2, as reflected in the code below)</em></p>
+<section id="pre-imputation-data-preparation" class="level4" data-number="3.2.3.1">
+<h4 data-number="3.2.3.1" class="anchored" data-anchor-id="pre-imputation-data-preparation"><span class="header-section-number">3.2.3.1</span> Pre-Imputation Data Preparation</h4>
+<p>Following the Data Preparation Process as outlined here: <a href="https://topmedimpute.readthedocs.io/en/latest/prepare-your-data/">TOPMed Imputation Server Data Preparation</a></p>
 <details>
 <summary>
 Click to show the Pre-Imputation Data Processing Bash Script, which utilizes Plink 1.9
@@ -821,24 +836,17 @@ Click to show the Pre-Imputation Data Processing Bash Script, which utilizes Pli
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </section>
-<section id="imputation" class="level3" data-number="3.2.2">
-<h3 data-number="3.2.2" class="anchored" data-anchor-id="imputation"><span class="header-section-number">3.2.2</span> Imputation</h3>
+<section id="imputation" class="level4" data-number="3.2.3.2">
+<h4 data-number="3.2.3.2" class="anchored" data-anchor-id="imputation"><span class="header-section-number">3.2.3.2</span> Imputation</h4>
 <p>After preparing the files, they were run through:</p>
 <p><a href="https://topmedimpute.readthedocs.io/en/latest/pipeline/">TOPMed Imputation Pipeline</a></p>
 </section>
-<section id="post-imputation-quality-control" class="level3" data-number="3.2.3">
-<h3 data-number="3.2.3" class="anchored" data-anchor-id="post-imputation-quality-control"><span class="header-section-number">3.2.3</span> Post-Imputation Quality Control</h3>
+<section id="post-imputation-quality-control" class="level4" data-number="3.2.3.3">
+<h4 data-number="3.2.3.3" class="anchored" data-anchor-id="post-imputation-quality-control"><span class="header-section-number">3.2.3.3</span> Post-Imputation Quality Control</h4>
 <ul>
-<li><p>Imputed variants with an imputation quality score (R²) less than 0.3 were excluded.</p></li>
-<li><p>Imputed variants with minor allele frequencies (MAF) below 0.01 were excluded to remove extremely rare variants.</p></li>
-<li><p>Imputed variants lacking rsIDs (denoted as ‘.’) or sharing duplicated genomic positions were excluded, as these caused issues during PLINK merging.</p></li>
-</ul>
-</section>
-<section id="considerations-while-working-with-these-data" class="level3" data-number="3.2.4">
-<h3 data-number="3.2.4" class="anchored" data-anchor-id="considerations-while-working-with-these-data"><span class="header-section-number">3.2.4</span> Considerations while working with these data</h3>
-<ul>
-<li><p>Population Structure still exists</p></li>
-<li><p>Researchers can choose to filter out variants based on other, standard QC measures that suit their studies.</p></li>
+<li>Imputed variants with an imputation quality score (R²) less than 0.3 were excluded.</li>
+<li>Imputed variants with minor allele frequencies (MAF) below 0.01 were excluded to remove extremely rare variants.</li>
+<li>Imputed variants lacking rsIDs (denoted as ‘.’) or sharing duplicated genomic positions were excluded, as these caused issues during PLINK merging.</li>
 </ul>
 <details>
 <summary>
@@ -905,8 +913,9 @@ Click to show the Post-Imputation Quality Control Bash Script, which utilizes Pl
 <span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ./Imputation_QCed/Final</span>
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink</span> <span class="at">--bfile</span> Imputation_QCed/No_Duplicates/chr1_No_Duplicates <span class="at">--merge-list</span> Imputation_QCed/a2cps_imputed_qc_merge_list.txt <span class="at">--make-bed</span> <span class="at">--out</span> Imputation_QCed/Final/A2CPS_Imputed_Genomics</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<section id="supplementary-qc-files-rscripts" class="level4" data-number="3.2.4.1">
-<h4 data-number="3.2.4.1" class="anchored" data-anchor-id="supplementary-qc-files-rscripts"><span class="header-section-number">3.2.4.1</span> Supplementary QC Files: RScripts</h4>
+</section>
+<section id="supplementary-qc-files-rscripts" class="level4" data-number="3.2.3.4">
+<h4 data-number="3.2.3.4" class="anchored" data-anchor-id="supplementary-qc-files-rscripts"><span class="header-section-number">3.2.3.4</span> Supplementary QC Files: RScripts</h4>
 <details>
 <summary>
 Click to show Supplementary RScript #1: Variant-Level QC Based on Quality Metrics(post_imputation_qc.R
@@ -989,8 +998,8 @@ Click to show Supplementary RScript #2: Merge Preparation (duplicate.r)
 </details>
 </section>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="3.2.5">
-<h3 data-number="3.2.5" class="anchored" data-anchor-id="citations"><span class="header-section-number">3.2.5</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">3.2.4</span> Citations</h3>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
 <p>Data were provided [in part] by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/ Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>

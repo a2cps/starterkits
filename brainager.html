@@ -754,14 +754,14 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>This starter kit walk through the “Brain Age” outputs that have been derived from the anatomical scans. The examples in the kit rely on <code>bash</code> and <code>R</code>.</p>
+<p>This starter kit walks through the “Brain Age” outputs that have been derived from the anatomical scans. The examples in the kit rely on <code>bash</code> and <code>R</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Fundamentally <code>brainager</code> calculations are about producing an estimated age based on measurable characteristics of a brain image, such as regional variations in gray matter density. The difference between estimated and chronological age is often referred to in the literature as the “brain age gap” (BAG) or “predicted age difference” (PAD), and is usually expressed as estimated minus chronological age. This value is often interpreted as an indicator of brain health.</p>
+<p>Fundamentally, <code>brainager</code> calculations are about producing an estimated age based on measurable characteristics of a brain image, such as regional variations in gray matter density. The difference between estimated and chronological age is often referred to in the literature as the “brain age gap” (BAG) or “predicted age difference” (PAD), and is usually expressed as estimated minus chronological age. This value is often interpreted as an indicator of brain health, serving as a potential biomarker for neurodegenerative disease, cognitive decline, or general biological aging. For a comprehensive overview of Brain Age, see <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5573489/">Cole and Franke (2017)</a> and the <a href="https://github.com/james-cole/brainageR">brainageR GitHub Repository</a>.</p>
 <section id="starting-project" class="level2 page-columns page-full" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">6.1</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="6.1.1">
@@ -857,8 +857,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </section>
 <section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">6.2</span> Considerations While Working on the Project</h2>
-<p>It is in principle possible to replicate the processing that was used in a release by running the brainageR container<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> on the raw data. However, A2CPS Releases 1.0.0, 1.1.0, and 2.0.0 have not included raw T1w files for privacy reasons, and thus the end result may differ from the released version, which was generated on the raw images.</p>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The container used by A2CPS is available <a href="https://github.com/a2cps/mri_imaging_pipeline/blob/master/brainager_app/Dockerfile">here</a>.</p></div></div><section id="variability-across-scanners" class="level3" data-number="6.2.1">
+<section id="variability-across-scanners" class="level3" data-number="6.2.1">
 <h3 data-number="6.2.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">6.2.1</span> Variability Across Scanners</h3>
 <p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
@@ -1001,10 +1000,11 @@ Montesino-Goicolea, S., Valdes-Hernandez, P., Nodarse, C. L., Johnson, A. J., Co
 </div><div id="ref-valdes_brain_2023" class="csl-entry" role="listitem">
 <span class="nocase">Valdes-Hernandez, P. A., Nodarse, C. L., Johnson, A. J., Montesino-Goicolea, S., Bashyam, V., Davatzikos, C., Peraza, J. A., Cole, J. H., Huo, Z., Fillingim, R. B., et al.</span> (2023). Brain-predicted age difference estimated using DeepBrainNet is significantly associated with pain and function—a multi-institutional and multiscanner study. <em>Pain</em>, <em>164</em>(12), 2822–2838. <a href="https://doi.org/10.1097/j.pain.0000000000002984">https://doi.org/10.1097/j.pain.0000000000002984</a>
 </div></div></section>
-<section id="methods" class="level3" data-number="6.2.6">
+<section id="methods" class="level3 page-columns page-full" data-number="6.2.6">
 <h3 data-number="6.2.6" class="anchored" data-anchor-id="methods"><span class="header-section-number">6.2.6</span> Methods</h3>
 <p>For additional documentation on the files and a detailed description of the methods, please see the official <a href="https://github.com/james-cole/brainageR">brainageR repo</a>.</p>
-</section>
+<p>It is in principle possible to replicate the processing that was used in a release by running the brainageR container<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> on the raw data. However, A2CPS Releases 1.0.0, 1.1.0, and 2.0.0 have not included raw T1w files for privacy reasons, and thus the end result may differ from the released version, which was generated on the raw images.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The container used by A2CPS is available <a href="https://github.com/a2cps/mri_imaging_pipeline/blob/master/brainager_app/Dockerfile">here</a>.</p></div></div></section>
 <section id="citations" class="level3 page-columns page-full" data-number="6.2.7">
 <h3 data-number="6.2.7" class="anchored" data-anchor-id="citations"><span class="header-section-number">6.2.7</span> Citations</h3>
 <p>If you use the brainageR materials, please follow the instructions for citing the brainageR package: https://github.com/james-cole/brainageR?tab=readme-ov-file#citations.</p>

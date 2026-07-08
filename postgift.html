@@ -722,7 +722,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   <ul class="collapse">
   <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">19.2.1</span> Variability Across Scanners</a></li>
   <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">19.2.2</span> Data Quality</a></li>
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">19.2.3</span> Data Generation</a></li>
+  <li><a href="#data-generation-configuration" id="toc-data-generation-configuration" class="nav-link" data-scroll-target="#data-generation-configuration"><span class="header-section-number">19.2.3</span> Data Generation (Configuration)</a></li>
   <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">19.2.4</span> Citations</a></li>
   </ul></li>
   </ul>
@@ -761,7 +761,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <a href="gift.html" class="quarto-xref"><span>Chapter 18</span></a> products provide outputs in a raw format that will be familiar to users of that library. To facilitate analyses, A2CPS has repackaged those products into a tabular format. This kit covers the repackaged structure.</p>
-<section id="starting-project" class="level2 page-columns page-full" data-number="19.1">
+<p>As a brief primer, extracting functional networks via ICA allows researchers to study how different brain regions communicate. Once these networks are identified, two common metrics are calculated: 1. <strong>Connectivity</strong>: The correlation between the activity (timecourses) of different networks. This tells us how strongly two distinct brain systems are communicating with each other. 2. <strong>Amplitude (fALFF)</strong>: The fractional Amplitude of Low Frequency Fluctuations <span class="citation" data-cites="zou_improved_2008">(<a href="references.html#ref-zou_improved_2008" role="doc-biblioref">Zou et al., 2008</a>)</span>. This is a measure of the spontaneous, low-frequency neural activity occurring <em>within</em> a specific network, often used to assess baseline brain function and regional abnormalities in conditions like chronic pain.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-zou_improved_2008" class="csl-entry" role="listitem">
+Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-F., &amp; Zang, Y.-F. (2008). An improved approach to detection of amplitude of low-frequency fluctuation (ALFF) for resting-state fMRI: Fractional ALFF. <em>Journal of Neuroscience Methods</em>, <em>172</em>(1), 137–141. <a href="https://doi.org/10.1016/j.jneumeth.2008.04.012">https://doi.org/10.1016/j.jneumeth.2008.04.012</a>
+</div></div><section id="starting-project" class="level2" data-number="19.1">
 <h2 data-number="19.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">19.1</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="19.1.1">
 <h3 data-number="19.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">19.1.1</span> Locate Data</h3>
@@ -773,17 +776,15 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">amplitude</span>  amplitude.json  biomarkers  biomarkers.json  connectivity  connectivity.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="extract-data" class="level3 page-columns page-full" data-number="19.1.2">
+<section id="extract-data" class="level3" data-number="19.1.2">
 <h3 data-number="19.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">19.1.2</span> Extract Data</h3>
 <p>The tabular data comprise <a href="https://parquet.apache.org/">parquet files</a> that have been partitioned in a <a href="https://hive.apache.org/">hive style</a>. Each table is a different summary of the components derived from GIFT.</p>
 <ul>
-<li><a href="https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/gift_amplitude.json">amplitude</a>: a measure of component amplitudes. In particular, they are the fractional Amplitude of Low Frequency Fluctuations <span class="citation" data-cites="zou_improved_2008">(<a href="references.html#ref-zou_improved_2008" role="doc-biblioref">Zou et al., 2008</a>)</span>.</li>
+<li><a href="https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/gift_amplitude.json">amplitude</a>: a measure of component amplitudes (fALFF).</li>
 <li><a href="https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/gift_connectivity.json">connectivity</a>: the (product-moment) correlations between component timecourses.</li>
 <li><a href="https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/gift_biomarkers.json">biomarkers</a>: putative biomarkers of chronic pain calculated for A2CPS analyses.</li>
 </ul>
-<div class="no-row-height column-margin column-container"><div id="ref-zou_improved_2008" class="csl-entry" role="listitem">
-Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-F., &amp; Zang, Y.-F. (2008). An improved approach to detection of amplitude of low-frequency fluctuation (ALFF) for resting-state fMRI: Fractional ALFF. <em>Journal of Neuroscience Methods</em>, <em>172</em>(1), 137–141. <a href="https://doi.org/10.1016/j.jneumeth.2008.04.012">https://doi.org/10.1016/j.jneumeth.2008.04.012</a>
-</div></div><p>Let’s take a look at just the amplitudes.</p>
+<p>Let’s take a look at just the amplitudes.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>amplitude <span class="ot">&lt;-</span> <span class="fu">read_parquet_duckdb</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir_ls</span>(<span class="st">"data/postgift/amplitude"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>, <span class="at">glob =</span> <span class="st">"*parquet"</span>),</span>
@@ -1022,8 +1023,8 @@ taskrest -0.032</code></pre>
 <h3 data-number="19.2.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">19.2.2</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
-<section id="data-generation" class="level3" data-number="19.2.3">
-<h3 data-number="19.2.3" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">19.2.3</span> Data Generation</h3>
+<section id="data-generation-configuration" class="level3" data-number="19.2.3">
+<h3 data-number="19.2.3" class="anchored" data-anchor-id="data-generation-configuration"><span class="header-section-number">19.2.3</span> Data Generation (Configuration)</h3>
 <p>These outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/postgift_app">postgift_app</a>.</p>
 <p>All GIFT outputs rely on the MATLAB toolbox <a href="https://github.com/trendscenter/gift">GIFT</a>. The fALFF measures are calculated by <a href="https://github.com/trendscenter/gift/blob/3b48fabfbe3dd618d0c1a398d16a906e804c7b68/GroupICAT/icatb/icatb_helper_functions/icatb_postprocess_timecourses.m#L295">icatb_postprocess_timecourses.m</a>. Prior to calculating <a href="https://github.com/trendscenter/gift/blob/3b48fabfbe3dd618d0c1a398d16a906e804c7b68/GroupICAT/icatb/icatb_helper_functions/icatb_corr.m">connectivities</a>, timecourses were <a href="https://github.com/trendscenter/gift/blob/3b48fabfbe3dd618d0c1a398d16a906e804c7b68/GroupICAT/icatb/icatb_helper_functions/icatb_despike_tc.m">despiked</a> and <a href="https://github.com/trendscenter/gift/blob/3b48fabfbe3dd618d0c1a398d16a906e804c7b68/GroupICAT/icatb/icatb_helper_functions/icatb_filt_data.m">filtered</a> (high-pass Butterworth filter thresholded at 0.15 Hz). Amptlitudes <a href="https://github.com/trendscenter/gift/blob/3b48fabfbe3dd618d0c1a398d16a906e804c7b68/GroupICAT/icatb/icatb_mancovan_files/icatb_get_spec_stats.m">were calculated</a> with frequency limits of 0.1 to 0.15 Hz. Spectra <a href="https://github.com/trendscenter/gift/blob/3b48fabfbe3dd618d0c1a398d16a906e804c7b68/GroupICAT/icatb/icatb_mancovan_files/icatb_get_spectra.m">were estimated</a> using a <a href="https://github.com/trendscenter/gift/blob/3b48fabfbe3dd618d0c1a398d16a906e804c7b68/GroupICAT/icatb/icatb_mancovan_files/icatb_mtspectrumc.m">multi-taper</a> (time-bandwidth: 3, K: 5 tapers).</p>
 <p>The biomarkers table was calculated by <a href="https://github.com/a2cps/biomarker-extractor/blob/main/src/biomarkers/flows/postgift.py">this A2CPS biomarker-extractor workflow</a>. Details of the calculations are provided in <a href="https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/gift_biomarkers.json">the data dictionary</a>.</p>

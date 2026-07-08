@@ -713,19 +713,19 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#on-starting-project" id="toc-on-starting-project" class="nav-link active" data-scroll-target="#on-starting-project"><span class="header-section-number">5.1</span> On Starting Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">5.1</span> Starting Project</a>
   <ul class="collapse">
   <li><a href="#sec-raw-mri-extract" id="toc-sec-raw-mri-extract" class="nav-link" data-scroll-target="#sec-raw-mri-extract"><span class="header-section-number">5.1.1</span> Extract Data</a></li>
-  <li><a href="#sec-raw-mri-quality" id="toc-sec-raw-mri-quality" class="nav-link" data-scroll-target="#sec-raw-mri-quality"><span class="header-section-number">5.1.2</span> Data Quality</a></li>
   </ul></li>
-  <li><a href="#considerations-while-working-on-project" id="toc-considerations-while-working-on-project" class="nav-link" data-scroll-target="#considerations-while-working-on-project"><span class="header-section-number">5.2</span> Considerations While Working on Project</a>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">5.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">5.2.1</span> Data Generation</a></li>
-  <li><a href="#skull-stripping-for-privacy" id="toc-skull-stripping-for-privacy" class="nav-link" data-scroll-target="#skull-stripping-for-privacy"><span class="header-section-number">5.2.2</span> Skull-Stripping for Privacy</a></li>
-  <li><a href="#acquisition-protocol-variation" id="toc-acquisition-protocol-variation" class="nav-link" data-scroll-target="#acquisition-protocol-variation"><span class="header-section-number">5.2.3</span> Acquisition Protocol Variation</a></li>
-  <li><a href="#software-packages-for-working-with-bids" id="toc-software-packages-for-working-with-bids" class="nav-link" data-scroll-target="#software-packages-for-working-with-bids"><span class="header-section-number">5.2.4</span> Software Packages for Working with BIDS</a></li>
-  <li><a href="#joining-with-other-modalities" id="toc-joining-with-other-modalities" class="nav-link" data-scroll-target="#joining-with-other-modalities"><span class="header-section-number">5.2.5</span> Joining with Other Modalities</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">5.2.6</span> Citations</a></li>
+  <li><a href="#sec-raw-mri-quality" id="toc-sec-raw-mri-quality" class="nav-link" data-scroll-target="#sec-raw-mri-quality"><span class="header-section-number">5.2.1</span> Data Quality</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">5.2.2</span> Data Generation</a></li>
+  <li><a href="#skull-stripping-for-privacy" id="toc-skull-stripping-for-privacy" class="nav-link" data-scroll-target="#skull-stripping-for-privacy"><span class="header-section-number">5.2.3</span> Skull-Stripping for Privacy</a></li>
+  <li><a href="#acquisition-protocol-variation" id="toc-acquisition-protocol-variation" class="nav-link" data-scroll-target="#acquisition-protocol-variation"><span class="header-section-number">5.2.4</span> Acquisition Protocol Variation</a></li>
+  <li><a href="#software-packages-for-working-with-bids" id="toc-software-packages-for-working-with-bids" class="nav-link" data-scroll-target="#software-packages-for-working-with-bids"><span class="header-section-number">5.2.5</span> Software Packages for Working with BIDS</a></li>
+  <li><a href="#joining-with-other-modalities" id="toc-joining-with-other-modalities" class="nav-link" data-scroll-target="#joining-with-other-modalities"><span class="header-section-number">5.2.6</span> Joining with Other Modalities</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">5.2.7</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -753,9 +753,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>This page describes how to work with the raw MRI data from A2CPS. For background on collection and availability, see the “Imaging Data” section of <a href="https://a2cps.org/researchers/data-releases/about-the-data/">a2cps.org</a>. The data are provided in a format called the Brain Imaging Data Structure (BIDS)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The raw data are most useful when you need to run custom preprocessing pipelines. If you do not need custom pipelines, please review <a href="./index.html#sec-preface">the preface</a> for a list of imaging products that have already been calculated.</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;For a generic introduction to BIDS, see: <a href="https://bids-website.readthedocs.io/en/latest/getting_started/index.html">Unsure how to get started using BIDS with your current data? - The Brain Imaging Data Structure</a>]</p></div></div><section id="on-starting-project" class="level2 page-columns page-full" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="on-starting-project"><span class="header-section-number">5.1</span> On Starting Project</h2>
+<p>This page describes how to work with the raw MRI data from A2CPS. For background on collection and availability, see the “Imaging Data” section of <a href="https://a2cps.org/researchers/data-releases/about-the-data/">a2cps.org</a>.</p>
+<p>The data are provided in a format called the Brain Imaging Data Structure (BIDS)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. BIDS is a community standard that dictates how neuroimaging data should be organized and named. By enforcing a strict directory structure and naming convention, BIDS ensures that data are machine-readable and easily shareable, which is vital for reproducibility. Raw imaging data are stored as compressed <a href="https://nifti.nimh.nih.gov/">NIfTI</a> (<code>.nii.gz</code>) files, which contain the actual 3D or 4D arrays of brain intensities. Each NIfTI is accompanied by a JSON “sidecar” file (e.g., <code>.json</code>) that contains all of the essential metadata about how the scan was acquired (e.g., scanner type, echo time, slice timing) that otherwise would be lost or obscured.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;For a generic introduction to BIDS, see: <a href="https://bids-website.readthedocs.io/en/latest/getting_started/index.html">Unsure how to get started using BIDS with your current data? - The Brain Imaging Data Structure</a>]</p></div></div><p>The raw data are most useful when you need to run custom preprocessing pipelines. If you do not need custom pipelines, please review <a href="./index.html#sec-preface">the preface</a> for a list of imaging products that have already been calculated.</p>
+<section id="starting-project" class="level2 page-columns page-full" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">5.1</span> Starting Project</h2>
 <p>Once downloaded, the data will be stored deep inside the image03 folder.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls image03/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/bids/ <span class="kw">|</span> <span class="fu">head</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dataset_description.json</span></span>
@@ -806,6 +808,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> sub-10003_sessions.tsv</span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> directories, 25 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The raw imaging data are in the (<code>gzip</code> compressed) <a href="https://nifti.nimh.nih.gov/">NIfTI</a> files, and each image is associated with a <code>.json</code> sidecar containing metadata about the scan and acquisition parameters (metadata that subsumes the NIfTI header).</p>
+<p><strong>Naming Conventions</strong>: Under BIDS, you’ll see various folders corresponding to the different types of scans acquired: - <code>anat</code>: Structural MRI (sMRI), like T1-weighted (<code>T1w</code>) images used for anatomical reference. - <code>func</code>: Functional MRI (fMRI) including both resting-state (rsfMRI; <code>task-rest</code>) and task-based (tfMRI; <code>task-cuff</code>). - <code>dwi</code>: Diffusion MRI (dMRI) used to measure water diffusion along white matter tracts. - <code>fmap</code>: Contains files used to estimate the magnetic field inhomogeneities, often called “fieldmaps”. However, in A2CPS, these are specifically pairs of spin-echo EPI images with reversed phase-encoding directions (AP/PA). They are not literal fieldmaps themselves, but they are used by preprocessing tools (like fMRIPrep or QSIPrep) to estimate and correct for spatial distortions in the functional and diffusion data.</p>
 <p>The “session” refers to the visit. Currently only the baseline (pre-surgery) data is included, so all sessions have the label “V1”. Information about each participant’s visit is stored in the <code>sub-[record_id]/sub-[record_id]_sessions.tsv</code> file.</p>
 <p>The pressures that were applied during the CUFF scans are recorded in the <a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-specific-files/task-events.html"><code>sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv</code> tables</a>.</p>
 <p>BIDS requires that the diffusion gradient information is stored according to the FSL format, in <code>*bval</code> and <code>*bvec</code> files in the <code>/dwi</code> directory. For details see: <a href="https://bids-specification.readthedocs.io/en/v1.9.0/modality-specific-files/magnetic-resonance-imaging-data.html#required-gradient-orientation-information">Magnetic Resonance Imaging - Brain Imaging Data Structure</a>.</p>
@@ -851,8 +854,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 </section>
-<section id="sec-raw-mri-quality" class="level3" data-number="5.1.2">
-<h3 data-number="5.1.2" class="anchored" data-anchor-id="sec-raw-mri-quality"><span class="header-section-number">5.1.2</span> Data Quality</h3>
+</section>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">5.2</span> Considerations While Working on the Project</h2>
+<section id="sec-raw-mri-quality" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="sec-raw-mri-quality"><span class="header-section-number">5.2.1</span> Data Quality</h3>
 <p>All raw data have undergone quality review. For details on the review process see <a href="https://a2cps.atlassian.net/wiki/external/OTEyMDE5ZDkxY2NkNGI0MWE5ZDRmMWE4MDViM2MzNmE">A2CPS Imaging Quality Assurance</a>.</p>
 <p>The resulting overall quality ratings (red/yellow/green) are included in the <code>*scans.tsv</code> files. For example</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv </span>
@@ -878,11 +884,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv-0-onset</span>  duration    applied_pressure</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv:32:0</span> 450 0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-</section>
-<section id="considerations-while-working-on-project" class="level2 page-columns page-full" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="considerations-while-working-on-project"><span class="header-section-number">5.2</span> Considerations While Working on Project</h2>
-<section id="data-generation" class="level3 page-columns page-full" data-number="5.2.1">
-<h3 data-number="5.2.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">5.2.1</span> Data Generation</h3>
+<section id="data-generation" class="level3 page-columns page-full" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">5.2.2</span> Data Generation</h3>
 <p>Each scanner’s manufacturer-specific algorithms and software are used for the reconstruction of image data from k-space (k-space data were not saved). The reconstructed images are exported in the Digital Imaging and Communications in Medicine (DICOM) format and sent electronically from participating sites to the Texas Advanced Computing Center (TACC). Following the Organization for Human Brain Mapping Committee on Best Practices in Data Analysis and Sharing report <span class="citation" data-cites="nichols_best_2017">(<a href="references.html#ref-nichols_best_2017" role="doc-biblioref"><span class="nocase">Nichols et al.</span>, 2017</a>)</span>, the DICOM files are converted into the Neuroimaging Informatics Technology Initiative (NIfTI) 1 format <span class="citation" data-cites="cox_sort_2004">(<a href="references.html#ref-cox_sort_2004" role="doc-biblioref"><span class="nocase">Cox et al.</span>, 2004</a>)</span> and organized according to the BIDS specification <span class="citation" data-cites="gorgolewski_brain_2016">(<a href="references.html#ref-gorgolewski_brain_2016" role="doc-biblioref"><span class="nocase">Gorgolewski et al.</span>, 2016</a>)</span>. For this conversion, the pipeline uses HeuDiConv <span class="citation" data-cites="halchenko_heudiconv_2024">(<a href="references.html#ref-halchenko_heudiconv_2024" role="doc-biblioref"><span class="nocase">Halchenko et al.</span>, 2024</a>)</span>, which in turn uses <a href="https://github.com/rordenlab/dcm2niix"><code>dcm2niix</code></a> <span class="citation" data-cites="li_first_2016">(<a href="references.html#ref-li_first_2016" role="doc-biblioref">Li et al., 2016</a>)</span>. Conversion relies on the ReproIn heuristic file <span class="citation" data-cites="visconti_di_oleggio_castello_repronimreproin_2023">(<a href="references.html#ref-visconti_di_oleggio_castello_repronimreproin_2023" role="doc-biblioref">Visconti di Oleggio Castello et al., 2023</a>)</span>, modified to encode the sequence and file naming conventions developed for the A2CPS project. The original DICOMs are stored for posterity but are not included in data releases. For additional details, see <span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-nichols_best_2017" class="csl-entry" role="listitem">
 <span class="nocase">Nichols, T. E., Das, S., Eickhoff, S. B., Evans, A. C., Glatard, T., Hanke, M., Kriegeskorte, N., Milham, M. P., Poldrack, R. A., Poline, J.-B., et al.</span> (2017). Best practices in data analysis and sharing in neuroimaging using MRI. <em>Nature Neuroscience</em>, <em>20</em>(3), 299–303. <a href="https://doi.org/10.1038/nn.4500">https://doi.org/10.1038/nn.4500</a>
@@ -910,17 +913,17 @@ Visconti di Oleggio Castello, M., Dobson, J. E., Sackett, T., Kodiweera, C., Hax
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This indicates that the presurgery scan session for participant 20207 (who happens to have been collected at Wayne State) was converted with the <code>heudiconv_app</code> version 0.11.6. That version is recorded <a href="https://github.com/a2cps/mri_imaging_pipeline/blob/c6dd760501b142de34b988be10cc663311a3ceee/heudiconv_app/app.ini">here</a>. This version of the app used the docker image <a href="https://hub.docker.com/layers/psadil/heudiconv/221121/images/sha256-13982ccab36adb26d4439d3673bfc4ee4ad9a7c86b0de4896298a029a1eeb7c3?context=explore">psadil/heudiconv:221121</a>.</p>
 </section>
-<section id="skull-stripping-for-privacy" class="level3" data-number="5.2.2">
-<h3 data-number="5.2.2" class="anchored" data-anchor-id="skull-stripping-for-privacy"><span class="header-section-number">5.2.2</span> Skull-Stripping for Privacy</h3>
+<section id="skull-stripping-for-privacy" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="skull-stripping-for-privacy"><span class="header-section-number">5.2.3</span> Skull-Stripping for Privacy</h3>
 <p>Prior to release, all T1w images are skull-stripped using brain masks from the fMRIPrep pipeline. All DIRC processing is carried out using unmodified raw images, which is recommended for many measures like cortical thickness.</p>
 </section>
-<section id="acquisition-protocol-variation" class="level3" data-number="5.2.3">
-<h3 data-number="5.2.3" class="anchored" data-anchor-id="acquisition-protocol-variation"><span class="header-section-number">5.2.3</span> Acquisition Protocol Variation</h3>
+<section id="acquisition-protocol-variation" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="acquisition-protocol-variation"><span class="header-section-number">5.2.4</span> Acquisition Protocol Variation</h3>
 <p>Over the course of the project, individual scanners have occasionally needed upgrading. For a timeline of acquisition changes, see: <a href="https://a2cps.atlassian.net/wiki/external/ZDE2MjFlYjgwYjJiNGE4NTk3ZGJjMjM4N2I5YWZmMTM">Timeline of Imaging Acquisition Changes</a>.</p>
 <p>Occasionally, scans were collected with acquisition parameters that differed from the standards listed in the <a href="https://a2cps.atlassian.net/wiki/external/ODZhOWJkN2JmMTg3NDA3OWI2ZGM3M2RhZjhlOTQ3YTc">A2CPS Tech Manual</a>. For a review of the kinds of deviations that have been observed, see <a href="https://a2cps.atlassian.net/wiki/external/ZmVkMTczZWJlMzE1NGIyOTgzNGM4NTVlNzUxMGFkZjc">Imaging Log - Problem Cases</a>. In general, preprocessing pipelines should not assume that there is consistency in the acquisition parameters across participants (even in participants from the same site), and in all cases, the metadata within the json sidecars should be referenced as the best source of information on these parameters.</p>
 </section>
-<section id="software-packages-for-working-with-bids" class="level3" data-number="5.2.4">
-<h3 data-number="5.2.4" class="anchored" data-anchor-id="software-packages-for-working-with-bids"><span class="header-section-number">5.2.4</span> Software Packages for Working with BIDS</h3>
+<section id="software-packages-for-working-with-bids" class="level3" data-number="5.2.5">
+<h3 data-number="5.2.5" class="anchored" data-anchor-id="software-packages-for-working-with-bids"><span class="header-section-number">5.2.5</span> Software Packages for Working with BIDS</h3>
 <p>Several packages in multiple languages have been developed to simplify interacting with BIDS. For a complete list, see: <a href="https://bids.neuroimaging.io/benefits.html#other-tools">Benefits</a>, a subset of which is copied below</p>
 <ul>
 <li><a href="https://github.com/bids-standard/bids-matlab">bids-matlab</a>: MATLAB/Octave tools to interact with datasets conforming to the BIDS format</li>
@@ -928,12 +931,12 @@ Visconti di Oleggio Castello, M., Dobson, J. E., Sackett, T., Kodiweera, C., Hax
 <li><a href="https://github.com/bids-standard/pybids">PyBIDS</a>: Python package to quickly parse / search the components of a BIDS dataset. It also contains functionality for running analyses on your data</li>
 </ul>
 </section>
-<section id="joining-with-other-modalities" class="level3" data-number="5.2.5">
-<h3 data-number="5.2.5" class="anchored" data-anchor-id="joining-with-other-modalities"><span class="header-section-number">5.2.5</span> Joining with Other Modalities</h3>
+<section id="joining-with-other-modalities" class="level3" data-number="5.2.6">
+<h3 data-number="5.2.6" class="anchored" data-anchor-id="joining-with-other-modalities"><span class="header-section-number">5.2.6</span> Joining with Other Modalities</h3>
 <p>A2CPS relies on several different schemes for labeling and describing metadata entities. For example, across modalities, participants are identified by Record ID, Subject GUID, Individual ID, and NDA GUID. For more details on how these identifiers relate, see <a href="ids.html" class="quarto-xref"><span>Appendix B</span></a>.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="5.2.6">
-<h3 data-number="5.2.6" class="anchored" data-anchor-id="citations"><span class="header-section-number">5.2.6</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="5.2.7">
+<h3 data-number="5.2.7" class="anchored" data-anchor-id="citations"><span class="header-section-number">5.2.7</span> Citations</h3>
 <p>If you use the imaging data in your research, please cite the imaging pipeline preprint: <span class="citation" data-cites="sadil_acute_2024">Sadil et al. (<a href="references.html#ref-sadil_acute_2024" role="doc-biblioref">2024</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"></div><p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">

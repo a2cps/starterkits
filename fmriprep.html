@@ -723,7 +723,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   <li><a href="#sec-synthstrip" id="toc-sec-synthstrip" class="nav-link" data-scroll-target="#sec-synthstrip"><span class="header-section-number">10.2.1</span> Brain Masking</a></li>
   <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">10.2.2</span> Variability Across Scanners</a></li>
   <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">10.2.3</span> Data Quality</a></li>
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">10.2.4</span> Data Generation</a></li>
+  <li><a href="#data-generation-methods" id="toc-data-generation-methods" class="nav-link" data-scroll-target="#data-generation-methods"><span class="header-section-number">10.2.4</span> Data Generation (Methods)</a></li>
   <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">10.2.5</span> Citations</a></li>
   </ul></li>
   </ul>
@@ -752,8 +752,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>Before being analyzed, structural and functional neuroimaging data must undergo a core set of preprocessing steps. The need for these preprocessing steps are relatively uncontroversial, and they include intensity non-uniformity correction (for structural), correction for motion across volumes (functional), coregistration (structural and functional), as well as several others. As such, these outputs are the result of a minimal preprocessing stream (acknowledging that the meaning of “minimal” differs between datasets). That is, these derivatives have not undergone many steps that are common in other preprocessing pipelines, such as denoising, nuisance regression, or scrubbing. If you need data that have gone through data cleaning, please see either <a href="fcn.html" class="quarto-xref"><span>Chapter 17</span></a> or <a href="neural-pain-signatures.html" class="quarto-xref"><span>Chapter 21</span></a>. The fMRIPrep derivatives are most useful for tasks like reviewing the quality of preprocessing, implementing your own cleaning pipeline, or working from HCP-style <a href="https://www.nitrc.org/projects/cifti/">CIFTI data</a>.</p>
-<section id="starting-project" class="level2" data-number="10.1">
+<p>Before being analyzed, raw structural and functional neuroimaging data must undergo a core set of preprocessing steps. Without these steps, the raw MR signals are dominated by noise sources (e.g., participant head motion, scanner drift, magnetic field inhomogeneities) rather than the underlying neural activity.</p>
+<p>Preprocessing mitigates these artifacts. The need for these preprocessing steps is relatively uncontroversial across the field, and they include intensity non-uniformity correction (for structural scans), correction for motion across volumes (functional scans), and coregistration (aligning structural and functional images into the same physical space), among others.</p>
+<p>These outputs are the result of a minimal preprocessing stream using <a href="https://fmriprep.org/en/stable/">fMRIPrep</a>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> That is, these derivatives have not undergone many advanced cleaning steps that are common in downstream pipelines, such as denoising, nuisance regression, or scrubbing. If you need data that have already gone through advanced data cleaning, please see either <a href="fcn.html" class="quarto-xref"><span>Chapter 17</span></a> or <a href="neural-pain-signatures.html" class="quarto-xref"><span>Chapter 21</span></a>. The fMRIPrep derivatives are most useful for tasks like reviewing the quality of preprocessing, implementing your own custom cleaning pipeline, or working from HCP-style <a href="https://www.nitrc.org/projects/cifti/">CIFTI data</a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;For the equivalent minimal preprocessing pipeline for diffusion MRI, please see <a href="qsiprep.html" class="quarto-xref"><span>Chapter 11</span></a>.</p></div></div><section id="starting-project" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">10.1</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="10.1.1">
 <h3 data-number="10.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">10.1.1</span> Locate Data</h3>
@@ -776,7 +778,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </section>
 <section id="extract-data" class="level3" data-number="10.1.2">
 <h3 data-number="10.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">10.1.2</span> Extract Data</h3>
-<p>For a detailed description of the files produced by fMRIPrep, please review <a href="https://fmriprep.org/en/stable/outputs.html">their documentation</a>.</p>
+<p>Because fMRIPrep produces a large and complex directory structure containing many different types of preprocessed files (e.g., brain masks, normalized anatomical images, confound regressors, and surface data), users typically extract only what they need for their specific downstream analysis tools (such as AFNI, FSL, or SPM).</p>
+<p>For a detailed description of every file produced by fMRIPrep, please review <a href="https://fmriprep.org/en/stable/outputs.html">their official outputs documentation</a>.</p>
 </section>
 </section>
 <section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="10.2">
@@ -795,9 +798,10 @@ Hoopes, A., Mora, J. S., Dalca, A. V., Fischl, B., &amp; Hoffmann, M. (2022). <s
 <h3 data-number="10.2.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">10.2.3</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
-<section id="data-generation" class="level3 page-columns page-full" data-number="10.2.4">
-<h3 data-number="10.2.4" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">10.2.4</span> Data Generation</h3>
+<section id="data-generation-methods" class="level3 page-columns page-full" data-number="10.2.4">
+<h3 data-number="10.2.4" class="anchored" data-anchor-id="data-generation-methods"><span class="header-section-number">10.2.4</span> Data Generation (Methods)</h3>
 <p>These outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/fmriprep_app">fmriprep_app</a>.</p>
+<p><em>(Note: The following text is boilerplate provided by fMRIPrep and should be included verbatim in any publications using these derivatives.)</em></p>
 <p>Results included in this manuscript come from preprocessing performed using <em>fMRIPrep</em> 24.1.1 (<span class="citation" data-cites="fmriprep1">Esteban et al. (<a href="references.html#ref-fmriprep1" role="doc-biblioref">2019</a>)</span>; <span class="citation" data-cites="fmriprep2">Esteban et al. (<a href="references.html#ref-fmriprep2" role="doc-biblioref">2018</a>)</span>; RRID:SCR_016216), which is based on <em>Nipype</em> 1.8.6 (<span class="citation" data-cites="nipype1">K. Gorgolewski et al. (<a href="references.html#ref-nipype1" role="doc-biblioref">2011</a>)</span>; <span class="citation" data-cites="nipype2">K. J. Gorgolewski et al. (<a href="references.html#ref-nipype2" role="doc-biblioref">2018</a>)</span>; RRID:SCR_002502).</p>
 <div class="no-row-height column-margin column-container"><div id="ref-fmriprep1" class="csl-entry" role="listitem">
 Esteban, O., Markiewicz, C., Blair, R. W., Moodie, C., Isik, A. I., Erramuzpe Aliaga, A., Kent, J., Goncalves, M., DuPre, E., Snyder, M., Oya, H., Ghosh, S., Wright, J., Durnez, J., Poldrack, R., &amp; Gorgolewski, K. J. (2019). <span class="nocase">fMRIPrep</span>: A robust preprocessing pipeline for functional <span>MRI</span>. <em>Nature Methods</em>, <em>16</em>, 111–116. <a href="https://doi.org/10.1038/s41592-018-0235-4">https://doi.org/10.1038/s41592-018-0235-4</a>
@@ -888,6 +892,7 @@ Sadil, P., Arfanakis, K., Bhuiyan, E. H., Caffo, B., Calhoun, V. D., Clauw, D. J
 
 </section>
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -720,12 +720,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   </ul></li>
   <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">15.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">15.2.1</span> Data Generation</a></li>
-  <li><a href="#additional-information" id="toc-additional-information" class="nav-link" data-scroll-target="#additional-information"><span class="header-section-number">15.2.2</span> Additional Information</a></li>
-  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">15.2.3</span> Variability Across Scanners</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">15.2.4</span> Data Quality</a></li>
-  <li><a href="#data-generation-1" id="toc-data-generation-1" class="nav-link" data-scroll-target="#data-generation-1"><span class="header-section-number">15.2.5</span> Data Generation</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">15.2.6</span> Citations</a></li>
+  <li><a href="#additional-information" id="toc-additional-information" class="nav-link" data-scroll-target="#additional-information"><span class="header-section-number">15.2.1</span> Additional Information</a></li>
+  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">15.2.2</span> Variability Across Scanners</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">15.2.3</span> Data Quality</a></li>
+  <li><a href="#data-generation-methods" id="toc-data-generation-methods" class="nav-link" data-scroll-target="#data-generation-methods"><span class="header-section-number">15.2.4</span> Data Generation (Methods)</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">15.2.5</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -759,14 +758,16 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>There are several ways to reconstruct the orientation distribution function of dMRI. One relatively simple method employed by A2CPS is presented in <a href="reconstruction.html" class="quarto-xref"><span>Chapter 13</span></a> (the tensor model). Another method employed by A2CPS is the provided by Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques with Crossing-Fibers (BedpostX). While A2CPS uses BedpostX primarily as a step towards tractography (<a href="dwi_biomarker1.html" class="quarto-xref"><span>Chapter 16</span></a>), the BedpostX derivatives may be interesting in some analyses (e.g., comparison of orientation distribution functions and fiber orientation distributions). This kit reviews those outputs.</p>
+<p>There are several ways to reconstruct the microstructural properties and orientation of white matter tracts from diffusion MRI (dMRI). A relatively simple and common method is the Diffusion Tensor Imaging (DTI) model (see <a href="postdtifit.html" class="quarto-xref"><span>Chapter 14</span></a> for regional summary metrics derived from DTI), which works well for regions with a single, coherent fiber direction (e.g.&nbsp;the corpus callosum). However, DTI fails in regions containing “crossing fibers” (where multiple neural tracts intersect within a single voxel), which account for a substantial portion of the brain’s white matter.</p>
+<p>To overcome this, A2CPS employs a more advanced model: Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques with Crossing-Fibers (BedpostX). This method uses a probabilistic approach to model up to three distinct fiber orientations per voxel, allowing for far more accurate white matter tractography.</p>
+<p>While A2CPS uses BedpostX primarily as a step towards tractography (<a href="dwi_biomarker1.html" class="quarto-xref"><span>Chapter 16</span></a>), the BedpostX derivatives may be interesting in some analyses on their own (e.g., comparison of orientation distribution functions and fiber orientation distributions). This kit reviews those outputs.</p>
 <section id="starting-project" class="level2 page-columns page-full" data-number="15.1">
 <h2 data-number="15.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">15.1</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="15.1.1">
 <h3 data-number="15.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">15.1.1</span> Locate Data</h3>
 <p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-surgery/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The derivatives are underneath <code>derivatives/bedpostx</code>. Although BedpostX derivatives are not covered by BIDS, the derivatives are organized in a “BIDS-ish” manner</p>
+<p>The derivatives are underneath <code>derivatives/bedpostx</code>. Although BedpostX derivatives are not covered by BIDS, the derivatives are organized in a “BIDS-ish” manner:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/bedpostx/ <span class="kw">|</span> <span class="fu">head</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
@@ -1084,28 +1085,24 @@ Figure&nbsp;15.2: First Fiber Orientation. The colors correspond to different di
 </section>
 <section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="15.2">
 <h2 data-number="15.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">15.2</span> Considerations While Working on the Project</h2>
-<section id="data-generation" class="level3" data-number="15.2.1">
-<h3 data-number="15.2.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">15.2.1</span> Data Generation</h3>
-<p>BedpostX was run with maximum of 3 fibers per voxel, and default weight (1), burn-in (1000), jumps (1250), and step samples (25) as well as estimating the noise floor and using Rician noise.</p>
-</section>
-<section id="additional-information" class="level3" data-number="15.2.2">
-<h3 data-number="15.2.2" class="anchored" data-anchor-id="additional-information"><span class="header-section-number">15.2.2</span> Additional Information</h3>
+<section id="additional-information" class="level3" data-number="15.2.1">
+<h3 data-number="15.2.1" class="anchored" data-anchor-id="additional-information"><span class="header-section-number">15.2.1</span> Additional Information</h3>
 <p>For additional information on the BedpostX, see the <a href="https://www.youtube.com/watch?v=4dGC1kdNv1M">FSL tutorial video on youtube</a>. Additionally, the FSL Tractography Practical provides helpful information for visualizing the outputs of BedpostX with <a href="https://fsl.fmrib.ox.ac.uk/fslcourse/2019_Beijing/lectures/FDT/fdt2.html"><code>fsleyes</code></a>.</p>
 </section>
-<section id="variability-across-scanners" class="level3" data-number="15.2.3">
-<h3 data-number="15.2.3" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">15.2.3</span> Variability Across Scanners</h3>
+<section id="variability-across-scanners" class="level3" data-number="15.2.2">
+<h3 data-number="15.2.2" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">15.2.2</span> Variability Across Scanners</h3>
 <p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/176619539/Imaging+Harmonization">Confluence</a>.</p>
 </section>
-<section id="data-quality" class="level3" data-number="15.2.4">
-<h3 data-number="15.2.4" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">15.2.4</span> Data Quality</h3>
+<section id="data-quality" class="level3" data-number="15.2.3">
+<h3 data-number="15.2.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">15.2.3</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
-<section id="data-generation-1" class="level3" data-number="15.2.5">
-<h3 data-number="15.2.5" class="anchored" data-anchor-id="data-generation-1"><span class="header-section-number">15.2.5</span> Data Generation</h3>
-<p>These outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/bedpostx_app">bedpostx_app</a>.</p>
+<section id="data-generation-methods" class="level3" data-number="15.2.4">
+<h3 data-number="15.2.4" class="anchored" data-anchor-id="data-generation-methods"><span class="header-section-number">15.2.4</span> Data Generation (Methods)</h3>
+<p>These outputs were generated by the <a href="https://github.com/a2cps/mri_imaging_pipeline/tree/master/bedpostx_app">bedpostx_app</a>. BedpostX was run with maximum of 3 fibers per voxel, and default weight (1), burn-in (1000), jumps (1250), and step samples (25) as well as estimating the noise floor and using Rician noise.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="15.2.6">
-<h3 data-number="15.2.6" class="anchored" data-anchor-id="citations"><span class="header-section-number">15.2.6</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="15.2.5">
+<h3 data-number="15.2.5" class="anchored" data-anchor-id="citations"><span class="header-section-number">15.2.5</span> Citations</h3>
 <p>If you use these products in your analyses, please cite the relevant papers from <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/bedpostx.html">FSL</a>.</p>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">

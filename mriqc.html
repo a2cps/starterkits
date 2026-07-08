@@ -759,8 +759,9 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(duckplyr)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scattermore)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Part of the A2CPS MRI quality control procedure <a href="raw-mri.html#sec-raw-mri-quality" class="quarto-xref"><span>Section 5.1.2</span></a> uses metrics derived from the MRI Quality Control (MRIQC) pipeline <span class="citation" data-cites="esteban_mriqc_2017">(<a href="references.html#ref-esteban_mriqc_2017" role="doc-biblioref">Esteban et al., 2017</a>)</span>. However, MRIQC provides several metrics beyond the subset used by A2CPS. This kit reviews those metrics and shows how they compare with others that are available in the MRIQC database.</p>
-<div class="no-row-height column-margin column-container"></div><section id="starting-project" class="level2" data-number="20.1">
+<p>Rigorous quality control (QC) is absolutely essential in neuroimaging. Artifacts like participant head motion, scanner thermal noise, or radio-frequency (RF) coil failures can dramatically compromise the integrity of the data and introduce severe confounds into downstream analyses. To automatically calculate a suite of standardized image quality metrics, the A2CPS project uses the widely adopted MRI Quality Control (MRIQC) pipeline <span class="citation" data-cites="esteban_mriqc_2017">(<a href="references.html#ref-esteban_mriqc_2017" role="doc-biblioref">Esteban et al., 2017</a>)</span>.</p>
+<div class="no-row-height column-margin column-container"></div><p>Part of the A2CPS MRI quality control procedure <a href="raw-mri.html#sec-raw-mri-quality" class="quarto-xref"><span>Section 5.2.1</span></a> relies directly on these MRIQC metrics. However, MRIQC provides several additional metrics beyond the subset formally used by A2CPS. This kit reviews those metrics and demonstrates how you can benchmark A2CPS data against the hundreds of thousands of scans available in the public MRIQC database.</p>
+<section id="starting-project" class="level2" data-number="20.1">
 <h2 data-number="20.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">20.1</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="20.1.1">
 <h3 data-number="20.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">20.1.1</span> Locate Data</h3>
@@ -1218,7 +1219,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>Quantitatively, the dataset is in the upper quantiles of motion, which is to be expected given the study population.</p>
+<p>Quantitatively, the dataset is in the upper quantiles of motion, which is to be expected given the study population (i.e.&nbsp;patients suffering from chronic pain and discomfort).</p>
 <div class="cell" data-fig-caption="Quantiles of Mean Framewise Displacement in A2CPS. The quantiles are calculated from an empirical CDF derived from the MRIQC reference database.">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>empirical_motion_cdf <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(all_bold<span class="sc">$</span>fd_mean)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
