@@ -6,6 +6,8 @@ format:
 
 # Prior Neural Pain Signature Responses {#sec-neural-pain-signatures}
 
+A "neural signature" is a multivariate pattern of brain activity that has been statistically optimized to predict a specific mental state or symptom—in this case, pain. Rather than looking at activity in a single brain region, these signatures use predefined weight maps across the whole brain. By calculating the dot product (or spatial correlation) between a participant's fMRI scan and these established weight maps, we can estimate a single scalar response value that reflects how strongly the participant's brain activity matches the signature. Two prominent examples used in A2CPS are the Neurologic Pain Signature (NPS) and the Signature of Intact Nociception and Pain (SIIPS1).
+
 ## Starting Project
 
 ### Locate data

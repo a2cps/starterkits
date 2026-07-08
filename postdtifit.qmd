@@ -11,7 +11,11 @@ library(tidyr)
 library(agree)
 ```
 
-The @sec-reconstruction products provide outputs in a raw format that will be familiar to many diffusion imaging experts. To facilitate analyses, A2CPS has repackaged those products into a tabular format. This kit covers the repackaged structure.
+The @sec-reconstruction products provide voxel-wise outputs in a raw format that will be familiar to many diffusion imaging experts. To facilitate analyses, A2CPS has extracted those voxel-wise maps into regional summary statistics and repackaged them into a tabular format. This kit covers the repackaged structure.
+
+As a brief primer, the diffusion tensor model produces several scalar metrics that are commonly used to assess white matter microstructural integrity. The two most common are:
+- **Fractional Anisotropy (FA)**: A measure of the degree to which diffusion is highly directional. High FA typically indicates intact, densely packed, and highly myelinated white matter tracts (like a bundle of straws), whereas low FA suggests less directional organization (like in gray matter or cerebrospinal fluid).
+- **Mean Diffusivity (MD)**: The overall rate of diffusion within a voxel, regardless of direction. Higher MD generally reflects lower cellular density or more free water (e.g., in ventricles or areas of inflammation/edema).
 
 ## Starting Project
 

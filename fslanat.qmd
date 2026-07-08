@@ -2,7 +2,11 @@
 
 ![Subcortical Structures (source: https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.png)
 
-The structural T1w scan in the A2CPS neuroimaging protocol is the source of several pre-specified biomarkers. Two of these biomarkers--the volumes of the hippocampi and amygdalae--are derived from a tool in the Functional Magnetic Resonance Imaging of the Brain (FMRIB) Software Library (FSL): [FMRIB's Integrated Registration and Segmentation Tool (FIRST)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html). The A2CPS pipeline calls FIRST as a part of FSL standard pipeline for processing anatomical images ([fsl_anat](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html)), which generates several outputs in addition to the biomarkers. This kit provides and overview of the outputs available from that pipeline.
+The structural T1w scan in the A2CPS neuroimaging protocol is the source of several pre-specified biomarkers. Two of these biomarkers—the volumes of the hippocampi and amygdalae—are derived from a tool in the Functional Magnetic Resonance Imaging of the Brain (FMRIB) Software Library (FSL): [FMRIB's Integrated Registration and Segmentation Tool (FIRST)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html). 
+
+Subcortical volumetric measurements are particularly important in pain research. The amygdala plays a critical role in the affective and emotional dimensions of pain processing, while the hippocampus is involved in memory consolidation and contextual fear conditioning associated with painful stimuli. Assessing the volume of these structures can help researchers understand structural adaptations to chronic pain.
+
+The A2CPS pipeline calls FIRST as a part of the FSL standard pipeline for processing anatomical images ([fsl_anat](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html)), which generates several outputs in addition to the biomarkers. This kit provides an overview of the outputs available from that pipeline.
 
 ## Starting Project
 
@@ -136,7 +140,7 @@ Consistency of Subcortical Volumes. The lower and upper bounds are 95% Confidenc
 
 :::
 
-## Considerations While Working on Projects
+## Considerations While Working on the Project
 
 ### Variability Across Scanners
 
@@ -146,7 +150,7 @@ Consistency of Subcortical Volumes. The lower and upper bounds are 95% Confidenc
 
 {{< include _snippets/mri-qc.qmd >}}
 
-### Methods
+### Data Generation (Methods)
 
 For a subset of participants, the standard `fsl_anat` pipeline needed to be modified.
 

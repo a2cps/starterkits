@@ -2,6 +2,16 @@
 
 For publishing, we're currently using GitHub Actions with frozen computations, [as described here](https://quarto.org/docs/publishing/github-pages.html#github-action). Note that the action does not execute code.
 
+## Styleguide & Scope
+
+When writing or updating a starter kit, please adhere to the following guidelines:
+
+- **Target Audience:** Kits should be targeted at expert researchers who may be very familiar with their own domain but might not understand the specific datatype discussed in the kit (e.g., a genetics expert reading an MRI kit).
+- **Didactic Tone:** The aim of each kit is to be didactic. Explain *why* certain data processing or extraction steps are taken, not just *how* to run code.
+- **Background Knowledge:** Do not reinvent the wheel for basic background knowledge (e.g., explaining the physics of fMRI). Instead, point to existing, high-quality external tutorials or review papers.
+- **Complexity:** Avoid writing overly complicated code chunks. If a kit needs a complex example or figure, suggest it with a placeholder or plain English explanation. The main focus should be on clear prose.
+- **Structural Consistency:** Kits must adhere to the structure defined in `_template.qmd`. See the template for the required sections: "Starting Project" (Locate Data, Extract Data, Data Quality, Cross-Modality Links) and "Considerations While Working on the Project" (Data Generation, Other, Citations).
+
 ## To Update
 
 The following is a minimal workflow for updating the site. 

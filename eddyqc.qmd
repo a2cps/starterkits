@@ -1,6 +1,8 @@
 # EDDY QC {#sec-eddyqc}
 
-This kit reviews the key quality control metrics provided by [FSL’s EDDY QC](https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html) [@bastiani_2019_automated], which are included in A2CPS data releases. These metrics are not used in the automated rating of dMRI images, but they provide valuable information about the impacts of movement and magnetic susceptibility on a diffusion scan. 
+This kit reviews the key quality control metrics provided by [FSL’s EDDY QC](https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html) [@bastiani_2019_automated], which are included in A2CPS data releases. 
+
+Diffusion MRI (dMRI) is highly sensitive to macroscopic head motion and to eddy currents—rapidly changing magnetic gradients that cause geometric distortions and blurring in the reconstructed images. FSL's EDDY tool is a gold-standard approach for correcting these artifacts. As a byproduct of the correction process, EDDY generates several quantitative quality control metrics. While these metrics are not used in the automated rating of dMRI images in A2CPS, they provide valuable, objective information about the severity of movement and magnetic susceptibility artifacts on a scan (e.g., Contrast-to-Noise Ratio).
 
 ## Starting Project
 
@@ -119,11 +121,6 @@ To enable comparisons of quality across datasets, it is recommended to convert t
 ### Background
 
 For detailed information about all the QC metrics provided, please see official FSL documentation for [EDDY QC](https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html), along with the report @bastiani_2019_automated. 
-
-### Data Generation
-
-
-
 
 
 ### Citations
