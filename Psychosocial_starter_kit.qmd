@@ -6,7 +6,9 @@ authors:
 
 # Psychosocial {#sec-psychosocial}
 
-Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements [@wandner_nih_2022] to gain a comprehensive understanding of chronic pain [@berardi_multi_2022]. These assessments include:
+Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements [@wandner_nih_2022] to gain a comprehensive understanding of chronic pain [@berardi_multi_2022]. For a general introduction to psychosocial assessments in clinical research, see resources such as the [NIH HEAL Initiative Common Data Elements](https://heal.nih.gov/data/common-data-elements).
+
+These assessments include:
 
 - Pain related psychosocial constructs
   - These include pain resilience, catastrophizing, kinesiophobia, and multisensory sensitivity. Pain resilience is measured using the Pain Resilience Scale (PRS)[@slepian_development_2016]. Catastrophizing measures negative appraisal of pain using the Pain Catastrophizing Scale-6 (PCS-6) [@mcwilliams_development_2015]. Kinesiophobia (fear of movement) is measured using the Fear Avoidance Beliefs Questionnaire—Physical Activity subscale (FABQ-PA)[@waddell_fear_1993]. Sensitivity to sensory stimulation (light, sound, odor, flavor, touch) and interoception (balance, nausea, heart rate) are measured using an 8-item General Sensory Sensitivity (GSS) [@schrepf_sensory_2018].
@@ -16,7 +18,7 @@ Psychosocial data help researchers understand the complex relationship between p
   - PROMIS SFv2.0 Instrumental Support 6a questionnaire is used to measure the quality of social support received by the subjects, and PROMIS SFv2.0 Emotional Support 6a questionnaire measures subjects' perception about being valued and cared for [@hahn_measuring_2010].
 - Cognitive Function and Sleep
   - Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) [@kratz_promis_2016] measures perceived cognitive dysfunction in patients with fibromyalgia. Sleep is assessed using the PROMIS Short Form v1.0 Sleep Disturbance 6a measure [@yu_development_2012] and Pain-Sleep Duration (Sleep II) form [@buysse_pittsburgh_1989].
-- Other Assessments (Demographic, Comorbidity Questionnaire (SCQ), The Adverse Childhood Experience questionnaire (ACE), Big Five Inventory−2 short form (BFI-2-S)
+- Other Assessments Demographic, Comorbidity Questionnaire (SCQ), The Adverse Childhood Experience questionnaire (ACE), Big Five Inventory−2 short form (BFI-2-S)
   - The demographic information form captures age, sex, gender, ethnicity, race, level of education, employment status, relationship status, household income, and disability status. Chronic health conditions are captured using the Self-Administered Comorbidity Questionnaire (SCQ) [@sangha_self_2003]. The Adverse Childhood Experience questionnaire (ACE) [@felitti_relationship_1998] is used to assess the history of childhood abuse and dysfunctional family dynamics retrospectively. Also at baseline, five personality constructs are measured using the Big Five Inventory−2 short form (BFI-2-S), which measure five personality domains, i.e., 1. extraversion, 2. agreeableness, 3. conscientiousness, 4. negative emotionality, and 5. open-mindedness [@soto_short_2017].
 
 ## Starting Project
@@ -30,26 +32,22 @@ Where are the relevant files?
 $ /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-0-0/psychosocial/reformatted
 ```
 
-### Example workflow with GAD-7 (Anxiety) and PHQ-9 (Depression)
+### Extract Data
 
-Load libraries (Uncomment to install libraries if not already installed)
+Often, researchers want to examine the relationship between different psychosocial measures. For example, Anxiety (GAD-7) and Depression (PHQ-9) frequently coexist due to shared biological mechanisms. 
+
+To explore this, we first load the relevant datasets.
 
 ```{r setup}
-#install.packages(c("tidyverse", "ggplot2"))
-
-#load libraries
 library(tidyverse)
-library(ggplot2)
 ```
-
-Load Data: GAD-7 (Anxiety) and PHQ-9 (Depression)
 
 ```{r load}
-gad <- read_csv("data/reformatted_gad.csv")
-phq <- read_csv("data/reformatted_phq.csv")
+gad <- read_csv("data/psychosocial/reformatted/reformatted_gad.csv")
+phq <- read_csv("data/psychosocial/reformatted/reformatted_phq.csv")
 ```
 
-Join GAD-7 (Anxiety) and PHQ-9 (Depression) datasets using unique identifiers i.e. `record_id` and `guid`, and other common data elements, we will call this combined dataset `"gad_phq"`. Left join keeps all rows from the left table and matches data from the right. Right join keeps all rows from the right table and matches data from the left. Inner join keeps rows that exist in both tables. Full join keeps all rows from both tables, leaving missing values where there's no match. The type of join depends on the researchers' goals. Here we will use an inner join for exploratory data analysis purposes. In cases where the datasets have more than two columns in common the following code is helpful since it uses the common column names between the two datasets.
+Next, we join the datasets using the unique identifiers `record_id` and `guid`. These identifiers allow you to link records across different psychosocial forms, as well as to other modalities (like neuroimaging or genomics). The `inner_join` function is used here to keep only rows that exist in both tables.
 
 ```{r join}
 gad_phq <- inner_join(gad, phq, by = intersect(names(gad), names(phq)))
@@ -120,6 +118,12 @@ The data were exported from REDCap and may contain errors or missing values. The
 ### Cross-Modality Links
 
 All files include `record_id` and `guid`, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.
+
+## Considerations While Working on the Project
+
+### Data Generation
+
+Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessement and a mood assessment.
 
 ### Missing Data
 

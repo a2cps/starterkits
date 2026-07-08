@@ -8,7 +8,9 @@ library(readr)
 library(fs)
 ```
 
-In @sec-bedpostx, we covered the outputs of BedpostX, which is dmethod for modeling how water diffuses in each voxel and estimating their implied fiber orientation distributions. The outputs of BedpostX were used as the inputs for one of the primary A2CPS biomarker, which is based on a finding reported by @vachon2016corticolimbic: as compared with patients whose subacute back pain recovered, those whose pain persisted exhibited higher connectivity at baseline within a corticolimbic subnetwork involving the amygdala, nucleus accumbens, and the dorsal medial prefrontal cortex (Am-NAc-mPFC). This kit describes the derivatives produced while extracting that biomarker.
+In @sec-bedpostx, we covered the outputs of BedpostX, which is a method for modeling how water diffuses in each voxel and estimating their implied fiber orientation distributions. The outputs of BedpostX were used as the inputs for probabilistic tractography—a technique that repeatedly samples from these distributions to build "streamlines" representing probable neural tracts. By modeling the uncertainty of fiber orientations, probabilistic tractography is uniquely capable of reconstructing complex, long-distance networks, including the corticolimbic network.
+
+Specifically, this kit describes the derivatives produced while extracting one of the primary A2CPS biomarkers. This biomarker is based on a finding reported by @vachon2016corticolimbic: as compared with patients whose subacute back pain recovered, those whose pain persisted exhibited higher connectivity at baseline within a corticolimbic subnetwork involving the amygdala, nucleus accumbens, and the dorsal medial prefrontal cortex (Am-NAc-mPFC).
 
 ## Starting Project
 

@@ -8,11 +8,11 @@ This page provides considerations for A2CPS projects that involve the Imputed Ge
 
 The imputed genomic dataset expands single-nucleotide resolution variant data across the human genome, offering deeper and more comprehensive coverage. Genotype imputation aligns SNP array data with ancestry-specific reference haplotypes to infer untyped variants with high confidence. This process can be compared to filling in missing letters in a sentence based on contextual knowledge — for example: 
 
-
 “T_e l_zy d_g j___ed _ver the _at.”
 
+Imputation is particularly important in genetic association studies because it allows researchers to identify disease-associated loci that were not directly genotyped, facilitating meta-analyses across different studies that may have used different SNP arrays. For a deeper dive into the methodology and importance of imputation, see the [TOPMed Imputation Server Documentation](https://topmedimpute.readthedocs.io/en/latest/).
 
-Following imputation, the dataset increased from 690,126 to 11,016,319 genetic loci, spanning all 22 autosomes and the X chromosome for 1,375 participants. Prior to imputation, data were preprocessed and formatted for compatibility with the Imputation Server. Post-imputation, we applied rigorous quality control, excluding low-confidence variants and those with a minor allele frequency (MAF) below 1%.
+Following imputation in this dataset, the number of genetic loci increased from 690,126 to 11,016,319, spanning all 22 autosomes and the X chromosome for 1,375 participants. Prior to imputation, data were preprocessed and formatted for compatibility with the Imputation Server. Post-imputation, we applied rigorous quality control, excluding low-confidence variants and those with a minor allele frequency (MAF) below 1%.
 
 ## Starting Project
 
@@ -42,25 +42,33 @@ $ ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-
 
 These files are in the [PLINK](https://www.cog-genomics.org/plink/1.9/) format.
 
-For more detail on Plink Binary File information and data extraction for genetic variant data, refer to the Genetic Variant starter kit.
+### Extract Data
 
-## Imputation Process
+To access the variant data efficiently, you should use `plink2` (or `plink` 1.9). Plink can rapidly subset massive genomic datasets to pull only the specific variants or participants you need for an analysis. For more detail on Plink Binary File information and data extraction for genetic variant data, refer to the [Genetic Variant starter kit](genetic_variants.qmd).
+
+## Considerations while working with these data
+
+### Population Structure
+
+Even after rigorous QC, population structure still exists within the dataset. Systematic differences in ancestry between groups can lead to spurious associations in genetic analyses. You should generally include genetic principal components as covariates in any downstream analyses (e.g., Polygenic Risk Scores or Genome-Wide Association Studies).
+
+### Custom Filtering
+
+Researchers can choose to filter out variants based on other, standard QC measures that suit their specific study designs. The data provided here represents a strong baseline, but it may require additional tailoring depending on your research question.
+
+### Data Generation (Imputation Process)
 
 The below procedures were performed with these data:
 
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed
+- `2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed`
+- `2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim`
+- `2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam`
 
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
+*(Note: These files originally had the base name A2CPS_Freeze_2, as reflected in the code below)*
 
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam
+#### Pre-Imputation Data Preparation
 
-(these files originally had base name A2CPS_Freeze_2, as reflected in the code below)
-
-### Pre-Imputation Data Preparation
-
-Following the Data Preparation Process as outlined here:
-
-[TOPMed Imputation Server Data Preparation](https://topmedimpute.readthedocs.io/en/latest/prepare-your-data/)
+Following the Data Preparation Process as outlined here: [TOPMed Imputation Server Data Preparation](https://topmedimpute.readthedocs.io/en/latest/prepare-your-data/)
 
 <details>
 <summary>Click to show the Pre-Imputation Data Processing Bash Script, which utilizes Plink 1.9</summary>
@@ -93,23 +101,16 @@ mkdir A2CPS_RL1-5_For_Imputation_F2
 ```
 </details>
 
-### Imputation
+#### Imputation
 After preparing the files, they were run through:
 
 [TOPMed Imputation Pipeline](https://topmedimpute.readthedocs.io/en/latest/pipeline/)
 
-### Post-Imputation Quality Control
+#### Post-Imputation Quality Control
 
 - Imputed variants with an imputation quality score (R²) less than 0.3 were excluded.
-
 - Imputed variants with minor allele frequencies (MAF) below 0.01 were excluded to remove extremely rare variants.
-
 - Imputed variants lacking rsIDs (denoted as '.') or sharing duplicated genomic positions were excluded, as these caused issues during PLINK merging.
-
-### Considerations while working with these data
-- Population Structure still exists
-
-- Researchers can choose to filter out variants based on other, standard QC measures that suit their studies.
 
 
 <details>

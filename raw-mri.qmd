@@ -6,11 +6,15 @@ params:
 
 # Raw MRI Data Starter Kit {#sec-raw-mri}
 
-This page describes how to work with the raw MRI data from A2CPS. For background on collection and availability, see the "Imaging Data" section of [a2cps.org](https://a2cps.org/researchers/data-releases/about-the-data/). The data are provided in a format called the Brain Imaging Data Structure (BIDS)[^bids]. The raw data are most useful when you need to run custom preprocessing pipelines. If you do not need custom pipelines, please review [the preface](index.qmd#sec-preface) for a list of imaging products that have already been calculated.
+This page describes how to work with the raw MRI data from A2CPS. For background on collection and availability, see the "Imaging Data" section of [a2cps.org](https://a2cps.org/researchers/data-releases/about-the-data/). 
+
+The data are provided in a format called the Brain Imaging Data Structure (BIDS)[^bids]. BIDS is a community standard that dictates how neuroimaging data should be organized and named. By enforcing a strict directory structure and naming convention, BIDS ensures that data are machine-readable and easily shareable, which is vital for reproducibility. Raw imaging data are stored as compressed [NIfTI](https://nifti.nimh.nih.gov/) (`.nii.gz`) files, which contain the actual 3D or 4D arrays of brain intensities. Each NIfTI is accompanied by a JSON "sidecar" file (e.g., `.json`) that contains all of the essential metadata about how the scan was acquired (e.g., scanner type, echo time, slice timing) that otherwise would be lost or obscured.
+
+The raw data are most useful when you need to run custom preprocessing pipelines. If you do not need custom pipelines, please review [the preface](index.qmd#sec-preface) for a list of imaging products that have already been calculated.
 
 [^bids]: For a generic introduction to BIDS, see: [Unsure how to get started using BIDS with your current data? - The Brain Imaging Data Structure](https://bids-website.readthedocs.io/en/latest/getting_started/index.html)]
 
-## On Starting Project
+## Starting Project
 
 Once downloaded, the data will be stored deep inside the image03 folder.
 
@@ -74,6 +78,13 @@ sub-10003
 
 The raw imaging data are in the (`gzip` compressed) [NIfTI](https://nifti.nimh.nih.gov/) files, and each image is associated with a `.json` sidecar containing metadata about the scan and acquisition parameters (metadata that subsumes the NIfTI header).
 
+**Naming Conventions**:
+Under BIDS, you'll see various folders corresponding to the different types of scans acquired:
+- `anat`: Structural MRI (sMRI), like T1-weighted (`T1w`) images used for anatomical reference.
+- `func`: Functional MRI (fMRI) including both resting-state (rsfMRI; `task-rest`) and task-based (tfMRI; `task-cuff`).
+- `dwi`: Diffusion MRI (dMRI) used to measure water diffusion along white matter tracts.
+- `fmap`: Contains files used to estimate the magnetic field inhomogeneities, often called "fieldmaps". However, in A2CPS, these are specifically pairs of spin-echo EPI images with reversed phase-encoding directions (AP/PA). They are not literal fieldmaps themselves, but they are used by preprocessing tools (like fMRIPrep or QSIPrep) to estimate and correct for spatial distortions in the functional and diffusion data.
+
 The "session" refers to the visit. Currently only the baseline (pre-surgery) data is included, so all sessions have the label "V1". Information about each participant's visit is stored in the `sub-[record_id]/sub-[record_id]_sessions.tsv` file.
 
 The pressures that were applied during the CUFF scans are recorded in the [`sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv` tables](`{r} glue::glue("https://bids-specification.readthedocs.io/en/{params$bids}/modality-specific-files/task-events.html")`).
@@ -128,6 +139,8 @@ tibble::tribble(
 ```
 
 
+## Considerations While Working on the Project
+
 ### Data Quality {#sec-raw-mri-quality}
 
 All raw data have undergone quality review. For details on the review process see [A2CPS Imaging Quality Assurance](https://a2cps.atlassian.net/wiki/external/OTEyMDE5ZDkxY2NkNGI0MWE5ZDRmMWE4MDViM2MzNmE).
@@ -163,8 +176,6 @@ sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv:32:0	450	0
 sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv-0-onset	duration	applied_pressure
 sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv:32:0	450	0
 ```
-
-## Considerations While Working on Project
 
 ### Data Generation
 

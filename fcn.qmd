@@ -1,8 +1,10 @@
 # Functional Connectivity {#sec-functional-connectivity}
 
-Functional connectivity is a measurement of how activity in different regions of the brain are related. It is calculated by reducing the voxelwise timeseries into a set of parceled timecourses and then calculating a measure of connectivity between those timecourses. 
+Functional connectivity is a measurement of how activity in different regions of the brain relates to one another over time. It is calculated by reducing the voxel-wise BOLD timeseries into a smaller set of regional timecourses, and then calculating a measure of correlation between those regional timecourses. 
 
-This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations. For functional connectivity derived from independent components, see the GIFT starter kit (forthcoming).
+To define these regions, researchers rely on "brain parcellations" or atlases. Some atlases divide the brain into discrete, non-overlapping anatomical regions. Other methods, like [Dictionary Learning for Functional Regions (DiFuMo)](https://nilearn.github.io/modules/generated/nilearn.regions.fetch_atlas_difumo.html), do not create a strict parcellation. Instead, DiFuMo extracts a set of "soft", overlapping functional networks based on massive amounts of fMRI data. When using these different approaches, it is important to remember that you are correlating activity between fundamentally different kinds of brain divisions.
+
+This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations and soft atlases. For functional connectivity derived from subject-specific independent components, see @sec-gift.
 
 ```{r setup}
 library(arrow)
@@ -100,7 +102,7 @@ head(dmn_labeled)
 
 ### Example Analysis: Discriminability
 
-In this section, we show how the connectivity results could be used to calculate discriminability [@bridgeford_eliminating_2021], which is a multivariate measure of replicability like the intra-class correlation coefficient or fingerprinting. Discriminability ranges from 0 - 1, with 0.5 indicating something like an equal chance that the two scans from the same participants are as similar as the two scans from different participants, and 1 indicating that the two scans from the same participant are always more similar than two scans from differing participants.
+In this section, we show how the connectivity results could be used to calculate discriminability [@bridgeford_eliminating_2021], which is a multivariate measure of replicability like the intra-class correlation coefficient or fingerprinting. In the context of connectomes, it answers the question: "Is the functional connectivity profile of a participant distinct enough to identify them among a group of people?" Discriminability ranges from 0 - 1, with 0.5 indicating something like an equal chance that the two scans from the same participants are as similar as the two scans from different participants, and 1 indicating that the two scans from the same participant are always more similar than two scans from differing participants.
 
 We are going to assess whether a person's connectivity matrix is consistent across runs, even across runs of different types (e.g., CUFF1 vs CUFF2, REST1 vs CUFF1).
 

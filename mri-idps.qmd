@@ -1,19 +1,12 @@
-# MRI Image Derived Phenotypes  {#sec-mri-idps}
+# MRI Image Derived Phenotypes {#sec-mri-idps}
 
-Often, researchers may wish to simply have a set of features that they can use to train and test predictive models. When those features are extracted from the neuroimaging data, we refer to them as image-derived phenotypes. This kit describes a subset of them that have been compiled into a single table. While this table of image-derived phenotypes does not encompass all available measurements, they are often a good place to start analyses.
+Often, researchers may wish to simply have a set of features that they can use to train and test predictive models. When those features are extracted from neuroimaging data, we refer to them as Image-Derived Phenotypes (IDPs). For an excellent overview of how IDPs are generated and used in large-scale studies, see the [UK Biobank Brain Imaging Documentation](https://www.fmrib.ox.ac.uk/ukbiobank/index.html).
 
-The selection of phenotypes was based on those that are available within the UK Biobank [@miller_multimodal_2016], and they are derived from the structural and functional MRI scans (diffusion MRI phenotypes will be available in a subsequent release). A full data dictionary is available [here](https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/mri.json), and they are summarized below.
+This kit describes a subset of IDPs that have been compiled into a single table. While this table does not encompass all available measurements, it is a great place to start your analyses. The selection of phenotypes was based on those available within the UK Biobank [@miller_multimodal_2016], derived from structural and functional MRI scans (diffusion MRI phenotypes will be available in a subsequent release). A full data dictionary is available [here](https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/mri.json).
 
-## sMRI
-
-- 15 measures (volumetric) from [FSL's FIRST](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html)
-- 1 scaling factor and 2 volumes from @sec-fslanat
-- 24 global measures from @sec-freesurfer
-
-## fMRI
-
-- 104 nodal fraction of low-frequency fluctuation values from the NeuroMark 2.1 multi-resolution components (@sec-postgift), for each of the four functional scans
-- 5460 connectivities from NeuroMark 2.1 multi-resolution functional connectivity matrices (@sec-postgift), for each of the four functional scans
+These IDPs include:
+- **sMRI**: 15 volumetric measures from [FSL's FIRST](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html), 3 global measures from @sec-fslanat, and 24 global measures from @sec-freesurfer.
+- **fMRI**: 104 nodal fractional amplitude of low-frequency fluctuation (fALFF) values and 5460 functional connectivities from the NeuroMark 2.1 multi-resolution components (@sec-postgift), for each of the four functional scans.
 
 ## Starting Project
 
@@ -21,7 +14,7 @@ The selection of phenotypes was based on those that are available within the UK 
 
 {{< include _snippets/mri-location.qmd >}}
 
-The table, `mri.tsv`, is in a file are underneath the folder `idp`. Let's take a look.
+The primary IDP table, `mri.tsv`, is located underneath the `idp` folder. Let's take a look.
 
 ```{bash}
 #| eval: false
@@ -29,7 +22,7 @@ $ ls idp/
 mask_volumes.json  mask_volumes.tsv  mri.json  mri.tsv
 ```
 
-Even though this is only a subset of the available neuroimaging derivatives, there are many fields.
+Even though this represents only a subset of all possible neuroimaging derivatives, the table is quite wide because it contains features extracted across many brain regions and multiple functional tasks.
 
 ```{bash}
 #| eval: false
@@ -39,7 +32,9 @@ $ awk '{print NF; exit}' idp/mri.tsv
 
 ### Extract Data
 
-Any function capable of parsing tab-separated value files can load in this data. Here, let's take the participant identifier and the REST1 fALFF measurements.
+Because this table is saved as a tab-separated values (`tsv`) file, any software capable of reading delimited text can load it. However, because it contains tens of thousands of columns, it is often best practice to load only the specific features you need for your analysis. 
+
+For example, if we are only interested in the resting state (REST1) fALFF measurements for our participants, we can select just the `sub` (participant identifier) column and any column matching that specific functional task.
 
 ```{r}
 readr::read_tsv(
@@ -49,16 +44,24 @@ readr::read_tsv(
   head()
 ```
 
-
-## Considerations While Working on the Project
-
-### Variability Across Scanners
-
-{{< include _snippets/mri-scanner-variability.qmd >}}
-
 ### Data Quality
 
 {{< include _snippets/mri-qc.qmd >}}
+
+### Cross-Modality Links
+
+The `sub` column in `mri.tsv` represents the participant's unique identifier. This identifier matches the `biospecimen_id` or equivalent IDs used in other modalities (such as psychosocial or genetics), allowing you to merge these neuroimaging features with other datasets.
+
+## Considerations While Working on the Project
+
+### Data Generation
+
+These image-derived phenotypes were not generated by a single pipeline, but rather aggregated from several validated neuroimaging tools. Structural IDPs were primarily generated using [FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki) and [FreeSurfer](https://freesurfer.net/), while functional IDPs were derived using the [NeuroMark 2.1](https://trendscenter.org/software/gift/) independent component analysis pipeline. For deeper dives into how each of these derivatives was produced, see the respective starter kits linked in the introduction.
+
+### Other
+
+**Variability Across Scanners**
+{{< include _snippets/mri-scanner-variability.qmd >}}
 
 ### Citations
 
@@ -67,4 +70,3 @@ If you use these results, please cite the MRIQC report [@esteban_mriqc_2017] and
 {{< include _snippets/a2cps_citations.qmd >}}
 
 When using neuroimaging derivatives, please also cite @sadil_acute_2024.
-

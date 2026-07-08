@@ -8,8 +8,9 @@ library(duckplyr)
 library(scattermore)
 ```
 
+Rigorous quality control (QC) is absolutely essential in neuroimaging. Artifacts like participant head motion, scanner thermal noise, or radio-frequency (RF) coil failures can dramatically compromise the integrity of the data and introduce severe confounds into downstream analyses. To automatically calculate a suite of standardized image quality metrics, the A2CPS project uses the widely adopted MRI Quality Control (MRIQC) pipeline [@esteban_mriqc_2017].
 
-Part of the A2CPS MRI quality control procedure [@sec-raw-mri-quality] uses metrics derived from the MRI Quality Control (MRIQC) pipeline [@esteban_mriqc_2017]. However, MRIQC provides several metrics beyond the subset used by A2CPS. This kit reviews those metrics and shows how they compare with others that are available in the MRIQC database.
+Part of the A2CPS MRI quality control procedure [@sec-raw-mri-quality] relies directly on these MRIQC metrics. However, MRIQC provides several additional metrics beyond the subset formally used by A2CPS. This kit reviews those metrics and demonstrates how you can benchmark A2CPS data against the hundreds of thousands of scans available in the public MRIQC database.
 
 ## Starting Project
 
@@ -83,7 +84,7 @@ dplyr::bind_rows(list(a2cps = group_bold, mriqc = all_bold), .id = "source") |>
   coord_cartesian(ylim = c(0, 5))
 ```
 
-Quantitatively, the dataset is in the upper quantiles of motion, which is to be expected given the study population.
+Quantitatively, the dataset is in the upper quantiles of motion, which is to be expected given the study population (i.e. patients suffering from chronic pain and discomfort).
 
 ```{r}
 #| fig-caption: "Quantiles of Mean Framewise Displacement in A2CPS. The quantiles are calculated from an empirical CDF derived from the MRIQC reference database."
