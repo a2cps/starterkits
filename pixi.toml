@@ -1,0 +1,26 @@
+[workspace]
+authors = ["Patrick Sadil <psadil@gmail.com>"]
+channels = ["conda-forge"]
+name = "starterkits"
+platforms = ["osx-arm64", "linux-64"]
+version = "0.1.0"
+
+[tasks]
+render = "export QUARTO_PYTHON=$CONDA_PREFIX/bin/python && quarto render"
+preview = "export QUARTO_PYTHON=$CONDA_PREFIX/bin/python && quarto preview"
+
+[dependencies]
+r = ">=4.5,<4.6"
+r-dplyr = ">=1.2.1,<2"
+r-ggplot2 = ">=4.0.3,<5"
+r-mgc = ">=2.0.2,<3"
+r-duckplyr = ">=1.2.1,<2"
+r-arrow = ">=24.0.0,<25"
+r-tidyr = ">=1.3.2,<2"
+r-purrr = ">=1.2.2,<2"
+r-readr = ">=2.2.0,<3"
+quarto = ">=1.9.38,<2"
+r-rmarkdown = ">=2.31,<3"
+r-knitr = ">=1.51,<2"
+r-reticulate = ">=1.46.0,<2"
+r-dt = ">=0.34.0,<0.35"
