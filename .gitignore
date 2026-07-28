@@ -5,6 +5,7 @@
 
 /.quarto/
 /_book/
+/site_libs/
 data/
 *cache/*
 *files/*
