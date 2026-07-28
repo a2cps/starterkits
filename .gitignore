@@ -5,7 +5,11 @@
 
 /.quarto/
 /_book/
+/site_libs/
 data/
 *cache/*
 *files/*
 **/*.quarto_ipynb
+# pixi environments
+.pixi/*
+!.pixi/config.toml

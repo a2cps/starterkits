@@ -27,9 +27,8 @@ These assessments include:
 
 Where are the relevant files?
 
-```{bash}
-#| eval: false
-$ /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-0-0/psychosocial/reformatted
+```bash
+$ {{< var release.root >}}/{{< var release.dir >}}/psychosocial/reformatted
 ```
 
 ### Extract Data

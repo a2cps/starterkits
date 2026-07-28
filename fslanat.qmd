@@ -14,14 +14,13 @@ The A2CPS pipeline calls FIRST as a part of the FSL standard pipeline for proces
 
 In the release, data are stored underneath the `mris/derivatives` folder:
 
-```{bash path}
-#| eval: false
-/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/fslanat
+```bash
+{{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/fslanat
 ```
 
 This folder contains all of the outputs for every participant, with subject folders of the form `sub-[recordid]_ses-[protocolid]_T1w.anat`. Detailed descriptions of the outputs are available in the [`fsl_anat` documentation](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html#outputs).
 
-Many users will not need the raw `fsl_anat` outputs and can instead rely a table in which the subcortical measures have been aggregated: `fslanat.tsv`. A data dictionary for this table is available in the `fslanat.json` file, and also [ online](https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/fslanat.json).
+Many users will not need the raw `fsl_anat` outputs and can instead rely a table in which the subcortical measures have been aggregated: `fslanat.tsv`. A data dictionary for this table is available in the `fslanat.json` file, and also [ online](https://github.com/a2cps/snapshot/blob/{{< var snapshot.tag >}}/src/snapshot/data/fslanat.json).
 
 ### Extract data
 

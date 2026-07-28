@@ -1,0 +1,18 @@
+# Release-coupled values, referenced from qmd via {{< var ... >}} shortcodes.
+# Bump these when cutting a new release; see "Cutting a release" in contributing.md.
+
+release:
+  # Bare version, for prose (e.g. "data release v2.1.0")
+  version: "2.1.0"
+  # Name of the release directory on TACC
+  dir: "pre-surgery-release-2-1-0"
+  # Parent of the release directories on TACC
+  root: "/corral-secure/projects/A2CPS/products/consortium-data"
+
+snapshot:
+  # Tag of https://github.com/a2cps/snapshot that produced this release
+  tag: "v2.1.0"
+
+bids:
+  # Version of the BIDS specification the raw data conform to
+  version: "v1.9.0"
