@@ -43,7 +43,7 @@ Let's take a look at just the amplitudes.
 ```{r loadfalff}
 
 amplitude <- read_parquet_duckdb(
-  dir_ls("data/postgift/amplitude", recurse = TRUE, glob = "*parquet"),
+  dir_ls("data/pre-surgery/mris/derivatives/postgift/amplitude", recurse = TRUE, glob = "*parquet"),
   prudence = "lavish"
 )
 
@@ -68,7 +68,10 @@ head(run1_amplitudes)
 To get a very high-level overview of the data, generate the [MA plot](https://en.wikipedia.org/wiki/MA_plot). Let's exclude the "red" scans to determine whether those are driving the difference.
 
 ```{r}
-red_run1_scans <- read_tsv(dir_ls("data/scans", glob = "*tsv"), na = "n/a") |>
+red_run1_scans <- read_tsv(
+  dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
+  na = "n/a"
+) |>
   filter(rating == "red", stringr::str_detect(filename, "cuff_run-0[12]")) |>
   mutate(
     sub = stringr::str_extract(filename, "[[:digit:]]{5}") |> as.integer()

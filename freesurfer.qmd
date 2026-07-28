@@ -31,11 +31,11 @@ Most users will not need the raw FreeSurfer outputs and can instead rely on tabl
 For each of these, there are data dictionaries in `json` files (e.g., `aparc.json` explains the columns of `aparc.tsv`). 
 
 ```bash
-$ ls {{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/freesurfer/*{json,tsv}
-{{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/freesurfer/aparc.json  {{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/freesurfer/gm_morph.tsv
-{{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/freesurfer/aparc.tsv   {{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/freesurfer/headers.json
-{{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/freesurfer/aseg.json   {{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/freesurfer/headers.tsv
-{{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/freesurfer/aseg.tsv
+$ ls mris/derivatives/freesurfer/*{json,tsv}
+mris/derivatives/freesurfer/aparc.json  mris/derivatives/freesurfer/gm_morph.tsv
+mris/derivatives/freesurfer/aparc.tsv   mris/derivatives/freesurfer/headers.json
+mris/derivatives/freesurfer/aseg.json   mris/derivatives/freesurfer/headers.tsv
+mris/derivatives/freesurfer/aseg.tsv
 ```
 
 Copies of the data dictionaries are available online for preview: [aparc.json](https://github.com/a2cps/snapshot/blob/{{< var snapshot.tag >}}/src/snapshot/data/aparc.json), [aseg.json](https://github.com/a2cps/snapshot/blob/{{< var snapshot.tag >}}/src/snapshot/data/aseg.json), [headers.json](https://github.com/a2cps/snapshot/blob/{{< var snapshot.tag >}}/src/snapshot/data/headers.json).
@@ -56,7 +56,7 @@ library(ggplot2)
 As described above, the parcellation information is stored in `aparc.tsv`. 
 
 ```{r load}
-aparc <- read_tsv("data/freesurfer/aparc.tsv", show_col_types = FALSE)
+aparc <- read_tsv("data/pre-surgery/mris/derivatives/freesurfer/aparc.tsv", show_col_types = FALSE)
 head(aparc)
 ```
 

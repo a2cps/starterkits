@@ -24,7 +24,7 @@ The fMRIPrep derivatives are underneath `derivatives/fmriprep`. Let's take a loo
 
 ```{bash}
 #| eval: false
-$ ls derivatives/fmriprep/ | head
+$ ls mris/derivatives/fmriprep/ | head
 dataset_description.json
 desc-aparcaseg_dseg.tsv
 desc-aseg_dseg.tsv

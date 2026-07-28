@@ -22,7 +22,7 @@ The QSIPrep derivatives are underneath `derivatives/qsiprep-V1`. Let's take a lo
 
 ```{bash}
 #| eval: false
-$ ls derivatives/qsiprep-V1 | head
+$ ls mris/derivatives/qsiprep-V1 | head
 sub-10003
 sub-10003.html
 sub-10008

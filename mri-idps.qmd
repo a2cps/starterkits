@@ -18,7 +18,7 @@ The primary IDP table, `mri.tsv`, is located underneath the `idp` folder. Let's 
 
 ```{bash}
 #| eval: false
-$ ls idp/
+$ ls mris/idp/
 mask_volumes.json  mask_volumes.tsv  mri.json  mri.tsv
 ```
 
@@ -26,7 +26,7 @@ Even though this represents only a subset of all possible neuroimaging derivativ
 
 ```{bash}
 #| eval: false
-$ awk '{print NF; exit}' idp/mri.tsv 
+$ awk '{print NF; exit}' mris/idp/mri.tsv 
 21886
 ```
 
@@ -38,7 +38,7 @@ For example, if we are only interested in the resting state (REST1) fALFF measur
 
 ```{r}
 readr::read_tsv(
-  "data/idp/mri.tsv",
+  "data/pre-surgery/mris/idp/mri.tsv",
   col_select = c("sub", tidyselect::matches("task_rest_run_1.*falff"))
 ) |>
   head()

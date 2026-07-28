@@ -100,7 +100,7 @@ Next, peak at the table.
 ```{r loadstats}
 
 diffusion_regional_stats <- read_parquet_duckdb(
-  "data/postdtifit/diffusion_regional_stats"
+  "data/pre-surgery/mris/derivatives/postdtifit/diffusion_regional_stats"
 ) |>
   collect()
 
@@ -150,7 +150,10 @@ A few potential sources for those differences may spring to mind: participant di
 ::: {#fig-shell-comparison2}
 
 ```{r shell-comparison-not-red}
-red_dmri <- read_tsv(dir_ls("data/scans", glob = "*tsv"), na = "n/a") |>
+red_dmri <- read_tsv(
+  dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
+  na = "n/a"
+) |>
   filter(str_detect(filename, "dwi.nii.gz")) |>
   mutate(
     sub = str_extract(filename, "(?<=sub-)[[:digit:]]+") |> as.numeric()

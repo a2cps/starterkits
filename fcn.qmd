@@ -69,7 +69,7 @@ The timeseries were extracted from the NIfTI files in `cleaned`, which are the o
 Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Network (DMN) atlas (the nodal coordinates were derived from @baliki_corticostriatal_2012). In this case, we'll restrict results to connectivities generated with the [empirical estimator](https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance).
 
 ```{r dmn}
-dmn <- open_dataset("data/fcn/connectivity") |>
+dmn <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
   filter(atlas == "dmn") |>
   filter(estimator == "empirical") |>
   select(sub, source, target, connectivity) |>
@@ -109,7 +109,7 @@ We are going to assess whether a person's connectivity matrix is consistent acro
 First, we need a list of participants that have all four scan types.
 
 ```{r}
-subs_with_all_runs <- open_dataset("data/fcn/connectivity") |>
+subs_with_all_runs <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
   distinct(sub, task, run) |>
   count(sub) |>
   filter(n == 4) |>
@@ -121,7 +121,7 @@ As usual, we should also restrict analyses to only those runs that are not "red"
 
 ```{r}
 red_fmri <- read_tsv(
-  dir_ls("data/rawdata", glob = "*scans.tsv", recurse = TRUE),
+  dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
   na = "n/a"
 ) |>
   filter(str_detect(filename, "task")) |>
@@ -142,7 +142,7 @@ subs_with_all_runs_ok <- subs_with_all_runs |> anti_join(red_fmri)
 Use this to filter the connectivity results. We'll select just one of the smaller DiFuMo atlases [@dadi_fine_2020]. As before, we'll stick with the empirical estimator.
 
 ```{r}
-fcn <- open_dataset("data/fcn/connectivity") |>
+fcn <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
   filter(atlas == "difumo_dimension-64_resolution-2mm") |>
   filter(estimator == "empirical") |>
   semi_join(subs_with_all_runs_ok, by = join_by(sub)) |>

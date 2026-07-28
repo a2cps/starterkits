@@ -22,7 +22,7 @@ On TACC, the data are stored underneath the releases. For example, data release 
 The genetic variant data are underneath the `omics/gene_variants` folder
 
 ```bash
-$ ls {{< var release.root >}}/{{< var release.dir >}}/omics/gene_variants
+$ ls omics/gene_variants
 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed
 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam
@@ -42,7 +42,7 @@ These files are in the [PLINK](https://www.cog-genomics.org/plink/1.9/) format.
 
 Each row in this file specifics a genetic variant and provides extended information on its location and alleles.
 ```bash
-$ cd {{< var release.root >}}/{{< var release.dir >}}/omics/gene_variants
+$ cd omics/gene_variants
 $ head -5 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
 ```
 ```{r}
