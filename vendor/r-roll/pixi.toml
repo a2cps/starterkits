@@ -1,0 +1,28 @@
+# roll is not installable from conda-forge, so it is built from source.
+# Referenced from the workspace manifest; see the note in ../../pixi.toml.
+[package]
+name = "r-roll"
+version = "1.2.1"
+
+[package.build.backend]
+name = "pixi-build-r"
+version = "*"
+channels = ["https://prefix.dev/pixi-build-backends", "conda-forge"]
+
+[package.build.source]
+git = "https://github.com/cran/roll"
+tag = "1.2.1"
+
+# Dependencies are listed in full: naming any of them replaces what the backend
+# would otherwise infer from DESCRIPTION. r-base is pinned because the backend
+# otherwise resolves against the newest R, which the workspace does not use.
+[package.host-dependencies]
+r-base = ">=4.5,<4.6"
+r-rcpp = "*"
+r-rcpparmadillo = "*"
+r-rcppparallel = "*"
+
+[package.run-dependencies]
+r-rcpp = "*"
+r-rcpparmadillo = "*"
+r-rcppparallel = "*"

@@ -4,6 +4,9 @@ channels = ["conda-forge"]
 name = "starterkits"
 platforms = ["osx-arm64", "linux-64"]
 version = "0.1.0"
+# Required for the source dependencies under vendor/, which build R packages that
+# conda-forge does not publish.
+preview = ["pixi-build"]
 
 [tasks]
 render = "export QUARTO_PYTHON=$CONDA_PREFIX/bin/python && quarto render"
@@ -26,3 +29,22 @@ r-reticulate = ">=1.46.0,<2"
 r-dt = ">=0.34.0,<0.35"
 r-yaml = ">=2.3.12,<3"
 r-glue = ">=1.8.1,<2"
+r-tidyverse = ">=2.0.0,<3"
+r-fs = ">=2.1.0,<3"
+r-stringr = ">=1.6.0,<2"
+r-tidyselect = ">=1.2.1,<2"
+r-jsonlite = ">=2.0.0,<3"
+r-patchwork = ">=1.3.2,<2"
+r-png = ">=0.1_9,<0.2"
+r-irr = ">=0.85,<0.86"
+r-lme4 = ">=2.0_6,<3"
+r-scattermore = ">=1.2,<2"
+r-rnifti = ">=1.9.0,<2"
+
+# Not installable from conda-forge, so built from source.
+# nio declares its own pixi package, so it is consumed directly. roll, ggdist
+# and agree still need a wrapper manifest under vendor/; see the note in each.
+r-roll = { path = "vendor/r-roll" }
+r-ggdist = { path = "vendor/r-ggdist" }
+r-nio = { git = "https://github.com/psadil/nio", branch = "main" }
+r-agree = { path = "vendor/r-agree" }
