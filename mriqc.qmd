@@ -114,7 +114,7 @@ Many of these metrics exhibit substantial variability across the scanners, which
 
 As another example, the scanner UC (serial number: 71399) is unique in that the structural images were collected with ["Image Domain Parallel Imaging"](https://mriquestions.com/two-types-of-pi.html). This form of parallel imaging causes a near total suppression of the background signal (that is, most background voxels have intensity 0). Several of the MRIQC metrics incorporate the background signal, and so this noise suppression causes those metrics to have a fundamentally different scaling as compared to metrics calculated on images without that suppression. Consider the ["Dietrich" version of the signal-to-noise ratio](https://mriqc.readthedocs.io/en/latest/iqms/t1w.html#mriqc.qc.anatomical.snr_dietrich) [@dietrich_measurement_2007], which uses the standard deviation of the intensity in the background to scale the average intensity of the foreground, producing substantially larger estimates of the signal-to-noise ratio.
 
-For a detailed description of these particular issues, please see [these slides](images/A2CPS_imaging_MRIQC.pdf). In general, interpreting the MRIQC metrics should be done with caution. 
+For a detailed description of these particular issues, please see [these slides](assets/images/A2CPS_imaging_MRIQC.pdf). In general, interpreting the MRIQC metrics should be done with caution. 
 
 ### Citations
 

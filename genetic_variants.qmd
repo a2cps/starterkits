@@ -894,9 +894,9 @@ fwrite(pca, "./Freeze_2/principle_components_analysis/PCA/A2CPS_RL1-5_PCA_Ind_In
 </details>
 
 
-![A2CPS PCA Scree Plot](images/A2CPS_Freeze2_PCA_Scree_Plot.png){fig-alt="A2CPS PCA Scree Plot" width=500px #fig-pcascree}
+![A2CPS PCA Scree Plot](assets/images/A2CPS_Freeze2_PCA_Scree_Plot.png){fig-alt="A2CPS PCA Scree Plot" width=500px #fig-pcascree}
 
-![A2CPS PCA Plot](images/A2CPS_Freeze2_PCA_Plot.png){fig-alt="A2CPS PCA Plot" width=750px #fig-pcaplot}
+![A2CPS PCA Plot](assets/images/A2CPS_Freeze2_PCA_Plot.png){fig-alt="A2CPS PCA Plot" width=750px #fig-pcaplot}
 
 ---
 
@@ -904,7 +904,7 @@ fwrite(pca, "./Freeze_2/principle_components_analysis/PCA/A2CPS_RL1-5_PCA_Ind_In
 
 This procedure confirms the gender of each participant as documented in the study by testing X Chromosome homozygosity levels. Male participants are haploid for the X chromosome whereas females are diploid, thus we expect a high deviation from the genotypes predicted by Hardy-Weinberg equilibrium (HWE) (0/0, 0/1, 1/1) with male participants, as their alleles should exclusively be either 0 or 1 (hemizygous). This deviation is captured by the F Statistic. As a general rule, an F Stat of 0.3 is the maximum seen for females and 0.75 is the minimum for males (as reflected by the chart below). This chart demonstrates the deviation from HWE as we expect ≈ 1 almost always for males, who will consistently deviate from HWE due to X chromosome hemizygosity, and we expect females to have a normal distribution close to around 0 (as they are heterozygous for the x chromosome). We used this chart to visualize sex discrepancies, and checked these against REDCap and EHR data to settle and recover as many sex discrepancies as possible. Refer to supplementary RScript "sex.typing.r" for the code used to generate this graph. In the graph, the blue dots are males, pink are females, and black are cases where sex was undefined in the .fam file.
 
-![A2CPS Sex Typing Plot](images/A2CPS_QC_Sex_Typing.png){fig-alt="A2CPS Sex Typing" width=500px #fig-sextyping}
+![A2CPS Sex Typing Plot](assets/images/A2CPS_QC_Sex_Typing.png){fig-alt="A2CPS Sex Typing" width=500px #fig-sextyping}
 
 ---
 
@@ -913,7 +913,7 @@ This procedure confirms the gender of each participant as documented in the stud
 Allele-sharing percentages, determined during identity-by descent analyses, can reveal relatedness between participants, including the presence of duplicate samples. For example, full siblings are expected to share approximately 50% of their SNPs at a single allele (represented by the Z1 value: e.g., both individuals having "A" in genotypes AA and AB) and about 25% of their SNPs at both alleles (Z2 value: e.g., both having AA at a locus). In contrast, duplicate samples should share nearly 100% of their alleles, resulting in a Z2 value close to 1. To avoid bias in genome-wide association studies due to overrepresentation of related or duplicate individuals, we removed one individual from each identified pair, prioritizing the retention of the sample with higher genotype call quality. In the relatedness plot, sibling pairs appear around Z1 ≈ 0.5, while duplicates cluster in the bottom-left corner (Z0 ≈ 0, Z1 ≈ 0, Z2 ≈ 1). See the supplementary R script het.genome.r for the code used to generate this plot.
 
 
-![A2CPS Relatedness Plot](images/A2CPS_QC_Relatedness.png){fig-alt="A2CPS Relatedness" width=500px #fig-relatedness}
+![A2CPS Relatedness Plot](assets/images/A2CPS_QC_Relatedness.png){fig-alt="A2CPS Relatedness" width=500px #fig-relatedness}
 
 ---
 

@@ -2423,7 +2423,7 @@ pdq <- pdq %>% select(-pdq_not_na, -mean_pdq, -raw_pdq_score)
 
 **The scoring for pain behavior pattern (**pdqpaincourse) **and the pain radiation (**pdradiateregions) is as follows[@Freynhagen2006]\[PainDETECT.pdf\](https://www.oregon.gov/oha/HPA/dsi-pmc/PainCareToolbox/PainDETECT.pdf):
 
-![](images/Screen%20Shot%202023-08-18%20at%202.59.07%20PM%203-02.png)
+![](assets/images/Screen%20Shot%202023-08-18%20at%202.59.07%20PM%203-02.png)
 
 -   First we will recode values for "pdqpaincourse" and "pdradiateregions" according to the above table
 
@@ -2981,7 +2981,7 @@ Missing values can be imputed if the responses to 10 of 14 items are available (
 
 Since the correlation between Behavioral Perseverance and Cognitive/Affective positivity is 0.76[@Slepian2016] average score of the completed items can be used to impute missing values.
 
-![](images/Screen%20Shot%202023-08-22%20at%2011.57.31%20AM%203-01.png)
+![](assets/images/Screen%20Shot%202023-08-22%20at%2011.57.31%20AM%203-01.png)
 
 The missing responses are first replaced with the average score of the completed items and then a total score is calculated by adding the scores for all the seven items
 

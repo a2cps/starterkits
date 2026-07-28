@@ -34,7 +34,7 @@ not_all_na <- function(x) any(!is.na(x))
 
 ### Imaging Form
 
-![](images/Screen%20Shot%202023-09-21%20at%202.45.17%20PM.png)
+![](assets/images/Screen%20Shot%202023-09-21%20at%202.45.17%20PM.png)
 
 ~A2CPS: Site Manual of Procedures v3.0 (pg 207)~
 
@@ -158,11 +158,11 @@ The redcap_repeat_instance should be the same for the Imaging session and Imagin
 
 **TKA**
 
-![](images/Screenshot%202025-01-07%20at%201.36.40%20PM.png)
+![](assets/images/Screenshot%202025-01-07%20at%201.36.40%20PM.png)
 
 **Thoracic**
 
-![](images/Screenshot%202025-01-07%20at%201.39.55%20PM.png)
+![](assets/images/Screenshot%202025-01-07%20at%201.39.55%20PM.png)
 
 Proposed solution for data release 2.0: For the IDs above, we compared the time stamps of the Imaging session CRF(s) and the Imaging Items form(s), and retained the Imaging items form(s) with the time stamp matching or close to the Imaging session CRF(s) dates.
 

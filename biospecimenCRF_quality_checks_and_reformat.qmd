@@ -112,11 +112,11 @@ The redcap_repeat_instance should be the same for the blood draw and current med
 
 **TKA**
 
-![](images/Screenshot%202025-02-03%20at%206.49.01%20PM.png)
+![](assets/images/Screenshot%202025-02-03%20at%206.49.01%20PM.png)
 
 **Thoracic**
 
-![](images/Screenshot%202024-12-13%20at%208.16.31%20AM.png)
+![](assets/images/Screenshot%202024-12-13%20at%208.16.31%20AM.png)
 
 Proposed solution for data release 2.0: For the IDs above, we compared the time stamps of the Biospecimen collection Form CRF(s) and the Current Medications Form(s), and retained the Current Medications Form(s) with the time stamp matching or close to the Biospecimen collection Form CRF(s) dates.
 
