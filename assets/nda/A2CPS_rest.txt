@@ -1,0 +1,8 @@
+
+A2CPS REST (Resting State fMRI)
+
+Two BOLD scans are acquired (6 min duration) while participants wear an uninflated Hokanson Rapid Cuff (https://hokansonvascular.com/products/133448) on one leg.
+
+Participants are instructed to keep eyes open and fixate on a cross.
+
+One REST scan is done prior to cuff inflation for two A2CPS CUFF scans, if applicable, and the other after.
