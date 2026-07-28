@@ -6,7 +6,6 @@ library(duckplyr)
 library(purrr)
 library(ggplot2)
 library(png)
-library(terrainr)
 ```
 
 Most preprocessing pipelines fail on a subset of scans. For large-scale studies, failure rates of even a few percentage points can amount to dozens of scans. Although there are automated ways of detecting some pipeline failures (such as the metrics covered in @sec-mriqc), the data used to train failure detection algorithms are limited. Automated metrics often miss subtle but critical errors—such as poor spatial normalization to a template, imprecise tissue boundaries during brain extraction, or incorrect alignment between functional and structural scans. For these reasons, manual, visual review remains the gold standard. 
@@ -138,17 +137,16 @@ We're going to need a helper function to convert the img BLOBs into a tibble for
 
 ```{r helper}
 to_tbl <- function(.i) {
+  # apply() already yields hex colours, so they can be handed straight to
+  # scale_fill_identity() below; there is no need to split them back into
+  # separate channels.
   apply(.i, 2, rgb) |>
     as_tibble() |>
     mutate(y = row_number()) |>
-    tidyr::pivot_longer(-y, names_to = "x") |>
+    tidyr::pivot_longer(-y, names_to = "x", values_to = "colour") |>
     mutate(
       x = stringr::str_extract(x, "[[:digit:]]+") |> as.integer(),
-      y = max(y) - y + 1,
-      rgb = map(value, col2rgb),
-      r = map_dbl(rgb, pluck, 1),
-      g = map_dbl(rgb, pluck, 2),
-      b = map_dbl(rgb, pluck, 3)
+      y = max(y) - y + 1
     )
 }
 ```
@@ -163,7 +161,8 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   readPNG() |>
   to_tbl() |>
   ggplot(aes(x = x, y = y)) +
-  geom_spatial_rgb(aes(r = r, g = g, b = b)) +
+  geom_raster(aes(fill = colour)) +
+  scale_fill_identity() +
   coord_fixed() +
   theme_void()
 ```
