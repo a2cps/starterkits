@@ -2,7 +2,7 @@ name: Publish
 
 # The site is versioned: each build lands in its own directory on gh-pages.
 #
-#   main         -> unreleased/
+#   main         -> dev/
 #   tag vX.Y.Z   -> v/X_Y_Z/ (and, when newest, a copy at latest/)
 #
 # Rendering happens from the committed _freeze output, so no R is installed here.
@@ -36,7 +36,7 @@ jobs:
             version="${GITHUB_REF#refs/tags/v}"
             echo "dir=v/${version//./_}" >> "$GITHUB_OUTPUT"
           else
-            echo "dir=unreleased" >> "$GITHUB_OUTPUT"
+            echo "dir=dev" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Set up Quarto
@@ -79,6 +79,9 @@ jobs:
             base="/$repo"
           fi
 
+          # The dev channel was briefly published as unreleased/; drop the leftover.
+          rm -rf unreleased
+
           mkdir -p v
           mapfile -t versions < <(
             find v -mindepth 1 -maxdepth 1 -type d -printf '%f\n' \
@@ -96,7 +99,7 @@ jobs:
             # Nothing tagged yet: the development build is all there is.
             latest=""
             jq -n '{latest: null, versions: []}' > v.json
-            home="unreleased"
+            home="dev"
           fi
           echo "latest=${latest:-<none>} home=$home base=${base:-/}"
 
@@ -127,13 +130,13 @@ jobs:
           (function () {
             var BASE = "__BASE__";
             var HOME = "__HOME__";
-            var CHANNEL = /^\/(unreleased|latest|v\/[^/]+)(\/.*)?$/;
+            var CHANNEL = /^\/(dev|latest|v\/[^/]+)(\/.*)?$/;
 
             var path = location.pathname;
             var rest = path.indexOf(BASE) === 0 ? path.slice(BASE.length) : path;
 
             function describe(slug) {
-              if (slug === "unreleased") return "the development version";
+              if (slug === "dev") return "the development version";
               if (slug === "latest") return "the current release";
               return "release " + slug.slice(2).replace(/_/g, ".");
             }

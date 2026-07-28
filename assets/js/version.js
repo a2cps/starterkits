@@ -4,7 +4,7 @@
  * Quarto has no built-in versioning, so the site is published as one directory per
  * channel on the gh-pages branch:
  *
- *   <base>/unreleased/   rebuilt from main on every push
+ *   <base>/dev/          rebuilt from main on every push
  *   <base>/latest/       copy of the most recent release
  *   <base>/v/2_1_0/      frozen at tag v2.1.0
  *   <base>/v.json        {"latest": "2_1_0", "versions": ["2_1_0", ...]}
@@ -18,7 +18,7 @@
 (function () {
   "use strict";
 
-  var CHANNEL = /^(.*?)\/(unreleased|latest|v\/[^/]+)(\/.*)?$/;
+  var CHANNEL = /^(.*?)\/(dev|latest|v\/[^/]+)(\/.*)?$/;
   var HANDOFF = "a2cps-version-handoff";
 
   function findMenu() {
@@ -50,14 +50,14 @@
   }
 
   function label(slug, manifest) {
-    if (slug === "unreleased") return "unreleased (dev)";
+    if (slug === "dev") return "dev";
     if (slug === "latest") return manifest.latest.replace(/_/g, ".") + " (latest)";
     return slug.replace(/^v\//, "").replace(/_/g, ".");
   }
 
   // Prose form of a channel, for the message shown after a switch lands elsewhere.
   function describe(slug) {
-    if (slug === "unreleased") return "the development version";
+    if (slug === "dev") return "the development version";
     if (slug === "latest") return "the current release";
     return "release " + slug.replace(/^v\//, "").replace(/_/g, ".");
   }
@@ -122,7 +122,7 @@
   }
 
   function banner(current, manifest, base) {
-    if (current === "unreleased") {
+    if (current === "dev") {
       var lead = 'You are reading the <strong>development version</strong> of the starter ' +
         "kits. It may describe data that has not been released yet, and can change at any time.";
       showAlert(
@@ -176,7 +176,7 @@
     var list = toggle.nextElementSibling;
     if (!list) return;
 
-    var slugs = ["unreleased"];
+    var slugs = ["dev"];
     if (manifest.latest) slugs.push("latest");
     (manifest.versions || [])
       .slice()

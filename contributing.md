@@ -6,7 +6,7 @@ The site is versioned. Each build goes into its own directory on the `gh-pages` 
 
 | URL | Built from | Notes |
 | --- | --- | --- |
-| [`/unreleased/`](https://a2cps.github.io/starterkits/unreleased/) | every push to `main` | shows a "development version" banner |
+| [`/dev/`](https://a2cps.github.io/starterkits/dev/) | every push to `main` | shows a "development version" banner |
 | [`/latest/`](https://a2cps.github.io/starterkits/latest/) | copy of the most recent release | where the site root redirects to |
 | `/v/2_1_0/` | the `v2.1.0` tag | frozen; shows an "older release" banner once superseded |
 
@@ -54,7 +54,7 @@ $ git commit -m "Update book"
 $ git push
 ```
 
-Merging to `main` publishes to [`/unreleased/`](https://a2cps.github.io/starterkits/unreleased/) automatically; there is no action to trigger by hand.
+Merging to `main` publishes to [`/dev/`](https://a2cps.github.io/starterkits/dev/) automatically; there is no action to trigger by hand.
 
 ## Cutting a Release
 
