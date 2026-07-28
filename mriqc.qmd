@@ -29,7 +29,7 @@ The A2CPS pipeline produces a standard set of MRIQC outputs, including both part
 - group-level results: files with the prefix `group_` that collate the participant-level results
 
 ```bash
-$ ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/mriqc | head
+$ ls {{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/mriqc | head
 group_bold.html
 group_bold.tsv
 group_dwi.html

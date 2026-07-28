@@ -37,7 +37,7 @@ Note that, as with downloads of all NDA data structures, the second line of this
 The imaging files are underneath `image03`. 
 
 ```bash
-$ ls image03/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/bids/ | head
+$ ls image03{{< var release.root >}}/{{< var release.dir >}}/mris/bids/ | head
 dataset_description.json
 README
 sessions.json

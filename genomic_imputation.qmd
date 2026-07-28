@@ -18,16 +18,16 @@ Following imputation in this dataset, the number of genetic loci increased from 
 
 ### Locate Data
 
-On TACC, the data are stored underneath the releases. For example, data release `v2.1.0` is underneath
+On TACC, the data are stored underneath the releases. For example, data release `v{{< var release.version >}}` is underneath
 
 ```bash
-/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants
+{{< var release.root >}}/{{< var release.dir >}}/omics/gene_variants
 ```
 
 The single-nucleotide polymorphisms are underneath the `omics/gene_variants` folder
 
 ```bash
-$ ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants
+$ ls {{< var release.root >}}/{{< var release.dir >}}/omics/gene_variants
 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed
 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam

@@ -1,5 +1,5 @@
-On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.#.# is underneath
+On TACC, the neuroimaging data are stored underneath the releases. For example, data release v{{< var release.version >}} is underneath
 
 ```bash
-pre-surgery/mris
+{{< var release.root >}}/{{< var release.dir >}}/mris
 ```

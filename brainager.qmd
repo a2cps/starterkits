@@ -24,7 +24,7 @@ Fundamentally, `brainager` calculations are about producing an estimated age bas
 In the release folder, data are stored underneath the `mris/derivatives` folder:
 
 ```bash
-/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/mris/derivatives/brainager
+{{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/brainager
 ```
 
 ### Extract data
