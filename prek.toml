@@ -4,3 +4,15 @@ rev = "v2.4.2"
 hooks = [
   { id = "codespell" },
 ]
+
+[[repos]]
+repo = "local"
+
+# Shortcodes are not expanded inside executable cells, where they would ship to the
+# page as literal text. The render succeeds either way, so nothing else catches this.
+[[repos.hooks]]
+id = "check-var-shortcodes"
+name = "no {{< var >}} shortcodes in executable Quarto cells"
+entry = "python3 scripts/check_var_shortcodes.py"
+language = "system"
+files = '\.qmd$'
