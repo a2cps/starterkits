@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the pull request
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -57,7 +57,7 @@ jobs:
         uses: quarto-dev/quarto-actions/render@v2
 
       - name: Check out gh-pages
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
           path: site
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the scripts
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # The pull request's merge ref can be gone once it closes, so take the
           # base branch; only the scripts are needed here.
@@ -104,7 +104,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Check out gh-pages
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
           path: site
