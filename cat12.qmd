@@ -23,24 +23,24 @@ The morphometry measures are underneath `derivatives/cat12`.
 Data for each participant is stored in a sub-directory
 
 ```bash
-$ ls -d derivatives/cat12/sub* | head
-derivatives/cat12/sub-10003
-derivatives/cat12/sub-10005
-derivatives/cat12/sub-10008
-derivatives/cat12/sub-10009
-derivatives/cat12/sub-10010
-derivatives/cat12/sub-10011
-derivatives/cat12/sub-10013
-derivatives/cat12/sub-10014
-derivatives/cat12/sub-10015
-derivatives/cat12/sub-10017
+$ ls -d mris/derivatives/cat12/sub* | head
+mris/derivatives/cat12/sub-10003
+mris/derivatives/cat12/sub-10005
+mris/derivatives/cat12/sub-10008
+mris/derivatives/cat12/sub-10009
+mris/derivatives/cat12/sub-10010
+mris/derivatives/cat12/sub-10011
+mris/derivatives/cat12/sub-10013
+mris/derivatives/cat12/sub-10014
+mris/derivatives/cat12/sub-10015
+mris/derivatives/cat12/sub-10017
 ```
 
 For example:
 
 ```bash
-$ tree derivatives/cat12/sub-10003
-derivatives/cat12/sub-10003
+$ tree mris/derivatives/cat12/sub-10003
+mris/derivatives/cat12/sub-10003
 └── ses-V1
     ├── label
     │   ├── catROI_sub-10003_ses-V1_T1w.mat
@@ -88,10 +88,10 @@ derivatives/cat12/sub-10003
 Additionally, there is a table of "cluster volumes", which contains information relevant to A2CPS primary and secondary biomarkers.
 
 ```bash
-$ ls derivatives/cat12/cluster*
-derivatives/cat12/cluster_volumes.json  derivatives/cat12/cluster_volumes.tsv
+$ ls mris/derivatives/cat12/cluster*
+mris/derivatives/cat12/cluster_volumes.json  mris/derivatives/cat12/cluster_volumes.tsv
 
-$ head derivatives/cat12/cluster_volumes.tsv 
+$ head mris/derivatives/cat12/cluster_volumes.tsv 
 sub	ses	mri	atlas	cluster	volume
 10703	V1	wp1sub-10703_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	0	1998.106000518892
 10703	V1	wp1sub-10703_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	1	2294.6824886463583

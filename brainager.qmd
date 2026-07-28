@@ -83,7 +83,7 @@ Here is an example of how these files could be loaded using `R`.
 
 ```{r}
 # list all files
-files <- fs::dir_ls("data/brainager", glob = "*T1w.tsv", recurse = TRUE)
+files <- fs::dir_ls("data/pre-surgery/mris/derivatives/brainager", glob = "*T1w.tsv", recurse = TRUE)
 
 # read in all tsvs
 ages <- readr::read_tsv(files)
@@ -117,7 +117,7 @@ Predicted ages are neat, but these values are most useful when compared against 
 
 ```{r}
 baseline_ages <- read_csv(
-  "data/demographics/demographics-2025-01-10.csv",
+  "data/pre-surgery/demographics/demographics-2025-01-10.csv",
   col_select = c("record_id", "age")
 )
 

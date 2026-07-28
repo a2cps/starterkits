@@ -17,7 +17,7 @@ A "neural signature" is a multivariate pattern of brain activity that has been s
 The signature response are underneath `derivatives/signatures`
 
 ```bash
-$ ls derivatives/signatures/
+$ ls mris/derivatives/signatures/
 cleaned    confounds.json      signatures-by-part-diff       signatures-by-part.json  signatures-by-run-diff       signatures-by-run.json  signatures-by-tr-diff       signatures-by-tr.json
 confounds  signatures-by-part  signatures-by-part-diff.json  signatures-by-run        signatures-by-run-diff.json  signatures-by-tr        signatures-by-tr-diff.json
 ```
@@ -114,7 +114,7 @@ library(arrow)
 library(dplyr)
 library(tidyr)
 
-open_dataset("data/signatures/signatures-by-run") |>
+open_dataset("data/pre-surgery/mris/derivatives/signatures/signatures-by-run") |>
   filter(signature %in% c("grouppred_cvpcr", "137subjmap_weighted_mean")) |>
   filter(task == "cuff", run == 1) |>
   select(signature, value = correlation, sub, ses) |>
@@ -130,7 +130,7 @@ In python, a good choice is the [`polars`](https://docs.pola.rs/) library
 #| eval: FALSE
 import polars as pl
 
-pl.read_parquet("data/signatures/signatures-by-run").filter(
+pl.read_parquet("data/pre-surgery/mris/derivatives/signatures/signatures-by-run").filter(
     pl.col("signature").is_in(["grouppred_cvpcr", "137subjmap_weighted_mean"])
 ).filter(pl.col("task") == "cuff", pl.col("run") == 1).rename(
     {"correlation": "value"}

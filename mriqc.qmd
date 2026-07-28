@@ -29,7 +29,7 @@ The A2CPS pipeline produces a standard set of MRIQC outputs, including both part
 - group-level results: files with the prefix `group_` that collate the participant-level results
 
 ```bash
-$ ls {{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/mriqc | head
+$ ls mris/derivatives/mriqc | head
 group_bold.html
 group_bold.tsv
 group_dwi.html
@@ -45,7 +45,7 @@ sub-10003_ses-V1_task-cuff_run-01_bold.html
 For example, here are all of the metrics available for the functional data.
 
 ```{r load}
-group_bold <- read_tsv("data/mriqc/group_bold.tsv")
+group_bold <- read_tsv("data/pre-surgery/mris/derivatives/mriqc/group_bold.tsv")
 group_bold |> head()
 ```
 

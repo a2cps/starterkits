@@ -6,7 +6,6 @@ library(duckplyr)
 library(purrr)
 library(ggplot2)
 library(png)
-library(terrainr)
 ```
 
 Most preprocessing pipelines fail on a subset of scans. For large-scale studies, failure rates of even a few percentage points can amount to dozens of scans. Although there are automated ways of detecting some pipeline failures (such as the metrics covered in @sec-mriqc), the data used to train failure detection algorithms are limited. Automated metrics often miss subtle but critical errors—such as poor spatial normalization to a template, imprecise tissue boundaries during brain extraction, or incorrect alignment between functional and structural scans. For these reasons, manual, visual review remains the gold standard. 
@@ -36,7 +35,7 @@ Let's look through the schema of each table.
 This table contains information about the rating session (e.g., helpful for determining rater consistency).
 
 ```{r session}
-read_parquet_duckdb("data/qc/session.parquet") |> head()
+read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/session.parquet") |> head()
 ```
 
 - `id`: ID of session
@@ -54,7 +53,7 @@ read_parquet_duckdb("data/qc/session.parquet") |> head()
 This table contains information about the to-be rated targets. 
 
 ```{r image}
-read_parquet_duckdb("data/qc/image.parquet") |>
+read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   select(-img) |> # just for display purposes, so this webpage is not too big
   head()
 ```
@@ -81,7 +80,7 @@ read_parquet_duckdb("data/qc/image.parquet") |>
 This table contains the ratings given as "overall" scores. They apply to ratings for targets fmap coregistration and dtifit.
 
 ```{r rating}
-read_parquet_duckdb("data/qc/rating.parquet") |> head()
+read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/rating.parquet") |> head()
 ```
 
 - `id`: ID of each rating
@@ -100,7 +99,7 @@ read_parquet_duckdb("data/qc/rating.parquet") |> head()
 This table contains the coordinates that were clicked during reviews, locations indicating some source data issue. These were used to rate the mask, spatial normalization, and surface localization.
 
 ```{r coordinate}
-read_parquet_duckdb("data/qc/coordinate.parquet") |> head()
+read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/coordinate.parquet") |> head()
 ```
 
 - `id`: ID of each clicked coordinate
@@ -121,12 +120,12 @@ Let's see how we can display the rated images. As an example, we'll look one of 
 ```{r}
 
 # grab images associated with spatial normalization
-spatial_norm_images <- read_parquet_duckdb("data/qc/image.parquet") |>
+spatial_norm_images <- read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   filter(step == 1, display == 0) |>
   select(id, img)
 
 # grab image with lots of clicks
-img_with_many_clicks <- read_parquet_duckdb("data/qc/coordinate.parquet") |>
+img_with_many_clicks <- read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/coordinate.parquet") |>
   filter(!is.na(x)) |>
   semi_join(spatial_norm_images, by = join_by(img_id == id)) |>
   summarize(n_clicks = n(), .by = c(img_id)) |>
@@ -138,17 +137,16 @@ We're going to need a helper function to convert the img BLOBs into a tibble for
 
 ```{r helper}
 to_tbl <- function(.i) {
+  # apply() already yields hex colours, so they can be handed straight to
+  # scale_fill_identity() below; there is no need to split them back into
+  # separate channels.
   apply(.i, 2, rgb) |>
     as_tibble() |>
     mutate(y = row_number()) |>
-    tidyr::pivot_longer(-y, names_to = "x") |>
+    tidyr::pivot_longer(-y, names_to = "x", values_to = "colour") |>
     mutate(
       x = stringr::str_extract(x, "[[:digit:]]+") |> as.integer(),
-      y = max(y) - y + 1,
-      rgb = map(value, col2rgb),
-      r = map_dbl(rgb, pluck, 1),
-      g = map_dbl(rgb, pluck, 2),
-      b = map_dbl(rgb, pluck, 3)
+      y = max(y) - y + 1
     )
 }
 ```
@@ -157,13 +155,14 @@ Now, return to the image.parquet file, do a filter join to get just a single row
 
 ```{r showimg}
 # now show the associated blob
-read_parquet_duckdb("data/qc/image.parquet") |>
+read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   semi_join(img_with_many_clicks, by = join_by(id == img_id)) |>
   pluck("img", 1) |>
   readPNG() |>
   to_tbl() |>
   ggplot(aes(x = x, y = y)) +
-  geom_spatial_rgb(aes(r = r, g = g, b = b)) +
+  geom_raster(aes(fill = colour)) +
+  scale_fill_identity() +
   coord_fixed() +
   theme_void()
 ```
@@ -171,7 +170,7 @@ read_parquet_duckdb("data/qc/image.parquet") |>
 By referring back to img.parquet file, we can see metadata about the source file.
 
 ```{r imgmeta}
-read_parquet_duckdb("data/qc/image.parquet") |>
+read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   semi_join(img_with_many_clicks, by = join_by(id == img_id)) |>
   select(-img)
 ```
@@ -182,13 +181,13 @@ These ratings can be used to exclude images from analyses. Here, we show how to 
 
 ```{r}
 # grab all fieldmap images
-fmap_coregistration_images <- read_parquet_duckdb("data/qc/image.parquet") |>
+fmap_coregistration_images <- read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   filter(step == 3) |>
   select(id, file1, file2, display)
 
 # search for all coregistrations that were marked as having failed
 definite_coregistration_failures <- read_parquet_duckdb(
-  "data/qc/rating.parquet"
+  "data/pre-surgery/mris/derivatives/qc/rating.parquet"
 ) |>
   inner_join(fmap_coregistration_images, by = join_by(img_id == id)) |>
   filter(rating == 2) |>

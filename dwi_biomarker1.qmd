@@ -22,7 +22,7 @@ The derivatives for this biomarker are a collection of three kinds of outputs:
 
 ```{bash}
 #| eval: false
-$ ls derivatives/dwi_biomarker1/
+$ ls mris/derivatives/dwi_biomarker1/
 move_masks  networks  probtrackx
 ```
 
@@ -30,8 +30,8 @@ Each of these are organizing in a "BIDS-ish" manner.
 
 ```{bash}
 #| eval: false
-$ tree derivatives/dwi_biomarker1/move_masks/sub-10003
-derivatives/dwi_biomarker1/move_masks/sub-10003
+$ tree mris/derivatives/dwi_biomarker1/move_masks/sub-10003
+mris/derivatives/dwi_biomarker1/move_masks/sub-10003
 └── ses-V1
     └── dwi
         ├── sub-10003_ses-V1_masks
@@ -41,15 +41,15 @@ derivatives/dwi_biomarker1/move_masks/sub-10003
         └── sub-10003_ses-V1_space-dwifslstd_desc-module2_dseg.nii.gz
 2 directories, 5 files
 
-$ tree derivatives/dwi_biomarker1/networks/sub-10003
-derivatives/dwi_biomarker1/networks/sub-10003
+$ tree mris/derivatives/dwi_biomarker1/networks/sub-10003
+mris/derivatives/dwi_biomarker1/networks/sub-10003
 └── ses-V1
     └── dwi
         └── network_summaries.tsv
 2 directories, 1 file
 
-$ tree derivatives/dwi_biomarker1/probtrackx/sub-10003
-derivatives/dwi_biomarker1/probtrackx/sub-10003
+$ tree mris/derivatives/dwi_biomarker1/probtrackx/sub-10003
+mris/derivatives/dwi_biomarker1/probtrackx/sub-10003
 └── ses-V1
     └── dwi
         ├── coords_for_fdt_matrix1
@@ -131,7 +131,7 @@ The tables always have the same schema and so can be loaded together using stand
 ```{r networks}
 
 networks <- read_tsv(fs::dir_ls(
-  "data/dwi_biomarker1/networks",
+  "data/pre-surgery/mris/derivatives/dwi_biomarker1/networks",
   glob = "*tsv",
   recurse = TRUE
 ))

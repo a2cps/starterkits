@@ -69,7 +69,7 @@ Let's collate the QC metrics into a single table. To do so, we recursively searc
 
 ```{r gather}
 qcs <- tibble(
-  src = fs::dir_ls("data/eddyqc", recurse = TRUE, glob = "*qc.json")
+  src = fs::dir_ls("data/pre-surgery/mris/derivatives/eddyqc", recurse = TRUE, glob = "*qc.json")
 ) |>
   mutate(
     qc = purrr::map(

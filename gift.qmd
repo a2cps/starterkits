@@ -155,7 +155,7 @@ Use these helper functions to calculate the total connectivity for each REST1 sc
 ```{r main}
 d <- crossing(
   file = dir_ls(
-    "data/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi",
+    "data/pre-surgery/mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi",
     recurse = TRUE,
     glob = "*rest_run-01*timecourses.nii.gz"
   )

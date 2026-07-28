@@ -23,7 +23,7 @@ The derivatives are underneath `derivatives/bedpostx`. Although BedpostX derivat
 
 ```{bash}
 #| eval: false
-$ ls derivatives/bedpostx/ | head
+$ ls mris/derivatives/bedpostx/ | head
 sub-10003
 sub-10008
 sub-10010
@@ -35,15 +35,15 @@ sub-10017
 sub-10020
 sub-10023
 
-$ tree -d derivatives/bedpostx/sub-10003
-derivatives/bedpostx/sub-10003
+$ tree -d mris/derivatives/bedpostx/sub-10003
+mris/derivatives/bedpostx/sub-10003
 └── ses-V1
     └── dwi.bedpostx
         ├── logs
         │   └── monitor
         └── xfms
 
-$ ls derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/
+$ ls mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/
 bvals                     dyads1.nii.gz                dyads2_thr0.05.nii.gz        dyads3_thr0.05.nii.gz     mean_f0samples.nii.gz  mean_fsumsamples.nii.gz  mean_S0samples.nii.gz   mean_th3samples.nii.gz   merged_ph1samples.nii.gz  merged_th2samples.nii.gz  xfms
 bvecs                     dyads2_dispersion.nii.gz     dyads3_dispersion.nii.gz     logs                      mean_f1samples.nii.gz  mean_ph1samples.nii.gz   mean_tausamples.nii.gz  merged_f1samples.nii.gz  merged_ph2samples.nii.gz  merged_th3samples.nii.gz
 commands.txt              dyads2.nii.gz                dyads3.nii.gz                mean_dsamples.nii.gz      mean_f2samples.nii.gz  mean_ph2samples.nii.gz   mean_th1samples.nii.gz  merged_f2samples.nii.gz  merged_ph3samples.nii.gz  monitor
@@ -59,7 +59,7 @@ First, let's grab the `mean_f1samples` file, which is an estimate of how much of
 ```{r load-f1}
 # take every 10th slice
 f1 <- nio::to_tbl(
-  "data/bedpostx/sub-10003/ses-V1/dwi.bedpostx/mean_f1samples.nii.gz",
+  "data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/mean_f1samples.nii.gz",
   measure = "f1"
 ) |>
   filter(!(k %% 5), k > 30, k < 80)
@@ -91,7 +91,7 @@ Information about the fiber orientation is stored in the "dyads" file. Each of t
 ```{r }
 gamma <- 1.8
 fiber <- nio::to_tbl(
-  "data/bedpostx/sub-10003/ses-V1/dwi.bedpostx/dyads1.nii.gz"
+  "data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/dyads1.nii.gz"
 ) |>
   inner_join(f1, by = join_by(i, j, k)) |>
   mutate(

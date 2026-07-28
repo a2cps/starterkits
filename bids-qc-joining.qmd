@@ -18,7 +18,7 @@ library(stringr)
 First, start by loading the table of FreeSurfer outputs. In this example, the cortical parcellations will be used.
 
 ```{r}
-aparc <- read_tsv("data/freesurfer/aparc.tsv")
+aparc <- read_tsv("data/pre-surgery/mris/derivatives/freesurfer/aparc.tsv")
 aparc
 ```
 
@@ -43,7 +43,7 @@ fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz	n/a
 To load the files, first list them all with [`fs::dir_ls`](https://fs.r-lib.org/reference/dir_ls.html).
 
 ```{r}
-scan_files <- dir_ls("data/rawdata/", glob = "*scans.tsv", recurse = TRUE)
+scan_files <- dir_ls("data/pre-surgery/mris/bids/", glob = "*scans.tsv", recurse = TRUE)
 head(scan_files)
 ```
 

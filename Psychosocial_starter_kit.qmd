@@ -42,8 +42,8 @@ library(tidyverse)
 ```
 
 ```{r load}
-gad <- read_csv("data/psychosocial/reformatted/reformatted_gad.csv")
-phq <- read_csv("data/psychosocial/reformatted/reformatted_phq.csv")
+gad <- read_csv("data/pre-surgery/psychosocial/reformatted/reformatted_gad.csv")
+phq <- read_csv("data/pre-surgery/psychosocial/reformatted/reformatted_phq.csv")
 ```
 
 Next, we join the datasets using the unique identifiers `record_id` and `guid`. These identifiers allow you to link records across different psychosocial forms, as well as to other modalities (like neuroimaging or genomics). The `inner_join` function is used here to keep only rows that exist in both tables.

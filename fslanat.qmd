@@ -40,7 +40,7 @@ library(agree)
 First, load in the cortical volumes provided by FSL.
 
 ```{r load}
-fslanat <- read_tsv("data/fslanat/fslanat.tsv", show_col_types = FALSE)
+fslanat <- read_tsv("data/pre-surgery/mris/derivatives/fslanat/fslanat.tsv", show_col_types = FALSE)
 head(fslanat)
 ```
 
@@ -61,7 +61,7 @@ Now, grab the equivalent information from FreeSurfer.
 ```{r freesurfer}
 
 subcort_freesurfer <- read_tsv(
-  "data/freesurfer/aseg.tsv",
+  "data/pre-surgery/mris/derivatives/freesurfer/aseg.tsv",
   show_col_types = FALSE
 ) |>
   filter(str_detect(
