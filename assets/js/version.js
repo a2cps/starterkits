@@ -4,7 +4,7 @@
  * Quarto has no built-in versioning, so the site is published as one directory per
  * channel on the gh-pages branch:
  *
- *   <base>/unreleased/   rebuilt from main on every push
+ *   <base>/dev/          rebuilt from main on every push
  *   <base>/latest/       copy of the most recent release
  *   <base>/v/2_1_0/      frozen at tag v2.1.0
  *   <base>/v.json        {"latest": "2_1_0", "versions": ["2_1_0", ...]}
@@ -18,7 +18,7 @@
 (function () {
   "use strict";
 
-  var CHANNEL = /^(.*?)\/(unreleased|latest|v\/[^/]+)(\/.*)?$/;
+  var CHANNEL = /^(.*?)\/(dev|latest|v\/[^/]+)(\/.*)?$/;
   var HANDOFF = "a2cps-version-handoff";
 
   function findMenu() {
@@ -49,17 +49,21 @@
     return 0;
   }
 
-  function label(slug, manifest) {
-    if (slug === "unreleased") return "unreleased (dev)";
-    if (slug === "latest") return manifest.latest.replace(/_/g, ".") + " (latest)";
+  function version(slug) {
     return slug.replace(/^v\//, "").replace(/_/g, ".");
+  }
+
+  function label(slug, manifest) {
+    if (slug === "dev") return "dev";
+    if (slug === "latest") return version(manifest.latest) + " (latest)";
+    return version(slug);
   }
 
   // Prose form of a channel, for the message shown after a switch lands elsewhere.
   function describe(slug) {
-    if (slug === "unreleased") return "the development version";
+    if (slug === "dev") return "the development version";
     if (slug === "latest") return "the current release";
-    return "release " + slug.replace(/^v\//, "").replace(/_/g, ".");
+    return "release " + version(slug);
   }
 
   // Quarto titles pages as "<chapter> – <book title>"; only the chapter is wanted.
@@ -78,17 +82,54 @@
     return (slug === "latest" && current === alias) || (slug === alias && current === "latest");
   }
 
-  function showAlert(kind, html) {
-    var content = document.querySelector("main#quarto-document-content") ||
-      document.querySelector("main.content") ||
-      document.querySelector("main");
-    if (!content) return;
+  function escapeHtml(s) {
+    var d = document.createElement("div");
+    d.textContent = s == null ? "" : String(s);
+    return d.innerHTML;
+  }
+
+  // A slim strip at the bottom of the header, where Quarto puts its own
+  // announcement, rather than a block at the top of the page content.
+  function notice(kind, html) {
+    var header = document.querySelector("#quarto-header");
     var box = document.createElement("div");
-    box.className = "alert alert-" + kind + " alert-dismissible fade show";
-    box.setAttribute("role", "alert");
-    box.innerHTML = html +
-      ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-    content.insertBefore(box, content.firstChild);
+    box.className = "a2cps-channel-notice alert alert-" + kind;
+    box.setAttribute("role", "status");
+    box.innerHTML = html;
+    if (header) {
+      header.appendChild(box);
+      return;
+    }
+    var content = document.querySelector("main#quarto-document-content") ||
+      document.querySelector("main");
+    if (content) content.insertBefore(box, content.firstChild);
+  }
+
+  function action(base, manifest) {
+    if (!manifest.latest) return "";
+    return ' <a class="a2cps-channel-action" href="' + base + '/latest/">' +
+      "Switch to the current release (" + escapeHtml(version(manifest.latest)) + ")</a>";
+  }
+
+  function banner(current, manifest, base) {
+    if (current === "dev") {
+      notice(
+        "warning",
+        "<span>This is the <strong>development version</strong> of the A2CPS Starter Kits. " +
+          "It may describe data that has not been released yet, and can change at any time." +
+          // Before the first tag there is nothing to point at.
+          (manifest.latest ? "</span>" : " No release has been published yet.</span>") +
+          action(base, manifest)
+      );
+      return;
+    }
+    if (current.indexOf("v/") !== 0 || !manifest.latest) return;
+    if (version(current) === version(manifest.latest)) return;
+    notice(
+      "info",
+      "<span>You are reading the documentation for release <strong>" +
+        escapeHtml(version(current)) + "</strong>.</span>" + action(base, manifest)
+    );
   }
 
   // Explain a switch that could not land on the same chapter. Set just before
@@ -108,42 +149,10 @@
     } catch (e) {
       return;
     }
-    showAlert(
+    notice(
       "info",
-      "<strong>" + escapeHtml(miss.title) + "</strong> is not part of " +
-        escapeHtml(miss.into) + ", so this is the start of it instead."
-    );
-  }
-
-  function escapeHtml(s) {
-    var d = document.createElement("div");
-    d.textContent = s == null ? "" : String(s);
-    return d.innerHTML;
-  }
-
-  function banner(current, manifest, base) {
-    if (current === "unreleased") {
-      var lead = 'You are reading the <strong>development version</strong> of the starter ' +
-        "kits. It may describe data that has not been released yet, and can change at any time.";
-      showAlert(
-        "warning",
-        // Before the first tag there is nothing to point at, so say so rather than
-        // linking to a latest/ that has not been published.
-        manifest.latest
-          ? lead + ' <a href="' + base + '/latest/" class="alert-link">Go to the current release</a>.'
-          : lead + " No release has been published yet."
-      );
-      return;
-    }
-    if (current.indexOf("v/") !== 0 || !manifest.latest) return;
-    var version = current.slice(2);
-    if (version === manifest.latest) return;
-    showAlert(
-      "info",
-      "You are reading the documentation for release <strong>" +
-        escapeHtml(version.replace(/_/g, ".")) + "</strong>. The current release is " +
-        '<a href="' + base + '/latest/" class="alert-link">' +
-        escapeHtml(manifest.latest.replace(/_/g, ".")) + "</a>."
+      "<span><strong>" + escapeHtml(miss.title) + "</strong> is not part of " +
+        escapeHtml(miss.into) + ", so this is the start of it instead.</span>"
     );
   }
 
@@ -176,7 +185,7 @@
     var list = toggle.nextElementSibling;
     if (!list) return;
 
-    var slugs = ["unreleased"];
+    var slugs = ["dev"];
     if (manifest.latest) slugs.push("latest");
     (manifest.versions || [])
       .slice()
@@ -188,13 +197,12 @@
 
     list.innerHTML = "";
     slugs.forEach(function (slug) {
-      var text = label(slug, manifest);
       var home = base + "/" + slug + "/";
       var item = document.createElement("li");
       var link = document.createElement("a");
       link.className = "dropdown-item";
       link.href = base + "/" + slug + page;
-      link.textContent = text;
+      link.textContent = label(slug, manifest);
       if (isCurrent(slug, current, manifest)) {
         link.classList.add("active");
         link.setAttribute("aria-current", "true");

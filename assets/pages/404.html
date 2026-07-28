@@ -1,0 +1,58 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Redirecting&hellip;</title>
+<!--
+  Served by GitHub Pages for any unmatched path under the site. It recovers links
+  that bypass the version menu: bookmarks of the old flat site, external links,
+  retired channel names, and chapters that no longer exist in a given release.
+
+  Written by scripts/build-site-index.sh, which substitutes __BASE__ and __HOME__.
+  The meta refresh is the no-JavaScript fallback.
+-->
+<meta http-equiv="refresh" content="5; url=__BASE__/__HOME__/">
+<p>That page has moved.
+   <a href="__BASE__/__HOME__/">Continue to the A2CPS Starter Kits</a>.</p>
+<script>
+(function () {
+  var BASE = "__BASE__";
+  var HOME = "__HOME__";
+  var CHANNEL = /^\/(dev|latest|v\/[^/]+)(\/.*)?$/;
+
+  var path = location.pathname;
+  var rest = path.indexOf(BASE) === 0 ? path.slice(BASE.length) : path;
+
+  function describe(slug) {
+    if (slug === "dev") return "the development version";
+    if (slug === "latest") return "the current release";
+    return "release " + slug.slice(2).replace(/_/g, ".");
+  }
+
+  function handoff(page, slug) {
+    try {
+      sessionStorage.setItem("a2cps-version-handoff", JSON.stringify({
+        title: page.replace(/^.*\//, ""),
+        into: describe(slug)
+      }));
+    } catch (e) { /* private browsing */ }
+  }
+
+  function go(target) {
+    // A channel whose own home page is missing would otherwise loop here;
+    // leave the static message above on screen instead.
+    if (target !== location.pathname) location.replace(target);
+  }
+
+  var match = rest.match(CHANNEL);
+  if (match) {
+    // A known channel, but not that page. Land on its first page instead.
+    if (match[2] && match[2] !== "/") handoff(match[2], match[1]);
+    go(BASE + "/" + match[1] + "/");
+  } else if (/^\/[^/]+\.html$/.test(rest)) {
+    // Bookmark of the old flat site. If the chapter is gone this 404s once
+    // more, and the branch above takes over.
+    go(BASE + "/" + HOME + rest);
+  } else {
+    go(BASE + "/" + HOME + "/");
+  }
+})();
+</script>

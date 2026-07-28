@@ -6,9 +6,15 @@ The site is versioned. Each build goes into its own directory on the `gh-pages` 
 
 | URL | Built from | Notes |
 | --- | --- | --- |
-| [`/unreleased/`](https://a2cps.github.io/starterkits/unreleased/) | every push to `main` | shows a "development version" banner |
+| [`/dev/`](https://a2cps.github.io/starterkits/dev/) | every push to `main` | shows a "development version" notice in the top bar |
 | [`/latest/`](https://a2cps.github.io/starterkits/latest/) | copy of the most recent release | where the site root redirects to |
-| `/v/2_1_0/` | the `v2.1.0` tag | frozen; shows an "older release" banner once superseded |
+| `/v/2_1_0/` | the `v2.1.0` tag | frozen; shows an "older release" notice once superseded |
+
+The switcher itself is [assets/js/version.js](assets/js/version.js), styled by [assets/css/version.css](assets/css/version.css). Everything that describes the site as a whole — the `v.json` manifest, the two redirect pages in [assets/pages](assets/pages), and the copy of the newest release at `/latest/` — is built by [scripts/build-site-index.sh](scripts/build-site-index.sh). That script derives its output from what is on disk, so it can be run against a checkout of `gh-pages` locally:
+
+```{shell}
+$ scripts/build-site-index.sh path/to/gh-pages assets/pages /starterkits
+```
 
 Release-specific values (the version number, the release directory on TACC, the [a2cps/snapshot](https://github.com/a2cps/snapshot) tag, the BIDS version) all live in [_variables.yml](_variables.yml), referenced from the kits as `{{{< var release.version >}}}` and friends. Bumping that one file updates every kit.
 
@@ -54,7 +60,7 @@ $ git commit -m "Update book"
 $ git push
 ```
 
-Merging to `main` publishes to [`/unreleased/`](https://a2cps.github.io/starterkits/unreleased/) automatically; there is no action to trigger by hand.
+Merging to `main` publishes to [`/dev/`](https://a2cps.github.io/starterkits/dev/) automatically; there is no action to trigger by hand.
 
 ## Cutting a Release
 

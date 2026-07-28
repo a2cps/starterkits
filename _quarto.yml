@@ -2,6 +2,7 @@ project:
   type: book
   resources:
     - assets/js/version.js
+    - assets/css/version.css
 
 engine: knitr
 
@@ -74,6 +75,7 @@ format:
     df-print: kable
     citation-location: margin
     reference-location: margin
+    css: assets/css/version.css
     include-in-header:
       text: |
         <script defer src="assets/js/version.js"></script>
