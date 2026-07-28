@@ -18,7 +18,7 @@
 (function () {
   "use strict";
 
-  var CHANNEL = /^(.*?)\/(dev|latest|v\/[^/]+)(\/.*)?$/;
+  var CHANNEL = /^(.*?)\/(dev|latest|pr\/\d+|v\/[^/]+)(\/.*)?$/;
   var HANDOFF = "a2cps-version-handoff";
 
   function findMenu() {
@@ -63,6 +63,7 @@
   function describe(slug) {
     if (slug === "dev") return "the development version";
     if (slug === "latest") return "the current release";
+    if (slug.indexOf("pr/") === 0) return "the preview of pull request #" + slug.slice(3);
     return "release " + version(slug);
   }
 
@@ -105,13 +106,32 @@
     if (content) content.insertBefore(box, content.firstChild);
   }
 
-  function action(base, manifest) {
-    if (!manifest.latest) return "";
-    return ' <a class="a2cps-channel-action" href="' + base + '/latest/">' +
-      "Switch to the current release (" + escapeHtml(version(manifest.latest)) + ")</a>";
+  function link(href, text) {
+    return ' <a class="a2cps-channel-action" href="' + href + '">' + text + "</a>";
+  }
+
+  // Offers the release when there is one. A preview falls back to offering dev,
+  // since anywhere is better than staying on a branch build by accident.
+  function action(base, manifest, fallbackToDev) {
+    if (manifest.latest) {
+      return link(
+        base + "/latest/",
+        "Switch to the current release (" + escapeHtml(version(manifest.latest)) + ")"
+      );
+    }
+    return fallbackToDev ? link(base + "/dev/", "Switch to the development version") : "";
   }
 
   function banner(current, manifest, base) {
+    if (current.indexOf("pr/") === 0) {
+      notice(
+        "warning",
+        "<span>This is a <strong>preview of pull request #" + escapeHtml(current.slice(3)) +
+          "</strong>. It is built from a branch and is not part of the published " +
+          "documentation.</span>" + action(base, manifest, true)
+      );
+      return;
+    }
     if (current === "dev") {
       notice(
         "warning",
