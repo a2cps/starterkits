@@ -1,6 +1,16 @@
 ## Publishing Overview
 
-For publishing, we're currently using GitHub Actions with frozen computations, [as described here](https://quarto.org/docs/publishing/github-pages.html#github-action). Note that the action does not execute code.
+For publishing, we're currently using GitHub Actions with frozen computations, [as described here](https://quarto.org/docs/publishing/github-pages.html#github-action). Note that the action does not execute code, so the `_freeze` directory must be committed alongside any change to a `*qmd`.
+
+The site is versioned. Each build goes into its own directory on the `gh-pages` branch, and a menu in the upper right lets readers switch between them.
+
+| URL | Built from | Notes |
+| --- | --- | --- |
+| [`/unreleased/`](https://a2cps.github.io/starterkits/unreleased/) | every push to `main` | shows a "development version" banner |
+| [`/latest/`](https://a2cps.github.io/starterkits/latest/) | copy of the most recent release | where the site root redirects to |
+| `/v/2_1_0/` | the `v2.1.0` tag | frozen; shows an "older release" banner once superseded |
+
+Release-specific values (the version number, the release directory on TACC, the [a2cps/snapshot](https://github.com/a2cps/snapshot) tag, the BIDS version) all live in [_variables.yml](_variables.yml), referenced from the kits as `{{{< var release.version >}}}` and friends. Bumping that one file updates every kit.
 
 ## Styleguide & Scope
 
@@ -22,7 +32,7 @@ The following is a minimal workflow for updating the site.
 
 ```{shell}
 # cd [path to starterkits] 
-$ quarto render
+$ pixi run render
 ```
 
 * Record changes with `git`
@@ -44,13 +54,59 @@ $ git commit -m "Update book"
 $ git push
 ```
 
-* On GitHub, [trigger the action](https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/manually-running-a-workflow) "Deploy static content to Pages"
+Merging to `main` publishes to [`/unreleased/`](https://a2cps.github.io/starterkits/unreleased/) automatically; there is no action to trigger by hand.
+
+## Cutting a Release
+
+Readers of a given data release should see the kits as they stood for that release, so each release is tagged and published to its own frozen directory.
+
+* Update [_variables.yml](_variables.yml) with the new release, e.g.
+
+```{yaml}
+release:
+  version: "2.2.0"
+  dir: "pre-surgery-release-2-2-0"
+```
+
+* Re-render and check the result. `var` shortcodes are expanded after the frozen output is restored, so a change to [_variables.yml](_variables.yml) reaches every kit without re-executing any code.
+
+```{shell}
+$ pixi run render
+```
+
+* Commit, push, and merge to `main` as above. Make sure `_freeze` is current before tagging: the tag build runs without `R`, so anything unfrozen will fail in CI.
+* Tag that commit and push the tag
+
+```{shell}
+$ git tag v2.2.0
+$ git push origin v2.2.0
+```
+
+The tag builds `/v/2_2_0/`, copies it to [`/latest/`](https://a2cps.github.io/starterkits/latest/), and adds it to the version menu. The previous release stays where it is and is never rebuilt.
 
 ## Tips
 
+### Snippets and `_freeze`
+
+`{{{< include >}}}` is resolved before code is executed, which means the included text is baked into the frozen output. Editing anything in `_snippets/` therefore has *no effect* on chapters that include it until their frozen output is cleared:
+
+```{shell}
+# after editing _snippets/mri-location.qmd
+$ for f in $(grep -l "_snippets/mri-location" *.qmd); do rm -rf "_freeze/${f%.qmd}"; done
+$ pixi run render
+```
+
+This does not apply to [_variables.yml](_variables.yml), whose `var` shortcodes are expanded on every render.
+
+### Code blocks and shortcodes
+
+Shortcodes are expanded in plain fenced blocks (```` ```bash ````) but not in executable cells (```` ```{bash} ````), where the content is handed to the engine verbatim. Use a plain fence when a block only illustrates a path or command.
+
 ### Quarto
 
-To view changes, use `quarto preview`, which renders the `qmd` files into `html`, opens up a copy of the starter kits in a browser, and automatically re-renders files when changes are saved.
+To view changes, use `pixi run preview`, which renders the `qmd` files into `html`, opens up a copy of the starter kits in a browser, and automatically re-renders files when changes are saved.
+
+Note that the version menu is hidden during a local preview. It only appears once the site is served from one of the versioned directories described above, since that is how it works out which version it is showing.
 
 ### Template
 
