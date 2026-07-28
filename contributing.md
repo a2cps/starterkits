@@ -9,8 +9,9 @@ The site is versioned. Each build goes into its own directory on the `gh-pages` 
 | [`/dev/`](https://a2cps.github.io/starterkits/dev/) | every push to `main` | shows a "development version" notice in the top bar |
 | [`/latest/`](https://a2cps.github.io/starterkits/latest/) | copy of the most recent release | where the site root redirects to |
 | `/v/2_1_0/` | the `v2.1.0` tag | frozen; shows an "older release" notice once superseded |
+| `/pr/52/` | an open pull request | temporary; see [Previewing a Pull Request](#previewing-a-pull-request) |
 
-The switcher itself is [assets/js/version.js](assets/js/version.js), styled by [assets/css/version.css](assets/css/version.css). Everything that describes the site as a whole — the `v.json` manifest, the two redirect pages in [assets/pages](assets/pages), and the copy of the newest release at `/latest/` — is built by [scripts/build-site-index.sh](scripts/build-site-index.sh). That script derives its output from what is on disk, so it can be run against a checkout of `gh-pages` locally:
+The switcher itself is [assets/js/version.js](assets/js/version.js), styled by [assets/css/version.css](assets/css/version.css). Everything that describes the site as a whole — the `v.json` manifest, the two redirect pages in [assets/pages](assets/pages), and the copy of the newest release at `/latest/` — is built by [scripts/build-site-index.sh](scripts/build-site-index.sh). Pull request previews are placed and removed by [scripts/deploy-preview.sh](scripts/deploy-preview.sh). That script derives its output from what is on disk, so it can be run against a checkout of `gh-pages` locally:
 
 ```{shell}
 $ scripts/build-site-index.sh path/to/gh-pages assets/pages /starterkits
@@ -61,6 +62,18 @@ $ git push
 ```
 
 Merging to `main` publishes to [`/dev/`](https://a2cps.github.io/starterkits/dev/) automatically; there is no action to trigger by hand.
+
+## Previewing a Pull Request
+
+Opening a pull request renders the site and publishes it to `https://a2cps.github.io/starterkits/pr/<number>/`, so a change can be read as a page rather than as a diff. A bot comment carries the link, the preview rebuilds on every push to the branch, and it is removed when the pull request closes. Pages takes a minute or so to serve each new push.
+
+The preview is built from the *merge* of the branch and `main`, which is what will be published if the pull request is merged, so it will not build while the branch has conflicts.
+
+A few things worth knowing:
+
+* Previews are marked with a notice in the top bar and are publicly reachable, like the rest of the site. They are not indexed anywhere, but they are not private either.
+* The render runs without `R`, so a pull request that changes a chapter without committing its `_freeze` will fail this check. That is the point: the same render runs on merge, so this catches it while it is still cheap to fix.
+* To skip the render, add the `skip-preview` label. The check still reports success, so it is safe to require.
 
 ## Cutting a Release
 

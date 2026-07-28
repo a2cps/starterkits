@@ -1,0 +1,123 @@
+name: Preview
+
+# Renders the site for a pull request and publishes it to pr/<number>/ on gh-pages,
+# so a reviewer can read the change rather than the diff. Removed when the pull
+# request closes. Add the "skip-preview" label to opt out.
+#
+# Rendering happens from the committed _freeze output, so no R is installed here.
+# A pull request that changes a chapter without committing its _freeze will fail
+# this check, which is the intended signal: the same render runs on merge.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: write # push the preview to gh-pages
+  pull-requests: write # leave the link as a comment
+
+# Supersede an in-flight render when the branch moves, but keep pull requests
+# independent of each other. Concurrent writes to gh-pages are handled by the retry
+# in scripts/deploy-preview.sh rather than by a shared lock.
+concurrency:
+  group: preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  # Reports the outcome either way, so the check stays meaningful when skipped and
+  # can safely be marked required in branch protection.
+  decide:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
+    steps:
+      - id: check
+        env:
+          SKIP: ${{ contains(github.event.pull_request.labels.*.name, 'skip-preview') }}
+        run: |
+          if [ "$SKIP" = "true" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "The skip-preview label is set; not rendering." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  preview:
+    needs: decide
+    if: github.event.action != 'closed' && needs.decide.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the pull request
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render book
+        uses: quarto-dev/quarto-actions/render@v2
+
+      - name: Check out gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+
+      - name: Publish preview
+        run: scripts/deploy-preview.sh publish site "${{ github.event.number }}" _book
+
+      - name: Report the link
+        uses: actions/github-script@v7
+        env:
+          URL: https://a2cps.github.io/starterkits/pr/${{ github.event.number }}/
+        with:
+          script: |
+            const { URL } = process.env
+            await core.summary.addLink('Preview', URL).write()
+            const body = [
+              '<!-- a2cps-preview -->',
+              `### Preview: ${URL}`,
+              '',
+              `Rendered from ${context.sha.slice(0, 7)}. GitHub Pages takes a minute or so`,
+              'to serve a new push, and the preview is removed when this pull request closes.',
+              '',
+              'Add the `skip-preview` label to stop rebuilding it.',
+            ].join('\n')
+            await require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/sticky-comment.js`)({
+              github, context, body,
+            })
+
+  cleanup:
+    # Runs regardless of the label: a preview published before the label was added
+    # still needs removing.
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the scripts
+        uses: actions/checkout@v4
+        with:
+          # The pull request's merge ref can be gone once it closes, so take the
+          # base branch; only the scripts are needed here.
+          ref: ${{ github.event.pull_request.base.ref }}
+          sparse-checkout: |
+            scripts
+            .github/scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Check out gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+
+      - name: Remove preview
+        run: scripts/deploy-preview.sh remove site "${{ github.event.number }}"
+
+      - name: Note the removal
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/sticky-comment.js`)({
+              github, context,
+              body: '<!-- a2cps-preview -->\nThe preview for this pull request has been removed.',
+              onlyIfPresent: true,
+            })
