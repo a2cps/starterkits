@@ -824,26 +824,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <p>Here is an example of how these files could be loaded using <code>R</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list all files</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> fs<span class="sc">::</span><span class="fu">dir_ls</span>(<span class="st">"data/brainager"</span>, <span class="at">glob =</span> <span class="st">"*T1w.tsv"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> fs<span class="sc">::</span><span class="fu">dir_ls</span>(<span class="st">"data/pre-surgery/mris/derivatives/brainager"</span>, <span class="at">glob =</span> <span class="st">"*T1w.tsv"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read in all tsvs</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ages <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_tsv</span>(files)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ages</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1,017 × 4
-   File                 brain.predicted_age lower.CI upper.CI
-   &lt;chr&gt;                              &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
- 1 sub-10003_ses-V1_T1w                73.6     73.0     74.2
- 2 sub-10005_ses-V1_T1w                65.7     64.6     66.9
- 3 sub-10008_ses-V1_T1w                75.5     74.7     76.3
- 4 sub-10010_ses-V1_T1w                44.6     42.6     46.5
- 5 sub-10011_ses-V1_T1w                40.5     38.5     42.4
- 6 sub-10013_ses-V1_T1w                72.1     71.5     72.8
- 7 sub-10014_ses-V1_T1w                42.3     41.7     42.9
- 8 sub-10015_ses-V1_T1w                55.0     53.2     56.8
- 9 sub-10017_ses-V1_T1w                57.9     57.2     58.7
-10 sub-10020_ses-V1_T1w                59.2     58.6     59.7
-# ℹ 1,007 more rows</code></pre>
+<pre><code># A tibble: 0 x 0</code></pre>
 </div>
 </div>
 <p>The column <code>File</code> identifies the anatomical image that was used for to make the prediction. When working with other A2CPS data, it may be helpful to extract the subject ID.</p>
@@ -887,7 +874,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <p>Predicted ages are neat, but these values are most useful when compared against a participant’s chronological age. These can be found in the <code>demographics</code> portion of the release.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>baseline_ages <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/demographics/demographics-2025-01-10.csv"</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/demographics/demographics-2025-01-10.csv"</span>,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_select =</span> <span class="fu">c</span>(<span class="st">"record_id"</span>, <span class="st">"age"</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -897,20 +884,20 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(age)) <span class="co"># age not available for all participants</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>brainage</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 996 × 7
+<pre><code># A tibble: 996 x 7
    File          brain.predicted_age lower.CI upper.CI   sub   age brain_age_gap
    &lt;chr&gt;                       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;
- 1 sub-10003_se…                73.6     73.0     74.2 10003    73         0.604
- 2 sub-10005_se…                65.7     64.6     66.9 10005    58         7.73 
- 3 sub-10008_se…                75.5     74.7     76.3 10008    73         2.49 
- 4 sub-10010_se…                44.6     42.6     46.5 10010    64       -19.4  
- 5 sub-10011_se…                40.5     38.5     42.4 10011    54       -13.5  
- 6 sub-10013_se…                72.1     71.5     72.8 10013    71         1.14 
- 7 sub-10014_se…                42.3     41.7     42.9 10014    45        -2.70 
- 8 sub-10015_se…                55.0     53.2     56.8 10015    65        -9.98 
- 9 sub-10017_se…                57.9     57.2     58.7 10017    56         1.95 
-10 sub-10020_se…                59.2     58.6     59.7 10020    53         6.17 
-# ℹ 986 more rows</code></pre>
+ 1 sub-10003_se~                73.6     73.0     74.2 10003    73         0.604
+ 2 sub-10005_se~                65.7     64.6     66.9 10005    58         7.73 
+ 3 sub-10008_se~                75.5     74.7     76.3 10008    73         2.49 
+ 4 sub-10010_se~                44.6     42.6     46.5 10010    64       -19.4  
+ 5 sub-10011_se~                40.5     38.5     42.4 10011    54       -13.5  
+ 6 sub-10013_se~                72.1     71.5     72.8 10013    71         1.14 
+ 7 sub-10014_se~                42.3     41.7     42.9 10014    45        -2.70 
+ 8 sub-10015_se~                55.0     53.2     56.8 10015    65        -9.98 
+ 9 sub-10017_se~                57.9     57.2     58.7 10017    56         1.95 
+10 sub-10020_se~                59.2     58.6     59.7 10020    53         6.17 
+# i 986 more rows</code></pre>
 </div>
 </div>
 <p>By plotting the predicted ages against the true ages, we can review the accuracy of the predictions.</p>

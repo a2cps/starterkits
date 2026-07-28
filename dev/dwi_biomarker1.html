@@ -784,17 +784,18 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h2 data-number="16.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">16.1</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="16.1.1">
 <h3 data-number="16.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">16.1.1</span> Locate Data</h3>
-<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.1.0 is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>On TACC, the data are stored underneath the releases. For example, data release v2.1.0 is underneath</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The derivatives for this biomarker are a collection of three kinds of outputs:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/dwi_biomarker1/</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/dwi_biomarker1/</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">move_masks</span>  networks  probtrackx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Each of these are organizing in a “BIDS-ish” manner.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree derivatives/dwi_biomarker1/move_masks/sub-10003</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">derivatives/dwi_biomarker1/move_masks/sub-10003</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree mris/derivatives/dwi_biomarker1/move_masks/sub-10003</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/dwi_biomarker1/move_masks/sub-10003</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> dwi</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> sub-10003_ses-V1_masks</span>
@@ -804,15 +805,15 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> sub-10003_ses-V1_space-dwifslstd_desc-module2_dseg.nii.gz</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span> directories, 5 files</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree derivatives/dwi_biomarker1/networks/sub-10003</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">derivatives/dwi_biomarker1/networks/sub-10003</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree mris/derivatives/dwi_biomarker1/networks/sub-10003</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/dwi_biomarker1/networks/sub-10003</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> dwi</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> network_summaries.tsv</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span> directories, 1 file</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree derivatives/dwi_biomarker1/probtrackx/sub-10003</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ex">derivatives/dwi_biomarker1/probtrackx/sub-10003</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree mris/derivatives/dwi_biomarker1/probtrackx/sub-10003</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/dwi_biomarker1/probtrackx/sub-10003</span></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> dwi</span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> coords_for_fdt_matrix1</span>
@@ -898,7 +899,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <p>The tables always have the same schema and so can be loaded together using standard tools.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>networks <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(fs<span class="sc">::</span><span class="fu">dir_ls</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/dwi_biomarker1/networks"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/derivatives/dwi_biomarker1/networks"</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">glob =</span> <span class="st">"*tsv"</span>,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">recurse =</span> <span class="cn">TRUE</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>))</span>
@@ -931,46 +932,6 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">162.1048</td>
-<td style="text-align: right;">0.0269635</td>
-<td style="text-align: right;">0.0539271</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">mPFCventral-amyg</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">10003</td>
-<td style="text-align: left;">V1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">109.7092</td>
-<td style="text-align: right;">0.0356199</td>
-<td style="text-align: right;">0.0712397</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">OFC-amyg-hipp</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">10003</td>
-<td style="text-align: left;">V1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">133.1513</td>
-<td style="text-align: right;">0.0712039</td>
-<td style="text-align: right;">0.1424078</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">mPFCdorsal-amyg-NAc</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">10003</td>
-<td style="text-align: left;">V1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">174.5116</td>
-<td style="text-align: right;">0.0159153</td>
-<td style="text-align: right;">0.0318307</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">WholeNetwork</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">10003</td>
-<td style="text-align: left;">V1</td>
-</tr>
-<tr class="odd">
 <td style="text-align: right;">434.1132</td>
 <td style="text-align: right;">0.0811123</td>
 <td style="text-align: right;">0.1622247</td>
@@ -988,6 +949,46 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <td style="text-align: left;">OFC-amyg-hipp</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">10008</td>
+<td style="text-align: left;">V1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">271.9534</td>
+<td style="text-align: right;">0.1441194</td>
+<td style="text-align: right;">0.2882389</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">mPFCdorsal-amyg-NAc</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">10008</td>
+<td style="text-align: left;">V1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">664.1328</td>
+<td style="text-align: right;">0.0633836</td>
+<td style="text-align: right;">0.1267671</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">WholeNetwork</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">10008</td>
+<td style="text-align: left;">V1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">170.8519</td>
+<td style="text-align: right;">0.0229825</td>
+<td style="text-align: right;">0.0459650</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">mPFCventral-amyg</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">10010</td>
+<td style="text-align: left;">V1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">114.8354</td>
+<td style="text-align: right;">0.0291683</td>
+<td style="text-align: right;">0.0583365</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">OFC-amyg-hipp</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">10010</td>
 <td style="text-align: left;">V1</td>
 </tr>
 </tbody>

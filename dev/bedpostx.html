@@ -782,11 +782,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h2 data-number="15.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">15.1</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="15.1.1">
 <h3 data-number="15.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">15.1.1</span> Locate Data</h3>
-<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.1.0 is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>On TACC, the data are stored underneath the releases. For example, data release v2.1.0 is underneath</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The derivatives are underneath <code>derivatives/bedpostx</code>. Although BedpostX derivatives are not covered by BIDS, the derivatives are organized in a “BIDS-ish” manner:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/bedpostx/ <span class="kw">|</span> <span class="fu">head</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/bedpostx/ <span class="kw">|</span> <span class="fu">head</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010</span></span>
@@ -798,15 +799,15 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10020</span></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10023</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree <span class="at">-d</span> derivatives/bedpostx/sub-10003</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ex">derivatives/bedpostx/sub-10003</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree <span class="at">-d</span> mris/derivatives/bedpostx/sub-10003</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/bedpostx/sub-10003</span></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> dwi.bedpostx</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> logs</span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="ex">│&nbsp;&nbsp;</span> └── monitor</span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> xfms</span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/</span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="ex">bvals</span>                     dyads1.nii.gz                dyads2_thr0.05.nii.gz        dyads3_thr0.05.nii.gz     mean_f0samples.nii.gz  mean_fsumsamples.nii.gz  mean_S0samples.nii.gz   mean_th3samples.nii.gz   merged_ph1samples.nii.gz  merged_th2samples.nii.gz  xfms</span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="ex">bvecs</span>                     dyads2_dispersion.nii.gz     dyads3_dispersion.nii.gz     logs                      mean_f1samples.nii.gz  mean_ph1samples.nii.gz   mean_tausamples.nii.gz  merged_f1samples.nii.gz  merged_ph2samples.nii.gz  merged_th3samples.nii.gz</span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="ex">commands.txt</span>              dyads2.nii.gz                dyads3.nii.gz                mean_dsamples.nii.gz      mean_f2samples.nii.gz  mean_ph2samples.nii.gz   mean_th1samples.nii.gz  merged_f2samples.nii.gz  merged_ph3samples.nii.gz  monitor</span>
@@ -820,7 +821,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take every 10th slice</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> nio<span class="sc">::</span><span class="fu">to_tbl</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/bedpostx/sub-10003/ses-V1/dwi.bedpostx/mean_f1samples.nii.gz"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/mean_f1samples.nii.gz"</span>,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">measure =</span> <span class="st">"f1"</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(k <span class="sc">%%</span> <span class="dv">5</span>), k <span class="sc">&gt;</span> <span class="dv">30</span>, k <span class="sc">&lt;</span> <span class="dv">80</span>)</span>
@@ -911,7 +912,7 @@ Pajevic, S., &amp; Pierpaoli, C. (1999). Color schemes to represent the orientat
 </div></div><div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fl">1.8</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fiber <span class="ot">&lt;-</span> nio<span class="sc">::</span><span class="fu">to_tbl</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/bedpostx/sub-10003/ses-V1/dwi.bedpostx/dyads1.nii.gz"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/dyads1.nii.gz"</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(f1, <span class="at">by =</span> <span class="fu">join_by</span>(i, j, k)) <span class="sc">|&gt;</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>

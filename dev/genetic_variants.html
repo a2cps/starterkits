@@ -786,7 +786,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <p>On TACC, the data are stored underneath the releases. For example, data release <code>v2.1.0</code> is underneath</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The genetic variant data are underneath the <code>omics/gene_variants</code> folder</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls omics/gene_variants</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam</span></span>
@@ -805,7 +805,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <section id="bim" class="level4" data-number="2.2.0.1">
 <h4 data-number="2.2.0.1" class="anchored" data-anchor-id="bim"><span class="header-section-number">2.2.0.1</span> .bim</h4>
 <p>Each row in this file specifics a genetic variant and provides extended information on its location and alleles.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd omics/gene_variants</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> head <span class="at">-5</span> 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
 <div class="cell-output-display">

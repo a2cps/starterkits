@@ -818,8 +818,9 @@ Calhoun, V. D., Adali, T., Pearlson, G. D., &amp; Pekar, J. J. (2001). A method 
 <h2 data-number="18.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">18.1</span> Starting Project</h2>
 <section id="locate-data" class="level3 page-columns page-full" data-number="18.1.1">
 <h3 data-number="18.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">18.1.1</span> Locate Data</h3>
-<p>On TACC, the neuroimaging data are stored underneath the releases. For example, data release v2.1.0 is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/mris</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>On TACC, the data are stored underneath the releases. For example, data release v2.1.0 is underneath</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The GIFT derivatives are underneath <code>mris/derivatives/gift</code>. This structure follows the <a href="https://bids-specification.readthedocs.io/en/stable/common-principles.html#storage-of-derived-datasets">BIDS method of storing derived datasets</a>. Inputs to GIFT are stored underneath the top-level “sub-[recordid]” directories.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree mris/derivatives/gift/sub-10003</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gift/sub-10003</span></span>
@@ -927,7 +928,7 @@ Korponay, C., Janes, A. C., &amp; Frederick, B. B. (2024). Brain-wide functional
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">crossing</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">dir_ls</span>(</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/pre-surgery/mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi"</span>,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">recurse =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">glob =</span> <span class="st">"*rest_run-01*timecourses.nii.gz"</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  )</span>
