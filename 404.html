@@ -1,20 +1,28 @@
 <!doctype html>
 <meta charset="utf-8">
 <title>Redirecting&hellip;</title>
-<meta http-equiv="refresh" content="5; url=/starterkits/unreleased/">
+<!--
+  Served by GitHub Pages for any unmatched path under the site. It recovers links
+  that bypass the version menu: bookmarks of the old flat site, external links,
+  retired channel names, and chapters that no longer exist in a given release.
+
+  Written by scripts/build-site-index.sh, which substitutes /starterkits and dev.
+  The meta refresh is the no-JavaScript fallback.
+-->
+<meta http-equiv="refresh" content="5; url=/starterkits/dev/">
 <p>That page has moved.
-   <a href="/starterkits/unreleased/">Continue to the A2CPS Starter Kits</a>.</p>
+   <a href="/starterkits/dev/">Continue to the A2CPS Starter Kits</a>.</p>
 <script>
 (function () {
   var BASE = "/starterkits";
-  var HOME = "unreleased";
-  var CHANNEL = /^\/(unreleased|latest|v\/[^/]+)(\/.*)?$/;
+  var HOME = "dev";
+  var CHANNEL = /^\/(dev|latest|v\/[^/]+)(\/.*)?$/;
 
   var path = location.pathname;
   var rest = path.indexOf(BASE) === 0 ? path.slice(BASE.length) : path;
 
   function describe(slug) {
-    if (slug === "unreleased") return "the development version";
+    if (slug === "dev") return "the development version";
     if (slug === "latest") return "the current release";
     return "release " + slug.slice(2).replace(/_/g, ".");
   }
