@@ -16,7 +16,7 @@
 (function () {
   var BASE = "/starterkits";
   var HOME = "dev";
-  var CHANNEL = /^\/(dev|latest|v\/[^/]+)(\/.*)?$/;
+  var CHANNEL = /^\/(dev|latest|pr\/\d+|v\/[^/]+)(\/.*)?$/;
 
   var path = location.pathname;
   var rest = path.indexOf(BASE) === 0 ? path.slice(BASE.length) : path;
@@ -24,6 +24,7 @@
   function describe(slug) {
     if (slug === "dev") return "the development version";
     if (slug === "latest") return "the current release";
+    if (slug.indexOf("pr/") === 0) return "the preview of pull request #" + slug.slice(3);
     return "release " + slug.slice(2).replace(/_/g, ".");
   }
 
