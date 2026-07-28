@@ -1,0 +1,188 @@
+name: Publish
+
+# The site is versioned: each build lands in its own directory on gh-pages.
+#
+#   main         -> unreleased/
+#   tag vX.Y.Z   -> v/X_Y_Z/ (and, when newest, a copy at latest/)
+#
+# Rendering happens from the committed _freeze output, so no R is installed here.
+# See "Cutting a release" in contributing.md.
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Both triggers write to gh-pages, so serialize them rather than racing.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Determine destination directory
+        id: dest
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            version="${GITHUB_REF#refs/tags/v}"
+            echo "dir=v/${version//./_}" >> "$GITHUB_OUTPUT"
+          else
+            echo "dir=unreleased" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render book
+        uses: quarto-dev/quarto-actions/render@v2
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_book
+          # Only the contents of this directory are replaced; sibling versions survive.
+          destination_dir: ${{ steps.dest.outputs.dir }}
+          keep_files: false
+          full_commit_message: "Publish ${{ steps.dest.outputs.dir }} from ${{ github.sha }}"
+
+  # Rebuild the pieces that describe the site as a whole. Runs after every publish so
+  # that `latest` re-derives itself from whatever versions actually exist.
+  index:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Rebuild manifest, redirects and latest/
+        run: |
+          set -euo pipefail
+
+          # Path the site is served from. GitHub project pages live under /<repo>;
+          # a <user>.github.io repo (or a custom domain) is served from the root.
+          repo="${GITHUB_REPOSITORY#*/}"
+          if [[ "$repo" == *.github.io || -f CNAME ]]; then
+            base=""
+          else
+            base="/$repo"
+          fi
+
+          mkdir -p v
+          mapfile -t versions < <(
+            find v -mindepth 1 -maxdepth 1 -type d -printf '%f\n' \
+              | sort -t_ -k1,1n -k2,2n -k3,3n
+          )
+
+          if [[ ${#versions[@]} -gt 0 ]]; then
+            latest="${versions[-1]}"
+            rsync -a --delete "v/$latest/" latest/
+            jq -n --arg latest "$latest" --args \
+              '{latest: $latest, versions: $ARGS.positional}' \
+              "${versions[@]}" > v.json
+            home="latest"
+          else
+            # Nothing tagged yet: the development build is all there is.
+            latest=""
+            jq -n '{latest: null, versions: []}' > v.json
+            home="unreleased"
+          fi
+          echo "latest=${latest:-<none>} home=$home base=${base:-/}"
+
+          touch .nojekyll
+
+          # Heredocs below are quoted so the browser-bound JS is copied verbatim;
+          # the two site-specific values are substituted afterwards.
+          cat > index.html <<'HTML'
+          <!doctype html>
+          <meta charset="utf-8">
+          <title>A2CPS Starter Kits</title>
+          <meta http-equiv="refresh" content="0; url=__HOME__/">
+          <link rel="canonical" href="__HOME__/">
+          <p><a href="__HOME__/">A2CPS Starter Kits</a></p>
+          HTML
+
+          # Catch-all for links that bypass the version menu: bookmarks of the old flat
+          # site, external links, and chapters that no longer exist in a given release.
+          # GitHub Pages serves this for any unmatched path under the site.
+          cat > 404.html <<'HTML'
+          <!doctype html>
+          <meta charset="utf-8">
+          <title>Redirecting&hellip;</title>
+          <meta http-equiv="refresh" content="5; url=__BASE__/__HOME__/">
+          <p>That page has moved.
+             <a href="__BASE__/__HOME__/">Continue to the A2CPS Starter Kits</a>.</p>
+          <script>
+          (function () {
+            var BASE = "__BASE__";
+            var HOME = "__HOME__";
+            var CHANNEL = /^\/(unreleased|latest|v\/[^/]+)(\/.*)?$/;
+
+            var path = location.pathname;
+            var rest = path.indexOf(BASE) === 0 ? path.slice(BASE.length) : path;
+
+            function describe(slug) {
+              if (slug === "unreleased") return "the development version";
+              if (slug === "latest") return "the current release";
+              return "release " + slug.slice(2).replace(/_/g, ".");
+            }
+
+            function handoff(page, slug) {
+              try {
+                sessionStorage.setItem("a2cps-version-handoff", JSON.stringify({
+                  title: page.replace(/^.*\//, ""),
+                  into: describe(slug)
+                }));
+              } catch (e) { /* private browsing */ }
+            }
+
+            function go(target) {
+              // A channel whose own home page is missing would otherwise loop here;
+              // leave the static message above on screen instead.
+              if (target !== location.pathname) location.replace(target);
+            }
+
+            var match = rest.match(CHANNEL);
+            if (match) {
+              // A known channel, but not that page. Land on its first page instead.
+              if (match[2] && match[2] !== "/") handoff(match[2], match[1]);
+              go(BASE + "/" + match[1] + "/");
+            } else if (/^\/[^/]+\.html$/.test(rest)) {
+              // Bookmark of the old flat site. If the chapter is gone this 404s once
+              // more, and the branch above takes over.
+              go(BASE + "/" + HOME + rest);
+            } else {
+              go(BASE + "/" + HOME + "/");
+            }
+          })();
+          </script>
+          HTML
+
+          sed -i "s|__BASE__|$base|g; s|__HOME__|$home|g" index.html 404.html
+
+      - name: Commit and push
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to update."
+            exit 0
+          fi
+          git commit -m "Update site index for ${{ github.sha }}"
+          # This job checks out gh-pages after the build job has already pushed, and the
+          # concurrency group keeps the two triggers from overlapping, so the branch is
+          # current. A rejected push means that assumption broke: fail loudly.
+          git push

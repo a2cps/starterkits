@@ -1,5 +1,7 @@
 project:
   type: book
+  resources:
+    - assets/js/version.js
 
 engine: knitr
 
@@ -11,6 +13,13 @@ book:
   reader-mode: true
   search: true
   google-analytics: G-K3383Z78V7
+  navbar:
+    right:
+      # Placeholder. assets/js/version.js replaces the menu contents at runtime,
+      # using the v.json manifest published at the root of the site.
+      - text: "Version"
+        menu:
+          - text: "empty"
   chapters:
     - index.qmd
     - Psychosocial_starter_kit.qmd
@@ -65,4 +74,7 @@ format:
     df-print: kable
     citation-location: margin
     reference-location: margin
+    include-in-header:
+      text: |
+        <script defer src="assets/js/version.js"></script>
 
