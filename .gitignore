@@ -7,8 +7,10 @@
 /_book/
 /site_libs/
 data/
-*cache/*
-*files/*
+# Quarto's per-chapter render output, e.g. fmriprep_files/ and fmriprep_cache/.
+# Anchored on the underscore so that a plain files/ or cache/ is not swept up.
+*_cache/
+*_files/
 **/*.quarto_ipynb
 # pixi environments
 .pixi/*

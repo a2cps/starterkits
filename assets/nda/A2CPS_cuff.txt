@@ -1,0 +1,6 @@
+
+A2CPS REST (Resting State fMRI)
+
+Two BOLD scans are acquired (6 min duration) while participants wear an inflated Hokanson Rapid Cuff (https://hokansonvascular.com/products/133448) on one leg. 
+
+Pressure is constant throughout each scan. The first scan uses a subject specific inflation pressure, and the second scan uses a standard (120 mmHg) inflation pressure.
