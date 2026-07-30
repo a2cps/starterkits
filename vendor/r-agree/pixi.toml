@@ -7,25 +7,25 @@ name = "r-agree"
 version = "0.0.0.9000"
 
 [package.build.backend]
+channels = [ "conda-forge", "https://prefix.dev/pixi-build-backends" ]
 name = "pixi-build-r"
 version = "*"
-channels = ["https://prefix.dev/pixi-build-backends", "conda-forge"]
 
 [package.build.source]
-git = "https://github.com/psadil/agree"
 branch = "main"
+git = "https://github.com/psadil/agree"
 
 [package.host-dependencies]
 r-base = ">=4.5,<4.6"
 r-dplyr = "*"
-r-ggdist = { path = "../r-ggdist" }
+r-ggdist = {path = "../r-ggdist"}
 r-ggplot2 = "*"
 r-rlang = "*"
 r-tibble = "*"
 
 [package.run-dependencies]
 r-dplyr = "*"
-r-ggdist = { path = "../r-ggdist" }
+r-ggdist = {path = "../r-ggdist"}
 r-ggplot2 = "*"
 r-rlang = "*"
 r-tibble = "*"

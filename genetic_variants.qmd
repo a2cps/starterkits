@@ -1,3 +1,10 @@
+```{r}
+#| label: setup
+
+library(data.table)
+library(ggplot2)
+```
+
 # Genetic Variant Data {#sec-snps}
 
 This page provides considerations for A2CPS projects that involve the Genetic Variant data.
@@ -7,7 +14,7 @@ This page provides considerations for A2CPS projects that involve the Genetic Va
 
 Genetic variant data captures individual variation in the human genome with single-nucleotide resolution. Our released SNP array data includes 690,126 genetic loci across all 22 autosomes, the X / Y (sex) chromosomes, and mitochondrial DNA for 1375 participants. At each locus, there is a more common "reference" (REF) allele and a less common "alternate" (ALT) allele, also referred to as the major and minor alleles, respectively. Because humans are diploid, we carry two copies of each chromosome, and thus two alleles at each locus, which may be both REF, both ALT, or one of each (heterozygous). This data enables researchers to examine allele-level variation across the genome at precisely selected sites for each participant. Below, we expand with more granularity how to work with these data, and the quality control measures that were used to create them. Notably, we also used the quality controlled data to impute whole genome sequences using TOPMed's Imputation Server, information that is included in the "Imputed Genomics" starter kit.
 
----
+--------------------------------------------------------------------------------
 
 ## Starting Project
 
@@ -38,15 +45,18 @@ $ ls omics/gene_variants
 These files are in the [PLINK](https://www.cog-genomics.org/plink/1.9/) format.
 
 ## Plink Binary File Set
-#### .bim
+
+### .bim
 
 Each row in this file specifics a genetic variant and provides extended information on its location and alleles.
+
 ```bash
 $ cd omics/gene_variants
 $ head -5 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
 ```
 ```{r}
 #| echo: false
+
 tibble::tribble(
   ~CHR              ,
   ~`VAR ID`         ,
@@ -107,6 +117,7 @@ $ head -5 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam
 ```
 ```{r}
 #| echo: false
+
 tibble::tribble(
   ~`Family ID`                  ,
   ~`Individual ID`              ,
@@ -156,9 +167,7 @@ tibble::tribble(
 
 #### .bed
 
-
 A binary file, unviewable through command line commands such as "cat". This contains each participant's genotype data. Stored as bytes:
-
 
 00	Homozygous for first allele in .bim file
 
@@ -170,14 +179,13 @@ A binary file, unviewable through command line commands such as "cat". This cont
 
 To see all files types in plink, go here: [File format reference - PLINK 1.9](https://www.cog-genomics.org/plink/1.9/formats).
 
----
+--------------------------------------------------------------------------------
 
 ### Extract Data
 
 To access the variant data, plink2 (or plink 1.9) must be installed. Please see: [PLINK 2.0](https://www.cog-genomics.org/plink/2.0/) or  [PLINK 1.9](https://www.cog-genomics.org/plink/1.9/).
 
 Here, we are storing a set of genetic variants from our primary biomarker list in a text file called 'snps.txt'. Since we specifically probed these sites, they have longer, study-specific identifiers. By contrast, a typical SNP is assigned a reference SNP ID (rsID), which usually takes the form rs followed by a number, such as rs1, rs105, or rs123456789. 
-
 
 ```shell
 $ cat snps.txt 
@@ -200,6 +208,7 @@ Here is the resulting table:
 
 ```{r}
 #| echo: false
+
 tibble::tribble(
   ~CHR                                                              ,
   ~SNP                                                              ,
@@ -235,7 +244,7 @@ tibble::tribble(
 - MAF = minor allele frequency (calculated # minor allele observations / # total allele observations)
 - NCHROBS = total number of allele observations (2 * number of participants)
 
----
+--------------------------------------------------------------------------------
 
 ## Quality Control
 
@@ -256,6 +265,7 @@ RL1-5.bed
 - For the X and Y chromosomes, biologically impossible calls were removed — including heterozygous calls in males (who are hemizygous for these chromosomes) and non-missing Y chromosome calls in females.
 
 ### Considerations while working with these data
+
 - We used a relatively liberal --geno 0.2 filter to retain as many variants as possible. Many studies adopt stricter thresholds (e.g., --geno 0.1 or lower), but we prioritized inclusivity of data in this stage of QC.
 
 - We intentionally did not apply a Hardy-Weinberg equilibrium (--hwe) filter. Principal component analysis (PCA) revealed population structure, and applying HWE filtering across pooled subpopulations can lead to inflated Type I error rates due to the Wahlund effect. This occurs when heterozygosity is overestimated across stratified populations (since there are actually more homozygotes in each subpopulation), causing variants to falsely appear as deviating from equilibrium. If desired, users may stratify the data by major ancestry groups and apply HWE filtering within those subsets.
@@ -263,9 +273,9 @@ RL1-5.bed
 - We also chose not to filter on minor allele frequency (--maf) to leave this decision to the end user, depending on whether they are interested in rare or common variants. Common --maf thresholds include 0.05 or 0.01. Note that population structure can influence allele frequency distributions — a variant rare in the total sample may be common within a subpopulation.
 
 - The pseudo-autosomal region (PAR) of the X chromosome is often excluded in X chromosome-specific analyses, as it behaves more like an autosome. We leave this decision to researchers conducting such analyses. To perform this separation, a typical command is:
-```bash
-./plink --bfile path/to/x-chr --split-x hg38 --make-bed --out path/to/split-off-PAR-x-chr
-```
+  ```bash
+  ./plink --bfile path/to/x-chr --split-x hg38 --make-bed --out path/to/split-off-PAR-x-chr
+  ```
 
 - Many study designs, such as polygenic risk score calculations, must be cognizant of population structure. 
 
@@ -520,12 +530,12 @@ pdf("./plots/missingness.samples.perchr.spaghetti.A2CPS.pdf",width=9,height=7)
   tmp <- matrix(dat,ncol=22)
   plot(c(1,22),r,type="n",xlab="chromosome",ylab="% missing",xaxt="n")
   axis(1,1:22)
-  for(j in 1:nrow(tmp)) lines(1:22,tmp[j,],col="orange")
+  for(j in seq_len(nrow(tmp))) lines(1:22,tmp[j,],col="orange")
 dev.off()
 
 # boxplot sample average
 tmp <- matrix(dat,ncol=22) #temp is a matrix with rows as participants and columns as chr## and cells as FMISS 
-z.pm <- apply(tmp,1,mean) # z.pm is a vector with the mean values of FMISS for each participant ie. what is their average FMISS rate across participants
+z.pm <- rowMeans(tmp) # z.pm is a vector with the mean values of FMISS for each participant ie. what is their average FMISS rate across participants
 pdf("./plots/missingness.samples.averages.A2CPS.pdf",width=9,height=6)
   par(mfrow=c(1,2),las=1)
   boxplot(z.pm)
@@ -545,27 +555,27 @@ dev.off()
 
 <details>
 <summary>Click to show Supplementary RScript #2: Heterozygosity and Relatedness Checks (het.genome.r)</summary>
-```r
-library(data.table)
-library(ggplot2)
+
+```{r}
+#| eval: false
 
 args <- commandArgs(trailingOnly = TRUE)
 user_wd <- args[1]
 setwd(user_wd)
 
 # ---------- TESTING HETEROZYGOSITY ------------
-a2cps.h <- fread("./qc_derivatives/7_Merged/RL1-5_Merged_Het.het", stringsAsFactors = F)
+a2cps.h <- fread("./qc_derivatives/7_Merged/RL1-5_Merged_Het.het", stringsAsFactors = FALSE)
 colnames(a2cps.h) <- c("FID","IID","O_HOM", "E_HOM", "N_NM",  "F")
 a2cps.h[,'Het_Rate' := (N_NM - O_HOM)/N_NM]
 a2cps.h[, 'Pop' := "A2CPS"]
 
 dat2 <- rbind(a2cps.h)
 
-p.ht <- ggplot(data=dat2, aes(x=factor(Pop, levels = c("A2CPS")), y=Het_Rate, group=Pop, color=Pop)) + geom_boxplot(outlier.colour = "red", show.legend = F) + scale_x_discrete(name = "Populations") + scale_y_continuous(name = "Het Rate", limits = c(0.0,0.32)) + ggtitle("Heterozygosity Rates") + theme_bw() + theme(axis.text.x=element_text(size=16, color="black",hjust=1), axis.text.y=element_text(size=16, color = "black"), axis.title.x = element_text(size=18, face = "bold"), axis.title.y = element_text(size=18, face = "bold"), panel.background=element_blank(), panel.grid.minor=element_blank(), panel.grid.major=element_blank(), plot.title = element_text(hjust = 0.5, size=20, face = "bold"))
+p.ht <- ggplot(data=dat2, aes(x=factor(Pop, levels = c("A2CPS")), y=Het_Rate, group=Pop, color=Pop)) + geom_boxplot(outlier.colour = "red", show.legend = FALSE) + scale_x_discrete(name = "Populations") + scale_y_continuous(name = "Het Rate", limits = c(0.0,0.32)) + ggtitle("Heterozygosity Rates") + theme_bw() + theme(axis.text.x=element_text(size=16, color="black",hjust=1), axis.text.y=element_text(size=16, color = "black"), axis.title.x = element_text(size=18, face = "bold"), axis.title.y = element_text(size=18, face = "bold"), panel.background=element_blank(), panel.grid.minor=element_blank(), panel.grid.major=element_blank(), plot.title = element_text(hjust = 0.5, size=20, face = "bold"))
 ggsave("./plots/A2CPS_RL1-5_Het.png", p.ht, width = 8, height = 6)
 
 # ---------- TESTING PARENTAL RELATEDNESS ------------
-philippines <- fread("./qc_derivatives/7_Merged/RL1-5_Merged_IBD.genome", stringsAsFactors = F)
+philippines <- fread("./qc_derivatives/7_Merged/RL1-5_Merged_IBD.genome", stringsAsFactors = FALSE)
 philippines <- philippines[which(philippines$Z0 != 1)]
 
 png("./plots/A2CPS_RL1-5_Relatedness.png", width=3000, height=2000, res=300)
@@ -577,12 +587,14 @@ dev.off()
 related <- philippines[which(philippines$Z0 < 0.5), ]
 fwrite(related, "./helpers/A2CPS_RL1-5_related.csv")
 ```
+
 </details>
 
 <details>
 <summary>Click to show Supplementary RScript #3: Determining which Related Participants to Drop (missingness.related.comparison.r)</summary>
-```r
-library(data.table)
+
+```{r}
+#| eval: false
 
 args <- commandArgs(trailingOnly = TRUE)
 user_wd <- args[1]
@@ -621,21 +633,19 @@ for (pair in complist) {
 
 IID <- missingness.table[match(drop.list, missingness.table$FAMID), ]$ID
 
-drop.table <- data.table(
-  FAMID <- drop.list,
-  IID <- IID
-)
+drop.table <- data.table(FAMID = drop.list, IID = IID)
 
 # Drop the higher-missingness related / duplicate individual
-fwrite(drop.table, sep = " ", col.names =  F,"./helpers/A2CPS_related_drop.txt")
+fwrite(drop.table, sep = " ", col.names =  FALSE, "./helpers/A2CPS_related_drop.txt")
 ```
+
 </details>
 
 <details>
 <summary>Click to show Supplementary RScript #4: Sex Typing Discrepancy Analysis and Handling of Discrepancies (sex.typing.r)</summary>
-```r
-library(data.table)
-library(ggplot2)
+
+```{r}
+#| eval: false
 
 args <- commandArgs(trailingOnly = TRUE)
 user_wd <- args[1]
@@ -700,13 +710,13 @@ related_drop <- fread("./helpers/A2CPS_related_drop.txt")
 setnames(related_drop, c("ID", "IID"))
 drop_sex_discrepancy_and_related <- rbind(drop_sex_discrepancy, related_drop)
 
-fwrite(drop_sex_discrepancy_and_related, col.names = F, sep = " ", "helpers/A2CPS_related_and_sex_discrepancy_drop.txt")
+fwrite(drop_sex_discrepancy_and_related, col.names = FALSE, sep = " ", "helpers/A2CPS_related_and_sex_discrepancy_drop.txt")
 update_sex <- data.table(
   ID = merged_dt_yes$FID,
   IID = merged_dt_yes$IID,
   Sex = merged_dt_yes$SNPSEX
 )
-fwrite(update_sex, col.names = F, sep = " ", "./helpers/A2CPS_update_sex.txt")
+fwrite(update_sex, col.names = FALSE, sep = " ", "./helpers/A2CPS_update_sex.txt")
 
 ## Graphing
 ok_df$LegendStatus <- "OK"
@@ -714,9 +724,9 @@ problem_df$LegendStatus <- "PROBLEM"
 combined_df <- rbind(ok_df, problem_df)
 png("./plots/A2CPS_RL1-5_Sex_Typing.png", width = 3000, height = 2000, res = 300)
   p <- ggplot() +
-    geom_point(data = ok_df, aes(x = F, y = 0, color = factor(PEDSEX), shape = "OK", size = "OK", alpha = "OK"),
+    geom_point(data = ok_df, aes(x = FALSE, y = 0, color = factor(PEDSEX), shape = "OK", size = "OK", alpha = "OK"),
                position = position_jitter(width = 0, height = 0.1)) +
-    geom_point(data = problem_df, aes(x = F, y = 0, color = factor(PEDSEX), shape = "PROBLEM", size = "PROBLEM", alpha = "PROBLEM"),
+    geom_point(data = problem_df, aes(x = FALSE, y = 0, color = factor(PEDSEX), shape = "PROBLEM", size = "PROBLEM", alpha = "PROBLEM"),
                position = position_jitter(width = 0, height = 0.1)) +
     scale_color_manual(values = c("0" = "black", "1" = "blue", "2" = "magenta")) +
     scale_shape_manual(name = "Status", values = c("OK" = 1, "PROBLEM" = 19)) +
@@ -733,13 +743,14 @@ png("./plots/A2CPS_RL1-5_Sex_Typing.png", width = 3000, height = 2000, res = 300
   print(p)
 dev.off()
 ```
+
 </details>
 
 <details>
 <summary>Click to show Supplementary RScript #5: Subsetting just Freeze 2 Participants (Freeze2.R)</summary>
-```r
-library(data.table)
 
+```{r}
+#| eval: false
 args <- commandArgs(trailingOnly = TRUE)
 user_wd <- args[1]
 setwd(user_wd)
@@ -756,21 +767,22 @@ fam.file[, prefix := sub("_.*", "", V2)]
 
 matched_rows <- fam.file[prefix %in% drop_not_in_freeze2_list, .(V1, V2)]
 
-fwrite(matched_rows, col.names = F, sep = " ", "notFreeze2.txt")
+fwrite(matched_rows, col.names = FALSE, sep = " ", "notFreeze2.txt")
 
 previous_drops <- fread("/Users/sethberke/a2cps.gv.qc.auto/A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List.txt")
 
 total_drops <- rbind(matched_rows, previous_drops)
 
-fwrite(total_drops, col.names = F, sep = " ", "/Users/sethberke/a2cps.gv.qc.auto/A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List_Only_Freeze_2.txt")
+fwrite(total_drops, col.names = FALSE, sep = " ", "/Users/sethberke/a2cps.gv.qc.auto/A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List_Only_Freeze_2.txt")
 ```
+
 </details>
 
----
+--------------------------------------------------------------------------------
 
 ### Principal Component Analysis
 
-Systematic differences in ancestry between groups – population stratification – can lead to spurious associations with allele frequencies, and so multiethnic analyses often include genetic principal components to account for the variation imposed by population structure. Here we plotted the PCA values across two axes, and can see distinct populations, which must be accounted for in many study designs, such as polygenic risk score (PRS) calculations.
+Systematic differences in ancestry between groups -- population stratification -- can lead to spurious associations with allele frequencies, and so multiethnic analyses often include genetic principal components to account for the variation imposed by population structure. Here we plotted the PCA values across two axes, and can see distinct populations, which must be accounted for in many study designs, such as polygenic risk score (PRS) calculations.
 
 <details>
 <summary>Click to show Principal Components Bash Script, which utilizes Plink 1.9</summary>
@@ -795,7 +807,6 @@ Systematic differences in ancestry between groups – population stratification 
     Rscript ./scripts/pca.r "$USER_WD"
 ```
 </details>
-
 
 <details>
 <summary>Click to show Supplementary RScript #6: Principal Components Analysis (pca.r)</summary>
@@ -893,12 +904,11 @@ fwrite(pca, "./Freeze_2/principle_components_analysis/PCA/A2CPS_RL1-5_PCA_Ind_In
 ```
 </details>
 
-
 ![A2CPS PCA Scree Plot](assets/images/A2CPS_Freeze2_PCA_Scree_Plot.png){fig-alt="A2CPS PCA Scree Plot" width=500px #fig-pcascree}
 
 ![A2CPS PCA Plot](assets/images/A2CPS_Freeze2_PCA_Plot.png){fig-alt="A2CPS PCA Plot" width=750px #fig-pcaplot}
 
----
+--------------------------------------------------------------------------------
 
 ### Sex Typing
 
@@ -906,16 +916,15 @@ This procedure confirms the gender of each participant as documented in the stud
 
 ![A2CPS Sex Typing Plot](assets/images/A2CPS_QC_Sex_Typing.png){fig-alt="A2CPS Sex Typing" width=500px #fig-sextyping}
 
----
+--------------------------------------------------------------------------------
 
 ### Relatedness
 
 Allele-sharing percentages, determined during identity-by descent analyses, can reveal relatedness between participants, including the presence of duplicate samples. For example, full siblings are expected to share approximately 50% of their SNPs at a single allele (represented by the Z1 value: e.g., both individuals having "A" in genotypes AA and AB) and about 25% of their SNPs at both alleles (Z2 value: e.g., both having AA at a locus). In contrast, duplicate samples should share nearly 100% of their alleles, resulting in a Z2 value close to 1. To avoid bias in genome-wide association studies due to overrepresentation of related or duplicate individuals, we removed one individual from each identified pair, prioritizing the retention of the sample with higher genotype call quality. In the relatedness plot, sibling pairs appear around Z1 ≈ 0.5, while duplicates cluster in the bottom-left corner (Z0 ≈ 0, Z1 ≈ 0, Z2 ≈ 1). See the supplementary R script het.genome.r for the code used to generate this plot.
 
-
 ![A2CPS Relatedness Plot](assets/images/A2CPS_QC_Relatedness.png){fig-alt="A2CPS Relatedness" width=500px #fig-relatedness}
 
----
+--------------------------------------------------------------------------------
 
 ### Imputation
 

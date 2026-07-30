@@ -1,0 +1,25 @@
+# roll is not installable from conda-forge, so it is built from source.
+# Referenced from the workspace manifest; see the note in ../../pixi.toml.
+[package]
+name = "r-hablar"
+version = "0.3.2"
+
+[package.build.backend]
+channels = [ "conda-forge", "https://prefix.dev/pixi-build-backends" ]
+name = "pixi-build-r"
+version = "*"
+
+[package.build.source]
+git = "https://github.com/cran/hablar"
+tag = "0.3.2"
+
+# Dependencies are listed in full: naming any of them replaces what the backend
+# would otherwise infer from DESCRIPTION. r-base is pinned because the backend
+# otherwise resolves against the newest R, which the workspace does not use.
+[package.host-dependencies]
+r-base = ">=4.5,<4.6"
+
+[package.run-dependencies]
+r-dplyr = "*"
+r-lubridate = "*"
+r-purrr = "*"

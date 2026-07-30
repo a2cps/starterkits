@@ -13,7 +13,8 @@ This document goes over quality checks for the Imaging Case Report Form (CRF). T
 ### Load Libraries
 
 ```{r}
-library(shiny)
+#| label: setup
+
 library(forcats)
 library(tidyverse)
 library(here)
@@ -27,7 +28,9 @@ library(gt)
 Write a function to remove columns where all rows have NA, this is will remove duplicate columns for the the Thoracotomy/TKA cohort
 
 ```{r}
-not_all_na <- function(x) any(!is.na(x))
+#| label: utils
+
+not_all_na <- function(x) !all(is.na(x))
 ```
 
 ## CRF Quality checks
@@ -40,15 +43,19 @@ not_all_na <- function(x) any(!is.na(x))
 
 Read in Imaging data, We will call this img
 
-```{r, message=FALSE}
-img <- read_csv(here("data", "imaging", "raw", "imaging-2024-11-06.csv"))
+```{r}
+#| label: load
+
+img <- read_csv(here("data", "pre-surgery", "imaging", "raw", "imaging-2024-11-06.csv"))
 ```
 
 We will read in QST data since the information on cuff contraindication is recorded in the QST data. We will later merge field names related to cuff contraindication with the imaging data.
 
-```{r message=FALSE}
+```{r}
+#| label: qst
+
 # read_csv function results in parsing errors, we will use read.csv instead
-tka_img_qst <- read.csv(here("data", "qst", "raw", "qst-2024-11-06.csv")) %>%
+tka_img_qst <- read.csv(here("data", "pre-surgery", "qst", "raw", "qst-2024-11-06.csv")) %>%
   filter(redcap_repeat_instrument == "qst_mcc1_v03") %>%
   select(
     record_id,
@@ -70,8 +77,9 @@ tka_img_qst <- read.csv(here("data", "qst", "raw", "qst-2024-11-06.csv")) %>%
 
 We will also read in "mask" data and call this "mask." This data contains information on whether the baseline visit occurred before or after the question related to mask use was implemented. Where "yes" indicates that the baseline visit occurred after the question related to mask use was implemented and "no" indicates that the baseline visit occurred before the question related to mask use was implemented.
 
-```{r message=FALSE}
-mask <- read_csv(here("data", "imaging", "mask.csv"))
+```{r}
+
+mask <- read_csv(here("data", "pre-surgery", "imaging", "mask.csv"))
 ```
 
 Remove test records
@@ -98,7 +106,8 @@ img <- img %>% filter(!record_id %in% test_records)
 
 Create a column for cohort type called "cohort"
 
-```{r message =FALSE}
+```{r}
+
 img <- img %>%
   mutate(
     cohort = case_when(
@@ -112,9 +121,12 @@ img <- img %>%
 
 Read in data dictionary and remove duplicate field names
 
-```{r message=FALSE}
+```{r}
+#| label: data-dictionary
+
 img_dict <- read_csv(here(
   "data",
+  "pre-surgery",
   "imaging",
   "raw",
   "imaging-Data-Dictionary-2024-11-06.csv"
@@ -146,11 +158,11 @@ mask_new_row <- data.frame(
 # Add the new row after the last row
 
 img_dict <- img_dict %>%
-  slice(1:nrow(.)) %>%
+  slice(seq_len(nrow(.))) %>%
   add_row(.after = nrow(.), !!!cohort_new_row)
 
 img_dict <- img_dict %>%
-  slice(1:nrow(.)) %>%
+  slice(seq_len(nrow(.))) %>%
   add_row(.after = nrow(.), !!!mask_new_row)
 ```
 
@@ -280,7 +292,7 @@ irdf.complete <- tka_img %>%
   filter(fmricuffcompletescl != 0 & imaging_mcc1_v09_complete == 2)
 ```
 
-##### Flag 1:
+#### Flag 1:
 
 In subjects with cuff not contraindicated in the QST form, check if the cuff site was entered for subjects who underwent fMRI individualized pressure and/or fMRI standard pressure.
 
@@ -979,23 +991,26 @@ m1img_report %>%
 
 Save "tka_img" and updated data dictionary as .csv filea in the folder named "reformatted_imaging"
 
-```{r warning=FALSE}
+```{r}
+#| label: write
+#| warning: false
 #| eval: false
 
 write_csv(
   tka_img,
-  file = here::here("data", "imaging", "Reformatted", "reformatted_tka_img.csv")
+  file = here::here("data", "pre-surgery", "imaging", "Reformatted", "reformatted_tka_img.csv")
 )
 
 write_csv(
   img_dict,
-  file = here::here("data", "imaging", "Reformatted", "updated_img_dict.csv")
+  file = here::here("data", "pre-surgery", "imaging", "Reformatted", "updated_img_dict.csv")
 )
 ```
 
 ### Thoracotomy Cohort Imaging
 
-```{r message=FALSE}
+```{r}
+
 thor_img <- img %>%
   select(
     record_id,
@@ -1009,7 +1024,7 @@ thor_img <- img %>%
     cohort
   )
 # read_csv function results in parsing errors, we will use read.csv instead
-thor_img_qst <- read.csv(here("data", "qst", "raw", "qst-2024-11-06.csv")) %>%
+thor_img_qst <- read.csv(here("data", "pre-surgery", "qst", "raw", "qst-2024-11-06.csv")) %>%
   filter(
     redcap_repeat_instrument == "qst_mcc1_v03" & !is.na(redcap_repeat_instance)
   ) %>%
@@ -1059,7 +1074,7 @@ tirdf.complete <- thor_img %>%
   filter(fmricuffcompletescl != 0 & imaging_mcc2_v01_complete == 2)
 ```
 
-##### Flag 1:
+#### Flag 1:
 
 In subjects with cuff not contraindicated in the QST form, check if cuff site was entered for subjects who underwent fMRI individualized pressure and/or fMRI standard pressure.
 
@@ -1766,13 +1781,16 @@ m2img_report %>%
 
 Save "thor_img" and data dictionary as .csv files in the folder named "reformatted_imaging"
 
-```{r warning=FALSE}
+```{r}
+#| label: write2
+#| warning: false
 #| eval: false
 
 write_csv(
   thor_img,
   file = here::here(
     "data",
+    "pre-surgery",
     "imaging",
     "Reformatted",
     "reformatted_thor_img.csv"
@@ -1781,7 +1799,7 @@ write_csv(
 
 write_csv(
   img_dict,
-  file = here::here("data", "imaging", "Reformatted", "updated_img_dict.csv")
+  file = here::here("data", "pre-surgery", "imaging", "Reformatted", "updated_img_dict.csv")
 )
 ```
 
@@ -1815,17 +1833,20 @@ tka_img_items <- tka_img_items %>%
   select(where(not_all_na))
 ```
 
-##### Save:
+#### Save:
 
 Save "tka_img_items" and data dictionary as .csv files in the folder named "Reformatted"
 
-```{r warning=FALSE}
+```{r}
+#| label: write3
+#| warning: false
 #| eval: false
 
 write_csv(
   tka_img_items,
   file = here::here(
     "data",
+    "pre-surgery",
     "imaging",
     "Reformatted",
     "reformatted_tka_img_items.csv"
@@ -1863,11 +1884,12 @@ thor_img_items <- thor_img_items %>%
   select(where(not_all_na))
 ```
 
-##### Save:
+#### Save:
 
 Save "thor_meds" and data dictionary as .csv files in the folder named "Reformatted"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -1880,4 +1902,3 @@ write_csv(
   )
 )
 ```
-

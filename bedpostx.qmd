@@ -1,6 +1,8 @@
 # Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques (BEDPOSTX) {#sec-bedpostx}
 
-```{r setup}
+```{r}
+#| label: setup
+
 library(dplyr)
 library(ggplot2)
 library(tidyr)
@@ -21,8 +23,7 @@ While A2CPS uses BedpostX primarily as a step towards tractography (@sec-dwi-bio
 
 The derivatives are underneath `derivatives/bedpostx`. Although BedpostX derivatives are not covered by BIDS, the derivatives are organized in a "BIDS-ish" manner:
 
-```{bash}
-#| eval: false
+```bash
 $ ls mris/derivatives/bedpostx/ | head
 sub-10003
 sub-10008
@@ -56,7 +57,9 @@ The majority of these files are niftis that contain summaries of parameters for 
 
 First, let's grab the `mean_f1samples` file, which is an estimate of how much of the diffusivity samples can be attributed to first fiber. For convenience and speed, we'll just grab every fifth slice, and also restrict the field of view.
 
-```{r load-f1}
+```{r}
+#| label: load-f1
+
 # take every 10th slice
 f1 <- nio::to_tbl(
   "data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/mean_f1samples.nii.gz",
@@ -70,8 +73,8 @@ head(f1)
 The table is large and hard to understand at a glance, so it may be helpful to visualize the slices quickly.
 
 ::: {#fig-f1}
-
-```{r f1}
+```{r}
+#| label: f1
 
 f1 |>
   ggplot(aes(x = i, y = j, fill = f1)) +
@@ -83,12 +86,11 @@ f1 |>
 ```
 
 Signal Contribution of the First Fiber. Higher values indicate stronger influence of the first fiber (e.g., in voxels that are better fit by even just a single fiber).
-
 :::
 
-Information about the fiber orientation is stored in the "dyads" file. Each of these dyad files is the mean of the principle diffusion direction, stored as a 3d vector; that is, the nifti files are 4d, with the third dimension corresponding to the x, y, and z coordinates. To visualize these vectors, we're going to map the coordinates onto the Red Green Blue color space [for a discussion of color scales, see @pajevic1999color].
+Information about the fiber orientation is stored in the "dyads" file. Each of these dyad files is the mean of the principle diffusion direction, stored as a 3d vector; that is, the nifti files are 4d, with the third dimension corresponding to the x, y, and z coordinates. To visualize these vectors, we're going to map the coordinates onto the Red Green Blue color space\ [for a discussion of color scales, see @pajevic1999color].
 
-```{r }
+```{r}
 gamma <- 1.8
 fiber <- nio::to_tbl(
   "data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/dyads1.nii.gz"
@@ -109,7 +111,6 @@ head(fiber)
 Now, having associated each voxel with a color, we can make a raster of each slice. Before then, however, let's do a bit of extra work to make a legend for the color scale.
 
 ```{r}
-
 df_legend <- expand_grid(
   x = seq(-1, 1, length.out = 500),
   y = seq(-1, 1, length.out = 500)
@@ -175,9 +176,10 @@ p_legend <- df_legend |>
 ```
 
 ::: {#fig-f1-orientation}
-
-```{r f1-orientation}
+```{r}
+#| label: f1-orientation
 #| fig-height: 7
+
 p_fiber <- fiber |>
   ggplot(aes(x = i, y = j, fill = hex_color)) +
   facet_wrap(~k) +
@@ -191,7 +193,6 @@ p_fiber + p_legend + plot_layout(heights = c(5, 1), nrow = 2)
 ```
 
 First Fiber Orientation. The colors correspond to different directions.
-
 :::
 
 ## Considerations While Working on the Project

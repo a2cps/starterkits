@@ -13,10 +13,8 @@ This document goes over score calculation and missing data imputation for each p
 ### Load Libraries
 
 ```{r}
-library(shiny)
 library(tidyverse)
 library(ggplot2)
-library(plotly)
 library(GGally)
 library(here)
 library(hablar)
@@ -30,9 +28,12 @@ library(gt)
 
 We will call this psy_soc
 
-```{r, message=FALSE}
+```{r}
+#| message: false
+
 psy_soc <- read.csv(here(
   "data",
+  "pre-surgery",
   "psychosocial",
   "raw",
   "psychosocial-2024-11-06.csv"
@@ -64,7 +65,9 @@ psy_soc <- psy_soc %>% filter(!record_id %in% test_records)
 
 Create a column for cohort type called "cohort"
 
-```{r message =FALSE}
+```{r}
+#| message: false
+
 psy_soc <- psy_soc %>%
   mutate(
     cohort = case_when(
@@ -78,9 +81,12 @@ psy_soc <- psy_soc %>%
 
 Read in Data dictionary and remove duplicate field name
 
-```{r, message=FALSE}
+```{r}
+#| message: false
+
 psy_soc_dict <- read_csv(here(
   "data",
+  "pre-surgery",
   "psychosocial",
   "raw",
   "psychosocial-Data-Dictionary-2024-11-06.csv"
@@ -105,7 +111,7 @@ cohort_new_row <- data.frame(
 
 # TKA
 psy_soc_dict <- psy_soc_dict %>%
-  slice(1:nrow(.)) %>%
+  slice(seq_len(nrow(.))) %>%
   add_row(.after = nrow(.), !!!cohort_new_row)
 ```
 
@@ -113,15 +119,15 @@ psy_soc_dict <- psy_soc_dict %>%
 
 In case of missing data, each form will be handled on a case by case basis using available literature or user guides. For forms with no available user guides:
 
--   We will impute missing values by replacing missing values with the average score of the completed items for a given subject if less than or equal to 29% of the survey items are missing [@Arrieta2017]
+- We will impute missing values by replacing missing values with the average score of the completed items for a given subject if less than or equal to 29% of the survey items are missing\ [@Arrieta2017]
 
--   For non integer values, we will use the floor value. In other words for a 12 item questionnaire, where 29% = 3.48, we will impute missing values if less than or equal to 3 of 12 items are missing.
+- For non integer values, we will use the floor value. In other words for a 12 item questionnaire, where 29% = 3.48, we will impute missing values if less than or equal to 3 of 12 items are missing.
 
--   We will not impute missing items with a yes/no response
+- We will not impute missing items with a yes/no response
 
--   We will not impute missing values where questions do not assess an underlying latent trait i.e not correlated with other items on a multi-item questionnaire
+- We will not impute missing values where questions do not assess an underlying latent trait i.e not correlated with other items on a multi-item questionnaire
 
--   Forms with subject level characteristics will not be imputed
+- Forms with subject level characteristics will not be imputed
 
 ### Drop field names
 
@@ -188,75 +194,75 @@ dim(psy_soc1)
 
 Following are the available psycho-social forms and imputation methods used in this workflow:
 
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Form Name                                                                                 | How was missing data handled                                                             |
-+===========================================================================================+==========================================================================================+
-| The Brief Pain Inventory v2.3 - Short Form (BPI): General Pain Intensity                  | Indicator for missingness                                                                |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| The Brief Pain Inventory v2.3 - Short Form (BPI):Local Pain Intensity                     | BPI user guide                                                                           |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| The Brief Pain Inventory v2.3 - Short Form (BPI):pain interference subscore               | BPI user guide                                                                           |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| The Brief Pain Inventory v2.3 - Short Form (BPI):Widespread Body Pain (Michigan body map) | Indicator for missingness                                                                |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Knee Injury Osteoarthritis Outcome Score (KOOS-12)                                        | KOOS-12 user guide                                                                       |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Generalized Anxiety Disorder 7 Item (GAD7) Scale Score                                    | Row-wise mean                                                                            |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Patient Health Questionnaire Depression Scale (PHQ) Scored                                | Row-wise mean                                                                            |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Fear avoidance: FABQ                                                                      | Row-wise mean                                                                            |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Pain Catastrophizing Questionnaire (PCS6)                                                 | Row-wise mean                                                                            |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Other Pain Treatments v3 (Other Treatments)                                               | Not imputed: Subject Level Characteristics                                               |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Other Medical Surgical Treatments II v0.5                                                 | Not imputed: Subject Level Characteristics                                               |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Symptom Severity Index v1.0 (SSI)                                                         | Indicator for missingness                                                                |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| painDETECT Questionnaire                                                                  | Row-wise mean                                                                            |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| PROMIS SF v1.2 - Physical Function 8b                                                     | HealthMeasures Scoring Service                                                           |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| PROMIS SF v1.0 - Sleep Disturbance 6a (Sleep I)                                           | HealthMeasures Scoring Service                                                           |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| PROMIS SF v1.0 - Fatigue 7a                                                               | HealthMeasures Scoring Service                                                           |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| PROMIS SF v2.0 - Emotional Support 6a                                                     | HealthMeasures Scoring Service                                                           |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| PROMIS SF v2.0 - Instrumental Support 6a                                                  | HealthMeasures Scoring Service                                                           |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Pain-Sleep Duration (Sleep II)                                                            | Indicator for outliers and missingness                                                   |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Pain Resilience Scale (PRS)                                                               | Row-wise mean                                                                            |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Multidimensional Inventory of Subjective Cognitive Impairment v1.0 (MISCI)                | Row-wise mean                                                                            |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Adverse Childhood Experience Questionnaire (ACE)                                          | Not imputed: Responses in yes/no format                                                  |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| TAPS-1                                                                                    | Not imputed: Smoking/substance abuse screener                                            |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| TAPS-2                                                                                    | Not imputed: Responses in yes/no format                                                  |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Opioid Use Baseline v1.0 (Opioid Use I)                                                   | Not imputed: Subject Level Characteristics                                               |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Expectation Items                                                                         | Not imputed                                                                              |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Current Opioid Misuse v0.2 (COMM)                                                         | Not imputed: Subject Level Characteristics                                               |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Rapid Assessment of Physical Activity v1.0 (RAPA)                                         | Not imputed: Responses in yes/no format                                                  |
-|                                                                                           |                                                                                          |
-|                                                                                           | Aerobic activity items: scored based on the highest activity answered in the affirmative |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| General Sensory Sensitivity v0.2 (GSS-8)                                                  | Not imputed: Responses in yes/no format                                                  |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| The Big Five Inventory (BFI-2-S)                                                          | Response to the closest matching item (similar meaning) was used                         |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Self-Administered Comorbidity Questionnaire v4 (SCQ)                                      | Not imputed: Subject Level Characteristics                                               |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
-| Danish Thoracic Surgery Questionnaire v0.2                                                | Row-wise mean                                                                            |
-+-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Form Name                                                                                 | How was missing data handled                                                             |
+  +===========================================================================================+==========================================================================================+
+  | The Brief Pain Inventory v2.3 - Short Form (BPI): General Pain Intensity                  | Indicator for missingness                                                                |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | The Brief Pain Inventory v2.3 - Short Form (BPI):Local Pain Intensity                     | BPI user guide                                                                           |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | The Brief Pain Inventory v2.3 - Short Form (BPI):pain interference subscore               | BPI user guide                                                                           |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | The Brief Pain Inventory v2.3 - Short Form (BPI):Widespread Body Pain (Michigan body map) | Indicator for missingness                                                                |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Knee Injury Osteoarthritis Outcome Score (KOOS-12)                                        | KOOS-12 user guide                                                                       |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Generalized Anxiety Disorder 7 Item (GAD7) Scale Score                                    | Row-wise mean                                                                            |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Patient Health Questionnaire Depression Scale (PHQ) Scored                                | Row-wise mean                                                                            |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Fear avoidance: FABQ                                                                      | Row-wise mean                                                                            |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Pain Catastrophizing Questionnaire (PCS6)                                                 | Row-wise mean                                                                            |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Other Pain Treatments v3 (Other Treatments)                                               | Not imputed: Subject Level Characteristics                                               |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Other Medical Surgical Treatments II v0.5                                                 | Not imputed: Subject Level Characteristics                                               |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Symptom Severity Index v1.0 (SSI)                                                         | Indicator for missingness                                                                |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | painDETECT Questionnaire                                                                  | Row-wise mean                                                                            |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | PROMIS SF v1.2 - Physical Function 8b                                                     | HealthMeasures Scoring Service                                                           |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | PROMIS SF v1.0 - Sleep Disturbance 6a (Sleep I)                                           | HealthMeasures Scoring Service                                                           |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | PROMIS SF v1.0 - Fatigue 7a                                                               | HealthMeasures Scoring Service                                                           |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | PROMIS SF v2.0 - Emotional Support 6a                                                     | HealthMeasures Scoring Service                                                           |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | PROMIS SF v2.0 - Instrumental Support 6a                                                  | HealthMeasures Scoring Service                                                           |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Pain-Sleep Duration (Sleep II)                                                            | Indicator for outliers and missingness                                                   |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Pain Resilience Scale (PRS)                                                               | Row-wise mean                                                                            |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Multidimensional Inventory of Subjective Cognitive Impairment v1.0 (MISCI)                | Row-wise mean                                                                            |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Adverse Childhood Experience Questionnaire (ACE)                                          | Not imputed: Responses in yes/no format                                                  |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | TAPS-1                                                                                    | Not imputed: Smoking/substance abuse screener                                            |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | TAPS-2                                                                                    | Not imputed: Responses in yes/no format                                                  |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Opioid Use Baseline v1.0 (Opioid Use I)                                                   | Not imputed: Subject Level Characteristics                                               |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Expectation Items                                                                         | Not imputed                                                                              |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Current Opioid Misuse v0.2 (COMM)                                                         | Not imputed: Subject Level Characteristics                                               |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Rapid Assessment of Physical Activity v1.0 (RAPA)                                         | Not imputed: Responses in yes/no format                                                  |
+  |                                                                                           |                                                                                          |
+  |                                                                                           | Aerobic activity items: scored based on the highest activity answered in the affirmative |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | General Sensory Sensitivity v0.2 (GSS-8)                                                  | Not imputed: Responses in yes/no format                                                  |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | The Big Five Inventory (BFI-2-S)                                                          | Response to the closest matching item (similar meaning) was used                         |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Self-Administered Comorbidity Questionnaire v4 (SCQ)                                      | Not imputed: Subject Level Characteristics                                               |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
+  | Danish Thoracic Surgery Questionnaire v0.2                                                | Row-wise mean                                                                            |
+  +-------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+
 
 ### Functions:
 
@@ -299,11 +305,11 @@ BPI <- applyFilter(
 
 BPI assesses pain and includes information on:
 
--   Widespread body pain measured by Michigan Body Map
+- Widespread body pain measured by Michigan Body Map
 
--   General pain intensity measured by Brief pain intensity -whole body pain
+- General pain intensity measured by Brief pain intensity -whole body pain
 
--   Local pain intensity measured by Modified BPI -- surgical site pain
+- Local pain intensity measured by Modified BPI -- surgical site pain
 
 Split BPI: We will subset the BPI data into three datasets according to the above information.
 
@@ -350,11 +356,11 @@ bpi_pain_intrf <- BPI %>%
 
 We now have three datasets:
 
--   bpi_body_map for widespread body pain - Michigan Body Map
+- bpi_body_map for widespread body pain - Michigan Body Map
 
--   bpi_body_pain for general pain intensity measured by brief pain intensity -whole body pain
+- bpi_body_pain for general pain intensity measured by brief pain intensity -whole body pain
 
--   bpi_pain_intrf for local pain intensity measured by modified BPI -- surgical site pain
+- bpi_pain_intrf for local pain intensity measured by modified BPI -- surgical site pain
 
 Inspect Field names: Make sure that the three datasets have the field names of interest
 
@@ -374,7 +380,7 @@ All three datasets have the desired fields names. We will now look at missing da
 
 ### Michigan Body Map:
 
-Michigan Body Map records pain intensity and duration for the body region indicated by the subject [@berardi_multi_2022]. The painful body regions can vary from subject to subject, which can result in null values in field names for body regions not indicated by the subject, this explains the data sparsity.
+Michigan Body Map records pain intensity and duration for the body region indicated by the subject\ [@berardi_multi_2022]. The painful body regions can vary from subject to subject, which can result in null values in field names for body regions not indicated by the subject, this explains the data sparsity.
 
 #### Missing Data:
 
@@ -890,14 +896,17 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Create a folder for recoded BPI data and save "bpi_bpdy_map" and updated data dictionary as .csv files
 
-```{r warning=FALSE}
+```{r}
+#| label: write
+#| warning: false
 #| eval: false
 
 write_csv(
   bpi_body_map,
   file = here::here(
     "data",
-    "Psychosocial",
+    "pre-surgery",
+    "psychosocial",
     "Reformatted",
     "reformatted_bpi_body_map.csv"
   )
@@ -906,7 +915,8 @@ write_csv(
   psy_soc_dict,
   file = here::here(
     "data",
-    "Psychosocial",
+    "pre-surgery",
+    "psychosocial",
     "Reformatted",
     "updated_psy_soc_dictionary.csv"
   )
@@ -963,7 +973,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "bpi_body_pain" and updated data dictionary as .csv files in the folder named "reformatted_bpi"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -988,7 +999,7 @@ write_csv(
 
 ### Modified BPI -- surgical site pain:
 
-Modified BPI -- surgical site pain records pain intensity and interference. The primary outcome is the worst pain intensity at the surgical site i.e field name "bpiworstpainratingss" over the past 24 hours,using a scale of 0 to 10. The form also includes the pain interference sub-scale [@cleeland1995], which assesses the level of interference in the subject's daily activities over the past 24 hours [@berardi_multi_2022] due to surgical site pain. Pain interference is scored as the mean of seven interference items, in case of missing data, this mean can still be used if there is a response to at least 4 of 7 items ([BPI user guide](https://www.mdanderson.org/documents/Departments-and-Divisions/Symptom-Research/BPI_UserGuide.pdf)).
+Modified BPI -- surgical site pain records pain intensity and interference. The primary outcome is the worst pain intensity at the surgical site i.e field name "bpiworstpainratingss" over the past 24 hours,using a scale of 0 to 10. The form also includes the pain interference sub-scale\ [@cleeland1995], which assesses the level of interference in the subject's daily activities over the past 24 hours\ [@berardi_multi_2022] due to surgical site pain. Pain interference is scored as the mean of seven interference items, in case of missing data, this mean can still be used if there is a response to at least 4 of 7 items ([BPI user guide](https://www.mdanderson.org/documents/Departments-and-Divisions/Symptom-Research/BPI_UserGuide.pdf)).
 
 #### Missing Data:
 
@@ -1086,7 +1097,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "bpi_pain_intrf" and updated data dictionary as .csv files in the folder named "reformatted_bpi"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -1112,13 +1124,13 @@ write_csv(
 
 ### Knee Injury Osteoarthritis Outcome Score (KOOS-12)
 
-KOOS-12 is a 12-item scale that contains three sub scales [@Roos1998]:
+KOOS-12 is a 12-item scale that contains three sub scales\ [@Roos1998]:
 
--   4 KOOS Pain items
+- 4 KOOS Pain items
 
--   4 KOOS Function (Activities of Daily Living and Sport/Recreation) items
+- 4 KOOS Function (Activities of Daily Living and Sport/Recreation) items
 
--   4 KOOS Quality of Life (QOL) items to assesses knee pain none to extreme).
+- 4 KOOS Quality of Life (QOL) items to assesses knee pain none to extreme).
 
 There must be a response to at least half of the items in each sub scale to calculate a sub scale score [KOOS calculator](http://www.koos.nu/). These scores are transformed to range from 0 to 100, where 0 represents extreme problems and 100 represents no problems.
 
@@ -1158,11 +1170,11 @@ The mean of all three subscale scores is then used to construct an overall KOOS-
 
 Using the above equation, we will create three subscale scores:
 
--   pain_score for 4 KOOS Pain items
+- pain_score for 4 KOOS Pain items
 
--   func_score for 4 KOOS Function (Activities of Daily Living and Sport/Recreation) items
+- func_score for 4 KOOS Function (Activities of Daily Living and Sport/Recreation) items
 
--   qol_score for 4 KOOS Quality of Life (QOL) items.
+- qol_score for 4 KOOS Quality of Life (QOL) items.
 
 We will also create a summary impact score "pain_summary"
 
@@ -1327,7 +1339,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "koos" and updated data dictionary as .csv files in the folder named "reformatted_koos"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -1352,7 +1365,7 @@ write_csv(
 
 ### Generalized Anxiety Disorder 7 Item (GAD7) Scale Score
 
-The GAD-7 is a 7-item likert scale questionnaire that assesses anxiety levels over the last two weeks. The response to each item is rated on a scale of 0 ("not at all") to 3 ("nearly every day"). A total score is calculated by adding the scores for all the 7 items and ranges from 0 to 21. A greater total score on the GAD-7 reflects higher anxiety levels [@spitzer_brief_2006]. At the end of the questionnaire there is an additional question ("gad7difficulttowork") to evaluate the subject's perception about the impact of identified problems on their activities such as work, taking care of things at home, or interacting with others.
+The GAD-7 is a 7-item likert scale questionnaire that assesses anxiety levels over the last two weeks. The response to each item is rated on a scale of 0 ("not at all") to 3 ("nearly every day"). A total score is calculated by adding the scores for all the 7 items and ranges from 0 to 21. A greater total score on the GAD-7 reflects higher anxiety levels\ [@spitzer_brief_2006]. At the end of the questionnaire there is an additional question ("gad7difficulttowork") to evaluate the subject's perception about the impact of identified problems on their activities such as work, taking care of things at home, or interacting with others.
 
 #### Read in Data:
 
@@ -1473,7 +1486,7 @@ gad_plot <- gad %>%
   )
 
 ggplot(gad_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -1525,7 +1538,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "gad" and updated data dictionary as .csv files in the folder named "reformatted_gad"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -1650,7 +1664,7 @@ phq_plot <- phq %>%
   )
 
 ggplot(phq_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -1702,7 +1716,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "phq" and updated data dictionary as .csv files in the folder named "reformatted_phq"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -1727,7 +1742,7 @@ write_csv(
 
 ### Fear-Avoidance Beliefs Questionnaire v0.3 (FABQ)
 
-The FABQ is a 4-item questionnaire that assesses fear avoidance behavior. The response to each item ranges from 0 (completely disagree) to 6 (completely agree) [@waddell_fear_1993]. A total score is calculated by adding the scores for all the items and ranges from 0-24. A higher score indicates a higher degree of fear-avoidance belief.
+The FABQ is a 4-item questionnaire that assesses fear avoidance behavior. The response to each item ranges from 0 (completely disagree) to 6 (completely agree)\ [@waddell_fear_1993]. A total score is calculated by adding the scores for all the items and ranges from 0-24. A higher score indicates a higher degree of fear-avoidance belief.
 
 #### Read in Data:
 
@@ -1825,7 +1840,7 @@ fabq_plot <- fabq %>%
   )
 
 ggplot(fabq_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -1877,7 +1892,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "fabq" and updated data dictionary as .csv files in the folder named "reformatted_fabq"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -2001,7 +2017,7 @@ pcs_plot <- pcs %>%
   )
 
 ggplot(pcs_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -2051,7 +2067,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "pcs" and updated data dictionary as .csv files in the folder named "reformatted_pcs"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -2109,11 +2126,11 @@ Scoring:
 
 We will calculate:
 
--   A summed score for fatigue, cognitive dysfunction, or unrefreshed sleep if responses to all three items are available, ranging from 0-9, we will name this "ssi_symp_score"
+- A summed score for fatigue, cognitive dysfunction, or unrefreshed sleep if responses to all three items are available, ranging from 0-9, we will name this "ssi_symp_score"
 
--   A summed score for history of lower abdomen pain, depression, and headache for at least three months (yes/no), ranging from 0-3, we will name this "ssi_hist_score"
+- A summed score for history of lower abdomen pain, depression, and headache for at least three months (yes/no), ranging from 0-3, we will name this "ssi_hist_score"
 
--   Finally we will calculate a total summed score ranging from 0-12 if responses to all items are available, we will name this "ssi_total_score"
+- Finally we will calculate a total summed score ranging from 0-12 if responses to all items are available, we will name this "ssi_total_score"
 
 ```{r}
 ssi_symptoms <- c("ssi_fatigue", "ssi_cognitive", "ssi_tired")
@@ -2238,7 +2255,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "ssi" and updated data dictionary as .csv files in the folder named "reformatted_ssi"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -2410,7 +2428,7 @@ pdq_plot <- pdq %>%
   )
 
 ggplot(pdq_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -2425,9 +2443,9 @@ pdq <- pdq %>% select(-pdq_not_na, -mean_pdq, -raw_pdq_score)
 
 ![](assets/images/Screen%20Shot%202023-08-18%20at%202.59.07%20PM%203-02.png)
 
--   First we will recode values for "pdqpaincourse" and "pdradiateregions" according to the above table
+- First we will recode values for "pdqpaincourse" and "pdradiateregions" according to the above table
 
--   We will then combine "pdqpaincourse", "pdradiateregions" scores and the "imputed_pdq_score" to get the total score.
+- We will then combine "pdqpaincourse", "pdradiateregions" scores and the "imputed_pdq_score" to get the total score.
 
 Recode values for "pdqpaincourse" and "pdradiateregions", we will call these "pdqpaincourse_recoded" and "pdradiateregions_recoded"
 
@@ -2546,7 +2564,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "pdq" and updated data dictionary as .csv files in the folder named "reformatted_pdq"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -2573,17 +2592,17 @@ write_csv(
 
 PROMIS instruments are based on item response theory (IRT), where the responses to a set of items measure a latent trait[@cella2010]. PROMIS instruments can be scored accurately using the HealthMeasures Scoring Service found [here](https://www.assessmentcenter.net/ac_scoringservice). The A2PCS uses the following PROMIS instruments:
 
-| Form Name                                       |
-|-------------------------------------------------|
-| PROMIS SF v1.2 - Physical Function 8b           |
-| PROMIS SF v1.0 - Sleep Disturbance 6a (Sleep I) |
-| PROMIS SF v1.0 - Fatigue 7a                     |
-| PROMIS SF v2.0 - Emotional Support 6a           |
-| PROMIS SF v2.0 - Instrumental Support 6a        |
+  | Form Name                                       |
+  | ----------------------------------------------- |
+  | PROMIS SF v1.2 - Physical Function 8b           |
+  | PROMIS SF v1.0 - Sleep Disturbance 6a (Sleep I) |
+  | PROMIS SF v1.0 - Fatigue 7a                     |
+  | PROMIS SF v2.0 - Emotional Support 6a           |
+  | PROMIS SF v2.0 - Instrumental Support 6a        |
 
 ### Pain-Sleep Duration (Sleep II)
 
-The Sleep II form measures the average number of hours and minutes of sleep each night during the past month [@buysse_pittsburgh_1989].
+The Sleep II form measures the average number of hours and minutes of sleep each night during the past month\ [@buysse_pittsburgh_1989].
 
 #### Read in Data:
 
@@ -2671,7 +2690,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "sleep_dur" and updated data dictionary as .csv files in the folder named "reformatted_sleep_dur"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -2700,9 +2720,9 @@ PRS is a 14-item scale that measures resilience during intense or prolonged pain
 
 Each item is rated on a scale of 0 to 4, where 0 indicates "not at all" and 4 indicates "all the time." The total score is calculated by summing up all 14 items, which can range from 0 to 56. Higher scores indicate greater pain related resilience. PRS also contains two sub scales[@Slepian2016]
 
--   Behavioral Perseverance = sum of items 1-5
+- Behavioral Perseverance = sum of items 1-5
 
--   Cognitive/Affective positivity = sum of items 6-14
+- Cognitive/Affective positivity = sum of items 6-14
 
 #### Read in Data:
 
@@ -2813,7 +2833,7 @@ prs_bhv_plot <- prs %>%
   )
 
 ggplot(prs_bhv_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -2935,7 +2955,7 @@ prs_cog_plot <- prs %>%
   )
 
 ggplot(prs_cog_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -3069,7 +3089,7 @@ prs_plot <- prs %>%
   )
 
 ggplot(prs_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -3172,7 +3192,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "prs" and updated data dictionary as .csv files in the folder named "reformatted_prs"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -3197,7 +3218,7 @@ write_csv(
 
 ### Multidimensional Inventory of Subjective Cognitive Impairment v1.0 (MISCI)
 
-Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) is used to evaluate cognitive function in Fibromyalgia patients. The MISCI comprises ten items based on a Likert scale ranging from 1-5. The initial six items evaluate perceived cognitive abilities and are positively phrased, while the remaining four items assess cognitive difficulties and are negatively phrased. Therefore, items 7-10 should be reverse-coded before being added to the responses of the other items to calculate the total score. The total score can range from 10-50, where higher scores indicate better perceived cognitive functioning [@kratz2015].
+Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) is used to evaluate cognitive function in Fibromyalgia patients. The MISCI comprises ten items based on a Likert scale ranging from 1-5. The initial six items evaluate perceived cognitive abilities and are positively phrased, while the remaining four items assess cognitive difficulties and are negatively phrased. Therefore, items 7-10 should be reverse-coded before being added to the responses of the other items to calculate the total score. The total score can range from 10-50, where higher scores indicate better perceived cognitive functioning\ [@kratz2015].
 
 #### Read in Data:
 
@@ -3212,13 +3233,13 @@ misci <- applyFilter(
 
 We will reverse code the last four items which assess cognitive difficulties. For example, cognitive difficulty related question such as "trouble planning out steps of a task" is rated on a scale of 1 to 5 where 1 is "never" and 5 is "very often". We will reverse code this to indicate 5 as "never" and 1 as "very often". The structure will look as follows:
 
-| Original | Reverse coded |
-|----------|---------------|
-| 1        | 5             |
-| 2        | 4             |
-| 3        | 3             |
-| 4        | 2             |
-| 5        | 1             |
+  | Original | Reverse coded |
+  | -------- | ------------- |
+  | 1        | 5             |
+  | 2        | 4             |
+  | 3        | 3             |
+  | 4        | 2             |
+  | 5        | 1             |
 
 Reverse code last 4 items: We can accomplish this by subtracting the original values from 6.
 
@@ -3319,7 +3340,7 @@ misci_plot <- misci %>%
   )
 
 ggplot(misci_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -3423,7 +3444,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "misci" and updated data dictionary as .csv files in the folder named "reformatted_misci"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -3443,53 +3465,53 @@ write_csv(
 
 ### The Big Five Inventory (BFI-2-S)
 
-The BFI-2-S is is used to evaluate five personality domains and 15 specific facet traits within the five domains. Altogether, the BFI-2-S comprises thirty items based on a Likert scale ranging from 1-5, where 1 is "disagree strongly" and 5 is "agree strongly". Some items are negatively phrased and should be reverse coded for scoring [@soto_short_2017].
+The BFI-2-S is is used to evaluate five personality domains and 15 specific facet traits within the five domains. Altogether, the BFI-2-S comprises thirty items based on a Likert scale ranging from 1-5, where 1 is "disagree strongly" and 5 is "agree strongly". Some items are negatively phrased and should be reverse coded for scoring\ [@soto_short_2017].
 
 Following table shows the five domains and the specific facet traits:
 
-+-------------------------------------------+------------------------------------------+
-| Domains (bold) and domain specific facets | Items (R: Items should be reverse coded) |
-+===========================================+==========================================+
-| **Extraversion**                          |                                          |
-+-------------------------------------------+------------------------------------------+
-| Sociability                               | 1R, 16                                   |
-+-------------------------------------------+------------------------------------------+
-| Assertiveness                             | 6, 21R                                   |
-+-------------------------------------------+------------------------------------------+
-| Energy Level                              | 11, 26R                                  |
-+-------------------------------------------+------------------------------------------+
-| **Agreeableness**                         |                                          |
-+-------------------------------------------+------------------------------------------+
-| Compassion                                | 2, 17R                                   |
-+-------------------------------------------+------------------------------------------+
-| Respectfulness                            | 7R, 22                                   |
-+-------------------------------------------+------------------------------------------+
-| Trust                                     | 12, 27R                                  |
-+-------------------------------------------+------------------------------------------+
-| **Conscientiousness**                     |                                          |
-+-------------------------------------------+------------------------------------------+
-| Organization                              | 3R, 18                                   |
-+-------------------------------------------+------------------------------------------+
-| Productiveness                            | 8R, 23                                   |
-+-------------------------------------------+------------------------------------------+
-| Responsibility                            | 13, 28R                                  |
-+-------------------------------------------+------------------------------------------+
-| **Negative Emotionality**                 |                                          |
-+-------------------------------------------+------------------------------------------+
-| Anxiety                                   | 4, 19R                                   |
-+-------------------------------------------+------------------------------------------+
-| Depression                                | 9, 24R                                   |
-+-------------------------------------------+------------------------------------------+
-| Emotional Volatility                      | 14R, 29                                  |
-+-------------------------------------------+------------------------------------------+
-| **Open-Mindedness**                       |                                          |
-+-------------------------------------------+------------------------------------------+
-| Aesthetic Sensitivity                     | 5, 20R                                   |
-+-------------------------------------------+------------------------------------------+
-| Intellectual Curiosity                    | 10R, 25                                  |
-+-------------------------------------------+------------------------------------------+
-| Creative Imagination                      | 15, 30R                                  |
-+-------------------------------------------+------------------------------------------+
+  +-------------------------------------------+------------------------------------------+
+  | Domains (bold) and domain specific facets | Items (R: Items should be reverse coded) |
+  +===========================================+==========================================+
+  | **Extraversion**                          |                                          |
+  +-------------------------------------------+------------------------------------------+
+  | Sociability                               | 1R, 16                                   |
+  +-------------------------------------------+------------------------------------------+
+  | Assertiveness                             | 6, 21R                                   |
+  +-------------------------------------------+------------------------------------------+
+  | Energy Level                              | 11, 26R                                  |
+  +-------------------------------------------+------------------------------------------+
+  | **Agreeableness**                         |                                          |
+  +-------------------------------------------+------------------------------------------+
+  | Compassion                                | 2, 17R                                   |
+  +-------------------------------------------+------------------------------------------+
+  | Respectfulness                            | 7R, 22                                   |
+  +-------------------------------------------+------------------------------------------+
+  | Trust                                     | 12, 27R                                  |
+  +-------------------------------------------+------------------------------------------+
+  | **Conscientiousness**                     |                                          |
+  +-------------------------------------------+------------------------------------------+
+  | Organization                              | 3R, 18                                   |
+  +-------------------------------------------+------------------------------------------+
+  | Productiveness                            | 8R, 23                                   |
+  +-------------------------------------------+------------------------------------------+
+  | Responsibility                            | 13, 28R                                  |
+  +-------------------------------------------+------------------------------------------+
+  | **Negative Emotionality**                 |                                          |
+  +-------------------------------------------+------------------------------------------+
+  | Anxiety                                   | 4, 19R                                   |
+  +-------------------------------------------+------------------------------------------+
+  | Depression                                | 9, 24R                                   |
+  +-------------------------------------------+------------------------------------------+
+  | Emotional Volatility                      | 14R, 29                                  |
+  +-------------------------------------------+------------------------------------------+
+  | **Open-Mindedness**                       |                                          |
+  +-------------------------------------------+------------------------------------------+
+  | Aesthetic Sensitivity                     | 5, 20R                                   |
+  +-------------------------------------------+------------------------------------------+
+  | Intellectual Curiosity                    | 10R, 25                                  |
+  +-------------------------------------------+------------------------------------------+
+  | Creative Imagination                      | 15, 30R                                  |
+  +-------------------------------------------+------------------------------------------+
 
 #### Read in Data:
 
@@ -3501,13 +3523,13 @@ bfi <- applyFilter("bfi", the_big_five_inventory_bfi2s_complete)
 
 We will reverse code the items denoted by "R" in the table. For example, Sociability related question such as "Tends to be quiet" is rated on a scale of 1 to 5 where 1 is "Disagree strongly" and 5 is "Agree strongly". We will reverse code this to indicate 5 as "Disagree strongly" and 1 as "Agree strongly". The structure will look as follows:
 
-| Original | Reverse coded |
-|----------|---------------|
-| 1        | 5             |
-| 2        | 4             |
-| 3        | 3             |
-| 4        | 2             |
-| 5        | 1             |
+  | Original | Reverse coded |
+  | -------- | ------------- |
+  | 1        | 5             |
+  | 2        | 4             |
+  | 3        | 3             |
+  | 4        | 2             |
+  | 5        | 1             |
 
 Reverse code the items denoted by "R": We can accomplish this by subtracting the original values from 6.
 
@@ -4509,7 +4531,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "bfi" and updated data dictionary as .csv files in the folder named "reformatted_bfi"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -4648,7 +4671,7 @@ dts_plot <- dts %>%
   )
 
 ggplot(dts_plot, aes(x = score_name, y = score, fill = score_name)) +
-  geom_violin(alpha = .25)
+  geom_violin(alpha = 0.25)
 ```
 
 Remove intermediate field names not needed
@@ -4698,7 +4721,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "dts" and updated data dictionary as .csv files in the folder named "reformatted_dts"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -4723,7 +4747,7 @@ write_csv(
 
 ### Rapid Assessment of Physical Activity v1.0 (RAPA)
 
-The Rapid Assessment of Physical Activity Questionnaire comprises 9 items to assess physical activity in subject over 50 years of age. The first 7 items measure aerobic activity and the last 2 items measure strength/flexibility. Each item has a yes/no response [@topolski_rapid_2006]. Here we well compute aerobic activity score based on the highest affirmative response.
+The Rapid Assessment of Physical Activity Questionnaire comprises 9 items to assess physical activity in subject over 50 years of age. The first 7 items measure aerobic activity and the last 2 items measure strength/flexibility. Each item has a yes/no response\ [@topolski_rapid_2006]. Here we well compute aerobic activity score based on the highest affirmative response.
 
 #### Read in Data:
 
@@ -4939,7 +4963,8 @@ psy_soc_dict <- psy_soc_dict %>%
 
 Save "rapa" and updated data dictionary as .csv files in the folder named "reformatted_rapa"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(

@@ -13,7 +13,8 @@ This document goes over quality checks for each the Functional Testing Case Repo
 ### Load Libraries
 
 ```{r}
-library(shiny)
+#| label: setup
+
 library(forcats)
 library(tidyverse)
 library(here)
@@ -27,7 +28,9 @@ library(gt)
 Write a function to remove columns where all rows have NA, this is will remove duplicate columns for the the Thoracotomy/TKA cohort
 
 ```{r}
-not_all_na <- function(x) any(!is.na(x))
+#| label: utils
+
+not_all_na <- function(x) !all(is.na(x))
 ```
 
 ## CRF Quality checks
@@ -38,10 +41,13 @@ not_all_na <- function(x) any(!is.na(x))
 
 We will call this `func`
 
-```{r, message=FALSE}
+```{r}
+#| message: false
+
 # read_csv function results in parsing errors, we will use read.csv instead
 func <- read.csv(here(
   "data",
+  "pre-surgery",
   "functional-testing",
   "raw",
   "functional-testing-2024-11-06.csv"
@@ -73,7 +79,9 @@ func <- func %>% filter(!record_id %in% test_records)
 
 Create a column for cohort type called "cohort"
 
-```{r message =FALSE}
+```{r}
+#| message: false
+
 func <- func %>%
   mutate(
     cohort = case_when(
@@ -87,9 +95,13 @@ func <- func %>%
 
 Read in data dictionary and remove duplicate field names
 
-```{r message=FALSE}
+```{r}
+#| label: data-dictionary
+#| message: false
+
 func_dict <- read_csv(here(
   "data",
+  "pre-surgery",
   "functional-testing",
   "raw",
   "functional-testing-Data-Dictionary-2024-11-06.csv"
@@ -113,7 +125,7 @@ cohort_new_row <- data.frame(
 # Add the new row after the last row
 
 func_dict <- func_dict %>%
-  slice(1:nrow(.)) %>%
+  slice(seq_len(nrow(.))) %>%
   add_row(.after = nrow(.), !!!cohort_new_row)
 ```
 
@@ -481,7 +493,7 @@ ferror7.sit <- frdata.sit1 %>%
 
 ###### Movement Evoked Pain (MEP):
 
-MEP refers to pain that occurs or is worsened by movement [@berardi_multi_2022]. MEP can not be computed if any of the pain ratings are missing.
+MEP refers to pain that occurs or is worsened by movement\ [@berardi_multi_2022]. MEP can not be computed if any of the pain ratings are missing.
 
 ###### 10m Walk Test MEP:
 
@@ -522,7 +534,7 @@ tsts_mep_new_row <- data.frame(
 # Add the new row after the last row
 
 func_dict <- func_dict %>%
-  slice(1:nrow(.)) %>%
+  slice(seq_len(nrow(.))) %>%
   add_row(.after = nrow(.), !!!walk_mep_new_row) %>%
   add_row(.after = nrow(.), !!!tsts_mep_new_row)
 ```
@@ -557,13 +569,16 @@ tka_func_report %>%
 
 Save "tka_func" and data dictionary as .csv files in the folder named "reformatted_functional"
 
-```{r warning=FALSE}
+```{r}
+#| label: write
+#| warning: false
 #| eval: false
 
 write_csv(
   tka_func,
   file = here::here(
     "data",
+    "pre-surgery",
     "functional-testing",
     "Reformatted",
     "reformatted_tka_func.csv"
@@ -574,13 +589,13 @@ write_csv(
   func_dict,
   file = here::here(
     "data",
+    "pre-surgery",
     "functional-testing",
     "Reformatted",
     "updated_func_dict.csv"
   )
 )
 ```
-
 
 ### Thoracotomy cohort Functional Assessment:
 
@@ -618,7 +633,7 @@ Keep records of subjects who completed the test.
 m2frfunc3 <- thor_func %>% filter(ftdbctestcmpltyn == 1)
 ```
 
-##### Flag 1:
+#### Flag 1:
 
 Check for discrepancy or missing values in the first and the second initial pain ratings.
 
@@ -764,7 +779,8 @@ Post baseline data is needed to compute MEP for the thoracic cohort, hence could
 
 Save "thor_func" and data dictionary as .csv files in the folder named "reformatted_functional"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -786,4 +802,3 @@ write_csv(
   )
 )
 ```
-

@@ -6,7 +6,9 @@ To define these regions, researchers rely on "brain parcellations" or atlases. S
 
 This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations and soft atlases. For functional connectivity derived from subject-specific independent components, see @sec-gift.
 
-```{r setup}
+```{r}
+#| label: setup
+
 library(arrow)
 library(dplyr)
 library(tidyr)
@@ -17,7 +19,6 @@ library(readr)
 library(mgc)
 library(ggplot2)
 ```
-
 
 ## Starting Project
 
@@ -68,7 +69,9 @@ The timeseries were extracted from the NIfTI files in `cleaned`, which are the o
 
 Most users will start with the functional connectivity data. For example, here we grab the connectivity associated with the Default Mode Network (DMN) atlas (the nodal coordinates were derived from @baliki_corticostriatal_2012). In this case, we'll restrict results to connectivities generated with the [empirical estimator](https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance).
 
-```{r dmn}
+```{r}
+#| label: dmn
+
 dmn <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
   filter(atlas == "dmn") |>
   filter(estimator == "empirical") |>
@@ -79,7 +82,9 @@ head(dmn)
 
 Notice that the `source` and `target` fields are simply integer indices for this atlas. As specified in `connectivity.json`, information about these regions is available in one of the A2CPS GitHub repos. That table can be read directly from a URL.
 
-```{r dmn-labels}
+```{r}
+#| label: dmn-labels
+
 dmn_labels <- read_csv(
   "https://raw.githubusercontent.com/a2cps/functional_connectivity/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv"
 )
@@ -88,7 +93,9 @@ dmn_labels
 
 After reading in the labels, they can be merged with the functional connectivity results. 
 
-```{r dmn-labeled}
+```{r}
+#| label: dmn-labeled
+
 dmn_labeled <- dmn |>
   left_join(dmn_labels, by = join_by(source == region)) |>
   select(-source, -x, -y, -z) |>
@@ -102,14 +109,18 @@ head(dmn_labeled)
 
 ### Example Analysis: Discriminability
 
-In this section, we show how the connectivity results could be used to calculate discriminability [@bridgeford_eliminating_2021], which is a multivariate measure of replicability like the intra-class correlation coefficient or fingerprinting. In the context of connectomes, it answers the question: "Is the functional connectivity profile of a participant distinct enough to identify them among a group of people?" Discriminability ranges from 0 - 1, with 0.5 indicating something like an equal chance that the two scans from the same participants are as similar as the two scans from different participants, and 1 indicating that the two scans from the same participant are always more similar than two scans from differing participants.
+In this section, we show how the connectivity results could be used to calculate discriminability\ [@bridgeford_eliminating_2021], which is a multivariate measure of replicability like the intra-class correlation coefficient or fingerprinting. In the context of connectomes, it answers the question: "Is the functional connectivity profile of a participant distinct enough to identify them among a group of people?" Discriminability ranges from 0 - 1, with 0.5 indicating something like an equal chance that the two scans from the same participants are as similar as the two scans from different participants, and 1 indicating that the two scans from the same participant are always more similar than two scans from differing participants.
 
 We are going to assess whether a person's connectivity matrix is consistent across runs, even across runs of different types (e.g., CUFF1 vs CUFF2, REST1 vs CUFF1).
 
 First, we need a list of participants that have all four scan types.
 
 ```{r}
-subs_with_all_runs <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
+#| label: sub-w-all-runs
+
+subs_with_all_runs <- open_dataset(
+  "data/pre-surgery/mris/derivatives/fcn/connectivity"
+) |>
   distinct(sub, task, run) |>
   count(sub) |>
   filter(n == 4) |>
@@ -120,6 +131,8 @@ subs_with_all_runs <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connec
 As usual, we should also restrict analyses to only those runs that are not "red".
 
 ```{r}
+#| label: red-fmri
+
 red_fmri <- read_tsv(
   dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
   na = "n/a"
@@ -136,12 +149,16 @@ head(red_fmri)
 Of the list of participants with all four functional scans, filter out the participants for which any of the scans were red.
 
 ```{r}
+#| label: subs-with-all-runs-ok
+
 subs_with_all_runs_ok <- subs_with_all_runs |> anti_join(red_fmri)
 ```
 
-Use this to filter the connectivity results. We'll select just one of the smaller DiFuMo atlases [@dadi_fine_2020]. As before, we'll stick with the empirical estimator.
+Use this to filter the connectivity results. We'll select just one of the smaller DiFuMo atlases\ [@dadi_fine_2020]. As before, we'll stick with the empirical estimator.
 
 ```{r}
+#| label: fcn
+
 fcn <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
   filter(atlas == "difumo_dimension-64_resolution-2mm") |>
   filter(estimator == "empirical") |>
@@ -155,6 +172,8 @@ head(fcn)
 Next, define some helper functions to break up the different parts of the analysis pipeline.
 
 ```{r}
+#| label: scan-combos
+
 get_scan_combinations <- function(
   scans = c("rest1", "rest2", "cuff1", "cuff2"),
   .col1 = scan1,
@@ -195,6 +214,8 @@ get_discr <- function(.data) {
 Apply these helper functions to the functional connectivity data, calculating discriminability.
 
 ```{r}
+#| label: discriminability
+
 discriminability <- get_scan_combinations() |>
   join_fcn_to_combinations(fcn) |>
   mutate(discr = map_dbl(data, get_discr)) |>
@@ -204,6 +225,8 @@ discriminability <- get_scan_combinations() |>
 To review the results, plot the data. When plotting, let's color the points based on whether the two scans are of the same type.
 
 ```{r}
+#| label: plot-discriminability
+
 discriminability |>
   mutate(
     same_type = (str_detect(scan1, "rest") & str_detect(scan2, "rest")) |
@@ -217,7 +240,6 @@ discriminability |>
 ```
 
 Overall, discriminability is around 0.8, with at most minor differences between different pairings of runs.
-
 
 ## Considerations While Working on the Project
 

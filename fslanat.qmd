@@ -2,7 +2,7 @@
 
 ![Subcortical Structures (source: https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.png)
 
-The structural T1w scan in the A2CPS neuroimaging protocol is the source of several pre-specified biomarkers. Two of these biomarkers—the volumes of the hippocampi and amygdalae—are derived from a tool in the Functional Magnetic Resonance Imaging of the Brain (FMRIB) Software Library (FSL): [FMRIB's Integrated Registration and Segmentation Tool (FIRST)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html). 
+The structural T1w scan in the A2CPS neuroimaging protocol is the source of several pre-specified biomarkers. Two of these biomarkers---the volumes of the hippocampi and amygdalae---are derived from a tool in the Functional Magnetic Resonance Imaging of the Brain (FMRIB) Software Library (FSL): [FMRIB's Integrated Registration and Segmentation Tool (FIRST)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html). 
 
 Subcortical volumetric measurements are particularly important in pain research. The amygdala plays a critical role in the affective and emotional dimensions of pain processing, while the hippocampus is involved in memory consolidation and contextual fear conditioning associated with painful stimuli. Assessing the volume of these structures can help researchers understand structural adaptations to chronic pain.
 
@@ -24,9 +24,11 @@ Many users will not need the raw `fsl_anat` outputs and can instead rely a table
 
 ### Extract data
 
-In this kit, we will compare volumetric measurements that are produced by both FIRST and FreeSurfer (@sec-freesurfer). In some circumstances, the volumes are largely interchangeable, but for some structures these tools are known to produce fairly different estimates of volume [@sadil_comparing_2024]. Let's replicate part of that analysis.
+In this kit, we will compare volumetric measurements that are produced by both FIRST and FreeSurfer (@sec-freesurfer). In some circumstances, the volumes are largely interchangeable, but for some structures these tools are known to produce fairly different estimates of volume\ [@sadil_comparing_2024]. Let's replicate part of that analysis.
 
-```{r setup}
+```{r}
+#| label: setup
+
 library(readr)
 library(dplyr)
 library(tidyr)
@@ -39,14 +41,20 @@ library(agree)
 
 First, load in the cortical volumes provided by FSL.
 
-```{r load}
-fslanat <- read_tsv("data/pre-surgery/mris/derivatives/fslanat/fslanat.tsv", show_col_types = FALSE)
+```{r}
+#| label: load
+
+fslanat <- read_tsv(
+  "data/pre-surgery/mris/derivatives/fslanat/fslanat.tsv",
+  show_col_types = FALSE
+)
 head(fslanat)
 ```
 
 In addition to subcortical volumetric information, that table contains a few fields related to the overall size of the brain (`t1_to_mni_scaling`, `t1_space_orig_volume`, `t1_space_mni_volume`). Drop those fields. To make it easier to join with FreeSurfer values, we'll also unpivot the table into a wider format, and extract information about the hemisphere.
 
-```{r fsltidy}
+```{r}
+#| label: fsltidy
 
 subcort_fsl <- fslanat |>
   select(-starts_with("t1_")) |>
@@ -58,7 +66,8 @@ head(subcort_fsl)
 
 Now, grab the equivalent information from FreeSurfer.
 
-```{r freesurfer}
+```{r}
+#| label: freesurfer
 
 subcort_freesurfer <- read_tsv(
   "data/pre-surgery/mris/derivatives/freesurfer/aseg.tsv",
@@ -74,7 +83,8 @@ subcort_freesurfer <- read_tsv(
 
 The tables may now be combined. Note that, while combining them, we add an additional column to keep track of which method produced the volume.
 
-```{r subcort}
+```{r}
+#| label: subcort
 
 subcort <- bind_rows(
   list(fsl = subcort_fsl, freesurfer = subcort_freesurfer),
@@ -91,8 +101,8 @@ subcort |> distinct(structure)
 To compare the structures, make a simple [Bland-Altman plot](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot). 
 
 ::: {#fig-ba}
-
-```{r plotting}
+```{r}
+#| label: plotting
 
 subcort |>
   mutate(Average = (fsl + freesurfer) / 2, Difference = fsl - freesurfer) |>
@@ -106,14 +116,13 @@ subcort |>
 ```
 
 Comparison of Subcortical Volumes as Estimated by FSL and FreeSurfer. Each dot corresponds to a single structure of a single participant. The blue lines span the 95% confidence interval around the difference of the two estimates of volume, and the red lines are confidence intervals around the limits of agreement. 
-
 :::
 
-As expected, there are overall differences in how the estimates provided by the two structures [@fig-ba]. We can quantify these differences using the intraclass correlation coefficient.
+As expected, there are overall differences in how the estimates provided by the two structures\ [@fig-ba]. We can quantify these differences using the intraclass correlation coefficient.
 
 ::: {#tbl-icc}
-
-```{r, icc}
+```{r}
+#| label: icc
 
 subcort |>
   group_nest(hemisphere, structure) |>
@@ -136,7 +145,6 @@ subcort |>
 ```
 
 Consistency of Subcortical Volumes. The lower and upper bounds are 95% Confidence intervals, and the estimate is for the intraclass correlation. By the conventions of @mcgraw_forming_1996, this is also known as the $ICC(C,1)$.
-
 :::
 
 ## Considerations While Working on the Project

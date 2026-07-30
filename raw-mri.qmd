@@ -1,6 +1,7 @@
 # Raw MRI Data Starter Kit {#sec-raw-mri}
 
 ```{r}
+#| label: vars
 #| include: false
 
 # Release-coupled values live in _variables.yml, which is also the source for the
@@ -17,7 +18,7 @@ The data are provided in a format called the Brain Imaging Data Structure (BIDS)
 
 The raw data are most useful when you need to run custom preprocessing pipelines. If you do not need custom pipelines, please review [the preface](index.qmd#sec-preface) for a list of imaging products that have already been calculated.
 
-[^bids]: For a generic introduction to BIDS, see: [Unsure how to get started using BIDS with your current data? - The Brain Imaging Data Structure](https://bids-website.readthedocs.io/en/latest/getting_started/index.html)]
+[^bids]: For a generic introduction to BIDS, see: [Unsure how to get started using BIDS with your current data? - The Brain Imaging Data Structure](https://bids-website.readthedocs.io/en/latest/getting_started/index.html)
 
 ## Starting Project
 
@@ -41,7 +42,7 @@ sub-10010
 
 The raw MRI data are organized according to [`{r} bids_version`](`{r} glue::glue("https://bids-specification.readthedocs.io/en/{bids_version}/")`) of the BIDS standard. 
 
-In BIDS data for individual subjects are stored in folders named "sub-[record_id]". For an example A2CPS session this format results in the following[^tree]:
+In BIDS data for individual subjects are stored in folders named "sub-\[record_id\]". For an example A2CPS session this format results in the following[^tree]:
 
 [^tree]: The `tree` command is just used here to display the folder structure, and is not required for you to have.
 
@@ -90,59 +91,35 @@ Under BIDS, you'll see various folders corresponding to the different types of s
 - `dwi`: Diffusion MRI (dMRI) used to measure water diffusion along white matter tracts.
 - `fmap`: Contains files used to estimate the magnetic field inhomogeneities, often called "fieldmaps". However, in A2CPS, these are specifically pairs of spin-echo EPI images with reversed phase-encoding directions (AP/PA). They are not literal fieldmaps themselves, but they are used by preprocessing tools (like fMRIPrep or QSIPrep) to estimate and correct for spatial distortions in the functional and diffusion data.
 
-The "session" refers to the visit. Currently only the baseline (pre-surgery) data is included, so all sessions have the label "V1". Information about each participant's visit is stored in the `sub-[record_id]/sub-[record_id]_sessions.tsv` file.
+The "session" refers to the visit. Currently only the baseline (pre-surgery) data is included, so all sessions have the label "V1". Information about each participant's visit is stored in the `sub-\[record_id\]/sub-\[record_id\]_sessions.tsv` file.
 
-The pressures that were applied during the CUFF scans are recorded in the [`sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv` tables](`{r} glue::glue("https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/task-events.html")`).
+The pressures that were applied during the CUFF scans are recorded in the [`sub-\[record_id\]_ses-\[ses_id\]_task-cuff_run-\[run_id\]_events.tsv` tables](`{r} glue::glue("https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/task-events.html")`).
 
 BIDS requires that the diffusion gradient information is stored according to the FSL format, in `*bval` and `*bvec` files in the `/dwi` directory. For details see: [Magnetic Resonance Imaging - Brain Imaging Data Structure](`{r} glue::glue("https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/magnetic-resonance-imaging-data.html#required-gradient-orientation-information")`).
 
 Files at the top level of the bids folder contain information that applies to multiple participants. This includes
 
 ```{r}
+#| label: docs
 #| echo: false
 
 tibble::tribble(
-  ~File,
-  ~Documentation,
-  glue::glue(
-    "README ([A2CPS file](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/README.md))"
-  ),
-  glue::glue(
-    "[modality agnostic files](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html)"
-  ),
-  glue::glue(
-    "participants.tsv ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/participants.json))"
-  ),
-  glue::glue(
-    "[participants file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#participants-file)"
-  ),
-  glue::glue(
-    "sub-[record_id]_ses-[ses_id]_scans.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/scans.json))"
-  ),
-  glue::glue(
-    "[scans file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#scans-file)"
-  ),
-  glue::glue(
-    "sub-[record_id]_sessions.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/sessions.json))"
-  ),
-  glue::glue(
-    "[sessions file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#sessions-file)"
-  ),
-  glue::glue(
-    "sub-[record_id]_ses-[ses_id]_task-cuff_run-[run_id]_events.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/task-cuff_events.json))"
-  ),
-  glue::glue(
-    "[task events](https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/task-events.html)"
-  ),
-  glue::glue(
-    "dataset_description.json ([A2CPS file](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/dataset_description.json))"
-  ),
-  glue::glue(
-    "[dataset descriptions](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#dataset_descriptionjson)"
-  )
+  ~File                                                                                                                                                                                                   ,
+  ~Documentation                                                                                                                                                                                          ,
+  glue::glue("README ([A2CPS file](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/README.md))")                                                                                  ,
+  glue::glue("[modality agnostic files](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html)")                                                                       ,
+  glue::glue("participants.tsv ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/participants.json))")                                                                ,
+  glue::glue("[participants file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#participants-file)")                                                           ,
+  glue::glue("sub-\\[record_id\\]_ses-\\[ses_id\\]_scans.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/scans.json))")                                      ,
+  glue::glue("[scans file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#scans-file)")                                                                         ,
+  glue::glue("sub-\\[record_id\\]_sessions.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/sessions.json))")                                               ,
+  glue::glue("[sessions file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#sessions-file)")                                                                   ,
+  glue::glue("sub-\\[record_id\\]_ses-\\[ses_id\\]_task-cuff_run-\\[run_id\\]_events.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/task-cuff_events.json))") ,
+  glue::glue("[task events](https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/task-events.html)")                                                                       ,
+  glue::glue("dataset_description.json ([A2CPS file](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/dataset_description.json))")                                                 ,
+  glue::glue("[dataset descriptions](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#dataset_descriptionjson)")
 )
 ```
-
 
 ## Considerations While Working on the Project
 
@@ -154,16 +131,16 @@ The resulting overall quality ratings (red/yellow/green) are included in the `*s
 
 ```bash
 $ cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv 
-filename	rating
-func/sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz	green
-dwi/sub-10003_ses-V1_dwi.nii.gz	green
-func/sub-10003_ses-V1_task-rest_run-01_bold.nii.gz	green
-func/sub-10003_ses-V1_task-rest_run-02_bold.nii.gz	green
-anat/sub-10003_ses-V1_T1w.nii.gz	green
-fmap/sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.nii.gz	n/a
-fmap/sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.nii.gz	n/a
-fmap/sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz	n/a
-fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz	n/a
+filename    rating
+func/sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz  green
+dwi/sub-10003_ses-V1_dwi.nii.gz green
+func/sub-10003_ses-V1_task-rest_run-01_bold.nii.gz  green
+func/sub-10003_ses-V1_task-rest_run-02_bold.nii.gz  green
+anat/sub-10003_ses-V1_T1w.nii.gz    green
+fmap/sub-10003_ses-V1_acq-fmrib0_dir-AP_epi.nii.gz  n/a
+fmap/sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.nii.gz  n/a
+fmap/sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz   n/a
+fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz   n/a
 ```
 
 For a description of the reviews, see the [scans.json data dictionary](`{r} glue::glue("https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/scans.json")`). Re-evaluation of quality and inclusion/exclusion criteria in the context of a specific analysis is always reasonable, but we would advise against including scans labeled "red" in most analyses.
@@ -172,21 +149,21 @@ Note that some "cuff" scans were collected without cuff inflation. These scans c
 
 ```bash
 $ grep -b1 -HP "0\t450\t0" sub-*/ses-V1/func/*events.tsv | head -n 9
-sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv-0-onset	duration	applied_pressure
-sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv:32:0	450	0
+sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv-0-onset  duration    applied_pressure
+sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-01_events.tsv:32:0 450 0
 --
-sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv-0-onset	duration	applied_pressure
-sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv:32:0	450	0
+sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv-0-onset  duration    applied_pressure
+sub-10077/ses-V1/func/sub-10077_ses-V1_task-cuff_run-02_events.tsv:32:0 450 0
 --
-sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv-0-onset	duration	applied_pressure
-sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv:32:0	450	0
+sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv-0-onset  duration    applied_pressure
+sub-10103/ses-V1/func/sub-10103_ses-V1_task-cuff_run-01_events.tsv:32:0 450 0
 ```
 
 ### Data Generation
 
-Each scanner's manufacturer-specific algorithms and software are used for the reconstruction of image data from k-space (k-space data were not saved). The reconstructed images are exported in the Digital Imaging and Communications in Medicine (DICOM) format and sent electronically from participating sites to the Texas Advanced Computing Center (TACC). Following the Organization for Human Brain Mapping Committee on Best Practices in Data Analysis and Sharing report [@nichols_best_2017], the DICOM files are converted into the Neuroimaging Informatics Technology Initiative (NIfTI) 1 format [@cox_sort_2004] and organized according to the BIDS specification [@gorgolewski_brain_2016]. For this conversion, the pipeline uses HeuDiConv [@halchenko_heudiconv_2024], which in turn uses [`dcm2niix`](https://github.com/rordenlab/dcm2niix) [@li_first_2016]. Conversion relies on the ReproIn heuristic file [@visconti_di_oleggio_castello_repronimreproin_2023], modified to encode the sequence and file naming conventions developed for the A2CPS project. The original DICOMs are stored for posterity but are not included in data releases. For additional details, see @sadil_acute_2024.
+Each scanner's manufacturer-specific algorithms and software are used for the reconstruction of image data from k-space (k-space data were not saved). The reconstructed images are exported in the Digital Imaging and Communications in Medicine (DICOM) format and sent electronically from participating sites to the Texas Advanced Computing Center (TACC). Following the Organization for Human Brain Mapping Committee on Best Practices in Data Analysis and Sharing report\ [@nichols_best_2017], the DICOM files are converted into the Neuroimaging Informatics Technology Initiative (NIfTI) 1 format\ [@cox_sort_2004] and organized according to the BIDS specification\ [@gorgolewski_brain_2016]. For this conversion, the pipeline uses HeuDiConv\ [@halchenko_heudiconv_2024], which in turn uses [`dcm2niix`](https://github.com/rordenlab/dcm2niix)\ [@li_first_2016]. Conversion relies on the ReproIn heuristic file\ [@visconti_di_oleggio_castello_repronimreproin_2023], modified to encode the sequence and file naming conventions developed for the A2CPS project. The original DICOMs are stored for posterity but are not included in data releases. For additional details, see @sadil_acute_2024.
 
-All MRI pipeline code is available through github: [https://github.com/a2cps/mri_imaging_pipeline](https://github.com/a2cps/mri_imaging_pipeline). Note that the code used to generate the BIDS derivatives has been updated several times (e.g., the same version of [`dcm2niix`](https://github.com/rordenlab/dcm2niix) was not used to convert all participants). The specific version of the conversion code is stored in the `GeneratedBy` field of the `dataset_description.json`, with entries like
+All MRI pipeline code is available through github: <https://github.com/a2cps/mri_imaging_pipeline>. Note that the code used to generate the BIDS derivatives has been updated several times (e.g., the same version of [`dcm2niix`](https://github.com/rordenlab/dcm2niix) was not used to convert all participants). The specific version of the conversion code is stored in the `GeneratedBy` field of the `dataset_description.json`, with entries like
 
 ```json
 {
@@ -219,10 +196,9 @@ Occasionally, scans were collected with acquisition parameters that differed fro
 
 Several packages in multiple languages have been developed to simplify interacting with BIDS. For a complete list, see: [Benefits](https://bids.neuroimaging.io/benefits.html#other-tools), a subset of which is copied below
 
-* [bids-matlab](https://github.com/bids-standard/bids-matlab): MATLAB/Octave tools to interact with datasets conforming to the BIDS format
-* [bidser](https://github.com/bbuchsbaum/bidser): Working with Brain Imaging Data Structure in R
-* [PyBIDS](https://github.com/bids-standard/pybids): Python package to quickly parse / search the components of a BIDS dataset. It also contains functionality for running analyses on your data
-
+- [bids-matlab](https://github.com/bids-standard/bids-matlab): MATLAB/Octave tools to interact with datasets conforming to the BIDS format
+- [bidser](https://github.com/bbuchsbaum/bidser): Working with Brain Imaging Data Structure in R
+- [PyBIDS](https://github.com/bids-standard/pybids): Python package to quickly parse / search the components of a BIDS dataset. It also contains functionality for running analyses on your data
 
 ### Joining with Other Modalities
 

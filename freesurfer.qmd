@@ -42,21 +42,26 @@ Copies of the data dictionaries are available online for preview: [aparc.json](h
 
 ### Extract data
 
-
 In this kit, we will explore the cortical parcellations. 
 
 ```{r}
+#| label: setup
+
 library(readr)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 ```
 
-
 As described above, the parcellation information is stored in `aparc.tsv`. 
 
-```{r load}
-aparc <- read_tsv("data/pre-surgery/mris/derivatives/freesurfer/aparc.tsv", show_col_types = FALSE)
+```{r}
+#| label: load
+
+aparc <- read_tsv(
+  "data/pre-surgery/mris/derivatives/freesurfer/aparc.tsv",
+  show_col_types = FALSE
+)
 head(aparc)
 ```
 
@@ -64,31 +69,32 @@ That table contains nine regional measurements (GrayVol, SurfArea) for the vario
 
 A typical analysis will only rely on one parcellation. For details of the different parcellations, see the [FreeSurfer documentation](https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation). Two good starting choices are either `aparc` or `aparc.a2009s`. The `aparc` atlas is a coarser parcellation, whereas `aparc.a2009s` is finer. Here, we'll filter for `aparc.a2009s`.
 
-```{r a2009s}
+```{r}
+#| label: a2009s
+
 a2009s <- aparc |> filter(parc == "aparc.a2009s")
 head(a2009s)
 ```
 
-
 ### Example Analysis: Relationship between Cortical Surface Area and Gray Matter Volume
 
-One of the most common features in predictive models is cortical thickness, but each of the morphological measurements may carry unique information. For example, cortical surface area may be more predictive of widespread chronic pain as compared to cortical thickness, which may be more closely related to chronic headaches [@bhatt_mapping_2024]. Let's compare the regional volume with the regional surface area.
+One of the most common features in predictive models is cortical thickness, but each of the morphological measurements may carry unique information. For example, cortical surface area may be more predictive of widespread chronic pain as compared to cortical thickness, which may be more closely related to chronic headaches\ [@bhatt_mapping_2024]. Let's compare the regional volume with the regional surface area.
 
-:::  {#fig-pairs}
+::: {#fig-pairs}
+```{r}
+#| label: pairs
 
-```{r pairs}
 a2009s |> ggplot(aes(x = SurfArea, y = GrayVol)) + geom_point(alpha = 0.1)
 ```
 
 Cortical Gray Matter Volume (mm^3) and Surface Area (mm^2). Each point represents a single pair of measurements for a single region within a participant.
-
 :::
 
 Clearly, there are groupings in the data. These groupings could partly be driven by participant demographics (e.g., some participants having larger or smaller regional volumes), but they may also be driven by different structures (e.g., the relationship between surface area and volume may differ across regions). Let's zoom in on two of the larger clusters, and color the points by structure.
 
-:::  {#fig-pairs2}
-
-```{r pairs2}
+::: {#fig-pairs2}
+```{r}
+#| label: pairs2
 
 a2009s |>
   filter(between(SurfArea, 4000, 6000), between(GrayVol, 10000, 20000)) |>
@@ -97,7 +103,6 @@ a2009s |>
 ```
 
 The data are plotted as in @fig-pairs, but with a restricted axis. Note the apparent variability in the relationship between surface area and volume. 
-
 :::
 
 The relationship between surface area and volume appears to vary by region. For example, the Superior Temporal Sulcus has a similar surface area to the Superior Frontal Gyrus, but that gyrus has a larger volume. 
@@ -109,8 +114,9 @@ The relationship between surface area and volume appears to vary by region. For 
 The data have been shared in a ["longer" format](https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data), with rows corresponding to region-level observations. Some analyses benefit from having the data in a ["wider" format](https://r4ds.hadley.nz/data-tidy.html#widening-data), with rows corresponding to participant-level observations. For example, if we're predicting age from cortical thickness, we may want to drop the other morphological measures, and pivot the table such that columns correspond to regional thickness. 
 
 ::: {#tbl-wide}
+```{r}
+#| label: wider
 
-```{r wider}
 a2009s |>
   select(StructName, ThickAvg, sub, hemisphere) |>
   pivot_wider(names_from = c(StructName, hemisphere), values_from = ThickAvg) |>
@@ -118,7 +124,6 @@ a2009s |>
 ```
 
 Average Thickness in a Wider Format. Rows correspond to participants. Note that the region (`StructName`) has been combined with the hemisphere label.
-
 :::
 
 ### Variability Across Scanners

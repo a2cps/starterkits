@@ -92,16 +92,16 @@ $ ls mris/derivatives/cat12/cluster*
 mris/derivatives/cat12/cluster_volumes.json  mris/derivatives/cat12/cluster_volumes.tsv
 
 $ head mris/derivatives/cat12/cluster_volumes.tsv 
-sub	ses	mri	atlas	cluster	volume
-10703	V1	wp1sub-10703_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	0	1998.106000518892
-10703	V1	wp1sub-10703_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	1	2294.6824886463583
-10703	V1	mwp1sub-10703_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	0	1219.69091796875
-10703	V1	mwp1sub-10703_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	1	1443.6837158203125
-10753	V1	mwp1sub-10753_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	0	1673.0926513671875
-10753	V1	mwp1sub-10753_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	1	1950.593505859375
-10753	V1	wp1sub-10753_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	0	2353.910433325509
-10753	V1	wp1sub-10753_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	1	2952.608998143696
-10040	V1	mwp1sub-10040_ses-V1_T1w	tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg	0	1499.8414306640625
+sub ses mri atlas   cluster volume
+10703   V1  wp1sub-10703_ses-V1_T1w tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg    0   1998.106000518892
+10703   V1  wp1sub-10703_ses-V1_T1w tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg    1   2294.6824886463583
+10703   V1  mwp1sub-10703_ses-V1_T1w    tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg    0   1219.69091796875
+10703   V1  mwp1sub-10703_ses-V1_T1w    tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg    1   1443.6837158203125
+10753   V1  mwp1sub-10753_ses-V1_T1w    tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg    0   1673.0926513671875
+10753   V1  mwp1sub-10753_ses-V1_T1w    tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg    1   1950.593505859375
+10753   V1  wp1sub-10753_ses-V1_T1w tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg    0   2353.910433325509
+10753   V1  wp1sub-10753_ses-V1_T1w tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg    1   2952.608998143696
+10040   V1  mwp1sub-10040_ses-V1_T1w    tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg    0   1499.8414306640625
 ```
 
 The `json` file contains a data dictionary, with links to confluence pages providing detailed information about each of the atlases.

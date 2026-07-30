@@ -5,9 +5,9 @@ name = "r-roll"
 version = "1.2.1"
 
 [package.build.backend]
+channels = [ "conda-forge", "https://prefix.dev/pixi-build-backends" ]
 name = "pixi-build-r"
 version = "*"
-channels = ["https://prefix.dev/pixi-build-backends", "conda-forge"]
 
 [package.build.source]
 git = "https://github.com/cran/roll"

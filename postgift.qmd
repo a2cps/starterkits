@@ -1,6 +1,8 @@
 # ICA Connectivity {#sec-postgift}
 
-```{r setup}
+```{r}
+#| label: setup
+
 library(readr)
 library(dplyr)
 library(ggplot2)
@@ -14,7 +16,7 @@ The @sec-gift products provide outputs in a raw format that will be familiar to 
 
 As a brief primer, extracting functional networks via ICA allows researchers to study how different brain regions communicate. Once these networks are identified, two common metrics are calculated:
 1. **Connectivity**: The correlation between the activity (timecourses) of different networks. This tells us how strongly two distinct brain systems are communicating with each other.
-2. **Amplitude (fALFF)**: The fractional Amplitude of Low Frequency Fluctuations [@zou_improved_2008]. This is a measure of the spontaneous, low-frequency neural activity occurring *within* a specific network, often used to assess baseline brain function and regional abnormalities in conditions like chronic pain.
+2. **Amplitude (fALFF)**: The fractional Amplitude of Low Frequency Fluctuations\ [@zou_improved_2008]. This is a measure of the spontaneous, low-frequency neural activity occurring *within* a specific network, often used to assess baseline brain function and regional abnormalities in conditions like chronic pain.
 
 ## Starting Project
 
@@ -26,6 +28,7 @@ The derivatives are underneath `derivatives/postgift`. Let's take a look.
 
 ```{bash}
 #| eval: false
+
 $ ls postgift
 amplitude  amplitude.json  biomarkers  biomarkers.json  connectivity  connectivity.json
 ```
@@ -40,10 +43,15 @@ The tabular data comprise [parquet files](https://parquet.apache.org/) that have
 
 Let's take a look at just the amplitudes.
 
-```{r loadfalff}
+```{r}
+#| label: loadfalff
 
 amplitude <- read_parquet_duckdb(
-  dir_ls("data/pre-surgery/mris/derivatives/postgift/amplitude", recurse = TRUE, glob = "*parquet"),
+  dir_ls(
+    "data/pre-surgery/mris/derivatives/postgift/amplitude",
+    recurse = TRUE,
+    glob = "*parquet"
+  ),
   prudence = "lavish"
 )
 
@@ -55,7 +63,6 @@ To get a feel for the data, let's see whether there are differences between the 
 First, we filter the table, keeping only the amplitudes from a single model. We'll also convert the components into a factor, for later use during modeling. At this point, the dataset is small enough that it's easy to handle in memory, and so we'll also [collect](https://dplyr.tidyverse.org/reference/compute.html) it. 
 
 ```{r}
-
 run1_amplitudes <- amplitude |>
   filter(model == "2.1", run == 1) |>
   select(-model, -run, -ses) |>
@@ -80,7 +87,6 @@ red_run1_scans <- read_tsv(
 ```
 
 ::: {#fig-falff}
-
 ```{r}
 #| fig-height: 15
 
@@ -106,11 +112,9 @@ run1_amplitudes |> do_ma_plot()
 ```
 
 Fractional Amplitude of Low Frequency Fluctuations. Each panel is a distinct component. The x-axis is a mean average, and the y-axis is a ratio of the two fALFFs. 
-
 :::
 
 For the most part, there is not a substantially large difference in the log intensities. However, it may be interesting that there appears to be a trend such that amplitudes are somewhat lower in the CUFF as compared to REST conditions. 
-
 
 ```{r}
 lme4::lmer(
