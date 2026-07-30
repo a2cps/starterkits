@@ -767,7 +767,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>This kit reviews the key quality control metrics provided by <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html">FSL’s EDDY QC</a> <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>, which are included in A2CPS data releases.</p>
+<p>This kit reviews the key quality control metrics provided by <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html">FSL’s EDDY QC</a>&nbsp;<span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>, which are included in A2CPS data releases.</p>
 <div class="no-row-height column-margin column-container"></div><p>Diffusion MRI (dMRI) is highly sensitive to macroscopic head motion and to eddy currents—rapidly changing magnetic gradients that cause geometric distortions and blurring in the reconstructed images. FSL’s EDDY tool is a gold-standard approach for correcting these artifacts. As a byproduct of the correction process, EDDY generates several quantitative quality control metrics. While these metrics are not used in the automated rating of dMRI images in A2CPS, they provide valuable, objective information about the severity of movement and magnetic susceptibility artifacts on a scan (e.g., Contrast-to-Noise Ratio).</p>
 <section id="starting-project" class="level2 page-columns page-full" data-number="12.1">
 <h2 data-number="12.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">12.1</span> Starting Project</h2>
@@ -785,8 +785,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The outputs are organized by participant and session<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Note that the directory structure varies across participants, with some participants matching <code>sub-[recordid]/ses-[visit]/[contents]</code> and others matching <code>sub-[recordid]/ses-[visit]/eddyqc/[contents]</code>.</p></div></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/eddyqc/ <span class="kw">|</span> <span class="fu">head</span></span>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Note that the directory structure varies across participants, with some participants matching <code>sub-[recordid]/ses-[visit]/[contents]</code> and others matching <code>sub-[recordid]/ses-[visit]/eddyqc/[contents]</code>.</p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/eddyqc/ <span class="kw">|</span> <span class="fu">head</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010</span></span>
@@ -819,7 +818,6 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> vdm.png</span>
 <span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> directory, 16 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <p>The pdf is a visual report summarizing the scan quality, including tables with quantitative metrics and images indicating scan quality. The metrics are available in the json, along with metadata about the scan.</p>
 </section>
 <section id="extract-data" class="level3 page-columns page-full" data-number="12.1.2">
@@ -827,17 +825,21 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <p>Let’s collate the QC metrics into a single table. To do so, we recursively search for and read the <code>qc.json</code> files.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>qcs <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">src =</span> fs<span class="sc">::</span><span class="fu">dir_ls</span>(<span class="st">"data/pre-surgery/mris/derivatives/eddyqc"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>, <span class="at">glob =</span> <span class="st">"*qc.json"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">qc =</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      src,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> jsonlite<span class="sc">::</span><span class="fu">read_json</span>(.x, <span class="at">simplifyVector =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">.progress =</span> <span class="cn">TRUE</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># let's look at the fields on one of those qc.json files</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>qcs<span class="sc">$</span>qc[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">names</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">src =</span> fs<span class="sc">::</span><span class="fu">dir_ls</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/pre-surgery/mris/derivatives/eddyqc"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">recurse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">glob =</span> <span class="st">"*qc.json"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">qc =</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      src,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> jsonlite<span class="sc">::</span><span class="fu">read_json</span>(.x, <span class="at">simplifyVector =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">.progress =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># let's look at the fields on one of those qc.json files</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>qcs<span class="sc">$</span>qc[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">names</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "data_eddy_para"        "data_file_bvals"       "data_file_eddy"       
  [4] "data_file_mask"        "data_no_PE_dirs"       "data_no_b0_vols"      
@@ -852,7 +854,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 [31] "qc_vox_displ_std"     </code></pre>
 </div>
 </div>
-<p>In these <code>qc.json</code> files, there are three kinds of fields: <code>data_*</code> fields, which describe the scan, <code>eddy_*</code> fields, which describe how EDDY was configured, and <code>qc_*</code> fields, which summarize the scan quality. Let’s dig into <code>qc_cnr_avg</code>. That field is a vector with a length equal to the number of shells in the scan. The entries are the average angular Contrast-to-Noise ratio, which is a standardized measure of scan quality <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>In these <code>qc.json</code> files, there are three kinds of fields: <code>data_*</code> fields, which describe the scan, <code>eddy_*</code> fields, which describe how EDDY was configured, and <code>qc_*</code> fields, which summarize the scan quality. Let’s dig into <code>qc_cnr_avg</code>. That field is a vector with a length equal to the number of shells in the scan. The entries are the average angular Contrast-to-Noise ratio, which is a standardized measure of scan quality&nbsp;<span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The first entry corresponds to the b0, and so it is really as signal-to-noise ratio rather than a traditional angular CNR.</p></div></div><div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cnr <span class="ot">&lt;-</span> qcs <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
@@ -867,6 +869,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 85%">
+<col style="width: 7%">
+<col style="width: 6%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">src</th>
@@ -876,33 +883,33 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
-<td style="text-align: right;">3.29</td>
+<td style="text-align: left;">data/pre-surgery/mris/derivatives/eddyqc/sub-10008/ses-V1/qc.json</td>
+<td style="text-align: right;">11.36</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
-<td style="text-align: right;">1.01</td>
+<td style="text-align: left;">data/pre-surgery/mris/derivatives/eddyqc/sub-10008/ses-V1/qc.json</td>
+<td style="text-align: right;">0.74</td>
 <td style="text-align: right;">500</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
-<td style="text-align: right;">8853030.29</td>
+<td style="text-align: left;">data/pre-surgery/mris/derivatives/eddyqc/sub-10008/ses-V1/qc.json</td>
+<td style="text-align: right;">0.98</td>
 <td style="text-align: right;">1000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
-<td style="text-align: right;">2.44</td>
+<td style="text-align: left;">data/pre-surgery/mris/derivatives/eddyqc/sub-10008/ses-V1/qc.json</td>
+<td style="text-align: right;">2.28</td>
 <td style="text-align: right;">2000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">data/eddyqc/sub-10003/ses-V1/qc.json</td>
-<td style="text-align: right;">2.16</td>
+<td style="text-align: left;">data/pre-surgery/mris/derivatives/eddyqc/sub-10008/ses-V1/qc.json</td>
+<td style="text-align: right;">3.26</td>
 <td style="text-align: right;">3000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">data/eddyqc/sub-10008/ses-V1/qc.json</td>
-<td style="text-align: right;">11.36</td>
+<td style="text-align: left;">data/pre-surgery/mris/derivatives/eddyqc/sub-10010/ses-V1/qc.json</td>
+<td style="text-align: right;">3.89</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
@@ -920,7 +927,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="eddyqc_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="eddyqc_files/figure-html/plot-cnr-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -932,7 +939,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h2 data-number="12.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">12.2</span> Considerations While Working on the Project</h2>
 <section id="effective-vs.-raw-cnr" class="level3 page-columns page-full" data-number="12.2.1">
 <h3 data-number="12.2.1" class="anchored" data-anchor-id="effective-vs.-raw-cnr"><span class="header-section-number">12.2.1</span> Effective vs.&nbsp;Raw CNR</h3>
-<p>To enable comparisons of quality across datasets, it is recommended to convert the CNR values output by EDDY into “effective CNR” values by the square root of the number of acquired volumes and dividing it by the voxel volume <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>.</p>
+<p>To enable comparisons of quality across datasets, it is recommended to convert the CNR values output by EDDY into “effective CNR” values by the square root of the number of acquired volumes and dividing it by the voxel volume&nbsp;<span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"></div></section>
 <section id="background" class="level3 page-columns page-full" data-number="12.2.2">
 <h3 data-number="12.2.2" class="anchored" data-anchor-id="background"><span class="header-section-number">12.2.2</span> Background</h3>
@@ -940,7 +947,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="no-row-height column-margin column-container"></div></section>
 <section id="citations" class="level3 page-columns page-full" data-number="12.2.3">
 <h3 data-number="12.2.3" class="anchored" data-anchor-id="citations"><span class="header-section-number">12.2.3</span> Citations</h3>
-<p>If you use these derivatives please cite the EDDY QC paper <span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>.</p>
+<p>If you use these derivatives please cite the EDDY QC paper&nbsp;<span class="citation" data-cites="bastiani_2019_automated">(<a href="references.html#ref-bastiani_2019_automated" role="doc-biblioref">Bastiani et al., 2019</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-bastiani_2019_automated" class="csl-entry" role="listitem">
 Bastiani, M., Cottaar, M., Fitzgibbon, S. P., Suri, S., Alfaro-Almagro, F., Sotiropoulos, S. N., Jbabdi, S., &amp; Andersson, J. L. (2019). Automated quality control for within and between studies diffusion MRI data using a non-parametric framework for movement and distortion correction. <em>Neuroimage</em>, <em>184</em>, 801–812. <a href="https://doi.org/10.1016/j.neuroimage.2018.09.073">https://doi.org/10.1016/j.neuroimage.2018.09.073</a>
 </div></div><p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>

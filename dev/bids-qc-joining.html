@@ -743,12 +743,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>aparc <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/pre-surgery/mris/derivatives/freesurfer/aparc.tsv"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>aparc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 399,992 x 14
+<pre><code># A tibble: 399,992 × 14
    StructName       NumVert SurfArea GrayVol ThickAvg ThickStd MeanCurv GausCurv
    &lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
  1 bankssts            1360      909    2055     2.52    0.397    0.112    0.02 
- 2 caudalanteriorc~     852      604    1626     2.25    0.887    0.131    0.024
- 3 caudalmiddlefro~    2870     1857    4018     2.16    0.485    0.104    0.018
+ 2 caudalanteriorc…     852      604    1626     2.25    0.887    0.131    0.024
+ 3 caudalmiddlefro…    2870     1857    4018     2.16    0.485    0.104    0.018
  4 cuneus              1595     1090    2019     1.74    0.515    0.141    0.027
  5 entorhinal           480      306    1366     3.03    0.816    0.105    0.018
  6 fusiform            3434     2414    8326     2.91    0.603    0.123    0.023
@@ -756,14 +756,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
  8 inferiortemporal    3816     2614    8405     2.79    0.552    0.118    0.021
  9 isthmuscingulate    1167      782    1820     2.14    0.832    0.117    0.021
 10 lateraloccipital    6159     4023    8578     2.02    0.536    0.132    0.027
-# i 399,982 more rows
-# i 6 more variables: FoldInd &lt;dbl&gt;, CurvInd &lt;dbl&gt;, sub &lt;dbl&gt;, ses &lt;chr&gt;,
+# ℹ 399,982 more rows
+# ℹ 6 more variables: FoldInd &lt;dbl&gt;, CurvInd &lt;dbl&gt;, sub &lt;dbl&gt;, ses &lt;chr&gt;,
 #   hemisphere &lt;chr&gt;, parc &lt;chr&gt;</code></pre>
 </div>
 </div>
 <p>The overall quality ratings (red/yellow/green) for the rawdata are included in the *scans.tsv files. For example</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat sub-10003/ses-V1/sub-10003_ses-V1_scans.tsv </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">filename</span>    rating</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">func/sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz</span>  green</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">dwi/sub-10003_ses-V1_dwi.nii.gz</span> green</span>
@@ -774,11 +773,14 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-fmrib0_dir-PA_epi.nii.gz</span>  n/a</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz</span>   n/a</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz</span>   n/a</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <p>To load the files, first list them all with <a href="https://fs.r-lib.org/reference/dir_ls.html"><code>fs::dir_ls</code></a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scan_files <span class="ot">&lt;-</span> <span class="fu">dir_ls</span>(<span class="st">"data/pre-surgery/mris/bids/"</span>, <span class="at">glob =</span> <span class="st">"*scans.tsv"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(scan_files)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scan_files <span class="ot">&lt;-</span> <span class="fu">dir_ls</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/bids/"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">glob =</span> <span class="st">"*scans.tsv"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">recurse =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(scan_files)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>data/pre-surgery/mris/bids/sub-10005/ses-V1/sub-10005_ses-V1_scans.tsv
 data/pre-surgery/mris/bids/sub-10008/ses-V1/sub-10008_ses-V1_scans.tsv

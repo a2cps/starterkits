@@ -769,158 +769,159 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>A “neural signature” is a multivariate pattern of brain activity that has been statistically optimized to predict a specific mental state or symptom—in this case, pain. Rather than looking at activity in a single brain region, these signatures use predefined weight maps across the whole brain. By calculating the dot product (or spatial correlation) between a participant’s fMRI scan and these established weight maps, we can estimate a single scalar response value that reflects how strongly the participant’s brain activity matches the signature. Two prominent examples used in A2CPS are the Neurologic Pain Signature (NPS) and the Signature of Intact Nociception and Pain (SIIPS1).</p>
 <section id="starting-project" class="level2" data-number="21.1">
 <h2 data-number="21.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">21.1</span> Starting Project</h2>
 <section id="locate-data" class="level3" data-number="21.1.1">
 <h3 data-number="21.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">21.1.1</span> Locate data</h3>
 <p>On TACC, the data are stored underneath the releases. For example, data release v2.1.0 is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The signature response are underneath <code>derivatives/signatures</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/signatures/</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cleaned</span>    confounds.json      signatures-by-part-diff       signatures-by-part.json  signatures-by-run-diff       signatures-by-run.json  signatures-by-tr-diff       signatures-by-tr.json</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">confounds</span>  signatures-by-part  signatures-by-part-diff.json  signatures-by-run        signatures-by-run-diff.json  signatures-by-tr        signatures-by-tr-diff.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/signatures/</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cleaned</span>    confounds.json      signatures-by-part-diff       signatures-by-part.json  signatures-by-run-diff       signatures-by-run.json  signatures-by-tr-diff       signatures-by-tr.json</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">confounds</span>  signatures-by-part  signatures-by-part-diff.json  signatures-by-run        signatures-by-run-diff.json  signatures-by-tr        signatures-by-tr-diff.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Signature responses are stored either “by-run” (that is, one response per scan), “by-part” (three responses per run corresponding to the three parts for which participants provided pain ratings), or “by-tr” (one response for every volume). The biomarker corresponds to the values that are “by-run”. Additionally, responses may be calculated with only the data from a single run (e.g., a “by-run” response for REST1, CUFF1, CUFF2, and REST2), or they may be calculated as a difference (“diff”) between one of the CUFF scans and one of the REST scans.</p>
 <p>Each signature response folder contains a table of values, and <code>*.json</code> sidecars are <a href="https://bids-specification.readthedocs.io/en/v1.9.0/common-principles.html#tabular-files">data dictionaries that conform to BIDS</a>. The data dictionary for responses “by-run” is copied below.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"signature"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Signature"</span><span class="fu">,</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Index for of Signature. See signature_labels.json"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"correlation"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Correlation"</span><span class="fu">,</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Signature as Estimated by Correlation"</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"dot"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Dot Product"</span><span class="fu">,</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Signature as Estimated by Dot Product"</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"cosine"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Cosine Similarity"</span><span class="fu">,</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Signature as Estimated by Cosine Similarity"</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"sub"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Subject"</span><span class="fu">,</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Study Participant, BIDS Subject ID"</span><span class="fu">,</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"ses"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Session"</span><span class="fu">,</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Visit, Protocol, BIDS Session ID"</span><span class="fu">,</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Levels"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"V1"</span><span class="fu">:</span> <span class="st">"baseline_visit"</span><span class="fu">,</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"V3"</span><span class="fu">:</span> <span class="st">"3mo_postop"</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"task"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Task"</span><span class="fu">,</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Functional MRI Task, BIDS Task ID"</span><span class="fu">,</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Levels"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"cuff"</span><span class="fu">:</span> <span class="st">"cuff pressure scan"</span><span class="fu">,</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"rest"</span><span class="fu">:</span> <span class="st">"resting state scan"</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#task"</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"run"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Run"</span><span class="fu">,</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Task Run Number, BIDS Run ID"</span><span class="fu">,</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#run"</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"signature"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Signature"</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Index for of Signature. See signature_labels.json"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"correlation"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Correlation"</span><span class="fu">,</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Signature as Estimated by Correlation"</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"dot"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Dot Product"</span><span class="fu">,</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Signature as Estimated by Dot Product"</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"cosine"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Cosine Similarity"</span><span class="fu">,</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Signature as Estimated by Cosine Similarity"</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"sub"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Subject"</span><span class="fu">,</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Study Participant, BIDS Subject ID"</span><span class="fu">,</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"ses"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Session"</span><span class="fu">,</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Visit, Protocol, BIDS Session ID"</span><span class="fu">,</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Levels"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"V1"</span><span class="fu">:</span> <span class="st">"baseline_visit"</span><span class="fu">,</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"V3"</span><span class="fu">:</span> <span class="st">"3mo_postop"</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"task"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Task"</span><span class="fu">,</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Functional MRI Task, BIDS Task ID"</span><span class="fu">,</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Levels"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"cuff"</span><span class="fu">:</span> <span class="st">"cuff pressure scan"</span><span class="fu">,</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"rest"</span><span class="fu">:</span> <span class="st">"resting state scan"</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#task"</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"run"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Run"</span><span class="fu">,</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Task Run Number, BIDS Run ID"</span><span class="fu">,</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#run"</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Note: the table mentions “session”, but in this release only V1 (baseline) results are available.</p>
 </section>
 <section id="extract-data" class="level3" data-number="21.1.2">
 <h3 data-number="21.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">21.1.2</span> Extract data</h3>
 <p>The tabular data comprise parquet files that have been partitioned in a <a href="https://hive.apache.org/">hive-style</a>. That is, subfolder names contain column information – in this case subject ID (REDCap Record ID), task, and run.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree signature-by-run</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">signature-by-run</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> sub=10003</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  └── ses=V1</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     ├── task=cuff</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     │  └── run=1</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     │     └── part-0.parquet</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     └── task=rest</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        ├── run=1</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        │  └── part-0.parquet</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        └── run=2</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>           └── part-0.parquet</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> sub=10008</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  └── ses=V1</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     ├── task=cuff</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     │  └── run=1</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     │     └── part-0.parquet</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     └── task=rest</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        ├── run=1</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        │  └── part-0.parquet</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        └── run=2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree signature-by-run</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">signature-by-run</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> sub=10003</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  └── ses=V1</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     ├── task=cuff</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     │  └── run=1</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     │     └── part-0.parquet</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     └── task=rest</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        ├── run=1</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        │  └── part-0.parquet</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        └── run=2</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>           └── part-0.parquet</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> sub=10008</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  └── ses=V1</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     ├── task=cuff</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     │  └── run=1</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     │     └── part-0.parquet</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>     └── task=rest</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        ├── run=1</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        │  └── part-0.parquet</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>        └── run=2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The biomarker is based on the CUFF1 (task=cuff/run=1) scan. The other scans are available for secondary analyses, but please note that not all participants have all tasks and runs available.</p>
 <p>To load the whole dataset, the parquet files may be read individually or using a tool that is aware of the hive-partitioning structure. In <code>R</code>, a good choice is the <a href="https://arrow.apache.org/docs/r/index.html"><code>arrow</code></a> library.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">open_dataset</span>(<span class="st">"data/pre-surgery/mris/derivatives/signatures/signatures-by-run"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(signature <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"grouppred_cvpcr"</span>, <span class="st">"137subjmap_weighted_mean"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(task <span class="sc">==</span> <span class="st">"cuff"</span>, run <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(signature, <span class="at">value =</span> correlation, sub, ses) <span class="sc">|&gt;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> signature) <span class="sc">|&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">SIIPS1 =</span> <span class="st">`</span><span class="at">137subjmap_weighted_mean</span><span class="st">`</span>, <span class="at">NPS =</span> <span class="st">`</span><span class="at">grouppred_cvpcr</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">open_dataset</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/derivatives/signatures/signatures-by-run"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(signature <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"grouppred_cvpcr"</span>, <span class="st">"137subjmap_weighted_mean"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(task <span class="sc">==</span> <span class="st">"cuff"</span>, run <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(signature, <span class="at">value =</span> correlation, sub, ses) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> signature) <span class="sc">|&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">SIIPS1 =</span> <span class="st">`</span><span class="at">137subjmap_weighted_mean</span><span class="st">`</span>, <span class="at">NPS =</span> <span class="st">`</span><span class="at">grouppred_cvpcr</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 712 x 4
-     sub ses     SIIPS1     NPS
-   &lt;int&gt; &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;
- 1 10003 V1    -0.00162  0.0331
- 2 10008 V1    -0.0407  -0.0581
- 3 10010 V1    -0.0611  -0.0200
- 4 10011 V1    -0.00652 -0.0740
- 5 10013 V1    -0.0279   0.0234
- 6 10014 V1    -0.00120 -0.0146
- 7 10015 V1    -0.0576  -0.0178
- 8 10017 V1    -0.0165   0.0263
- 9 10020 V1    -0.0103  -0.0530
-10 10024 V1    -0.0118   0.0121
-# i 702 more rows</code></pre>
+<pre><code># A tibble: 712 × 4
+     sub ses     SIIPS1      NPS
+   &lt;int&gt; &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 10003 V1    -0.00162  0.0331 
+ 2 10010 V1    -0.0611  -0.0200 
+ 3 10011 V1    -0.00652 -0.0740 
+ 4 10008 V1    -0.0407  -0.0581 
+ 5 10013 V1    -0.0279   0.0234 
+ 6 10014 V1    -0.00120 -0.0146 
+ 7 10017 V1    -0.0165   0.0263 
+ 8 10015 V1    -0.0576  -0.0178 
+ 9 10020 V1    -0.0103  -0.0530 
+10 10023 V1     0.0116  -0.00789
+# ℹ 702 more rows</code></pre>
 </div>
 </div>
 <p>In python, a good choice is the <a href="https://docs.pola.rs/"><code>polars</code></a> library</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>pl.read_parquet(<span class="st">"data/pre-surgery/mris/derivatives/signatures/signatures-by-run"</span>).<span class="bu">filter</span>(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"signature"</span>).is_in([<span class="st">"grouppred_cvpcr"</span>, <span class="st">"137subjmap_weighted_mean"</span>])</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>).<span class="bu">filter</span>(pl.col(<span class="st">"task"</span>) <span class="op">==</span> <span class="st">"cuff"</span>, pl.col(<span class="st">"run"</span>) <span class="op">==</span> <span class="dv">1</span>).rename(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"correlation"</span>: <span class="st">"value"</span>}</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>).select(</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"signature"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"value"</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sub"</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ses"</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>).pivot(on<span class="op">=</span><span class="st">"signature"</span>, index<span class="op">=</span>[<span class="st">"sub"</span>, <span class="st">"ses"</span>]).rename(</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"grouppred_cvpcr"</span>: <span class="st">"NPS"</span>, <span class="st">"137subjmap_weighted_mean"</span>: <span class="st">"SIIPS1"</span>}</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shape:</span> <span class="er">(</span><span class="ex">716,</span> 4<span class="kw">)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">┌───────┬─────┬───────────┬───────────┐</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> sub   ┆ ses ┆ SIIPS1    ┆ NPS       │</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> <span class="at">---</span>   ┆ <span class="at">---</span> ┆ <span class="at">---</span>       ┆ <span class="at">---</span>       │</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> i64   ┆ str ┆ f64       ┆ f64       │</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">╞═══════╪═════╪═══════════╪═══════════╡</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10003 ┆ V1  ┆ <span class="at">-0.001619</span> ┆ 0.033091  │</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10008 ┆ V1  ┆ <span class="at">-0.040698</span> ┆ <span class="at">-0.058134</span> │</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10010 ┆ V1  ┆ <span class="at">-0.061107</span> ┆ <span class="at">-0.019997</span> │</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10011 ┆ V1  ┆ <span class="at">-0.006518</span> ┆ <span class="at">-0.074017</span> │</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10013 ┆ V1  ┆ <span class="at">-0.027933</span> ┆ 0.023413  │</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> …     ┆ …   ┆ …         ┆ …         │</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25266 ┆ V1  ┆ <span class="at">-0.058184</span> ┆ <span class="at">-0.032597</span> │</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25271 ┆ V1  ┆ <span class="at">-0.039983</span> ┆ <span class="at">-0.092517</span> │</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25273 ┆ V1  ┆ <span class="at">-0.038248</span> ┆ <span class="at">-0.02306</span>  │</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25275 ┆ V1  ┆ <span class="at">-0.052387</span> ┆ <span class="at">-0.06732</span>  │</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25277 ┆ V1  ┆ 0.023143  ┆ <span class="at">-0.063882</span> │</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="ex">└───────┴─────┴───────────┴───────────┘</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pl.read_parquet(<span class="st">"data/pre-surgery/mris/derivatives/signatures/signatures-by-run"</span>).<span class="bu">filter</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"signature"</span>).is_in([<span class="st">"grouppred_cvpcr"</span>, <span class="st">"137subjmap_weighted_mean"</span>])</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>).<span class="bu">filter</span>(pl.col(<span class="st">"task"</span>) <span class="op">==</span> <span class="st">"cuff"</span>, pl.col(<span class="st">"run"</span>) <span class="op">==</span> <span class="dv">1</span>).rename(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"correlation"</span>: <span class="st">"value"</span>}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>).select(</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"signature"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"value"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sub"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ses"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>).pivot(on<span class="op">=</span><span class="st">"signature"</span>, index<span class="op">=</span>[<span class="st">"sub"</span>, <span class="st">"ses"</span>]).rename(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"grouppred_cvpcr"</span>: <span class="st">"NPS"</span>, <span class="st">"137subjmap_weighted_mean"</span>: <span class="st">"SIIPS1"</span>}</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shape:</span> <span class="er">(</span><span class="ex">716,</span> 4<span class="kw">)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">┌───────┬─────┬───────────┬───────────┐</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> sub   ┆ ses ┆ SIIPS1    ┆ NPS       │</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> <span class="at">---</span>   ┆ <span class="at">---</span> ┆ <span class="at">---</span>       ┆ <span class="at">---</span>       │</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> i64   ┆ str ┆ f64       ┆ f64       │</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ex">╞═══════╪═════╪═══════════╪═══════════╡</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10003 ┆ V1  ┆ <span class="at">-0.001619</span> ┆ 0.033091  │</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10008 ┆ V1  ┆ <span class="at">-0.040698</span> ┆ <span class="at">-0.058134</span> │</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10010 ┆ V1  ┆ <span class="at">-0.061107</span> ┆ <span class="at">-0.019997</span> │</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10011 ┆ V1  ┆ <span class="at">-0.006518</span> ┆ <span class="at">-0.074017</span> │</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10013 ┆ V1  ┆ <span class="at">-0.027933</span> ┆ 0.023413  │</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> …     ┆ …   ┆ …         ┆ …         │</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25266 ┆ V1  ┆ <span class="at">-0.058184</span> ┆ <span class="at">-0.032597</span> │</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25271 ┆ V1  ┆ <span class="at">-0.039983</span> ┆ <span class="at">-0.092517</span> │</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25273 ┆ V1  ┆ <span class="at">-0.038248</span> ┆ <span class="at">-0.02306</span>  │</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25275 ┆ V1  ┆ <span class="at">-0.052387</span> ┆ <span class="at">-0.06732</span>  │</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25277 ┆ V1  ┆ 0.023143  ┆ <span class="at">-0.063882</span> │</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="ex">└───────┴─────┴───────────┴───────────┘</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="considerations-while-working-on-the-project" class="level2" data-number="21.2">

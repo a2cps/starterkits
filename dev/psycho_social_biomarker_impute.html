@@ -832,17 +832,15 @@ window.Quarto = {
 <section id="load-libraries" class="level3" data-number="D.1.1">
 <h3 data-number="D.1.1" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">D.1.1</span> Load Libraries</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hablar)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ComplexUpset)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hablar)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ComplexUpset)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="read-in-psycho-social-data" class="level3" data-number="D.1.2">
@@ -851,11 +849,12 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>psy_soc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial"</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial-2024-11-06.csv"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(redcap_event_name <span class="sc">==</span> <span class="st">"baseline_visit_arm_1"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pre-surgery"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial-2024-11-06.csv"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(redcap_event_name <span class="sc">==</span> <span class="st">"baseline_visit_arm_1"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Remove test records</p>
 <div class="cell">
@@ -894,11 +893,12 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>psy_soc_dict <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial-Data-Dictionary-2024-11-06.csv"</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(field_name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pre-surgery"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial-Data-Dictionary-2024-11-06.csv"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(field_name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="new-field-names" class="level3" data-number="D.1.4">
@@ -917,7 +917,7 @@ window.Quarto = {
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># TKA</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>psy_soc_dict <span class="ot">&lt;-</span> psy_soc_dict <span class="sc">%&gt;%</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(.)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(.))) <span class="sc">%&gt;%</span></span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">.after =</span> <span class="fu">nrow</span>(.), <span class="sc">!!!</span>cohort_new_row)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -925,7 +925,7 @@ window.Quarto = {
 <h3 data-number="D.1.5" class="anchored" data-anchor-id="rules-for-handling-missing-data"><span class="header-section-number">D.1.5</span> Rules for handling missing data:</h3>
 <p>In case of missing data, each form will be handled on a case by case basis using available literature or user guides. For forms with no available user guides:</p>
 <ul>
-<li><p>We will impute missing values by replacing missing values with the average score of the completed items for a given subject if less than or equal to 29% of the survey items are missing <span class="citation" data-cites="Arrieta2017">(<a href="references.html#ref-Arrieta2017" role="doc-biblioref">Arrieta et al., 2017</a>)</span></p></li>
+<li><p>We will impute missing values by replacing missing values with the average score of the completed items for a given subject if less than or equal to 29% of the survey items are missing&nbsp;<span class="citation" data-cites="Arrieta2017">(<a href="references.html#ref-Arrieta2017" role="doc-biblioref">Arrieta et al., 2017</a>)</span></p></li>
 <li><p>For non integer values, we will use the floor value. In other words for a 12 item questionnaire, where 29% = 3.48, we will impute missing values if less than or equal to 3 of 12 items are missing.</p></li>
 <li><p>We will not impute missing items with a yes/no response</p></li>
 <li><p>We will not impute missing values where questions do not assess an underlying latent trait i.e not correlated with other items on a multi-item questionnaire</p></li>
@@ -1301,7 +1301,7 @@ window.Quarto = {
 </section>
 <section id="michigan-body-map" class="level3 page-columns page-full" data-number="D.2.2">
 <h3 data-number="D.2.2" class="anchored" data-anchor-id="michigan-body-map"><span class="header-section-number">D.2.2</span> Michigan Body Map:</h3>
-<p>Michigan Body Map records pain intensity and duration for the body region indicated by the subject <span class="citation" data-cites="berardi_multi_2022">(<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">Berardi et al., 2022</a>)</span>. The painful body regions can vary from subject to subject, which can result in null values in field names for body regions not indicated by the subject, this explains the data sparsity.</p>
+<p>Michigan Body Map records pain intensity and duration for the body region indicated by the subject&nbsp;<span class="citation" data-cites="berardi_multi_2022">(<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">Berardi et al., 2022</a>)</span>. The painful body regions can vary from subject to subject, which can result in null values in field names for body regions not indicated by the subject, this explains the data sparsity.</p>
 <div class="no-row-height column-margin column-container"></div><section id="missing-data" class="level4" data-number="D.2.2.1">
 <h4 data-number="D.2.2.1" class="anchored" data-anchor-id="missing-data"><span class="header-section-number">D.2.2.1</span> Missing Data:</h4>
 <p>Missing data pattern in bpi_body_map</p>
@@ -1821,20 +1821,22 @@ window.Quarto = {
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  bpi_body_map,</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(</span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data"</span>,</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Psychosocial"</span>,</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Reformatted"</span>,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"reformatted_bpi_body_map.csv"</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  psy_soc_dict,</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data"</span>,</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Psychosocial"</span>,</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Reformatted"</span>,</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"updated_psy_soc_dictionary.csv"</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pre-surgery"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"psychosocial"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Reformatted"</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"reformatted_bpi_body_map.csv"</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  psy_soc_dict,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data"</span>,</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pre-surgery"</span>,</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"psychosocial"</span>,</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Reformatted"</span>,</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"updated_psy_soc_dictionary.csv"</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -1964,7 +1966,7 @@ window.Quarto = {
 </section>
 <section id="modified-bpi-surgical-site-pain" class="level3 page-columns page-full" data-number="D.2.4">
 <h3 data-number="D.2.4" class="anchored" data-anchor-id="modified-bpi-surgical-site-pain"><span class="header-section-number">D.2.4</span> Modified BPI – surgical site pain:</h3>
-<p>Modified BPI – surgical site pain records pain intensity and interference. The primary outcome is the worst pain intensity at the surgical site i.e field name “bpiworstpainratingss” over the past 24 hours,using a scale of 0 to 10. The form also includes the pain interference sub-scale <span class="citation" data-cites="cleeland1995">(<a href="references.html#ref-cleeland1995" role="doc-biblioref"><span>“Cleeland CS Ryan KM. Pain Assessment,”</span> 1995</a>)</span>, which assesses the level of interference in the subject’s daily activities over the past 24 hours <span class="citation" data-cites="berardi_multi_2022">(<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">Berardi et al., 2022</a>)</span> due to surgical site pain. Pain interference is scored as the mean of seven interference items, in case of missing data, this mean can still be used if there is a response to at least 4 of 7 items (<a href="https://www.mdanderson.org/documents/Departments-and-Divisions/Symptom-Research/BPI_UserGuide.pdf">BPI user guide</a>).</p>
+<p>Modified BPI – surgical site pain records pain intensity and interference. The primary outcome is the worst pain intensity at the surgical site i.e field name “bpiworstpainratingss” over the past 24 hours,using a scale of 0 to 10. The form also includes the pain interference sub-scale&nbsp;<span class="citation" data-cites="cleeland1995">(<a href="references.html#ref-cleeland1995" role="doc-biblioref"><span>“Cleeland CS Ryan KM. Pain Assessment,”</span> 1995</a>)</span>, which assesses the level of interference in the subject’s daily activities over the past 24 hours&nbsp;<span class="citation" data-cites="berardi_multi_2022">(<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">Berardi et al., 2022</a>)</span> due to surgical site pain. Pain interference is scored as the mean of seven interference items, in case of missing data, this mean can still be used if there is a response to at least 4 of 7 items (<a href="https://www.mdanderson.org/documents/Departments-and-Divisions/Symptom-Research/BPI_UserGuide.pdf">BPI user guide</a>).</p>
 <div class="no-row-height column-margin column-container"><div id="ref-cleeland1995" class="csl-entry" role="listitem">
 Cleeland CS ryan KM. Pain assessment: Global use of the brief pain inventory. Ann acad med singapore (1994 mar) 23(2):129-38. (1995). <em>Rehabilitation Oncology</em>, <em>13</em>(1), 29–30. <a href="https://doi.org/10.1097/01893697-199513010-00022">https://doi.org/10.1097/01893697-199513010-00022</a>
 </div><div id="ref-berardi_multi_2022" class="csl-entry" role="listitem">
@@ -1984,7 +1986,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2023,12 +2025,12 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(bpi_pain_intrf<span class="sc">$</span>new_bpipainintrfrscore)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs 
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
  0.0000  0.8571  3.4286  3.5069  5.5714 10.0000      40 </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(bpi_pain_intrf<span class="sc">$</span>bpipainintrfrscore)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs 
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
  0.0000  0.8571  3.4286  3.4807  5.5714 10.0000      23 </code></pre>
 </div>
 </div>
@@ -2095,7 +2097,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 </section>
 <section id="knee-injury-osteoarthritis-outcome-score-koos-12" class="level3 page-columns page-full" data-number="D.2.5">
 <h3 data-number="D.2.5" class="anchored" data-anchor-id="knee-injury-osteoarthritis-outcome-score-koos-12"><span class="header-section-number">D.2.5</span> Knee Injury Osteoarthritis Outcome Score (KOOS-12)</h3>
-<p>KOOS-12 is a 12-item scale that contains three sub scales <span class="citation" data-cites="Roos1998">(<a href="references.html#ref-Roos1998" role="doc-biblioref">Roos et al., 1998</a>)</span>:</p>
+<p>KOOS-12 is a 12-item scale that contains three sub scales&nbsp;<span class="citation" data-cites="Roos1998">(<a href="references.html#ref-Roos1998" role="doc-biblioref">Roos et al., 1998</a>)</span>:</p>
 <div class="no-row-height column-margin column-container"><div id="ref-Roos1998" class="csl-entry" role="listitem">
 Roos, E. M., Roos, H. P., Lohmander, L. S., Ekdahl, C., &amp; Beynnon, B. D. (1998). Knee injury and osteoarthritis outcome score (KOOS)<span></span>development of a self-administered outcome measure. <em>Journal of Orthopaedic &amp; Sports Physical Therapy</em>, <em>28</em>(2), 88–96. <a href="https://doi.org/10.2519/jospt.1998.28.2.88">https://doi.org/10.2519/jospt.1998.28.2.88</a>
 </div></div><ul>
@@ -2129,7 +2131,7 @@ Roos, E. M., Roos, H. P., Lohmander, L. S., Ekdahl, C., &amp; Beynnon, B. D. (19
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2225,7 +2227,7 @@ Roos, E. M., Roos, H. P., Lohmander, L. S., Ekdahl, C., &amp; Beynnon, B. D. (19
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2243,7 +2245,7 @@ Roos, E. M., Roos, H. P., Lohmander, L. S., Ekdahl, C., &amp; Beynnon, B. D. (19
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2337,7 +2339,7 @@ Roos, E. M., Roos, H. P., Lohmander, L. S., Ekdahl, C., &amp; Beynnon, B. D. (19
 </section>
 <section id="generalized-anxiety-disorder-7-item-gad7-scale-score" class="level3 page-columns page-full" data-number="D.2.6">
 <h3 data-number="D.2.6" class="anchored" data-anchor-id="generalized-anxiety-disorder-7-item-gad7-scale-score"><span class="header-section-number">D.2.6</span> Generalized Anxiety Disorder 7 Item (GAD7) Scale Score</h3>
-<p>The GAD-7 is a 7-item likert scale questionnaire that assesses anxiety levels over the last two weeks. The response to each item is rated on a scale of 0 (“not at all”) to 3 (“nearly every day”). A total score is calculated by adding the scores for all the 7 items and ranges from 0 to 21. A greater total score on the GAD-7 reflects higher anxiety levels <span class="citation" data-cites="spitzer_brief_2006">(<a href="references.html#ref-spitzer_brief_2006" role="doc-biblioref">Spitzer et al., 2006</a>)</span>. At the end of the questionnaire there is an additional question (“gad7difficulttowork”) to evaluate the subject’s perception about the impact of identified problems on their activities such as work, taking care of things at home, or interacting with others.</p>
+<p>The GAD-7 is a 7-item likert scale questionnaire that assesses anxiety levels over the last two weeks. The response to each item is rated on a scale of 0 (“not at all”) to 3 (“nearly every day”). A total score is calculated by adding the scores for all the 7 items and ranges from 0 to 21. A greater total score on the GAD-7 reflects higher anxiety levels&nbsp;<span class="citation" data-cites="spitzer_brief_2006">(<a href="references.html#ref-spitzer_brief_2006" role="doc-biblioref">Spitzer et al., 2006</a>)</span>. At the end of the questionnaire there is an additional question (“gad7difficulttowork”) to evaluate the subject’s perception about the impact of identified problems on their activities such as work, taking care of things at home, or interacting with others.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-spitzer_brief_2006" class="csl-entry" role="listitem">
 Spitzer, R. L., Kroenke, K., Williams, J. B. W., &amp; Löwe, B. (2006). A brief measure for assessing generalized anxiety disorder. <em>Archives of Internal Medicine</em>, <em>166</em>(10), 1092. <a href="https://doi.org/10.1001/archinte.166.10.1092">https://doi.org/10.1001/archinte.166.10.1092</a>
 </div></div><section id="read-in-data-2" class="level4" data-number="D.2.6.1">
@@ -2365,7 +2367,7 @@ Spitzer, R. L., Kroenke, K., Williams, J. B. W., &amp; Löwe, B. (2006). A brief
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2444,7 +2446,7 @@ Spitzer, R. L., Kroenke, K., Williams, J. B. W., &amp; Löwe, B. (2006). A brief
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2461,11 +2463,11 @@ Spitzer, R. L., Kroenke, K., Williams, J. B. W., &amp; Löwe, B. (2006). A brief
 <span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gad_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2568,7 +2570,7 @@ Kroenke, K., Strine, T. W., Spitzer, R. L., Williams, J. B. W., Berry, J. T., &a
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2626,7 +2628,7 @@ Kroenke, K., Strine, T. W., Spitzer, R. L., Williams, J. B. W., Berry, J. T., &a
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2643,11 +2645,11 @@ Kroenke, K., Strine, T. W., Spitzer, R. L., Williams, J. B. W., Berry, J. T., &a
 <span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(phq_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2722,7 +2724,7 @@ Kroenke, K., Strine, T. W., Spitzer, R. L., Williams, J. B. W., Berry, J. T., &a
 </section>
 <section id="fear-avoidance-beliefs-questionnaire-v0.3-fabq" class="level3 page-columns page-full" data-number="D.2.8">
 <h3 data-number="D.2.8" class="anchored" data-anchor-id="fear-avoidance-beliefs-questionnaire-v0.3-fabq"><span class="header-section-number">D.2.8</span> Fear-Avoidance Beliefs Questionnaire v0.3 (FABQ)</h3>
-<p>The FABQ is a 4-item questionnaire that assesses fear avoidance behavior. The response to each item ranges from 0 (completely disagree) to 6 (completely agree) <span class="citation" data-cites="waddell_fear_1993">(<a href="references.html#ref-waddell_fear_1993" role="doc-biblioref">Waddell et al., 1993</a>)</span>. A total score is calculated by adding the scores for all the items and ranges from 0-24. A higher score indicates a higher degree of fear-avoidance belief.</p>
+<p>The FABQ is a 4-item questionnaire that assesses fear avoidance behavior. The response to each item ranges from 0 (completely disagree) to 6 (completely agree)&nbsp;<span class="citation" data-cites="waddell_fear_1993">(<a href="references.html#ref-waddell_fear_1993" role="doc-biblioref">Waddell et al., 1993</a>)</span>. A total score is calculated by adding the scores for all the items and ranges from 0-24. A higher score indicates a higher degree of fear-avoidance belief.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-waddell_fear_1993" class="csl-entry" role="listitem">
 Waddell, G., Newton, M., Henderson, I., Somerville, D., &amp; Main, C. J. (1993). A fear-avoidance beliefs questionnaire (FABQ) and the role of fear-avoidance beliefs in chronic low back pain and disability. <em>Pain</em>, <em>52</em>(2), 157–168. <a href="https://doi.org/10.1016/0304-3959(93)90127-b">https://doi.org/10.1016/0304-3959(93)90127-b</a>
 </div></div><section id="read-in-data-4" class="level4" data-number="D.2.8.1">
@@ -2750,7 +2752,7 @@ Waddell, G., Newton, M., Henderson, I., Somerville, D., &amp; Main, C. J. (1993)
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2808,7 +2810,7 @@ Arrieta, J., Aguerrebere, M., Raviola, G., Flores, H., Elliott, P., Espinosa, A.
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2825,11 +2827,11 @@ Arrieta, J., Aguerrebere, M., Raviola, G., Flores, H., Elliott, P., Espinosa, A.
 <span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(fabq_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2931,7 +2933,7 @@ McWilliams, L. A., Kowal, J., &amp; Wilson, K. G. (2015). Development and evalua
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2991,7 +2993,7 @@ McWilliams, L. A., Kowal, J., &amp; Wilson, K. G. (2015). Development and evalua
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3008,11 +3010,11 @@ McWilliams, L. A., Kowal, J., &amp; Wilson, K. G. (2015). Development and evalua
 <span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pcs_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3110,7 +3112,7 @@ Wolfe, F., Clauw, D. J., Fitzcharles, M.-A., Goldenberg, D. L., Häuser, W., Kat
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3320,7 +3322,7 @@ Wolfe, F., Clauw, D. J., Fitzcharles, M.-A., Goldenberg, D. L., Häuser, W., Kat
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-84-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-83-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3394,7 +3396,7 @@ Wolfe, F., Clauw, D. J., Fitzcharles, M.-A., Goldenberg, D. L., Häuser, W., Kat
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-87-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-86-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3411,11 +3413,11 @@ Wolfe, F., Clauw, D. J., Fitzcharles, M.-A., Goldenberg, D. L., Häuser, W., Kat
 <span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb98-9"><a href="#cb98-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb98-10"><a href="#cb98-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pdq_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb98-11"><a href="#cb98-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb98-11"><a href="#cb98-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-88-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-87-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3601,7 +3603,7 @@ Cella, D., Riley, W., Stone, A., Rothrock, N., Reeve, B., Yount, S., Amtmann, D.
 </section>
 <section id="pain-sleep-duration-sleep-ii" class="level3 page-columns page-full" data-number="D.2.13">
 <h3 data-number="D.2.13" class="anchored" data-anchor-id="pain-sleep-duration-sleep-ii"><span class="header-section-number">D.2.13</span> Pain-Sleep Duration (Sleep II)</h3>
-<p>The Sleep II form measures the average number of hours and minutes of sleep each night during the past month <span class="citation" data-cites="buysse_pittsburgh_1989">(<a href="references.html#ref-buysse_pittsburgh_1989" role="doc-biblioref">Buysse et al., 1989</a>)</span>.</p>
+<p>The Sleep II form measures the average number of hours and minutes of sleep each night during the past month&nbsp;<span class="citation" data-cites="buysse_pittsburgh_1989">(<a href="references.html#ref-buysse_pittsburgh_1989" role="doc-biblioref">Buysse et al., 1989</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-buysse_pittsburgh_1989" class="csl-entry" role="listitem">
 Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. (1989). The pittsburgh sleep quality index: A new instrument for psychiatric practice and research. <em>Psychiatry Research</em>, <em>28</em>(2), 193–213. <a href="https://doi.org/10.1016/0165-1781(89)90047-4">https://doi.org/10.1016/0165-1781(89)90047-4</a>
 </div></div><section id="read-in-data-8" class="level4" data-number="D.2.13.1">
@@ -3621,7 +3623,7 @@ Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-95-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-94-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3629,7 +3631,7 @@ Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-95-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-94-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3755,7 +3757,7 @@ Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-100-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-99-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3820,7 +3822,7 @@ Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-103-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-102-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3837,11 +3839,11 @@ Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. 
 <span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb115-9"><a href="#cb115-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb115-10"><a href="#cb115-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(prs_bhv_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-104-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-103-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3877,7 +3879,7 @@ Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-106-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-105-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3950,7 +3952,7 @@ Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-109-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-108-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3967,11 +3969,11 @@ Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. 
 <span id="cb121-8"><a href="#cb121-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb121-9"><a href="#cb121-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb121-10"><a href="#cb121-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(prs_cog_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb121-11"><a href="#cb121-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb121-11"><a href="#cb121-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-110-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-109-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4012,7 +4014,7 @@ Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-112-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-111-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4091,7 +4093,7 @@ Slepian, P. M., Ankawi, B., Himawan, L. K., &amp; France, C. R. (2016). Developm
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-115-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-114-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4108,11 +4110,11 @@ Slepian, P. M., Ankawi, B., Himawan, L. K., &amp; France, C. R. (2016). Developm
 <span id="cb127-8"><a href="#cb127-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb127-9"><a href="#cb127-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb127-10"><a href="#cb127-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(prs_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb127-11"><a href="#cb127-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb127-11"><a href="#cb127-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-116-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-115-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4237,7 +4239,7 @@ Slepian, P. M., Ankawi, B., Himawan, L. K., &amp; France, C. R. (2016). Developm
 </section>
 <section id="multidimensional-inventory-of-subjective-cognitive-impairment-v1.0-misci" class="level3 page-columns page-full" data-number="D.2.15">
 <h3 data-number="D.2.15" class="anchored" data-anchor-id="multidimensional-inventory-of-subjective-cognitive-impairment-v1.0-misci"><span class="header-section-number">D.2.15</span> Multidimensional Inventory of Subjective Cognitive Impairment v1.0 (MISCI)</h3>
-<p>Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) is used to evaluate cognitive function in Fibromyalgia patients. The MISCI comprises ten items based on a Likert scale ranging from 1-5. The initial six items evaluate perceived cognitive abilities and are positively phrased, while the remaining four items assess cognitive difficulties and are negatively phrased. Therefore, items 7-10 should be reverse-coded before being added to the responses of the other items to calculate the total score. The total score can range from 10-50, where higher scores indicate better perceived cognitive functioning <span class="citation" data-cites="kratz2015">(<a href="references.html#ref-kratz2015" role="doc-biblioref">Kratz et al., 2015</a>)</span>.</p>
+<p>Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) is used to evaluate cognitive function in Fibromyalgia patients. The MISCI comprises ten items based on a Likert scale ranging from 1-5. The initial six items evaluate perceived cognitive abilities and are positively phrased, while the remaining four items assess cognitive difficulties and are negatively phrased. Therefore, items 7-10 should be reverse-coded before being added to the responses of the other items to calculate the total score. The total score can range from 10-50, where higher scores indicate better perceived cognitive functioning&nbsp;<span class="citation" data-cites="kratz2015">(<a href="references.html#ref-kratz2015" role="doc-biblioref">Kratz et al., 2015</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-kratz2015" class="csl-entry" role="listitem">
 Kratz, A. L., Schilling, S. G., Goesling, J., &amp; Williams, D. A. (2015). Development and initial validation of a brief self-report measure of cognitive dysfunction in fibromyalgia. <em>The Journal of Pain</em>, <em>16</em>(6), 527–536. <a href="https://doi.org/10.1016/j.jpain.2015.02.008">https://doi.org/10.1016/j.jpain.2015.02.008</a>
 </div></div><section id="read-in-data-10" class="level4" data-number="D.2.15.1">
@@ -4317,7 +4319,7 @@ Kratz, A. L., Schilling, S. G., Goesling, J., &amp; Williams, D. A. (2015). Deve
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-122-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-121-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4365,7 +4367,7 @@ Kratz, A. L., Schilling, S. G., Goesling, J., &amp; Williams, D. A. (2015). Deve
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-125-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-124-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4382,11 +4384,11 @@ Kratz, A. L., Schilling, S. G., Goesling, J., &amp; Williams, D. A. (2015). Deve
 <span id="cb137-8"><a href="#cb137-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb137-9"><a href="#cb137-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb137-10"><a href="#cb137-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(misci_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb137-11"><a href="#cb137-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb137-11"><a href="#cb137-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-126-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-125-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4507,7 +4509,7 @@ Kratz, A. L., Schilling, S. G., Goesling, J., &amp; Williams, D. A. (2015). Deve
 </section>
 <section id="the-big-five-inventory-bfi-2-s" class="level3 page-columns page-full" data-number="D.2.16">
 <h3 data-number="D.2.16" class="anchored" data-anchor-id="the-big-five-inventory-bfi-2-s"><span class="header-section-number">D.2.16</span> The Big Five Inventory (BFI-2-S)</h3>
-<p>The BFI-2-S is is used to evaluate five personality domains and 15 specific facet traits within the five domains. Altogether, the BFI-2-S comprises thirty items based on a Likert scale ranging from 1-5, where 1 is “disagree strongly” and 5 is “agree strongly”. Some items are negatively phrased and should be reverse coded for scoring <span class="citation" data-cites="soto_short_2017">(<a href="references.html#ref-soto_short_2017" role="doc-biblioref">Soto &amp; John, 2017</a>)</span>.</p>
+<p>The BFI-2-S is is used to evaluate five personality domains and 15 specific facet traits within the five domains. Altogether, the BFI-2-S comprises thirty items based on a Likert scale ranging from 1-5, where 1 is “disagree strongly” and 5 is “agree strongly”. Some items are negatively phrased and should be reverse coded for scoring&nbsp;<span class="citation" data-cites="soto_short_2017">(<a href="references.html#ref-soto_short_2017" role="doc-biblioref">Soto &amp; John, 2017</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-soto_short_2017" class="csl-entry" role="listitem">
 Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big five inventory<span></span>2: The BFI-2-s and BFI-2-XS. <em>Journal of Research in Personality</em>, <em>68</em>, 69–81. <a href="https://doi.org/10.1016/j.jrp.2017.02.004">https://doi.org/10.1016/j.jrp.2017.02.004</a>
 </div></div><p>Following table shows the five domains and the specific facet traits:</p>
@@ -4696,7 +4698,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-132-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-131-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4765,7 +4767,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-135-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-134-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4802,7 +4804,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-137-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-136-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4839,7 +4841,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-139-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-138-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4908,7 +4910,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-142-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-141-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4945,7 +4947,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-144-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-143-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -4982,7 +4984,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-146-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-145-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5051,7 +5053,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-149-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-148-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5088,7 +5090,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-151-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-150-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5125,7 +5127,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-153-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-152-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5194,7 +5196,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-156-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-155-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5231,7 +5233,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-158-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-157-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5268,7 +5270,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-160-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-159-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5337,7 +5339,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-163-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-162-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5374,7 +5376,7 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-165-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-164-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5728,7 +5730,7 @@ Bayman, E. O. (2017). Pain-related limitations in daily activities following tho
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-171-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-170-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5803,7 +5805,7 @@ Bayman, E. O. (2017). Pain-related limitations in daily activities following tho
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-174-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-173-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5820,11 +5822,11 @@ Bayman, E. O. (2017). Pain-related limitations in daily activities following tho
 <span id="cb186-8"><a href="#cb186-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb186-9"><a href="#cb186-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb186-10"><a href="#cb186-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dts_plot, <span class="fu">aes</span>(<span class="at">x =</span> score_name, <span class="at">y =</span> score, <span class="at">fill =</span> score_name)) <span class="sc">+</span></span>
-<span id="cb186-11"><a href="#cb186-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> .<span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb186-11"><a href="#cb186-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-175-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="psycho_social_biomarker_impute_files/figure-html/unnamed-chunk-174-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5897,7 +5899,7 @@ Bayman, E. O. (2017). Pain-related limitations in daily activities following tho
 </section>
 <section id="rapid-assessment-of-physical-activity-v1.0-rapa" class="level3 page-columns page-full" data-number="D.2.18">
 <h3 data-number="D.2.18" class="anchored" data-anchor-id="rapid-assessment-of-physical-activity-v1.0-rapa"><span class="header-section-number">D.2.18</span> Rapid Assessment of Physical Activity v1.0 (RAPA)</h3>
-<p>The Rapid Assessment of Physical Activity Questionnaire comprises 9 items to assess physical activity in subject over 50 years of age. The first 7 items measure aerobic activity and the last 2 items measure strength/flexibility. Each item has a yes/no response <span class="citation" data-cites="topolski_rapid_2006">(<a href="references.html#ref-topolski_rapid_2006" role="doc-biblioref">Topolski et al., 2006</a>)</span>. Here we well compute aerobic activity score based on the highest affirmative response.</p>
+<p>The Rapid Assessment of Physical Activity Questionnaire comprises 9 items to assess physical activity in subject over 50 years of age. The first 7 items measure aerobic activity and the last 2 items measure strength/flexibility. Each item has a yes/no response&nbsp;<span class="citation" data-cites="topolski_rapid_2006">(<a href="references.html#ref-topolski_rapid_2006" role="doc-biblioref">Topolski et al., 2006</a>)</span>. Here we well compute aerobic activity score based on the highest affirmative response.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-topolski_rapid_2006" class="csl-entry" role="listitem">
 Topolski, T. D., LoGerfo, J., Patrick, D. L., Williams, B., Walwick, J., &amp; Patrick, M. M. B. (2006). The rapid assessment of physical activity (RAPA) among older adults. <em>Preventing Chronic Disease</em>, <em>3</em>(4), A118.
 </div></div><section id="read-in-data-13" class="level4" data-number="D.2.18.1">

@@ -778,7 +778,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <a href="gift.html" class="quarto-xref"><span>Chapter 18</span></a> products provide outputs in a raw format that will be familiar to users of that library. To facilitate analyses, A2CPS has repackaged those products into a tabular format. This kit covers the repackaged structure.</p>
-<p>As a brief primer, extracting functional networks via ICA allows researchers to study how different brain regions communicate. Once these networks are identified, two common metrics are calculated: 1. <strong>Connectivity</strong>: The correlation between the activity (timecourses) of different networks. This tells us how strongly two distinct brain systems are communicating with each other. 2. <strong>Amplitude (fALFF)</strong>: The fractional Amplitude of Low Frequency Fluctuations <span class="citation" data-cites="zou_improved_2008">(<a href="references.html#ref-zou_improved_2008" role="doc-biblioref">Zou et al., 2008</a>)</span>. This is a measure of the spontaneous, low-frequency neural activity occurring <em>within</em> a specific network, often used to assess baseline brain function and regional abnormalities in conditions like chronic pain.</p>
+<p>As a brief primer, extracting functional networks via ICA allows researchers to study how different brain regions communicate. Once these networks are identified, two common metrics are calculated: 1. <strong>Connectivity</strong>: The correlation between the activity (timecourses) of different networks. This tells us how strongly two distinct brain systems are communicating with each other. 2. <strong>Amplitude (fALFF)</strong>: The fractional Amplitude of Low Frequency Fluctuations&nbsp;<span class="citation" data-cites="zou_improved_2008">(<a href="references.html#ref-zou_improved_2008" role="doc-biblioref">Zou et al., 2008</a>)</span>. This is a measure of the spontaneous, low-frequency neural activity occurring <em>within</em> a specific network, often used to assess baseline brain function and regional abnormalities in conditions like chronic pain.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-zou_improved_2008" class="csl-entry" role="listitem">
 Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-F., &amp; Zang, Y.-F. (2008). An improved approach to detection of amplitude of low-frequency fluctuation (ALFF) for resting-state fMRI: Fractional ALFF. <em>Journal of Neuroscience Methods</em>, <em>172</em>(1), 137–141. <a href="https://doi.org/10.1016/j.jneumeth.2008.04.012">https://doi.org/10.1016/j.jneumeth.2008.04.012</a>
 </div></div><section id="starting-project" class="level2" data-number="19.1">
@@ -805,11 +805,15 @@ Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-
 <p>Let’s take a look at just the amplitudes.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>amplitude <span class="ot">&lt;-</span> <span class="fu">read_parquet_duckdb</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir_ls</span>(<span class="st">"data/pre-surgery/mris/derivatives/postgift/amplitude"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>, <span class="at">glob =</span> <span class="st">"*parquet"</span>),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">prudence =</span> <span class="st">"lavish"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(amplitude)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir_ls</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/pre-surgery/mris/derivatives/postgift/amplitude"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">recurse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">glob =</span> <span class="st">"*parquet"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">prudence =</span> <span class="st">"lavish"</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(amplitude)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -907,39 +911,39 @@ Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">1.215915</td>
+<td style="text-align: right;">25.147259</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">5.390841</td>
+<td style="text-align: right;">37.869579</td>
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">2.573948</td>
+<td style="text-align: right;">7.578384</td>
 <td style="text-align: left;">2</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">2.491914</td>
+<td style="text-align: right;">14.555712</td>
 <td style="text-align: left;">3</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">1.392216</td>
+<td style="text-align: right;">8.680284</td>
 <td style="text-align: left;">4</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">1.952687</td>
+<td style="text-align: right;">6.085272</td>
 <td style="text-align: left;">5</td>
-<td style="text-align: right;">10003</td>
+<td style="text-align: right;">10008</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 </tbody>

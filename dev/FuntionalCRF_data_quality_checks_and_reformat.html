@@ -785,20 +785,19 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <section id="load-libraries" class="level3" data-number="F.1.1">
 <h3 data-number="F.1.1" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">F.1.1</span> Load Libraries</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hablar)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hablar)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="function" class="level3" data-number="F.1.2">
 <h3 data-number="F.1.2" class="anchored" data-anchor-id="function"><span class="header-section-number">F.1.2</span> Function</h3>
 <p>Write a function to remove columns where all rows have NA, this is will remove duplicate columns for the the Thoracotomy/TKA cohort</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>not_all_na <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(x))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>not_all_na <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="sc">!</span><span class="fu">all</span>(<span class="fu">is.na</span>(x))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -814,11 +813,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read_csv function results in parsing errors, we will use read.csv instead</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>func <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing-2024-11-06.csv"</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">retype</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pre-surgery"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing-2024-11-06.csv"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">retype</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Remove test records</p>
 <div class="cell">
@@ -857,11 +857,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>func_dict <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing-Data-Dictionary-2024-11-06.csv"</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(field_name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pre-surgery"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"raw"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"functional-testing-Data-Dictionary-2024-11-06.csv"</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(field_name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="new-field-names" class="level3" data-number="F.2.4">
@@ -879,7 +880,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the new row after the last row</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>func_dict <span class="ot">&lt;-</span> func_dict <span class="sc">%&gt;%</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(.)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(.))) <span class="sc">%&gt;%</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">.after =</span> <span class="fu">nrow</span>(.), <span class="sc">!!!</span>cohort_new_row)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -1228,7 +1229,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h5 data-number="F.2.5.2.9" class="anchored" data-anchor-id="biomarkers-for-the-tka-cohort"><span class="header-section-number">F.2.5.2.9</span> Biomarkers for the TKA cohort</h5>
 <section id="movement-evoked-pain-mep" class="level6 page-columns page-full" data-number="F.2.5.2.9.1">
 <h6 data-number="F.2.5.2.9.1" class="anchored" data-anchor-id="movement-evoked-pain-mep"><span class="header-section-number">F.2.5.2.9.1</span> Movement Evoked Pain (MEP):</h6>
-<p>MEP refers to pain that occurs or is worsened by movement <span class="citation" data-cites="berardi_multi_2022">(<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">Berardi et al., 2022</a>)</span>. MEP can not be computed if any of the pain ratings are missing.</p>
+<p>MEP refers to pain that occurs or is worsened by movement&nbsp;<span class="citation" data-cites="berardi_multi_2022">(<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">Berardi et al., 2022</a>)</span>. MEP can not be computed if any of the pain ratings are missing.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-berardi_multi_2022" class="csl-entry" role="listitem">
 Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, D., Vance, C. G. T., Dailey, D. L., Burns, J., Buvanendran, A., McCarthy, R. J., Jacobs, J., Zhou, X. J., Wixson, R., Balach, T., Brummett, C. M., Clauw, D., Colquhoun, D., Harte, S. E., … Wandner, L. D. (2022). Multi-site observational study to assess biomarkers for susceptibility or resilience to chronic pain: The acute to chronic pain signatures (A2CPS) study protocol. <em>Frontiers in Medicine</em>, <em>9</em>. <a href="https://doi.org/10.3389/fmed.2022.849214">https://doi.org/10.3389/fmed.2022.849214</a>
 </div></div></section>
@@ -1269,7 +1270,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the new row after the last row</span></span>
 <span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>func_dict <span class="ot">&lt;-</span> func_dict <span class="sc">%&gt;%</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(.)) <span class="sc">%&gt;%</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(.))) <span class="sc">%&gt;%</span></span>
 <span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">.after =</span> <span class="fu">nrow</span>(.), <span class="sc">!!!</span>walk_mep_new_row) <span class="sc">%&gt;%</span></span>
 <span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">.after =</span> <span class="fu">nrow</span>(.), <span class="sc">!!!</span>tsts_mep_new_row)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1298,23 +1299,23 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="enusfpkkir" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#enusfpkkir table {
+<div id="pqfcklriui" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pqfcklriui table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#enusfpkkir thead, #enusfpkkir tbody, #enusfpkkir tfoot, #enusfpkkir tr, #enusfpkkir td, #enusfpkkir th {
+#pqfcklriui thead, #pqfcklriui tbody, #pqfcklriui tfoot, #pqfcklriui tr, #pqfcklriui td, #pqfcklriui th {
   border-style: none;
 }
 
-#enusfpkkir p {
+#pqfcklriui p {
   margin: 0;
   padding: 0;
 }
 
-#enusfpkkir .gt_table {
+#pqfcklriui .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1340,12 +1341,12 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-left-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_caption {
+#pqfcklriui .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#enusfpkkir .gt_title {
+#pqfcklriui .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1357,7 +1358,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-width: 0;
 }
 
-#enusfpkkir .gt_subtitle {
+#pqfcklriui .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1369,7 +1370,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-top-width: 0;
 }
 
-#enusfpkkir .gt_heading {
+#pqfcklriui .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1381,13 +1382,13 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_bottom_border {
+#pqfcklriui .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_col_headings {
+#pqfcklriui .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1402,7 +1403,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_col_heading {
+#pqfcklriui .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -1422,7 +1423,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   overflow-x: hidden;
 }
 
-#enusfpkkir .gt_column_spanner_outer {
+#pqfcklriui .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -1434,15 +1435,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 4px;
 }
 
-#enusfpkkir .gt_column_spanner_outer:first-child {
+#pqfcklriui .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#enusfpkkir .gt_column_spanner_outer:last-child {
+#pqfcklriui .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#enusfpkkir .gt_column_spanner {
+#pqfcklriui .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1454,11 +1455,11 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   width: 100%;
 }
 
-#enusfpkkir .gt_spanner_row {
+#pqfcklriui .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#enusfpkkir .gt_group_heading {
+#pqfcklriui .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1484,7 +1485,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   text-align: left;
 }
 
-#enusfpkkir .gt_empty_group_heading {
+#pqfcklriui .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1499,15 +1500,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   vertical-align: middle;
 }
 
-#enusfpkkir .gt_from_md > :first-child {
+#pqfcklriui .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#enusfpkkir .gt_from_md > :last-child {
+#pqfcklriui .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#enusfpkkir .gt_row {
+#pqfcklriui .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1526,7 +1527,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   overflow-x: hidden;
 }
 
-#enusfpkkir .gt_stub {
+#pqfcklriui .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1539,7 +1540,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#enusfpkkir .gt_stub_row_group {
+#pqfcklriui .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1553,15 +1554,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   vertical-align: top;
 }
 
-#enusfpkkir .gt_row_group_first td {
+#pqfcklriui .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#enusfpkkir .gt_row_group_first th {
+#pqfcklriui .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#enusfpkkir .gt_summary_row {
+#pqfcklriui .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1571,16 +1572,16 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#enusfpkkir .gt_first_summary_row {
+#pqfcklriui .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_first_summary_row.thick {
+#pqfcklriui .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#enusfpkkir .gt_last_summary_row {
+#pqfcklriui .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1590,7 +1591,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_grand_summary_row {
+#pqfcklriui .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1600,7 +1601,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#enusfpkkir .gt_first_grand_summary_row {
+#pqfcklriui .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1610,7 +1611,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-top-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_last_grand_summary_row_top {
+#pqfcklriui .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1620,11 +1621,11 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_striped {
+#pqfcklriui .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#enusfpkkir .gt_table_body {
+#pqfcklriui .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1633,7 +1634,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_footnotes {
+#pqfcklriui .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1647,7 +1648,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_footnote {
+#pqfcklriui .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1656,7 +1657,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#enusfpkkir .gt_sourcenotes {
+#pqfcklriui .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1670,7 +1671,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#enusfpkkir .gt_sourcenote {
+#pqfcklriui .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1678,72 +1679,72 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#enusfpkkir .gt_left {
+#pqfcklriui .gt_left {
   text-align: left;
 }
 
-#enusfpkkir .gt_center {
+#pqfcklriui .gt_center {
   text-align: center;
 }
 
-#enusfpkkir .gt_right {
+#pqfcklriui .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#enusfpkkir .gt_font_normal {
+#pqfcklriui .gt_font_normal {
   font-weight: normal;
 }
 
-#enusfpkkir .gt_font_bold {
+#pqfcklriui .gt_font_bold {
   font-weight: bold;
 }
 
-#enusfpkkir .gt_font_italic {
+#pqfcklriui .gt_font_italic {
   font-style: italic;
 }
 
-#enusfpkkir .gt_super {
+#pqfcklriui .gt_super {
   font-size: 65%;
 }
 
-#enusfpkkir .gt_footnote_marks {
+#pqfcklriui .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#enusfpkkir .gt_asterisk {
+#pqfcklriui .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#enusfpkkir .gt_indent_1 {
+#pqfcklriui .gt_indent_1 {
   text-indent: 5px;
 }
 
-#enusfpkkir .gt_indent_2 {
+#pqfcklriui .gt_indent_2 {
   text-indent: 10px;
 }
 
-#enusfpkkir .gt_indent_3 {
+#pqfcklriui .gt_indent_3 {
   text-indent: 15px;
 }
 
-#enusfpkkir .gt_indent_4 {
+#pqfcklriui .gt_indent_4 {
   text-indent: 20px;
 }
 
-#enusfpkkir .gt_indent_5 {
+#pqfcklriui .gt_indent_5 {
   text-indent: 25px;
 }
 
-#enusfpkkir .katex-display {
+#pqfcklriui .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#enusfpkkir div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#pqfcklriui div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2190,21 +2191,23 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  tka_func,</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data"</span>,</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"functional-testing"</span>,</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Reformatted"</span>,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"reformatted_tka_func.csv"</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  func_dict,</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data"</span>,</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"functional-testing"</span>,</span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Reformatted"</span>,</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"updated_func_dict.csv"</span></span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pre-surgery"</span>,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"functional-testing"</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Reformatted"</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"reformatted_tka_func.csv"</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  func_dict,</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data"</span>,</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pre-surgery"</span>,</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"functional-testing"</span>,</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Reformatted"</span>,</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"updated_func_dict.csv"</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -2241,8 +2244,8 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>m2frfunc3 <span class="ot">&lt;-</span> thor_func <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ftdbctestcmpltyn <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="flag-1-1" class="level5" data-number="F.2.6.0.1">
-<h5 data-number="F.2.6.0.1" class="anchored" data-anchor-id="flag-1-1"><span class="header-section-number">F.2.6.0.1</span> Flag 1:</h5>
+<section id="flag-1-1" class="level4" data-number="F.2.6.1">
+<h4 data-number="F.2.6.1" class="anchored" data-anchor-id="flag-1-1"><span class="header-section-number">F.2.6.1</span> Flag 1:</h4>
 <p>Check for discrepancy or missing values in the first and the second initial pain ratings.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>m2frerror1 <span class="ot">&lt;-</span> m2frfunc3 <span class="sc">%&gt;%</span></span>
@@ -2261,9 +2264,8 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    errors</span>
 <span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="flag-2-1" class="level5" data-number="F.2.6.0.2">
-<h5 data-number="F.2.6.0.2" class="anchored" data-anchor-id="flag-2-1"><span class="header-section-number">F.2.6.0.2</span> Flag 2:</h5>
+<section id="flag-2-1" class="level5" data-number="F.2.6.1.1">
+<h5 data-number="F.2.6.1.1" class="anchored" data-anchor-id="flag-2-1"><span class="header-section-number">F.2.6.1.1</span> Flag 2:</h5>
 <p>Check for discrepancy or missing values in the first and the second final pain ratings.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>m2frerror2 <span class="ot">&lt;-</span> m2frfunc3 <span class="sc">%&gt;%</span></span>
@@ -2283,8 +2285,8 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-3-1" class="level5" data-number="F.2.6.0.3">
-<h5 data-number="F.2.6.0.3" class="anchored" data-anchor-id="flag-3-1"><span class="header-section-number">F.2.6.0.3</span> Flag 3:</h5>
+<section id="flag-3-1" class="level5" data-number="F.2.6.1.2">
+<h5 data-number="F.2.6.1.2" class="anchored" data-anchor-id="flag-3-1"><span class="header-section-number">F.2.6.1.2</span> Flag 3:</h5>
 <p>Check for missing values or discrepancy between the first and the second cough pain.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>m2frerror3 <span class="ot">&lt;-</span> m2frfunc3 <span class="sc">%&gt;%</span></span>
@@ -2304,8 +2306,8 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-4-1" class="level5" data-number="F.2.6.0.4">
-<h5 data-number="F.2.6.0.4" class="anchored" data-anchor-id="flag-4-1"><span class="header-section-number">F.2.6.0.4</span> Flag 4:</h5>
+<section id="flag-4-1" class="level5" data-number="F.2.6.1.3">
+<h5 data-number="F.2.6.1.3" class="anchored" data-anchor-id="flag-4-1"><span class="header-section-number">F.2.6.1.3</span> Flag 4:</h5>
 <p>Check if the reason for test not completed was not specified.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>m2frerror4 <span class="ot">&lt;-</span> thor_func <span class="sc">%&gt;%</span></span>
@@ -2325,8 +2327,8 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-5-1" class="level5" data-number="F.2.6.0.5">
-<h5 data-number="F.2.6.0.5" class="anchored" data-anchor-id="flag-5-1"><span class="header-section-number">F.2.6.0.5</span> Flag 5:</h5>
+<section id="flag-5-1" class="level5" data-number="F.2.6.1.4">
+<h5 data-number="F.2.6.1.4" class="anchored" data-anchor-id="flag-5-1"><span class="header-section-number">F.2.6.1.4</span> Flag 5:</h5>
 <p>Check if the “functional_testing_mcc2_v01_complete” is missing but the test completion status is available.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>m2frerror5 <span class="ot">&lt;-</span> thor_func <span class="sc">%&gt;%</span></span>
@@ -2344,8 +2346,8 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="create-functional-assessment-error-report-for-the-thoracotomy-cohort." class="level5" data-number="F.2.6.0.6">
-<h5 data-number="F.2.6.0.6" class="anchored" data-anchor-id="create-functional-assessment-error-report-for-the-thoracotomy-cohort."><span class="header-section-number">F.2.6.0.6</span> Create functional assessment error report for the Thoracotomy cohort.</h5>
+<section id="create-functional-assessment-error-report-for-the-thoracotomy-cohort." class="level5" data-number="F.2.6.1.5">
+<h5 data-number="F.2.6.1.5" class="anchored" data-anchor-id="create-functional-assessment-error-report-for-the-thoracotomy-cohort."><span class="header-section-number">F.2.6.1.5</span> Create functional assessment error report for the Thoracotomy cohort.</h5>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the common prefix</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>m2func_error <span class="ot">&lt;-</span> <span class="st">"m2frerror"</span></span>
@@ -2372,23 +2374,23 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 <span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> record_id)</span>
 <span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="taiinkdbud" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#taiinkdbud table {
+<div id="ulxruqrhxt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ulxruqrhxt table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#taiinkdbud thead, #taiinkdbud tbody, #taiinkdbud tfoot, #taiinkdbud tr, #taiinkdbud td, #taiinkdbud th {
+#ulxruqrhxt thead, #ulxruqrhxt tbody, #ulxruqrhxt tfoot, #ulxruqrhxt tr, #ulxruqrhxt td, #ulxruqrhxt th {
   border-style: none;
 }
 
-#taiinkdbud p {
+#ulxruqrhxt p {
   margin: 0;
   padding: 0;
 }
 
-#taiinkdbud .gt_table {
+#ulxruqrhxt .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2414,12 +2416,12 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-left-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_caption {
+#ulxruqrhxt .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#taiinkdbud .gt_title {
+#ulxruqrhxt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2431,7 +2433,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-width: 0;
 }
 
-#taiinkdbud .gt_subtitle {
+#ulxruqrhxt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2443,7 +2445,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-top-width: 0;
 }
 
-#taiinkdbud .gt_heading {
+#ulxruqrhxt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2455,13 +2457,13 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_bottom_border {
+#ulxruqrhxt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_col_headings {
+#ulxruqrhxt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2476,7 +2478,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_col_heading {
+#ulxruqrhxt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -2496,7 +2498,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   overflow-x: hidden;
 }
 
-#taiinkdbud .gt_column_spanner_outer {
+#ulxruqrhxt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 12px;
@@ -2508,15 +2510,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 4px;
 }
 
-#taiinkdbud .gt_column_spanner_outer:first-child {
+#ulxruqrhxt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#taiinkdbud .gt_column_spanner_outer:last-child {
+#ulxruqrhxt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#taiinkdbud .gt_column_spanner {
+#ulxruqrhxt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2528,11 +2530,11 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   width: 100%;
 }
 
-#taiinkdbud .gt_spanner_row {
+#ulxruqrhxt .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#taiinkdbud .gt_group_heading {
+#ulxruqrhxt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2558,7 +2560,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   text-align: left;
 }
 
-#taiinkdbud .gt_empty_group_heading {
+#ulxruqrhxt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2573,15 +2575,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   vertical-align: middle;
 }
 
-#taiinkdbud .gt_from_md > :first-child {
+#ulxruqrhxt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#taiinkdbud .gt_from_md > :last-child {
+#ulxruqrhxt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#taiinkdbud .gt_row {
+#ulxruqrhxt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2600,7 +2602,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   overflow-x: hidden;
 }
 
-#taiinkdbud .gt_stub {
+#ulxruqrhxt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2613,7 +2615,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#taiinkdbud .gt_stub_row_group {
+#ulxruqrhxt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2627,15 +2629,15 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   vertical-align: top;
 }
 
-#taiinkdbud .gt_row_group_first td {
+#ulxruqrhxt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#taiinkdbud .gt_row_group_first th {
+#ulxruqrhxt .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#taiinkdbud .gt_summary_row {
+#ulxruqrhxt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2645,16 +2647,16 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#taiinkdbud .gt_first_summary_row {
+#ulxruqrhxt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_first_summary_row.thick {
+#ulxruqrhxt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#taiinkdbud .gt_last_summary_row {
+#ulxruqrhxt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2664,7 +2666,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_grand_summary_row {
+#ulxruqrhxt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2674,7 +2676,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#taiinkdbud .gt_first_grand_summary_row {
+#ulxruqrhxt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2684,7 +2686,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-top-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_last_grand_summary_row_top {
+#ulxruqrhxt .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2694,11 +2696,11 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_striped {
+#ulxruqrhxt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#taiinkdbud .gt_table_body {
+#ulxruqrhxt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2707,7 +2709,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-bottom-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_footnotes {
+#ulxruqrhxt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2721,7 +2723,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_footnote {
+#ulxruqrhxt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2730,7 +2732,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#taiinkdbud .gt_sourcenotes {
+#ulxruqrhxt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2744,7 +2746,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   border-right-color: #D3D3D3;
 }
 
-#taiinkdbud .gt_sourcenote {
+#ulxruqrhxt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2752,72 +2754,72 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   padding-right: 5px;
 }
 
-#taiinkdbud .gt_left {
+#ulxruqrhxt .gt_left {
   text-align: left;
 }
 
-#taiinkdbud .gt_center {
+#ulxruqrhxt .gt_center {
   text-align: center;
 }
 
-#taiinkdbud .gt_right {
+#ulxruqrhxt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#taiinkdbud .gt_font_normal {
+#ulxruqrhxt .gt_font_normal {
   font-weight: normal;
 }
 
-#taiinkdbud .gt_font_bold {
+#ulxruqrhxt .gt_font_bold {
   font-weight: bold;
 }
 
-#taiinkdbud .gt_font_italic {
+#ulxruqrhxt .gt_font_italic {
   font-style: italic;
 }
 
-#taiinkdbud .gt_super {
+#ulxruqrhxt .gt_super {
   font-size: 65%;
 }
 
-#taiinkdbud .gt_footnote_marks {
+#ulxruqrhxt .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#taiinkdbud .gt_asterisk {
+#ulxruqrhxt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#taiinkdbud .gt_indent_1 {
+#ulxruqrhxt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#taiinkdbud .gt_indent_2 {
+#ulxruqrhxt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#taiinkdbud .gt_indent_3 {
+#ulxruqrhxt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#taiinkdbud .gt_indent_4 {
+#ulxruqrhxt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#taiinkdbud .gt_indent_5 {
+#ulxruqrhxt .gt_indent_5 {
   text-indent: 25px;
 }
 
-#taiinkdbud .katex-display {
+#ulxruqrhxt .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#taiinkdbud div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ulxruqrhxt div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2842,12 +2844,12 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 </div>
 </div>
 </section>
-<section id="biomarkers-for-the-thoraic-cohort" class="level5" data-number="F.2.6.0.7">
-<h5 data-number="F.2.6.0.7" class="anchored" data-anchor-id="biomarkers-for-the-thoraic-cohort"><span class="header-section-number">F.2.6.0.7</span> Biomarkers for the Thoraic cohort:</h5>
+<section id="biomarkers-for-the-thoraic-cohort" class="level5" data-number="F.2.6.1.6">
+<h5 data-number="F.2.6.1.6" class="anchored" data-anchor-id="biomarkers-for-the-thoraic-cohort"><span class="header-section-number">F.2.6.1.6</span> Biomarkers for the Thoraic cohort:</h5>
 <p>Post baseline data is needed to compute MEP for the thoracic cohort, hence could not be computed.</p>
 </section>
-<section id="save-1" class="level5" data-number="F.2.6.0.8">
-<h5 data-number="F.2.6.0.8" class="anchored" data-anchor-id="save-1"><span class="header-section-number">F.2.6.0.8</span> Save:</h5>
+<section id="save-1" class="level5" data-number="F.2.6.1.7">
+<h5 data-number="F.2.6.1.7" class="anchored" data-anchor-id="save-1"><span class="header-section-number">F.2.6.1.7</span> Save:</h5>
 <p>Save “thor_func” and data dictionary as .csv files in the folder named “reformatted_functional”</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
@@ -2872,6 +2874,7 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
 
 
 
+</section>
 </section>
 </section>
 </section>

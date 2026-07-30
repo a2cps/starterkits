@@ -788,13 +788,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The derivatives for this biomarker are a collection of three kinds of outputs:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/dwi_biomarker1/</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/dwi_biomarker1/</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">move_masks</span>  networks  probtrackx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <p>Each of these are organizing in a “BIDS-ish” manner.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree mris/derivatives/dwi_biomarker1/move_masks/sub-10003</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tree mris/derivatives/dwi_biomarker1/move_masks/sub-10003</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/dwi_biomarker1/move_masks/sub-10003</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> ses-V1</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> dwi</span>
@@ -822,7 +819,6 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> probtrackx.log</span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> waytotal</span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span> directories, 5 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <ul>
 <li>move_masks
 <ul>
@@ -843,8 +839,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </ul></li>
 </ul>
 <p>Most users will be interested in the tabular information. A data dictionary is available at the top-level of the <code>network</code> folder (<code>derivatives/dwi_biomarker1/network_summaries.json</code>). Note that we use the terms “subnetwork” and “module” interchangeably.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"Deg_mean"</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Mean Degree"</span><span class="fu">,</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Average nodal degree within module (after thresholding network to 10% density)"</span><span class="fu">,</span></span>
@@ -892,7 +887,6 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"TermURL"</span><span class="fu">:</span> <span class="st">"https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"</span></span>
 <span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
 <span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 </section>
 <section id="extract-data" class="level3" data-number="16.1.2">
 <h3 data-number="16.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">16.1.2</span> Extract Data</h3>
@@ -1053,7 +1047,7 @@ Figure&nbsp;16.1: Distribution of Structural Connectivity Metrics Related to Pri
 </section>
 <section id="citations" class="level3 page-columns page-full" data-number="16.2.7">
 <h3 data-number="16.2.7" class="anchored" data-anchor-id="citations"><span class="header-section-number">16.2.7</span> Citations</h3>
-<p>If you use these products in your analyses, please cite the relevant papers from <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/probtrackx.html">FSL</a>. Additionally, please cite the source of this biomarker <span class="citation" data-cites="vachon2016corticolimbic">(<a href="references.html#ref-vachon2016corticolimbic" role="doc-biblioref"><span class="nocase">Vachon-Presseau et al.</span>, 2016</a>)</span>.</p>
+<p>If you use these products in your analyses, please cite the relevant papers from <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/probtrackx.html">FSL</a>. Additionally, please cite the source of this biomarker&nbsp;<span class="citation" data-cites="vachon2016corticolimbic">(<a href="references.html#ref-vachon2016corticolimbic" role="doc-biblioref"><span class="nocase">Vachon-Presseau et al.</span>, 2016</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-vachon2016corticolimbic" class="csl-entry" role="listitem">
 <span class="nocase">Vachon-Presseau, E., Tétreault, P., Petre, B., Huang, L., Berger, S. E., Torbey, S., Baria, A. T., Mansour, A. R., Hashmi, J. A., Griffith, J. W., et al.</span> (2016). Corticolimbic anatomical characteristics predetermine risk for chronic pain. <em>Brain</em>, <em>139</em>(7), 1958–1970. <a href="https://doi.org/10.1093/brain/aww100">https://doi.org/10.1093/brain/aww100</a>
 </div></div><p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>

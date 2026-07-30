@@ -786,8 +786,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The derivatives are underneath <code>derivatives/bedpostx</code>. Although BedpostX derivatives are not covered by BIDS, the derivatives are organized in a “BIDS-ish” manner:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/bedpostx/ <span class="kw">|</span> <span class="fu">head</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/bedpostx/ <span class="kw">|</span> <span class="fu">head</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10010</span></span>
@@ -812,7 +811,6 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="ex">bvecs</span>                     dyads2_dispersion.nii.gz     dyads3_dispersion.nii.gz     logs                      mean_f1samples.nii.gz  mean_ph1samples.nii.gz   mean_tausamples.nii.gz  merged_f1samples.nii.gz  merged_ph2samples.nii.gz  merged_th3samples.nii.gz</span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="ex">commands.txt</span>              dyads2.nii.gz                dyads3.nii.gz                mean_dsamples.nii.gz      mean_f2samples.nii.gz  mean_ph2samples.nii.gz   mean_th1samples.nii.gz  merged_f2samples.nii.gz  merged_ph3samples.nii.gz  monitor</span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="ex">dyads1_dispersion.nii.gz</span>  dyads2_thr0.05_modf2.nii.gz  dyads3_thr0.05_modf3.nii.gz  mean_d_stdsamples.nii.gz  mean_f3samples.nii.gz  mean_ph3samples.nii.gz   mean_th2samples.nii.gz  merged_f3samples.nii.gz  merged_th1samples.nii.gz  nodif_brain_mask.nii.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 </section>
 <section id="extract-data" class="level3 page-columns page-full" data-number="15.1.2">
 <h3 data-number="15.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">15.1.2</span> Extract Data</h3>
@@ -906,7 +904,7 @@ Figure&nbsp;15.1: Signal Contribution of the First Fiber. Higher values indicate
 </figcaption>
 </figure>
 </div>
-<p>Information about the fiber orientation is stored in the “dyads” file. Each of these dyad files is the mean of the principle diffusion direction, stored as a 3d vector; that is, the nifti files are 4d, with the third dimension corresponding to the x, y, and z coordinates. To visualize these vectors, we’re going to map the coordinates onto the Red Green Blue color space <span class="citation" data-cites="pajevic1999color">(for a discussion of color scales, see <a href="references.html#ref-pajevic1999color" role="doc-biblioref">Pajevic &amp; Pierpaoli, 1999</a>)</span>.</p>
+<p>Information about the fiber orientation is stored in the “dyads” file. Each of these dyad files is the mean of the principle diffusion direction, stored as a 3d vector; that is, the nifti files are 4d, with the third dimension corresponding to the x, y, and z coordinates. To visualize these vectors, we’re going to map the coordinates onto the Red Green Blue color space&nbsp;<span class="citation" data-cites="pajevic1999color">(for a discussion of color scales, see <a href="references.html#ref-pajevic1999color" role="doc-biblioref">Pajevic &amp; Pierpaoli, 1999</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-pajevic1999color" class="csl-entry" role="listitem">
 Pajevic, S., &amp; Pierpaoli, C. (1999). Color schemes to represent the orientation of anisotropic tissues from diffusion tensor data: Application to white matter fiber tract mapping in the human brain. <em>Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine</em>, <em>42</em>(3), 526–540. <a href="https://doi.org/10.1002/(SICI)1522-2594(199909)42:3%3C526::AID-MRM15%3E3.0.CO;2-J">https://doi.org/10.1002/(SICI)1522-2594(199909)42:3%3C526::AID-MRM15%3E3.0.CO;2-J</a>
 </div></div><div class="cell">
