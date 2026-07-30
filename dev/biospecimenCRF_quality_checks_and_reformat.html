@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Appendix E — Biospecimen Collection CRF Data Quality Checks – A2CPS Starter Kits</title>
+<title>Appendix F — Biospecimen Collection CRF Data Quality Checks – A2CPS Starter Kits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -127,7 +127,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 
 <link rel="stylesheet" href="assets/css/version.css">
-<meta name="citation_title" content="Appendix E — Biospecimen Collection CRF Data Quality Checks">
+<meta name="citation_title" content="Appendix F — Biospecimen Collection CRF Data Quality Checks">
 <meta name="citation_author" content="Martin Lindquist">
 <meta name="citation_author" content="Briha Ansari">
 <meta name="citation_language" content="en">
@@ -481,7 +481,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bids-qc-joining.html">Appendices</a></li><li class="breadcrumb-item"><a href="./biospecimenCRF_quality_checks_and_reformat.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bids-qc-joining.html">Appendices</a></li><li class="breadcrumb-item"><a href="./biospecimenCRF_quality_checks_and_reformat.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -672,32 +672,38 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./mri-harmonization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">MRI Harmonization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./psycho_social_biomarker_impute.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Psychosocial Data Imputation and Biomarker calculations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Psychosocial Data Imputation and Biomarker calculations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./biospecimenCRF_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./FuntionalCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Functional CRF Data Quality Checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Functional CRF Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ImagingCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Imaging CRF Data Quality Checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Imaging CRF Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./QSTCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">QST CRF Data Quality Checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">QST CRF Data Quality Checks</span></span></a>
   </div>
 </li>
       </ul>
@@ -712,20 +718,20 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#read-in-data-and-write-functions" id="toc-read-in-data-and-write-functions" class="nav-link active" data-scroll-target="#read-in-data-and-write-functions"><span class="header-section-number">E.1</span> Read in Data and write functions</a>
+  <li><a href="#read-in-data-and-write-functions" id="toc-read-in-data-and-write-functions" class="nav-link active" data-scroll-target="#read-in-data-and-write-functions"><span class="header-section-number">F.1</span> Read in Data and write functions</a>
   <ul class="collapse">
-  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">E.1.1</span> Load Libraries</a></li>
-  <li><a href="#function" id="toc-function" class="nav-link" data-scroll-target="#function"><span class="header-section-number">E.1.2</span> Function</a></li>
+  <li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries"><span class="header-section-number">F.1.1</span> Load Libraries</a></li>
+  <li><a href="#function" id="toc-function" class="nav-link" data-scroll-target="#function"><span class="header-section-number">F.1.2</span> Function</a></li>
   </ul></li>
-  <li><a href="#crf-quality-checks" id="toc-crf-quality-checks" class="nav-link" data-scroll-target="#crf-quality-checks"><span class="header-section-number">E.2</span> CRF Quality checks</a>
+  <li><a href="#crf-quality-checks" id="toc-crf-quality-checks" class="nav-link" data-scroll-target="#crf-quality-checks"><span class="header-section-number">F.2</span> CRF Quality checks</a>
   <ul class="collapse">
-  <li><a href="#biospecimen-collection-form" id="toc-biospecimen-collection-form" class="nav-link" data-scroll-target="#biospecimen-collection-form"><span class="header-section-number">E.2.1</span> Biospecimen collection Form</a></li>
-  <li><a href="#data-dictionary" id="toc-data-dictionary" class="nav-link" data-scroll-target="#data-dictionary"><span class="header-section-number">E.2.2</span> Data Dictionary</a></li>
-  <li><a href="#new-field-names" id="toc-new-field-names" class="nav-link" data-scroll-target="#new-field-names"><span class="header-section-number">E.2.3</span> New field name(s)</a></li>
-  <li><a href="#tka-cohort-biospecimen-collection-form" id="toc-tka-cohort-biospecimen-collection-form" class="nav-link" data-scroll-target="#tka-cohort-biospecimen-collection-form"><span class="header-section-number">E.2.4</span> TKA cohort Biospecimen collection form</a></li>
-  <li><a href="#thoracotomy-cohort-biospecimen-collection-form" id="toc-thoracotomy-cohort-biospecimen-collection-form" class="nav-link" data-scroll-target="#thoracotomy-cohort-biospecimen-collection-form"><span class="header-section-number">E.2.5</span> Thoracotomy Cohort Biospecimen Collection Form:</a></li>
-  <li><a href="#tka-cohort-current-medications-v_02-form" id="toc-tka-cohort-current-medications-v_02-form" class="nav-link" data-scroll-target="#tka-cohort-current-medications-v_02-form"><span class="header-section-number">E.2.6</span> TKA cohort Current Medications v_02 form:</a></li>
-  <li><a href="#thoracotomy-cohort-current-medications-v_02-form" id="toc-thoracotomy-cohort-current-medications-v_02-form" class="nav-link" data-scroll-target="#thoracotomy-cohort-current-medications-v_02-form"><span class="header-section-number">E.2.7</span> Thoracotomy cohort Current Medications v_02 form:</a></li>
+  <li><a href="#biospecimen-collection-form" id="toc-biospecimen-collection-form" class="nav-link" data-scroll-target="#biospecimen-collection-form"><span class="header-section-number">F.2.1</span> Biospecimen collection Form</a></li>
+  <li><a href="#data-dictionary" id="toc-data-dictionary" class="nav-link" data-scroll-target="#data-dictionary"><span class="header-section-number">F.2.2</span> Data Dictionary</a></li>
+  <li><a href="#new-field-names" id="toc-new-field-names" class="nav-link" data-scroll-target="#new-field-names"><span class="header-section-number">F.2.3</span> New field name(s)</a></li>
+  <li><a href="#tka-cohort-biospecimen-collection-form" id="toc-tka-cohort-biospecimen-collection-form" class="nav-link" data-scroll-target="#tka-cohort-biospecimen-collection-form"><span class="header-section-number">F.2.4</span> TKA cohort Biospecimen collection form</a></li>
+  <li><a href="#thoracotomy-cohort-biospecimen-collection-form" id="toc-thoracotomy-cohort-biospecimen-collection-form" class="nav-link" data-scroll-target="#thoracotomy-cohort-biospecimen-collection-form"><span class="header-section-number">F.2.5</span> Thoracotomy Cohort Biospecimen Collection Form:</a></li>
+  <li><a href="#tka-cohort-current-medications-v_02-form" id="toc-tka-cohort-current-medications-v_02-form" class="nav-link" data-scroll-target="#tka-cohort-current-medications-v_02-form"><span class="header-section-number">F.2.6</span> TKA cohort Current Medications v_02 form:</a></li>
+  <li><a href="#thoracotomy-cohort-current-medications-v_02-form" id="toc-thoracotomy-cohort-current-medications-v_02-form" class="nav-link" data-scroll-target="#thoracotomy-cohort-current-medications-v_02-form"><span class="header-section-number">F.2.7</span> Thoracotomy cohort Current Medications v_02 form:</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -734,9 +740,9 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bids-qc-joining.html">Appendices</a></li><li class="breadcrumb-item"><a href="./biospecimenCRF_quality_checks_and_reformat.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bids-qc-joining.html">Appendices</a></li><li class="breadcrumb-item"><a href="./biospecimenCRF_quality_checks_and_reformat.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Appendix E — Biospecimen Collection CRF Data Quality Checks</h1>
+<h1 class="title">Appendix F — Biospecimen Collection CRF Data Quality Checks</h1>
 </div>
 
 
@@ -761,10 +767,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 
 <p>This document goes over quality checks for the Biospecimen Collection Case Report Form (CRF). The headings in the sidebar help the user navigate to their desired content.</p>
-<section id="read-in-data-and-write-functions" class="level2" data-number="E.1">
-<h2 data-number="E.1" class="anchored" data-anchor-id="read-in-data-and-write-functions"><span class="header-section-number">E.1</span> Read in Data and write functions</h2>
-<section id="load-libraries" class="level3" data-number="E.1.1">
-<h3 data-number="E.1.1" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">E.1.1</span> Load Libraries</h3>
+<section id="read-in-data-and-write-functions" class="level2" data-number="F.1">
+<h2 data-number="F.1" class="anchored" data-anchor-id="read-in-data-and-write-functions"><span class="header-section-number">F.1</span> Read in Data and write functions</h2>
+<section id="load-libraries" class="level3" data-number="F.1.1">
+<h3 data-number="F.1.1" class="anchored" data-anchor-id="load-libraries"><span class="header-section-number">F.1.1</span> Load Libraries</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -774,18 +780,18 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="function" class="level3" data-number="E.1.2">
-<h3 data-number="E.1.2" class="anchored" data-anchor-id="function"><span class="header-section-number">E.1.2</span> Function</h3>
+<section id="function" class="level3" data-number="F.1.2">
+<h3 data-number="F.1.2" class="anchored" data-anchor-id="function"><span class="header-section-number">F.1.2</span> Function</h3>
 <p>Write a function to remove columns where all rows have NA, this is will remove duplicate columns for the the Thoracotomy/TKA cohort</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>not_all_na <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="sc">!</span><span class="fu">all</span>(<span class="fu">is.na</span>(x))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
-<section id="crf-quality-checks" class="level2" data-number="E.2">
-<h2 data-number="E.2" class="anchored" data-anchor-id="crf-quality-checks"><span class="header-section-number">E.2</span> CRF Quality checks</h2>
-<section id="biospecimen-collection-form" class="level3" data-number="E.2.1">
-<h3 data-number="E.2.1" class="anchored" data-anchor-id="biospecimen-collection-form"><span class="header-section-number">E.2.1</span> Biospecimen collection Form</h3>
+<section id="crf-quality-checks" class="level2" data-number="F.2">
+<h2 data-number="F.2" class="anchored" data-anchor-id="crf-quality-checks"><span class="header-section-number">F.2</span> CRF Quality checks</h2>
+<section id="biospecimen-collection-form" class="level3" data-number="F.2.1">
+<h3 data-number="F.2.1" class="anchored" data-anchor-id="biospecimen-collection-form"><span class="header-section-number">F.2.1</span> Biospecimen collection Form</h3>
 <p>Read in Biospecimen collection data, We will call this bio</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>bio <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"pre-surgery"</span>, <span class="st">"blood-draw"</span>, <span class="st">"raw"</span>, <span class="st">"blood-draw-2024-11-06.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -821,8 +827,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="data-dictionary" class="level3" data-number="E.2.2">
-<h3 data-number="E.2.2" class="anchored" data-anchor-id="data-dictionary"><span class="header-section-number">E.2.2</span> Data Dictionary</h3>
+<section id="data-dictionary" class="level3" data-number="F.2.2">
+<h3 data-number="F.2.2" class="anchored" data-anchor-id="data-dictionary"><span class="header-section-number">F.2.2</span> Data Dictionary</h3>
 <p>Read in data dictionary and remove duplicate field names</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bio_dict <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
@@ -835,8 +841,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(field_name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="new-field-names" class="level3" data-number="E.2.3">
-<h3 data-number="E.2.3" class="anchored" data-anchor-id="new-field-names"><span class="header-section-number">E.2.3</span> New field name(s)</h3>
+<section id="new-field-names" class="level3" data-number="F.2.3">
+<h3 data-number="F.2.3" class="anchored" data-anchor-id="new-field-names"><span class="header-section-number">F.2.3</span> New field name(s)</h3>
 <p>Add the field name “cohort” to the data dictionary</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create field names</span></span>
@@ -924,8 +930,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="tka-cohort-biospecimen-collection-form" class="level3" data-number="E.2.4">
-<h3 data-number="E.2.4" class="anchored" data-anchor-id="tka-cohort-biospecimen-collection-form"><span class="header-section-number">E.2.4</span> TKA cohort Biospecimen collection form</h3>
+<section id="tka-cohort-biospecimen-collection-form" class="level3" data-number="F.2.4">
+<h3 data-number="F.2.4" class="anchored" data-anchor-id="tka-cohort-biospecimen-collection-form"><span class="header-section-number">F.2.4</span> TKA cohort Biospecimen collection form</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tka_bio <span class="ot">&lt;-</span> bio <span class="sc">%&gt;%</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
@@ -964,8 +970,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      blood_sample_collection_and_processing_crf_complete <span class="sc">==</span> <span class="dv">2</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="flag-1" class="level4" data-number="E.2.4.1">
-<h4 data-number="E.2.4.1" class="anchored" data-anchor-id="flag-1"><span class="header-section-number">E.2.4.1</span> Flag 1:</h4>
+<section id="flag-1" class="level4" data-number="F.2.4.1">
+<h4 data-number="F.2.4.1" class="anchored" data-anchor-id="flag-1"><span class="header-section-number">F.2.4.1</span> Flag 1:</h4>
 <p>Check if there is missing info on hours since last drink.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>brflag1 <span class="ot">&lt;-</span> brdata1 <span class="sc">%&gt;%</span></span>
@@ -982,8 +988,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-2" class="level4" data-number="E.2.4.2">
-<h4 data-number="E.2.4.2" class="anchored" data-anchor-id="flag-2"><span class="header-section-number">E.2.4.2</span> Flag 2:</h4>
+<section id="flag-2" class="level4" data-number="F.2.4.2">
+<h4 data-number="F.2.4.2" class="anchored" data-anchor-id="flag-2"><span class="header-section-number">F.2.4.2</span> Flag 2:</h4>
 <p>Check if there is missing information on hours since last food.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>brflag2 <span class="ot">&lt;-</span> brdata1 <span class="sc">%&gt;%</span></span>
@@ -1000,8 +1006,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-3" class="level4" data-number="E.2.4.3">
-<h4 data-number="E.2.4.3" class="anchored" data-anchor-id="flag-3"><span class="header-section-number">E.2.4.3</span> Flag 3:</h4>
+<section id="flag-3" class="level4" data-number="F.2.4.3">
+<h4 data-number="F.2.4.3" class="anchored" data-anchor-id="flag-3"><span class="header-section-number">F.2.4.3</span> Flag 3:</h4>
 <p>Check if there is missing information on hours since last caffeine intake in subjects who consume caffeine.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>brflag3 <span class="ot">&lt;-</span> brdata1 <span class="sc">%&gt;%</span></span>
@@ -1020,8 +1026,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-4" class="level4" data-number="E.2.4.4">
-<h4 data-number="E.2.4.4" class="anchored" data-anchor-id="flag-4"><span class="header-section-number">E.2.4.4</span> Flag 4:</h4>
+<section id="flag-4" class="level4" data-number="F.2.4.4">
+<h4 data-number="F.2.4.4" class="anchored" data-anchor-id="flag-4"><span class="header-section-number">F.2.4.4</span> Flag 4:</h4>
 <p>Check if there is missing information the amount of caffeine.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>brflag4 <span class="ot">&lt;-</span> brdata1 <span class="sc">%&gt;%</span></span>
@@ -1038,8 +1044,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-5" class="level4" data-number="E.2.4.5">
-<h4 data-number="E.2.4.5" class="anchored" data-anchor-id="flag-5"><span class="header-section-number">E.2.4.5</span> Flag 5:</h4>
+<section id="flag-5" class="level4" data-number="F.2.4.5">
+<h4 data-number="F.2.4.5" class="anchored" data-anchor-id="flag-5"><span class="header-section-number">F.2.4.5</span> Flag 5:</h4>
 <p>Check if there is missing information on vaccination.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>brflag5 <span class="ot">&lt;-</span> brdata1 <span class="sc">%&gt;%</span></span>
@@ -1056,8 +1062,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="create-biospecimen-collection-form-error-report-for-the-tka-cohort." class="level4" data-number="E.2.4.6">
-<h4 data-number="E.2.4.6" class="anchored" data-anchor-id="create-biospecimen-collection-form-error-report-for-the-tka-cohort."><span class="header-section-number">E.2.4.6</span> Create Biospecimen collection form error report for the TKA cohort.</h4>
+<section id="create-biospecimen-collection-form-error-report-for-the-tka-cohort." class="level4" data-number="F.2.4.6">
+<h4 data-number="F.2.4.6" class="anchored" data-anchor-id="create-biospecimen-collection-form-error-report-for-the-tka-cohort."><span class="header-section-number">F.2.4.6</span> Create Biospecimen collection form error report for the TKA cohort.</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the common prefix</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>br_error <span class="ot">&lt;-</span> <span class="st">"brflag"</span></span>
@@ -1918,8 +1924,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 </section>
-<section id="save" class="level4" data-number="E.2.4.7">
-<h4 data-number="E.2.4.7" class="anchored" data-anchor-id="save"><span class="header-section-number">E.2.4.7</span> Save:</h4>
+<section id="save" class="level4" data-number="F.2.4.7">
+<h4 data-number="F.2.4.7" class="anchored" data-anchor-id="save"><span class="header-section-number">F.2.4.7</span> Save:</h4>
 <p>Save “tka_bio” and data dictionary as .csv files in the folder named “Reformatted”</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
@@ -1940,8 +1946,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </section>
 </section>
-<section id="thoracotomy-cohort-biospecimen-collection-form" class="level3" data-number="E.2.5">
-<h3 data-number="E.2.5" class="anchored" data-anchor-id="thoracotomy-cohort-biospecimen-collection-form"><span class="header-section-number">E.2.5</span> Thoracotomy Cohort Biospecimen Collection Form:</h3>
+<section id="thoracotomy-cohort-biospecimen-collection-form" class="level3" data-number="F.2.5">
+<h3 data-number="F.2.5" class="anchored" data-anchor-id="thoracotomy-cohort-biospecimen-collection-form"><span class="header-section-number">F.2.5</span> Thoracotomy Cohort Biospecimen Collection Form:</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>thor_bio <span class="ot">&lt;-</span> bio <span class="sc">%&gt;%</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
@@ -1980,8 +1986,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>      blood_sample_collection_and_processing_crf_complete <span class="sc">==</span> <span class="dv">2</span></span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="flag-1-1" class="level4" data-number="E.2.5.1">
-<h4 data-number="E.2.5.1" class="anchored" data-anchor-id="flag-1-1"><span class="header-section-number">E.2.5.1</span> Flag 1:</h4>
+<section id="flag-1-1" class="level4" data-number="F.2.5.1">
+<h4 data-number="F.2.5.1" class="anchored" data-anchor-id="flag-1-1"><span class="header-section-number">F.2.5.1</span> Flag 1:</h4>
 <p>Check if there is missing information on hours since last drink.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>tbrflag1 <span class="ot">&lt;-</span> tbrdata1 <span class="sc">%&gt;%</span></span>
@@ -1998,8 +2004,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-2-1" class="level4" data-number="E.2.5.2">
-<h4 data-number="E.2.5.2" class="anchored" data-anchor-id="flag-2-1"><span class="header-section-number">E.2.5.2</span> Flag 2:</h4>
+<section id="flag-2-1" class="level4" data-number="F.2.5.2">
+<h4 data-number="F.2.5.2" class="anchored" data-anchor-id="flag-2-1"><span class="header-section-number">F.2.5.2</span> Flag 2:</h4>
 <p>Check if there is missing information on hours since last food.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>tbrflag2 <span class="ot">&lt;-</span> tbrdata1 <span class="sc">%&gt;%</span></span>
@@ -2016,8 +2022,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-3-1" class="level4" data-number="E.2.5.3">
-<h4 data-number="E.2.5.3" class="anchored" data-anchor-id="flag-3-1"><span class="header-section-number">E.2.5.3</span> Flag 3:</h4>
+<section id="flag-3-1" class="level4" data-number="F.2.5.3">
+<h4 data-number="F.2.5.3" class="anchored" data-anchor-id="flag-3-1"><span class="header-section-number">F.2.5.3</span> Flag 3:</h4>
 <p>Check if there is missing information on hours since last caffeine intake in subjects who consume caffeine.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tbrflag3 <span class="ot">&lt;-</span> tbrdata1 <span class="sc">%&gt;%</span></span>
@@ -2036,8 +2042,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-4-1" class="level4" data-number="E.2.5.4">
-<h4 data-number="E.2.5.4" class="anchored" data-anchor-id="flag-4-1"><span class="header-section-number">E.2.5.4</span> Flag 4:</h4>
+<section id="flag-4-1" class="level4" data-number="F.2.5.4">
+<h4 data-number="F.2.5.4" class="anchored" data-anchor-id="flag-4-1"><span class="header-section-number">F.2.5.4</span> Flag 4:</h4>
 <p>Check if there is missing information on the amount of caffeine.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tbrflag4 <span class="ot">&lt;-</span> tbrdata1 <span class="sc">%&gt;%</span></span>
@@ -2054,8 +2060,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="flag-5-1" class="level4" data-number="E.2.5.5">
-<h4 data-number="E.2.5.5" class="anchored" data-anchor-id="flag-5-1"><span class="header-section-number">E.2.5.5</span> Flag 5:</h4>
+<section id="flag-5-1" class="level4" data-number="F.2.5.5">
+<h4 data-number="F.2.5.5" class="anchored" data-anchor-id="flag-5-1"><span class="header-section-number">F.2.5.5</span> Flag 5:</h4>
 <p>Check if there is missing information on vaccination.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>tbrflag5 <span class="ot">&lt;-</span> tbrdata1 <span class="sc">%&gt;%</span></span>
@@ -2072,8 +2078,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="create-biospecimen-collection-form-error-report-for-the-thoracotomy-cohort." class="level4" data-number="E.2.5.6">
-<h4 data-number="E.2.5.6" class="anchored" data-anchor-id="create-biospecimen-collection-form-error-report-for-the-thoracotomy-cohort."><span class="header-section-number">E.2.5.6</span> Create Biospecimen collection form error report for the Thoracotomy cohort.</h4>
+<section id="create-biospecimen-collection-form-error-report-for-the-thoracotomy-cohort." class="level4" data-number="F.2.5.6">
+<h4 data-number="F.2.5.6" class="anchored" data-anchor-id="create-biospecimen-collection-form-error-report-for-the-thoracotomy-cohort."><span class="header-section-number">F.2.5.6</span> Create Biospecimen collection form error report for the Thoracotomy cohort.</h4>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the common prefix</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>tbr_error <span class="ot">&lt;-</span> <span class="st">"tbrflag"</span></span>
@@ -2718,8 +2724,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 </section>
-<section id="save-1" class="level4" data-number="E.2.5.7">
-<h4 data-number="E.2.5.7" class="anchored" data-anchor-id="save-1"><span class="header-section-number">E.2.5.7</span> Save:</h4>
+<section id="save-1" class="level4" data-number="F.2.5.7">
+<h4 data-number="F.2.5.7" class="anchored" data-anchor-id="save-1"><span class="header-section-number">F.2.5.7</span> Save:</h4>
 <p>Save “thor_bio” and data dictionary as .csv files in the folder named “Reformatted”</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
@@ -2739,8 +2745,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </section>
 </section>
-<section id="tka-cohort-current-medications-v_02-form" class="level3" data-number="E.2.6">
-<h3 data-number="E.2.6" class="anchored" data-anchor-id="tka-cohort-current-medications-v_02-form"><span class="header-section-number">E.2.6</span> TKA cohort Current Medications v_02 form:</h3>
+<section id="tka-cohort-current-medications-v_02-form" class="level3" data-number="F.2.6">
+<h3 data-number="F.2.6" class="anchored" data-anchor-id="tka-cohort-current-medications-v_02-form"><span class="header-section-number">F.2.6</span> TKA cohort Current Medications v_02 form:</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>tka_meds <span class="ot">&lt;-</span> bio <span class="sc">%&gt;%</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
@@ -2768,8 +2774,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(not_all_na))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="save-2" class="level4" data-number="E.2.6.1">
-<h4 data-number="E.2.6.1" class="anchored" data-anchor-id="save-2"><span class="header-section-number">E.2.6.1</span> Save:</h4>
+<section id="save-2" class="level4" data-number="F.2.6.1">
+<h4 data-number="F.2.6.1" class="anchored" data-anchor-id="save-2"><span class="header-section-number">F.2.6.1</span> Save:</h4>
 <p>Save “tka_meds” and data dictionary as .csv files in the folder named “Reformatted”</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
@@ -2784,8 +2790,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </section>
 </section>
-<section id="thoracotomy-cohort-current-medications-v_02-form" class="level3" data-number="E.2.7">
-<h3 data-number="E.2.7" class="anchored" data-anchor-id="thoracotomy-cohort-current-medications-v_02-form"><span class="header-section-number">E.2.7</span> Thoracotomy cohort Current Medications v_02 form:</h3>
+<section id="thoracotomy-cohort-current-medications-v_02-form" class="level3" data-number="F.2.7">
+<h3 data-number="F.2.7" class="anchored" data-anchor-id="thoracotomy-cohort-current-medications-v_02-form"><span class="header-section-number">F.2.7</span> Thoracotomy cohort Current Medications v_02 form:</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>thor_meds <span class="ot">&lt;-</span> bio <span class="sc">%&gt;%</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
@@ -2813,8 +2819,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(not_all_na))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="save-3" class="level4" data-number="E.2.7.1">
-<h4 data-number="E.2.7.1" class="anchored" data-anchor-id="save-3"><span class="header-section-number">E.2.7.1</span> Save:</h4>
+<section id="save-3" class="level4" data-number="F.2.7.1">
+<h4 data-number="F.2.7.1" class="anchored" data-anchor-id="save-3"><span class="header-section-number">F.2.7.1</span> Save:</h4>
 <p>Save “thor_meds” and data dictionary as .csv files in the folder named “Reformatted”</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
@@ -3250,12 +3256,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./psycho_social_biomarker_impute.html" class="pagination-link" aria-label="Psychosocial Data Imputation and Biomarker calculations">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Psychosocial Data Imputation and Biomarker calculations</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Psychosocial Data Imputation and Biomarker calculations</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./FuntionalCRF_data_quality_checks_and_reformat.html" class="pagination-link" aria-label="Functional CRF Data Quality Checks">
-        <span class="nav-page-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Functional CRF Data Quality Checks</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Functional CRF Data Quality Checks</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
