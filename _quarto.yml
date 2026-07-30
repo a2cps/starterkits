@@ -51,13 +51,14 @@ book:
     - bids-qc-joining.qmd
     - ids.qmd
     - nda-mri.qmd
+    - mri-harmonization.qmd
     - psycho_social_biomarker_impute.qmd
     - biospecimenCRF_quality_checks_and_reformat.qmd
     - FuntionalCRF_data_quality_checks_and_reformat.qmd
     - ImagingCRF_data_quality_checks_and_reformat.qmd
     - QSTCRF_data_quality_checks_and_reformat.qmd
 
-bibliography: references.bib
+bibliography: bib/references.bib
 csl: apa.csl
 google-scholar: true
 

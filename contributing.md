@@ -4,14 +4,14 @@ For publishing, we're currently using GitHub Actions with frozen computations, [
 
 The site is versioned. Each build goes into its own directory on the `gh-pages` branch, and a menu in the upper right lets readers switch between them.
 
-| URL | Built from | Notes |
-| --- | --- | --- |
-| [`/dev/`](https://a2cps.github.io/starterkits/dev/) | every push to `main` | shows a "development version" notice in the top bar |
-| [`/latest/`](https://a2cps.github.io/starterkits/latest/) | copy of the most recent release | where the site root redirects to |
-| `/v/2_1_0/` | the `v2.1.0` tag | frozen; shows an "older release" notice once superseded |
-| `/pr/52/` | an open pull request | temporary; see [Previewing a Pull Request](#previewing-a-pull-request) |
+  | URL                                                       | Built from                      | Notes                                                                  |
+  | --------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------- |
+  | [`/dev/`](https://a2cps.github.io/starterkits/dev/)       | every push to `main`            | shows a "development version" notice in the top bar                    |
+  | [`/latest/`](https://a2cps.github.io/starterkits/latest/) | copy of the most recent release | where the site root redirects to                                       |
+  | `/v/2_1_0/`                                               | the `v2.1.0` tag                | frozen; shows an "older release" notice once superseded                |
+  | `/pr/52/`                                                 | an open pull request            | temporary; see [Previewing a Pull Request](#previewing-a-pull-request) |
 
-The switcher itself is [assets/js/version.js](assets/js/version.js), styled by [assets/css/version.css](assets/css/version.css). Everything that describes the site as a whole — the `v.json` manifest, the two redirect pages in [assets/pages](assets/pages), and the copy of the newest release at `/latest/` — is built by [scripts/build-site-index.sh](scripts/build-site-index.sh). Pull request previews are placed and removed by [scripts/deploy-preview.sh](scripts/deploy-preview.sh). That script derives its output from what is on disk, so it can be run against a checkout of `gh-pages` locally:
+The switcher itself is [assets/js/version.js](assets/js/version.js), styled by [assets/css/version.css](assets/css/version.css). Everything that describes the site as a whole -- the `v.json` manifest, the two redirect pages in [assets/pages](assets/pages), and the copy of the newest release at `/latest/` -- is built by [scripts/build-site-index.sh](scripts/build-site-index.sh). Pull request previews are placed and removed by [scripts/deploy-preview.sh](scripts/deploy-preview.sh). That script derives its output from what is on disk, so it can be run against a checkout of `gh-pages` locally:
 
 ```{shell}
 $ scripts/build-site-index.sh path/to/gh-pages assets/pages /starterkits
@@ -33,35 +33,47 @@ When writing or updating a starter kit, please adhere to the following guideline
 
 The following is a minimal workflow for updating the site. 
 
-* Make changes to the relevant files (e.g., `*qmd`, [references.bib](references.bib)).
-* Add file to either the "chapters" or "appendices" section of [_quarto.yml](_quarto.yml).
-* Render book ([docs](https://quarto.org/docs/projects/quarto-projects.html))
+- Create a new branch from `main`.
+
+```{shell}
+# replace "new-branch" with 
+$ git switch -c new-branch
+```
+
+- Make changes to the relevant files (e.g., `*qmd`, [bib/references.bib](bib/references.bib)).
+- Add file to either the "chapters" or "appendices" section of [_quarto.yml](_quarto.yml).
+- Render book ([docs](https://quarto.org/docs/projects/quarto-projects.html))
 
 ```{shell}
 # cd [path to starterkits] 
 $ pixi run render
 ```
 
-* Record changes with `git`
+- Record changes with `git`
 
 ```{shell}
 # confirm nothing unexpected
 $ git diff
 
 # modify as needed to record expected changes
+
 $ git add *qmd _freeze
 
 # please add a more informative message (that is still short)
+
 $ git commit -m "Update book"
 ```
 
-* Push changes to the remote
+- Push changes to the remote
 
 ```{shell}
 $ git push
 ```
 
-Merging to `main` publishes to [`/dev/`](https://a2cps.github.io/starterkits/dev/) automatically; there is no action to trigger by hand.
+- Open a pull request from your new branch -> main.
+- Confirm that the branch renders, and that the results look as you expect.
+
+Merging to `main` automatically publishes to [`/dev/`](https://a2cps.github.io/starterkits/dev/).
 
 ## Previewing a Pull Request
 
@@ -71,15 +83,15 @@ The preview is built from the *merge* of the branch and `main`, which is what wi
 
 A few things worth knowing:
 
-* Previews are marked with a notice in the top bar and are publicly reachable, like the rest of the site. They are not indexed anywhere, but they are not private either.
-* The render runs without `R`, so a pull request that changes a chapter without committing its `_freeze` will fail this check. That is the point: the same render runs on merge, so this catches it while it is still cheap to fix.
-* To skip the render, add the `skip-preview` label. The check still reports success, so it is safe to require.
+- Previews are marked with a notice in the top bar and are publicly reachable, like the rest of the site. They are not indexed anywhere, but they are not private either.
+- The render runs without `R`, so a pull request that changes a chapter without committing its `_freeze` will fail this check. That is the point: the same render runs on merge, so this catches it while it is still cheap to fix.
+- To skip the render, add the `skip-preview` label. The check still reports success, so it is safe to require.
 
 ## Cutting a Release
 
 Readers of a given data release should see the kits as they stood for that release, so each release is tagged and published to its own frozen directory.
 
-* Update [_variables.yml](_variables.yml) with the new release, e.g.
+- Update [_variables.yml](_variables.yml) with the new release, e.g.
 
 ```{yaml}
 release:
@@ -87,14 +99,14 @@ release:
   dir: "pre-surgery-release-2-2-0"
 ```
 
-* Re-render and check the result. `var` shortcodes are expanded after the frozen output is restored, so a change to [_variables.yml](_variables.yml) reaches every kit without re-executing any code.
+- Re-render and check the result. `var` shortcodes are expanded after the frozen output is restored, so a change to [_variables.yml](_variables.yml) reaches every kit without re-executing any code.
 
 ```{shell}
 $ pixi run render
 ```
 
-* Commit, push, and merge to `main` as above. Make sure `_freeze` is current before tagging: the tag build runs without `R`, so anything unfrozen will fail in CI.
-* Tag that commit and push the tag
+- Commit, push, and merge to `main` as above. Make sure `_freeze` is current before tagging: the tag build runs without `R`, so anything unfrozen will fail in CI.
+- Tag that commit and push the tag
 
 ```{shell}
 $ git tag v2.2.0
@@ -104,6 +116,16 @@ $ git push origin v2.2.0
 The tag builds `/v/2_2_0/`, copies it to [`/latest/`](https://a2cps.github.io/starterkits/latest/), and adds it to the version menu. The previous release stays where it is and is never rebuilt.
 
 ## Tips
+
+### Development Environment
+
+The environment is managed with [`pixi`](https://pixi.prefix.dev/latest/), which was chosen because it manages not only `R` packages, the system-level packages required to make those `R` ones run, as well as others (e.g., packages used in development, like the formatters). Therefore, when making substantial changes in this repo (e.g., adding a new kit, re-rendering a qmd), you will need to have `pixi` installed.
+
+### Quarto
+
+The `quarto` commands can be triggered through pre-configured [`pixi` tasks](https://pixi.prefix.dev/latest/workspace/advanced_tasks/). To view changes, use `pixi run preview`, which renders the `qmd` files into `html`, opens up a copy of the starter kits in a browser, and automatically re-renders files when changes are saved.
+
+Note that the version menu is hidden during a local preview. It only appears once the site is served from one of the versioned directories described above, since that is how it works out which version it is showing.
 
 ### Snippets and `_freeze`
 
@@ -120,12 +142,6 @@ This does not apply to [_variables.yml](_variables.yml), whose `var` shortcodes 
 ### Code blocks and shortcodes
 
 Shortcodes are expanded in plain fenced blocks (```` ```bash ````) but not in executable cells (```` ```{bash} ````), where the content is handed to the engine verbatim. Use a plain fence when a block only illustrates a path or command.
-
-### Quarto
-
-To view changes, use `pixi run preview`, which renders the `qmd` files into `html`, opens up a copy of the starter kits in a browser, and automatically re-renders files when changes are saved.
-
-Note that the version menu is hidden during a local preview. It only appears once the site is served from one of the versioned directories described above, since that is how it works out which version it is showing.
 
 ### Template
 
