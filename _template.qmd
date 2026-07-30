@@ -20,7 +20,6 @@ $ # [/corral-secure/projects/A2CPS/products/consortium-data/rest_of_path]
 
 Brief script to read the files (e.g., suggestions of relevant packages, links to documentation about datatype)
 
-
 ### Data Quality
 
 Describe any necessary preprocessing (e.g., known bad samples to exclude).
@@ -46,9 +45,6 @@ Provide details about any difficulties that are expected during a finalized anal
 - Forthcoming Additions
   - Is the DIRC working on something that will substantially change or add to the modality in upcoming releases?
 
-
 ### Citations
 
 Are there any A2CPS publications that should be cited?
-
-

@@ -13,6 +13,8 @@ This document goes over quality checks for the QST Case Report Form (CRF). The h
 ### Load Libraries
 
 ```{r}
+#| label: setup
+
 library(shiny)
 library(forcats)
 library(tidyverse)
@@ -27,7 +29,7 @@ library(gt)
 Write a function to remove columns where all rows have NA, this is will remove duplicate columns for the the Thoracotomy/TKA cohort
 
 ```{r}
-not_all_na <- function(x) any(!is.na(x))
+not_all_na <- function(x) !all(is.na(x))
 ```
 
 ## CRF Quality checks
@@ -36,13 +38,17 @@ not_all_na <- function(x) any(!is.na(x))
 
 Read in QST data, We will call this qst
 
-```{r, message=FALSE}
+```{r}
+#| message: false
+
 qst <- read.csv(here("data", "qst", "raw", "qst-2024-11-06.csv")) %>% retype()
 ```
 
 We will also read in Imaging data since the information on recalibration is recorded in the Imaging CRF. We will later merge field names related to recalibration with the imaging data.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
+
 tka_img_4_qst <- read.csv(here(
   "data",
   "imaging",
@@ -92,7 +98,9 @@ qst <- qst %>% filter(!record_id %in% test_records)
 
 Create a column for cohort type called "cohort"
 
-```{r message =FALSE}
+```{r}
+#| message: false
+
 qst <- qst %>%
   mutate(
     cohort = case_when(
@@ -106,7 +114,9 @@ qst <- qst %>%
 
 Read in data dictionary and remove duplicate field names
 
-```{r, message=FALSE}
+```{r}
+#| message: false
+
 qst_dict <- read_csv(here(
   "data",
   "qst",
@@ -133,7 +143,7 @@ cohort_new_row <- data.frame(
 # Add the new row after the last row
 
 qst_dict <- qst_dict %>%
-  slice(1:nrow(.)) %>%
+  slice(seq_len(nrow(.))) %>%
   add_row(.after = nrow(.), !!!cohort_new_row)
 ```
 
@@ -173,7 +183,7 @@ qdata2 <- tka_qst %>%
   filter(pptcompleteyn == 2 | pptcompleteyn == 1 | pptcompleteyn == 3)
 ```
 
-##### Flag 1:
+#### Flag 1:
 
 Check if the location of index site was entered \[both sites =1 OR 3 = Index site (med/lat joint line)\].
 
@@ -592,7 +602,7 @@ tka_ts_recoded <- tr.complete %>%
   mutate(one_rep = case_when(one_rem == 1 & one_ind == 1 ~ 1, TRUE ~ 0))
 ```
 
-##### Flag 14:
+#### Flag 14:
 
 Check if TS was completed for both sites and at least 1 repetition for both sites had no mismatch errors or missing data.
 
@@ -1063,7 +1073,7 @@ trcpm.complete <- tka_qst %>%
   filter(!is.na(cpmcompleteyn) & cpmcompleteyn != 0)
 ```
 
-##### Flag 29:
+#### Flag 29:
 
 Check if water temperature was not checked:
 
@@ -1650,7 +1660,7 @@ secondary_cpm_tka_new_row <- data.frame(
 # Add the new row after the last row
 
 qst_dict <- qst_dict %>%
-  slice(1:nrow(.)) %>%
+  slice(seq_len(nrow(.))) %>%
   add_row(.after = nrow(.), !!!primary_ppt_tka_new_row) %>%
   add_row(.after = nrow(.), !!!secondary_ppt_tka_new_row) %>%
   add_row(.after = nrow(.), !!!primary_ts_index_tka_new_row) %>%
@@ -1693,7 +1703,8 @@ qst_report %>%
 
 Save "tka_qst" and data dictionary as .csv files in the folder named "reformatted_QST"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(
@@ -1715,7 +1726,9 @@ thor_qst <- qst
 
 We will also read in Imaging data since the information on recalibration is recorded in the Imaging CRF. We will later merge field names related to recalibration with the imaging data.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
+
 thor_img_4_qst <- read_csv(here(
   "data",
   "imaging",
@@ -1772,7 +1785,7 @@ qdatam2 <- thor_qst %>%
   filter(pptcompleteyn == 2 | pptcompleteyn == 1 | pptcompleteyn == 3)
 ```
 
-##### Flag 1:
+#### Flag 1:
 
 Remote site: Shoulder (deltoid muscle), contralateral to surgical chest side.
 
@@ -2171,7 +2184,7 @@ thor_ts_recoded <- m2tr.complete %>%
   mutate(one_rep = case_when(one_rem == 1 & one_ind == 1 ~ 1, TRUE ~ 0))
 ```
 
-##### Flag 13:
+#### Flag 13:
 
 Check if TS was completed for both sites and at least 1 repetition for both sites had no mismatch errors or missing data.
 
@@ -2624,7 +2637,7 @@ m2trcpm.complete <- thor_qst %>%
   filter(!is.na(cpmcompleteyn) & cpmcompleteyn != 0)
 ```
 
-##### Flag 28:
+#### Flag 28:
 
 Check if water temperature was not checked:
 
@@ -2859,7 +2872,7 @@ m2dma.baseline <- thor_qst %>%
   filter(!is.na(dmatestcompyn) & dmatestcompyn != 0)
 ```
 
-##### Flag 37:
+#### Flag 37:
 
 If DMA was performed on both or either site but "DMA complete" was missing.
 
@@ -3582,7 +3595,7 @@ secondary_cpm_thor_new_row <- data.frame(
 # Add the new row after the last row
 
 qst_dict <- qst_dict %>%
-  slice(1:nrow(.)) %>%
+  slice(seq_len(nrow(.))) %>%
   add_row(.after = nrow(.), !!!primary_ppt_thor_new_row) %>%
   add_row(.after = nrow(.), !!!secondary_ppt_thor_new_row) %>%
   add_row(.after = nrow(.), !!!primary_ts_index_thor_new_row) %>%
@@ -3625,7 +3638,8 @@ m2qst_report %>%
 
 Save "thor_qst" and data dictionary as .csv files in the folder named "reformatted_QST"
 
-```{r warning=FALSE}
+```{r}
+#| warning: false
 #| eval: false
 
 write_csv(

@@ -1,6 +1,8 @@
 # Summarized Diffusion Tensor Fitting {#sec-postdtifit}
 
-```{r setup}
+```{r}
+#| label: setup
+
 library(readr)
 library(dplyr)
 library(ggplot2)
@@ -27,6 +29,7 @@ The derivatives are underneath `derivatives/postdtifit`. Let's take a look.
 
 ```{bash}
 #| eval: false
+
 $ ls postdtifit/
 diffusion_regional  diffusion_regional_stats  diffusion_regional_stats.json
 ```
@@ -97,7 +100,8 @@ The tabular data is in `diffusion_regional_stats`. As usual, the tables are in [
 
 Next, peak at the table. 
 
-```{r loadstats}
+```{r}
+#| label: loadstats
 
 diffusion_regional_stats <- read_parquet_duckdb(
   "data/pre-surgery/mris/derivatives/postdtifit/diffusion_regional_stats"
@@ -111,7 +115,8 @@ From these, we see that many analyses will need some degree of filtering. For ex
 
 First, drop minimum and maximum. Then, pivot the table on the shells.
 
-```{r head-shell-comparison}
+```{r}
+#| label: head-shell-comparison
 
 shell_comparison <- diffusion_regional_stats |>
   select(-minimum, -maximum) |>
@@ -120,11 +125,11 @@ shell_comparison <- diffusion_regional_stats |>
 head(shell_comparison)
 ```
 
-To get a very high-level overview of the data, generate a [BA plot](https://en.wikipedia.org/wiki/Bland–Altman_plot). 
+To get a very high-level overview of the data, generate a [BA plot](https://en.wikipedia.org/wiki/Bland--Altman_plot). 
 
 ::: {#fig-shell-comparison}
-
-```{r shell-comparison}
+```{r}
+#| label: shell-comparison
 #| fig-height: 7
 
 shell_comparison |>
@@ -140,7 +145,6 @@ shell_comparison |>
 ```
 
 Differences in Tensor Values Between b1000 and Multishell data. Each panel is a different tensor metric. The x-axis is a mean average, and the y-axis is a difference. Points correspond to individual regions, sampled from individual scans.
-
 :::
 
 There are clear differences between the fits to the different shells! 
@@ -148,8 +152,9 @@ There are clear differences between the fits to the different shells!
 A few potential sources for those differences may spring to mind: participant differences (including scan quality), regional differences, or scanner differences. In this case, we happen to know it's an effect of scan. Following @sec-rawdata-mri-qc-joining, let's exclude all scans that are rated "red".
 
 ::: {#fig-shell-comparison2}
+```{r}
+#| label: shell-comparison-not-red
 
-```{r shell-comparison-not-red}
 red_dmri <- read_tsv(
   dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
   na = "n/a"
@@ -174,7 +179,6 @@ shell_comparison |>
 ```
 
 Comparison of b1000 with Multishell Data, Excluding Lowest Quality Scans. The data are plotted as in @fig-shell-comparison. 
-
 :::
 
 The outliers appear to have been driven by scan quality. However, note that there are still clear differences between the two sets of shells. Which of these to choose will depend on the analysis. For an introduction to some considerations, see @sec-reconstruction.

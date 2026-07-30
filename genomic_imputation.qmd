@@ -6,9 +6,9 @@ This page provides considerations for A2CPS projects that involve the Imputed Ge
 
 <!-- This picture is free to share -->
 
-The imputed genomic dataset expands single-nucleotide resolution variant data across the human genome, offering deeper and more comprehensive coverage. Genotype imputation aligns SNP array data with ancestry-specific reference haplotypes to infer untyped variants with high confidence. This process can be compared to filling in missing letters in a sentence based on contextual knowledge — for example: 
+The imputed genomic dataset expands single-nucleotide resolution variant data across the human genome, offering deeper and more comprehensive coverage. Genotype imputation aligns SNP array data with ancestry-specific reference haplotypes to infer untyped variants with high confidence. This process can be compared to filling in missing letters in a sentence based on contextual knowledge --- for example: 
 
-“T_e l_zy d_g j___ed _ver the _at.”
+"T_e l_zy d_g j___ed _ver the _at."
 
 Imputation is particularly important in genetic association studies because it allows researchers to identify disease-associated loci that were not directly genotyped, facilitating meta-analyses across different studies that may have used different SNP arrays. For a deeper dive into the methodology and importance of imputation, see the [TOPMed Imputation Server Documentation](https://topmedimpute.readthedocs.io/en/latest/).
 
@@ -102,6 +102,7 @@ mkdir A2CPS_RL1-5_For_Imputation_F2
 </details>
 
 #### Imputation
+
 After preparing the files, they were run through:
 
 [TOPMed Imputation Pipeline](https://topmedimpute.readthedocs.io/en/latest/pipeline/)
@@ -111,7 +112,6 @@ After preparing the files, they were run through:
 - Imputed variants with an imputation quality score (R²) less than 0.3 were excluded.
 - Imputed variants with minor allele frequencies (MAF) below 0.01 were excluded to remove extremely rare variants.
 - Imputed variants lacking rsIDs (denoted as '.') or sharing duplicated genomic positions were excluded, as these caused issues during PLINK merging.
-
 
 <details>
 <summary>Click to show the Post-Imputation Quality Control Bash Script, which utilizes Plink 1.9</summary>

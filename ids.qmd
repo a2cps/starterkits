@@ -78,9 +78,11 @@ tibble::tribble(
 
 ## Participants
 
-```{r participants}
+```{r}
+#| label: participants
 #| echo: false
 #| tbl-cap: "Terminology Mapping"
+
 tibble::tribble(
   ~Terminology                 , ~Venue     , ~Notes                                                                                                                                                                                                                                                                                                                                                                                                                      ,
   "subject"                    , "Imaging"  , "In Imaging, “subject” is used interchangeably with “participant“ and both are equivalent to “record”"                                                                                                                                                                                                                                                                                                                      ,
@@ -94,7 +96,8 @@ tibble::tribble(
 
 ## Visits
 
-```{r visits}
+```{r}
+#| label: visits
 #| echo: false
 #| tbl-cap: "Terminology Mapping"
 
@@ -108,11 +111,10 @@ tibble::tribble(
 )
 ```
 
-
 The following table may be used for mapping across datatypes.
 
-
-```{r visitsmapping}
+```{r}
+#| label: visitsmapping
 #| echo: false
 
 tibble::tribble(

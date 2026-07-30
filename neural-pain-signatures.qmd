@@ -4,9 +4,17 @@ format:
     df-print: tibble
 ---
 
+```{r}
+#| label: setup
+
+library(arrow)
+library(dplyr)
+library(tidyr)
+```
+
 # Prior Neural Pain Signature Responses {#sec-neural-pain-signatures}
 
-A "neural signature" is a multivariate pattern of brain activity that has been statistically optimized to predict a specific mental state or symptom—in this case, pain. Rather than looking at activity in a single brain region, these signatures use predefined weight maps across the whole brain. By calculating the dot product (or spatial correlation) between a participant's fMRI scan and these established weight maps, we can estimate a single scalar response value that reflects how strongly the participant's brain activity matches the signature. Two prominent examples used in A2CPS are the Neurologic Pain Signature (NPS) and the Signature of Intact Nociception and Pain (SIIPS1).
+A "neural signature" is a multivariate pattern of brain activity that has been statistically optimized to predict a specific mental state or symptom---in this case, pain. Rather than looking at activity in a single brain region, these signatures use predefined weight maps across the whole brain. By calculating the dot product (or spatial correlation) between a participant's fMRI scan and these established weight maps, we can estimate a single scalar response value that reflects how strongly the participant's brain activity matches the signature. Two prominent examples used in A2CPS are the Neurologic Pain Signature (NPS) and the Signature of Intact Nociception and Pain (SIIPS1).
 
 ## Starting Project
 
@@ -79,7 +87,7 @@ Note: the table mentions "session", but in this release only V1 (baseline) resul
 
 ### Extract data
 
-The tabular data comprise parquet files that have been partitioned in a [hive-style](https://hive.apache.org/). That is, subfolder names contain column information – in this case subject ID (REDCap Record ID), task, and run. 
+The tabular data comprise parquet files that have been partitioned in a [hive-style](https://hive.apache.org/). That is, subfolder names contain column information -- in this case subject ID (REDCap Record ID), task, and run. 
 
 ```bash
 $ tree signature-by-run
@@ -110,11 +118,11 @@ The biomarker is based on the CUFF1 (task=cuff/run=1) scan. The other scans are 
 To load the whole dataset, the parquet files may be read individually or using a tool that is aware of the hive-partitioning structure. In `R`, a good choice is the [`arrow`](https://arrow.apache.org/docs/r/index.html) library.
 
 ```{r}
-library(arrow)
-library(dplyr)
-library(tidyr)
+#| label: load
 
-open_dataset("data/pre-surgery/mris/derivatives/signatures/signatures-by-run") |>
+open_dataset(
+  "data/pre-surgery/mris/derivatives/signatures/signatures-by-run"
+) |>
   filter(signature %in% c("grouppred_cvpcr", "137subjmap_weighted_mean")) |>
   filter(task == "cuff", run == 1) |>
   select(signature, value = correlation, sub, ses) |>
@@ -123,11 +131,9 @@ open_dataset("data/pre-surgery/mris/derivatives/signatures/signatures-by-run") |
   rename(SIIPS1 = `137subjmap_weighted_mean`, NPS = `grouppred_cvpcr`)
 ```
 
-
 In python, a good choice is the [`polars`](https://docs.pola.rs/) library
 
-```{python}
-#| eval: FALSE
+```python
 import polars as pl
 
 pl.read_parquet("data/pre-surgery/mris/derivatives/signatures/signatures-by-run").filter(

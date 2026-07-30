@@ -1,3 +1,5 @@
+#:schema https://pixi.sh/v0.73.0/schema/manifest/schema.json
+
 [workspace]
 authors = ["Patrick Sadil <psadil@gmail.com>"]
 channels = ["conda-forge"]
@@ -48,3 +50,7 @@ r-roll = { path = "vendor/r-roll" }
 r-ggdist = { path = "vendor/r-ggdist" }
 r-nio = { git = "https://github.com/psadil/nio", branch = "main" }
 r-agree = { path = "vendor/r-agree" }
+panache = ">=3.0.2,<4"
+air = ">=0.11.0,<0.12"
+codespell = ">=2.4.3,<3"
+prek = ">=0.4.11,<0.5"

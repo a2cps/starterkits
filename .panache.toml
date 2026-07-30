@@ -1,0 +1,15 @@
+#:schema https://panache.bz/panache.schema.json
+
+[format]
+line-width = 100
+wrap = "preserve"
+
+[lint.rules]
+missing-chunk-labels = false
+
+[formatters]
+r = "air"
+python = "ruff"
+
+[linters]
+r = "jarl"

@@ -27,7 +27,7 @@ library(gt)
 Write a function to remove columns where all rows have NA, this is will remove duplicate columns for the the Thoracotomy/TKA cohort
 
 ```{r}
-not_all_na <- function(x) any(!is.na(x))
+not_all_na <- function(x) !all(is.na(x))
 ```
 
 ## CRF Quality checks
@@ -36,7 +36,9 @@ not_all_na <- function(x) any(!is.na(x))
 
 Read in Biospecimen collection data, We will call this bio
 
-```{r, message=FALSE}
+```{r}
+#| message: false
+
 bio <- read_csv(here("data", "blood-draw", "raw", "blood-draw-2024-11-06.csv"))
 ```
 
@@ -64,7 +66,9 @@ bio <- bio %>% filter(!record_id %in% test_records)
 
 Create a column for cohort type called "cohort"
 
-```{r message =FALSE}
+```{r}
+#| message: false
+
 bio <- bio %>%
   mutate(
     cohort = case_when(
@@ -78,7 +82,9 @@ bio <- bio %>%
 
 Read in data dictionary and remove duplicate field names
 
-```{r message=FALSE}
+```{r}
+#| message: false
+
 bio_dict <- read_csv(here(
   "data",
   "blood-draw",
@@ -104,7 +110,7 @@ cohort_new_row <- data.frame(
 # Add the new row after the last row
 
 bio_dict <- bio_dict %>%
-  slice(1:nrow(.)) %>%
+  slice(seq_len(nrow(.))) %>%
   add_row(.after = nrow(.), !!!cohort_new_row)
 ```
 
@@ -552,7 +558,7 @@ tbr_report %>%
 
 Save "thor_bio" and data dictionary as .csv files in the folder named "Reformatted"
 
-```{r }
+```{r}
 #| eval: false
 
 write_csv(
@@ -670,4 +676,3 @@ write_csv(
   )
 )
 ```
-

@@ -6,20 +6,20 @@ authors:
 
 # Psychosocial {#sec-psychosocial}
 
-Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements [@wandner_nih_2022] to gain a comprehensive understanding of chronic pain [@berardi_multi_2022]. For a general introduction to psychosocial assessments in clinical research, see resources such as the [NIH HEAL Initiative Common Data Elements](https://heal.nih.gov/data/common-data-elements).
+Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements\ [@wandner_nih_2022] to gain a comprehensive understanding of chronic pain\ [@berardi_multi_2022]. For a general introduction to psychosocial assessments in clinical research, see resources such as the [NIH HEAL Initiative Common Data Elements](https://heal.nih.gov/data/common-data-elements).
 
 These assessments include:
 
 - Pain related psychosocial constructs
-  - These include pain resilience, catastrophizing, kinesiophobia, and multisensory sensitivity. Pain resilience is measured using the Pain Resilience Scale (PRS)[@slepian_development_2016]. Catastrophizing measures negative appraisal of pain using the Pain Catastrophizing Scale-6 (PCS-6) [@mcwilliams_development_2015]. Kinesiophobia (fear of movement) is measured using the Fear Avoidance Beliefs Questionnaire—Physical Activity subscale (FABQ-PA)[@waddell_fear_1993]. Sensitivity to sensory stimulation (light, sound, odor, flavor, touch) and interoception (balance, nausea, heart rate) are measured using an 8-item General Sensory Sensitivity (GSS) [@schrepf_sensory_2018].
+  - These include pain resilience, catastrophizing, kinesiophobia, and multisensory sensitivity. Pain resilience is measured using the Pain Resilience Scale (PRS)[@slepian_development_2016]. Catastrophizing measures negative appraisal of pain using the Pain Catastrophizing Scale-6 (PCS-6)\ [@mcwilliams_development_2015]. Kinesiophobia (fear of movement) is measured using the Fear Avoidance Beliefs Questionnaire—Physical Activity subscale (FABQ-PA)[@waddell_fear_1993]. Sensitivity to sensory stimulation (light, sound, odor, flavor, touch) and interoception (balance, nausea, heart rate) are measured using an 8-item General Sensory Sensitivity (GSS)\ [@schrepf_sensory_2018].
 - Mood disorders (Depression and Anxiety)
-  - Depression and Anxiety are measured using the 8-item Patient Health Questionnaire-8 (PHQ-8) [@kroenke_phq_2009] and the 7-item General Anxiety Disorder (GAD-7) instruments [@spitzer_brief_2006]
+  - Depression and Anxiety are measured using the 8-item Patient Health Questionnaire-8 (PHQ-8)\ [@kroenke_phq_2009] and the 7-item General Anxiety Disorder (GAD-7) instruments\ [@spitzer_brief_2006]
 - Social Support
-  - PROMIS SFv2.0 Instrumental Support 6a questionnaire is used to measure the quality of social support received by the subjects, and PROMIS SFv2.0 Emotional Support 6a questionnaire measures subjects' perception about being valued and cared for [@hahn_measuring_2010].
+  - PROMIS SFv2.0 Instrumental Support 6a questionnaire is used to measure the quality of social support received by the subjects, and PROMIS SFv2.0 Emotional Support 6a questionnaire measures subjects' perception about being valued and cared for\ [@hahn_measuring_2010].
 - Cognitive Function and Sleep
-  - Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) [@kratz_promis_2016] measures perceived cognitive dysfunction in patients with fibromyalgia. Sleep is assessed using the PROMIS Short Form v1.0 Sleep Disturbance 6a measure [@yu_development_2012] and Pain-Sleep Duration (Sleep II) form [@buysse_pittsburgh_1989].
+  - Multidimensional Inventory of Subjective Cognitive Impairment (MISCI)\ [@kratz_promis_2016] measures perceived cognitive dysfunction in patients with fibromyalgia. Sleep is assessed using the PROMIS Short Form v1.0 Sleep Disturbance 6a measure\ [@yu_development_2012] and Pain-Sleep Duration (Sleep II) form\ [@buysse_pittsburgh_1989].
 - Other Assessments Demographic, Comorbidity Questionnaire (SCQ), The Adverse Childhood Experience questionnaire (ACE), Big Five Inventory−2 short form (BFI-2-S)
-  - The demographic information form captures age, sex, gender, ethnicity, race, level of education, employment status, relationship status, household income, and disability status. Chronic health conditions are captured using the Self-Administered Comorbidity Questionnaire (SCQ) [@sangha_self_2003]. The Adverse Childhood Experience questionnaire (ACE) [@felitti_relationship_1998] is used to assess the history of childhood abuse and dysfunctional family dynamics retrospectively. Also at baseline, five personality constructs are measured using the Big Five Inventory−2 short form (BFI-2-S), which measure five personality domains, i.e., 1. extraversion, 2. agreeableness, 3. conscientiousness, 4. negative emotionality, and 5. open-mindedness [@soto_short_2017].
+  - The demographic information form captures age, sex, gender, ethnicity, race, level of education, employment status, relationship status, household income, and disability status. Chronic health conditions are captured using the Self-Administered Comorbidity Questionnaire (SCQ)\ [@sangha_self_2003]. The Adverse Childhood Experience questionnaire (ACE)\ [@felitti_relationship_1998] is used to assess the history of childhood abuse and dysfunctional family dynamics retrospectively. Also at baseline, five personality constructs are measured using the Big Five Inventory−2 short form (BFI-2-S), which measure five personality domains, i.e., 1. extraversion, 2. agreeableness, 3. conscientiousness, 4. negative emotionality, and 5. open-mindedness\ [@soto_short_2017].
 
 ## Starting Project
 
@@ -37,48 +37,62 @@ Often, researchers want to examine the relationship between different psychosoci
 
 To explore this, we first load the relevant datasets.
 
-```{r setup}
+```{r}
+#| label: setup
+
 library(tidyverse)
 ```
 
-```{r load}
+```{r}
+#| label: load
+
 gad <- read_csv("data/pre-surgery/psychosocial/reformatted/reformatted_gad.csv")
 phq <- read_csv("data/pre-surgery/psychosocial/reformatted/reformatted_phq.csv")
 ```
 
 Next, we join the datasets using the unique identifiers `record_id` and `guid`. These identifiers allow you to link records across different psychosocial forms, as well as to other modalities (like neuroimaging or genomics). The `inner_join` function is used here to keep only rows that exist in both tables.
 
-```{r join}
+```{r}
+#| label: join
+
 gad_phq <- inner_join(gad, phq, by = intersect(names(gad), names(phq)))
 ```
 
 View columns available after merging the two datasets
 
-```{r peak}
+```{r}
+#| label: peak
+
 head(gad_phq)
 ```
 
-Check data types and ensure that character variables are not stored as numeric, and that numeric variables are stored with the correct numeric type—not as character or factor.
+Check data types and ensure that character variables are not stored as numeric, and that numeric variables are stored with the correct numeric type---not as character or factor.
 
-```{r glimpse}
+```{r}
+#| label: glimpse
+
 glimpse(gad_phq)
 ```
 
 ## Exploratory data analysis
 
-Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations [@kircanski_investigating_2017]. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the `glimpse()` functiona that those variables are stored as ordered and numeric.
+Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations\ [@kircanski_investigating_2017]. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the `glimpse()` functiona that those variables are stored as ordered and numeric.
 
 **Spearman Correlation**:
 
 Since GAD and PHQ scores are ordered but not continuous, spearman correlation here would be a better choice than pearson since it measures monotonic association between two variables by comparing their ranks, we will add the argument `use = "complete.obs"` to ignore rows with missing values.
 
-```{r stats}
+```{r}
+#| label: stats
+
 cor(gad_phq$imputed_gad_score, gad_phq$imputed_phq_score, use = "complete.obs")
 ```
 
-As expected we see a very strong correlation between anxiety and depression within the A2CPS cohort i.e. 0.76. Let’s visualize these results with a simple boxplot.
+As expected we see a very strong correlation between anxiety and depression within the A2CPS cohort i.e. 0.76. Let's visualize these results with a simple boxplot.
 
-```{r plot}
+```{r}
+#| label: plot
+
 # Remove rows with NA in either column
 gad_phq_clean <- gad_phq %>%
   filter(!is.na(imputed_gad_score), !is.na(imputed_phq_score))

@@ -1,6 +1,8 @@
 # MRIQC {#sec-mriqc}
 
-```{r setup}
+```{r}
+#| label: setup
+
 library(readr)
 library(dplyr)
 library(ggplot2)
@@ -8,9 +10,9 @@ library(duckplyr)
 library(scattermore)
 ```
 
-Rigorous quality control (QC) is absolutely essential in neuroimaging. Artifacts like participant head motion, scanner thermal noise, or radio-frequency (RF) coil failures can dramatically compromise the integrity of the data and introduce severe confounds into downstream analyses. To automatically calculate a suite of standardized image quality metrics, the A2CPS project uses the widely adopted MRI Quality Control (MRIQC) pipeline [@esteban_mriqc_2017].
+Rigorous quality control (QC) is absolutely essential in neuroimaging. Artifacts like participant head motion, scanner thermal noise, or radio-frequency (RF) coil failures can dramatically compromise the integrity of the data and introduce severe confounds into downstream analyses. To automatically calculate a suite of standardized image quality metrics, the A2CPS project uses the widely adopted MRI Quality Control (MRIQC) pipeline\ [@esteban_mriqc_2017].
 
-Part of the A2CPS MRI quality control procedure [@sec-raw-mri-quality] relies directly on these MRIQC metrics. However, MRIQC provides several additional metrics beyond the subset formally used by A2CPS. This kit reviews those metrics and demonstrates how you can benchmark A2CPS data against the hundreds of thousands of scans available in the public MRIQC database.
+Part of the A2CPS MRI quality control procedure\ [@sec-raw-mri-quality] relies directly on these MRIQC metrics. However, MRIQC provides several additional metrics beyond the subset formally used by A2CPS. This kit reviews those metrics and demonstrates how you can benchmark A2CPS data against the hundreds of thousands of scans available in the public MRIQC database.
 
 ## Starting Project
 
@@ -24,7 +26,7 @@ The MRIQC metrics are underneath `derivatives/mriqc`.
 
 The A2CPS pipeline produces a standard set of MRIQC outputs, including both participant- and group-level results. For a detailed explanation of the outputs, please see the [official MRIQC documentation](https://mriqc.readthedocs.io/en/latest/index.html). At a high-level, the outputs include:
 
-- participant-level metrics: underneath sub-[recordid]/ses-[protocolid]/{anat,func,dwi}
+- participant-level metrics: underneath sub-\[record_id\]/ses-\[protocol_id\]/{anat,func,dwi}
 - participant-level reports: html documents that display participant-level figures related to data quality and MRIQC preprocessing
 - group-level results: files with the prefix `group_` that collate the participant-level results
 
@@ -44,7 +46,9 @@ sub-10003_ses-V1_task-cuff_run-01_bold.html
 
 For example, here are all of the metrics available for the functional data.
 
-```{r load}
+```{r}
+#| label: load
+
 group_bold <- read_tsv("data/pre-surgery/mris/derivatives/mriqc/group_bold.tsv")
 group_bold |> head()
 ```
@@ -59,7 +63,9 @@ For a detailed description of these metrics, please see the official MRIQC docum
 
 One strength of MRIQC is that the pipeline automatically stores the metrics in a centralized database. The centralized database is available via the [MRIQC Web API](https://mriqc.nimh.nih.gov/). An example of interacting with the API can be found in https://github.com/psadil/mriqc-export. In this kit, the metrics have already been downloaded and stored in a set parquet files. Let's use that reference set to rate A2CPS. One of the most important determiners of quality is motion, so let's focus on the average Framewise Displacement. 
 
-```{r loadapi}
+```{r}
+#| label: loadapi
+
 all_bold <- duckplyr::read_parquet_duckdb(fs::dir_ls(
   "data/mriqcwebapi/bold",
   recurse = TRUE,
@@ -75,7 +81,8 @@ Loading them, we see that there are over 1 million entries in the database.
 
 Let's create a simple scatter plot to compare motion in A2CPS against motion in the MRIQC database. Note that because there are so many points to display, we're using the package [`scattermore`](https://exaexa.github.io/scattermore/). 
 
-```{r cnr}
+```{r}
+#| label: cnr
 
 dplyr::bind_rows(list(a2cps = group_bold, mriqc = all_bold), .id = "source") |>
   ggplot(aes(x = source, y = fd_mean)) +
@@ -97,7 +104,6 @@ group_bold |>
   geom_histogram()
 ```
 
-
 ## Considerations While Working on the Project
 
 ### Framewise Displacement and A2CPS
@@ -112,13 +118,13 @@ Please be aware that, across versions of MRIQC, the manner in which MRIQC calcul
 
 Many of these metrics exhibit substantial variability across the scanners, which may confound some analyses. For example, the scanner "NS" (serial number: 70032) has the "Prescan Normalization" feature turned off, which produces substantial intensity inhomogeneity in the images. This inhomogeneity is very noticeable in the images, resulting in much voxels near the edge of the field-of-view being much brighter than voxels in the center of the field-of-view. Unfortunately, this spatial pattern confounds one of the metrics produced by MRIQC that is designed to estimate [ghosting](https://mriquestions.com/ghosting.html): the "Ghost-to-Signal" Ratio. That is, the values for this ratio suggest that the NS scanner suffers from substantial ghosting, but those values are instead driven primarily by intensity inhomogeneity. 
 
-As another example, the scanner UC (serial number: 71399) is unique in that the structural images were collected with ["Image Domain Parallel Imaging"](https://mriquestions.com/two-types-of-pi.html). This form of parallel imaging causes a near total suppression of the background signal (that is, most background voxels have intensity 0). Several of the MRIQC metrics incorporate the background signal, and so this noise suppression causes those metrics to have a fundamentally different scaling as compared to metrics calculated on images without that suppression. Consider the ["Dietrich" version of the signal-to-noise ratio](https://mriqc.readthedocs.io/en/latest/iqms/t1w.html#mriqc.qc.anatomical.snr_dietrich) [@dietrich_measurement_2007], which uses the standard deviation of the intensity in the background to scale the average intensity of the foreground, producing substantially larger estimates of the signal-to-noise ratio.
+As another example, the scanner UC (serial number: 71399) is unique in that the structural images were collected with ["Image Domain Parallel Imaging"](https://mriquestions.com/two-types-of-pi.html). This form of parallel imaging causes a near total suppression of the background signal (that is, most background voxels have intensity 0). Several of the MRIQC metrics incorporate the background signal, and so this noise suppression causes those metrics to have a fundamentally different scaling as compared to metrics calculated on images without that suppression. Consider the ["Dietrich" version of the signal-to-noise ratio](https://mriqc.readthedocs.io/en/latest/iqms/t1w.html#mriqc.qc.anatomical.snr_dietrich)\ [@dietrich_measurement_2007], which uses the standard deviation of the intensity in the background to scale the average intensity of the foreground, producing substantially larger estimates of the signal-to-noise ratio.
 
 For a detailed description of these particular issues, please see [these slides](assets/images/A2CPS_imaging_MRIQC.pdf). In general, interpreting the MRIQC metrics should be done with caution. 
 
 ### Citations
 
-If you use these results, please cite the MRIQC report [@esteban_mriqc_2017] and all relevant citations of the pipeline configuration. 
+If you use these results, please cite the MRIQC report\ [@esteban_mriqc_2017] and all relevant citations of the pipeline configuration. 
 
 {{< include _snippets/a2cps_citations.qmd >}}
 

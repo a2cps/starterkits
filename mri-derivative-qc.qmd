@@ -1,6 +1,8 @@
 # Manual Derivative QC {#mri-deriv-qc}
 
-```{r setup}
+```{r}
+#| label: setup
+
 library(dplyr)
 library(duckplyr)
 library(purrr)
@@ -8,7 +10,7 @@ library(ggplot2)
 library(png)
 ```
 
-Most preprocessing pipelines fail on a subset of scans. For large-scale studies, failure rates of even a few percentage points can amount to dozens of scans. Although there are automated ways of detecting some pipeline failures (such as the metrics covered in @sec-mriqc), the data used to train failure detection algorithms are limited. Automated metrics often miss subtle but critical errors—such as poor spatial normalization to a template, imprecise tissue boundaries during brain extraction, or incorrect alignment between functional and structural scans. For these reasons, manual, visual review remains the gold standard. 
+Most preprocessing pipelines fail on a subset of scans. For large-scale studies, failure rates of even a few percentage points can amount to dozens of scans. Although there are automated ways of detecting some pipeline failures (such as the metrics covered in @sec-mriqc), the data used to train failure detection algorithms are limited. Automated metrics often miss subtle but critical errors---such as poor spatial normalization to a template, imprecise tissue boundaries during brain extraction, or incorrect alignment between functional and structural scans. For these reasons, manual, visual review remains the gold standard. 
 
 As of Release 3.0, a subset of the neuroimaging derivatives have undergone manual QC. Reviewers manually click on boundaries or rate alignments. This kit shows how those ratings are packaged and how they can be used to exclude problematic participants from your analyses.
 
@@ -20,6 +22,7 @@ The Derivative QC metrics are underneath `derivatives/qc`. They consist of four 
 
 ```{bash}
 #| eval: false
+
 $ ls mris/derivatives/qc/
 coordinate.parquet  image.parquet  rating.parquet  session.parquet
 ```
@@ -34,17 +37,20 @@ Let's look through the schema of each table.
 
 This table contains information about the rating session (e.g., helpful for determining rater consistency).
 
-```{r session}
-read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/session.parquet") |> head()
+```{r}
+#| label: session
+
+read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/session.parquet") |>
+  head()
 ```
 
 - `id`: ID of session
 - `step`: ID indicating the kind of target being rated (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L9-L14)
-    - MASK = 0
-    - SPATIAL_NORMALIZATION = 1
-    - SURFACE_LOCALIZATION = 2
-    - FMAP_COREGISTRATION = 3
-    - DTIFIT = 4
+  - MASK = 0
+  - SPATIAL_NORMALIZATION = 1
+  - SURFACE_LOCALIZATION = 2
+  - FMAP_COREGISTRATION = 3
+  - DTIFIT = 4
 - `user`: ID user who was doing to rating (note: user id capturing currently exhibits some errors)
 - `created`: datetime stamp of when the session started
 
@@ -52,7 +58,9 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/session.parquet") |> h
 
 This table contains information about the to-be rated targets. 
 
-```{r image}
+```{r}
+#| label: image
+
 read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   select(-img) |> # just for display purposes, so this webpage is not too big
   head()
@@ -64,31 +72,34 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
 - `file1`: the main source file from which the image was derived (e.g., the name of the mask)
 - `file2`: supplementary file used to make the to-be-rated image (e.g., anatomical underlay)
 - `display`: ID indicating the orientation of the image (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L23-L26)
-    - X = 0
-    - Y = 1
-    - Z = 2
+  - X = 0
+  - Y = 1
+  - Z = 2
 - `step`: ID indicating the kind of target (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L9-L14)
-    - MASK = 0
-    - SPATIAL_NORMALIZATION = 1
-    - SURFACE_LOCALIZATION = 2
-    - FMAP_COREGISTRATION = 3
-    - DTIFIT = 4
+  - MASK = 0
+  - SPATIAL_NORMALIZATION = 1
+  - SURFACE_LOCALIZATION = 2
+  - FMAP_COREGISTRATION = 3
+  - DTIFIT = 4
 - `created`: when the image was created (helpful for determining version of the release)
 
 #### rating
 
 This table contains the ratings given as "overall" scores. They apply to ratings for targets fmap coregistration and dtifit.
 
-```{r rating}
-read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/rating.parquet") |> head()
+```{r}
+#| label: rating
+
+read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/rating.parquet") |>
+  head()
 ```
 
 - `id`: ID of each rating
 - `source_data_issue`: boolean indicating whether the reviewer noticed an issue with the raw data quality
 - `rating`: the rating provided (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L17-L20)
-    - PASS = 0
-    - UNSURE = 1
-    - FAIL = 2
+  - PASS = 0
+  - UNSURE = 1
+  - FAIL = 2
 - img_id: ID of the image that was rated (see image.parquet)
 - session: ID of the rating session (see session.parquet)
 - notes: freeform text used to provide details about the rating
@@ -98,8 +109,13 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/rating.parquet") |> he
 
 This table contains the coordinates that were clicked during reviews, locations indicating some source data issue. These were used to rate the mask, spatial normalization, and surface localization.
 
-```{r coordinate}
-read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/coordinate.parquet") |> head()
+```{r}
+#| label: coordinate
+
+read_parquet_duckdb(
+  "data/pre-surgery/mris/derivatives/qc/coordinate.parquet"
+) |>
+  head()
 ```
 
 - `id`: ID of each clicked coordinate
@@ -118,14 +134,17 @@ Note: rows where the x and y coordinates are NA indicate that the reviewer did n
 Let's see how we can display the rated images. As an example, we'll look one of the spatial normalization images.
 
 ```{r}
-
 # grab images associated with spatial normalization
-spatial_norm_images <- read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
+spatial_norm_images <- read_parquet_duckdb(
+  "data/pre-surgery/mris/derivatives/qc/image.parquet"
+) |>
   filter(step == 1, display == 0) |>
   select(id, img)
 
 # grab image with lots of clicks
-img_with_many_clicks <- read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/coordinate.parquet") |>
+img_with_many_clicks <- read_parquet_duckdb(
+  "data/pre-surgery/mris/derivatives/qc/coordinate.parquet"
+) |>
   filter(!is.na(x)) |>
   semi_join(spatial_norm_images, by = join_by(img_id == id)) |>
   summarize(n_clicks = n(), .by = c(img_id)) |>
@@ -135,7 +154,9 @@ img_with_many_clicks
 
 We're going to need a helper function to convert the img BLOBs into a tibble for display with ggplot.
 
-```{r helper}
+```{r}
+#| label: helper
+
 to_tbl <- function(.i) {
   # apply() already yields hex colours, so they can be handed straight to
   # scale_fill_identity() below; there is no need to split them back into
@@ -153,7 +174,9 @@ to_tbl <- function(.i) {
 
 Now, return to the image.parquet file, do a filter join to get just a single row, select it, apply the helper, and plot.
 
-```{r showimg}
+```{r}
+#| label: showimg
+
 # now show the associated blob
 read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   semi_join(img_with_many_clicks, by = join_by(id == img_id)) |>
@@ -169,7 +192,9 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
 
 By referring back to img.parquet file, we can see metadata about the source file.
 
-```{r imgmeta}
+```{r}
+#| label: imgmeta
+
 read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   semi_join(img_with_many_clicks, by = join_by(id == img_id)) |>
   select(-img)
@@ -181,7 +206,9 @@ These ratings can be used to exclude images from analyses. Here, we show how to 
 
 ```{r}
 # grab all fieldmap images
-fmap_coregistration_images <- read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
+fmap_coregistration_images <- read_parquet_duckdb(
+  "data/pre-surgery/mris/derivatives/qc/image.parquet"
+) |>
   filter(step == 3) |>
   select(id, file1, file2, display)
 
