@@ -8,8 +8,8 @@ wrap = "preserve"
 missing-chunk-labels = false
 
 [formatters]
-r = "air"
 python = "ruff"
+r = "air"
 
 [linters]
 r = "jarl"

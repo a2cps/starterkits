@@ -13,7 +13,8 @@ This document goes over quality checks for each the Functional Testing Case Repo
 ### Load Libraries
 
 ```{r}
-library(shiny)
+#| label: setup
+
 library(forcats)
 library(tidyverse)
 library(here)
@@ -27,6 +28,8 @@ library(gt)
 Write a function to remove columns where all rows have NA, this is will remove duplicate columns for the the Thoracotomy/TKA cohort
 
 ```{r}
+#| label: utils
+
 not_all_na <- function(x) !all(is.na(x))
 ```
 
@@ -44,6 +47,7 @@ We will call this `func`
 # read_csv function results in parsing errors, we will use read.csv instead
 func <- read.csv(here(
   "data",
+  "pre-surgery",
   "functional-testing",
   "raw",
   "functional-testing-2024-11-06.csv"
@@ -92,10 +96,12 @@ func <- func %>%
 Read in data dictionary and remove duplicate field names
 
 ```{r}
+#| label: data-dictionary
 #| message: false
 
 func_dict <- read_csv(here(
   "data",
+  "pre-surgery",
   "functional-testing",
   "raw",
   "functional-testing-Data-Dictionary-2024-11-06.csv"
@@ -564,6 +570,7 @@ tka_func_report %>%
 Save "tka_func" and data dictionary as .csv files in the folder named "reformatted_functional"
 
 ```{r}
+#| label: write
 #| warning: false
 #| eval: false
 
@@ -571,6 +578,7 @@ write_csv(
   tka_func,
   file = here::here(
     "data",
+    "pre-surgery",
     "functional-testing",
     "Reformatted",
     "reformatted_tka_func.csv"
@@ -581,6 +589,7 @@ write_csv(
   func_dict,
   file = here::here(
     "data",
+    "pre-surgery",
     "functional-testing",
     "Reformatted",
     "updated_func_dict.csv"

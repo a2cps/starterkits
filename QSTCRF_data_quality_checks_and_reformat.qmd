@@ -15,7 +15,6 @@ This document goes over quality checks for the QST Case Report Form (CRF). The h
 ```{r}
 #| label: setup
 
-library(shiny)
 library(forcats)
 library(tidyverse)
 library(here)
@@ -39,18 +38,21 @@ not_all_na <- function(x) !all(is.na(x))
 Read in QST data, We will call this qst
 
 ```{r}
+#| label: load
 #| message: false
 
-qst <- read.csv(here("data", "qst", "raw", "qst-2024-11-06.csv")) %>% retype()
+qst <- read.csv(here("data", "pre-surgery", "qst", "raw", "qst-2024-11-06.csv")) %>% retype()
 ```
 
 We will also read in Imaging data since the information on recalibration is recorded in the Imaging CRF. We will later merge field names related to recalibration with the imaging data.
 
 ```{r}
+#| label: load2
 #| message: false
 
 tka_img_4_qst <- read.csv(here(
   "data",
+  "pre-surgery",
   "imaging",
   "raw",
   "imaging-2024-11-06.csv"
@@ -115,10 +117,12 @@ qst <- qst %>%
 Read in data dictionary and remove duplicate field names
 
 ```{r}
+#| label: data-dictionary
 #| message: false
 
 qst_dict <- read_csv(here(
   "data",
+  "pre-surgery",
   "qst",
   "raw",
   "qst-Data-Dictionary-2024-11-06.csv"
@@ -1704,17 +1708,18 @@ qst_report %>%
 Save "tka_qst" and data dictionary as .csv files in the folder named "reformatted_QST"
 
 ```{r}
+#| label: write
 #| warning: false
 #| eval: false
 
 write_csv(
   tka_qst,
-  file = here::here("data", "QST", "Reformatted", "reformatted_tka_qst.csv")
+  file = here::here("data", "pre-surgery", "qst", "Reformatted", "reformatted_tka_qst.csv")
 )
 
 write_csv(
   qst_dict,
-  file = here::here("data", "QST", "Reformatted", "updated_qst_dict.csv")
+  file = here::here("data", "pre-surgery", "qst", "Reformatted", "updated_qst_dict.csv")
 )
 ```
 
@@ -1727,10 +1732,10 @@ thor_qst <- qst
 We will also read in Imaging data since the information on recalibration is recorded in the Imaging CRF. We will later merge field names related to recalibration with the imaging data.
 
 ```{r}
-#| message: false
 
 thor_img_4_qst <- read_csv(here(
   "data",
+  "pre-surgery",
   "imaging",
   "raw",
   "imaging-2024-11-06.csv"
@@ -3639,16 +3644,17 @@ m2qst_report %>%
 Save "thor_qst" and data dictionary as .csv files in the folder named "reformatted_QST"
 
 ```{r}
+#| label: write2
 #| warning: false
 #| eval: false
 
 write_csv(
   thor_qst,
-  file = here::here("data", "qst", "Reformatted", "reformatted_thor_qst.csv")
+  file = here::here("data", "pre-surgery", "qst", "Reformatted", "reformatted_thor_qst.csv")
 )
 
 write_csv(
   qst_dict,
-  file = here::here("data", "qst", "Reformatted", "updated_qst_dict.csv")
+  file = here::here("data", "pre-surgery", "qst", "Reformatted", "updated_qst_dict.csv")
 )
 ```

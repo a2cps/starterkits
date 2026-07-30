@@ -12,9 +12,11 @@ This starter kit walks through the "Brain Age" outputs that have been derived fr
 #| label: setup
 
 library(readr)
+library(fs)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+library(stringr)
 ```
 
 Fundamentally, `brainager` calculations are about producing an estimated age based on measurable characteristics of a brain image, such as regional variations in gray matter density. The difference between estimated and chronological age is often referred to in the literature as the "brain age gap" (BAG) or "predicted age difference" (PAD), and is usually expressed as estimated minus chronological age. This value is often interpreted as an indicator of brain health, serving as a potential biomarker for neurodegenerative disease, cognitive decline, or general biological aging. For a comprehensive overview of Brain Age, see [Cole and Franke (2017)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5573489/) and the [brainageR GitHub Repository](https://github.com/james-cole/brainageR).
@@ -85,14 +87,14 @@ Here is an example of how these files could be loaded using `R`.
 #| label: files
 
 # list all files
-files <- fs::dir_ls(
+files <- dir_ls(
   "data/pre-surgery/mris/derivatives/brainager",
   glob = "*T1w.tsv",
   recurse = TRUE
 )
 
 # read in all tsvs
-ages <- readr::read_tsv(files)
+ages <- read_tsv(files)
 ages
 ```
 
@@ -102,8 +104,8 @@ The column `File` identifies the anatomical image that was used for to make the 
 #| label: ages-with-sub
 
 ages_with_sub <- ages |>
-  dplyr::mutate(
-    sub = stringr::str_extract(File, "[[:digit:]]{5}") |> as.integer(),
+  mutate(
+    sub = str_extract(File, "[[:digit:]]{5}") |> as.integer(),
   )
 ages_with_sub
 ```

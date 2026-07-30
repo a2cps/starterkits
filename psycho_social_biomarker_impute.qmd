@@ -13,10 +13,8 @@ This document goes over score calculation and missing data imputation for each p
 ### Load Libraries
 
 ```{r}
-library(shiny)
 library(tidyverse)
 library(ggplot2)
-library(plotly)
 library(GGally)
 library(here)
 library(hablar)
@@ -35,6 +33,7 @@ We will call this psy_soc
 
 psy_soc <- read.csv(here(
   "data",
+  "pre-surgery",
   "psychosocial",
   "raw",
   "psychosocial-2024-11-06.csv"
@@ -87,6 +86,7 @@ Read in Data dictionary and remove duplicate field name
 
 psy_soc_dict <- read_csv(here(
   "data",
+  "pre-surgery",
   "psychosocial",
   "raw",
   "psychosocial-Data-Dictionary-2024-11-06.csv"
@@ -897,6 +897,7 @@ psy_soc_dict <- psy_soc_dict %>%
 Create a folder for recoded BPI data and save "bpi_bpdy_map" and updated data dictionary as .csv files
 
 ```{r}
+#| label: write
 #| warning: false
 #| eval: false
 
@@ -904,7 +905,8 @@ write_csv(
   bpi_body_map,
   file = here::here(
     "data",
-    "Psychosocial",
+    "pre-surgery",
+    "psychosocial",
     "Reformatted",
     "reformatted_bpi_body_map.csv"
   )
@@ -913,7 +915,8 @@ write_csv(
   psy_soc_dict,
   file = here::here(
     "data",
-    "Psychosocial",
+    "pre-surgery",
+    "psychosocial",
     "Reformatted",
     "updated_psy_soc_dictionary.csv"
   )
