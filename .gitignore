@@ -15,3 +15,5 @@ data/
 # pixi environments
 .pixi/*
 !.pixi/config.toml
+
+/.luarc.json

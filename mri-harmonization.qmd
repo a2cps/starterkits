@@ -1,0 +1,70 @@
+---
+filters:
+  - section-bib
+---
+
+# MRI Harmonization {#sec-mri-harmonization}
+
+Here, "harmonization" refers to the general effort to remove undesired effects related to sites/scanners in multisite data---in this case, the A2CPS imaging data. Part of imaging harmonization is the creation of "harmonized" MRI protocols across different scanners, a task that MCC1 carried out in the initial period of the A2CPS project, and that was also extended to MCC2 sites during their startup. On this page, the focus is on steps beyond that initial setup period. 
+
+There are several general ways in which to address site/scanner related effects:
+
+1. Processing based standardization: the standard steps used for preprocessing will also harmonize to some extent, e.g. when normalizing scans into an MNI reference space and carrying out various steps like susceptibility distortion correction.
+2. Statistical adjustments for site/scanner: once measures are extracted, they can be adjusted; for example, the ComBat method is widely used in omics, and has been used on scalar imaging measures.  Linear mixed models can also be helpful, as can machine learning approaches.
+3. Reference-related adjustments: by scanning "travelling subjects" across all the scanners, a dataset can be created that can be used to learn expected scanner specific variations; scans on phantoms can also be used. In A2CPS, our sample of traveling subjects (one and a half) is too limited to make this a viable option, and our phantom scans are collected with a different set of protocols than the study scans, also limiting their use.
+4. Other scan data adjustments: a variation of the above adjustments is to not only account for, but also remove, site/scanner effects. One T1w-specific adjustment is RAVEL (Removal of Artificial Voxel Effect by Linear regression), which uses control voxels that are not expected to show biological variability as a basis to adjust all image voxels. Some machine learning approaches (e.g. deep learning) may be able to adjust any imaging data if given suitable reference samples, in essence transforming all scanner data into a "neutral" or "reference" scanner space, in ways beyond what can be modelled statistically.
+
+The following bibliography includes results related to (2) and (4) above, and a separate bibliography related to (3) is also appended after this.
+
+## Bibliography
+
+### Reviews
+
+::: {#refs-reviews bibliography="bib/harmonization-reviews.bib"}
+:::
+
+### Other
+
+These should all include MRI, but some might not be specific to the brain. See also the "other" section below for radiomics.
+
+::: {#refs-methods bibliography="bib/harmonization-methods.bib"}
+:::
+
+### Denoising
+
+Denoising outside the context of harmonization, including retrospective motion correction. Currently includes reviews/overviews only.
+
+::: {#refs-denoising bibliography="bib/harmonization-denoising.bib"}
+:::
+
+### Specifics of Scanner Differences
+
+There is some work in the literature on head coil differences, though not specific to the 32 vs. 64 channel models used in A2CPS; also, papers that are not comparatively recent will predate multiband imaging.
+
+::: {#refs-scanner-differences bibliography="bib/harmonization-scanner-differences.bib"}
+:::
+
+### Radiomics, etc.
+
+Radiomics is technically quantitative imaging, but often concerned with things like tumors that may not translate to our study? [Introduction to Radiomics](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9374044/&ved=2ahUKEwil8Y2SxLOGAxVqvokEHRY1B20QFnoECBoQAw&usg=AOvVaw0XxNPCAg_mHyEQpsLZJx1I) However, these articles do all include MRI, and some (e.g. Ma et al. 2023) may even use familiar techniques like VBM or similar. "Preclinical" is sometimes used as a way to describe animal imaging.
+
+::: {#refs-radiomics bibliography="bib/harmonization-radiomics.bib"}
+:::
+
+### Traveling Subject
+
+Harmonization via traveling subjects would have been a great option to consider in the design stage, but it seems likely to require more travelers than we have (our often non-standard travelling human scans due to their use as prototype cases might also be an impediment). However, it's possible new public resources might help here? (e.g. Warrington et al. 2025)
+
+::: {#refs-traveling-subject bibliography="bib/harmonization-traveling-subject.bib"}
+:::
+
+### Statistics
+
+Options that are not conventional harmonization but touch on similar issues.
+
+::: {#refs-statistics bibliography="bib/harmonization-statistics.bib"}
+:::
+
+## Search Notes
+
+[Good starting point](https://www.connectedpapers.com/search?q=mri%20harmonization)
