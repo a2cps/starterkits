@@ -1,0 +1,131 @@
+---
+authors:
+  - name: Briha Ansari
+  - name: Patrick Sadil
+---
+
+# Functional Testing {#sec-functional-testing}
+
+Functional testing (also called performance-based testing) is an objective measure of a participants physical functionality and complements self-reported pain and disability. Before surgery, A2CPS collects a short battery of standardized functional tasks, it records the pain a participant reports right before and right after each task. The change in pain across a task gives us a measure of **movement-evoked pain (MEP)**, i.e., pain that is provoked by movement rather than pain at rest. MEP is increasingly recognized as its own meaningful construct.
+
+The battery is tailored to each surgical cohort:
+
+- **Knee arthroplasty (TKA) cohort**: lower-limb function is assessed with two tasks.
+  - The **10-meter walk test (10MWT)**, a standard measure of gait speed. Participants rate their pain before and after walking, and both the walk time and the pain ratings are recorded.
+  - The **5-times sit-to-stand test (5TSTS)**, which measures lower-limb strength and functional mobility by timing five repetitions of rising from a chair. Pain is again rated before and after the task.
+
+
+- **Thoracic (thoracic surgery) cohort**: since the surgical site is the chest wall, function here is assessed with a **deep breathing and coughing task**, again with pain rated before and after the maneuver.
+
+The pain ratings are double-entered (each rating is recorded twice) to guard against errors. The reformatted data also comprises derived MEP scores.
+
+## Starting Project
+
+### Locate Data
+
+Where are the relevant files?
+
+```bash
+$ {{< var release.root >}}/{{< var release.dir >}}/functional-testing/reformatted
+```
+
+The reformatted data are split by cohort: `reformatted_tka_func.csv` (knee, with the walk and sit-to-stand measures) and `reformatted_thor_func.csv` (thoracic, with the deep breathing and coughing measures). Each one comes with an updated data dictionary, `updated_func_dict.csv`, which lists the original REDCap field names alongside the fields added during cleaning.
+
+### Extract Data
+
+Here we use the [`tidyverse`](https://www.tidyverse.org/), and we focus on the TKA cohort, which has the two lower-limb tasks.
+
+```{r setup}
+library(tidyverse)
+```
+
+```{r load}
+func <- read_csv("data/pre-surgery/functional-testing/reformatted/reformatted_tka_func.csv")
+```
+
+The two derived movement-evoked pain scores are `mep_walk` (10-meter walk) and `mep_5tsts` (5-times sit-to-stand). Each one is the final pain rating minus the initial pain rating for that task, so higher values mean more pain was evoked by the movement.
+
+```{r peek}
+func |>
+  select(record_id, walk10initialpainscl, walk10finalpainscl, mep_walk,
+         tstsprepainscl, tstspostpainscl, mep_5tsts) |>
+  head()
+```
+
+Next, check the data types and make sure the numeric variables are stored as numbers and the categorical variables are not accidentally stored as numeric. `glimpse()` gives us a quick column-by-column view.
+
+```{r glimpse}
+glimpse(func)
+```
+
+### Data Quality
+
+The reformatted files have already been curated, following are some of the important steps we used:
+
+- **Test records removed.** Placeholder records used during site setup (e.g., `record_id` values like `10000` or `15000`) are dropped.
+- **Completed tasks only, latest attempt.** Only rows marked complete (`functional_testing_complete == 2`) are kept, and where a task was repeated, we kept the most recent repeat instance, so we end up with one row per participant and visit.
+- **Movement-evoked pain needs both endpoints.** `mep_walk` and `mep_5tsts` are only defined when both the initial and the final pain rating are present, and otherwise they are missing. So expect a modest number of missing MEP values even among completed tasks.
+- **Error report.** The cleaning workflow produces an error report that flags discrepancies between the double-entered pain ratings and other internal inconsistencies (for example, a task marked complete but missing a required pain rating).
+### Cross-Modality Links
+
+Every file includes `record_id` and `guid`, which are unique participant identifiers used to link their records across other A2CPS modalities (imaging, QST, psychosocial, biospecimen, etc.). To combine functional data with another modality, we join on the shared identifiers:
+
+```{r cross-modality}
+#| eval: false
+inner_join(func, other_modality, by = intersect(names(func), names(other_modality)))
+```
+
+## Exploratory data analysis
+
+Both tasks evoke pain through movement. If walking and standing provoke pain through a common mechanism, then a participant who is sensitive to one should also be sensitive to the other, and the two MEP scores should track together.
+
+We first compare the two tasks. On average, sit-to-stand evokes noticeably more pain than the 10-meter walk (mean `mep_5tsts` ≈ 1.85 vs. `mep_walk` ≈ 0.67), which makes sense since rising from a chair loads the knee more than walking on level ground does.
+
+```{r summaries}
+func |>
+  summarise(
+    across(
+      c(mep_walk, mep_5tsts),
+      list(n = ~sum(!is.na(.x)), mean = ~mean(.x, na.rm = TRUE), sd = ~sd(.x, na.rm = TRUE))
+    )
+  )
+```
+
+Since both scores are bounded, discrete difference scores rather than smooth continuous measures, a spearman (rank-based) correlation is a better choice here than pearson. We add `use = "complete.obs"` to ignore rows that are missing either score.
+
+```{r correlation}
+cor(func$mep_walk, func$mep_5tsts, method = "spearman", use = "complete.obs")
+```
+
+The correlation is positive but modest (≈ 0.25). So the two tasks are related, but not highly correlated i.e., each one captures a somewhat different aspect of movement-evoked pain. For MEP, it is worth looking at both rather than treating one as a surrogate for the other. 
+Visualize the relationship with a boxplot of sit-to-stand MEP grouped by walk MEP.
+
+```{r plot}
+func |>
+  filter(!is.na(mep_walk), !is.na(mep_5tsts)) |>
+  ggplot(aes(x = factor(mep_walk), y = mep_5tsts, fill = factor(mep_walk))) +
+  geom_boxplot(show.legend = FALSE) +
+  labs(
+    title = "Sit-to-stand movement-evoked pain by 10-meter walk movement-evoked pain",
+    x = "Walk MEP (final minus initial pain)",
+    y = "5TSTS MEP (post minus pre pain)"
+  ) +
+  theme_minimal()
+```
+
+## Considerations While Working on the Project
+
+### Data Generation
+
+Functional tasks are administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the walk course, the sit-to-stand protocol, the deep breathing and coughing maneuver, and the timing of the pre- and post-task pain ratings. Raw responses are captured in REDCap, and the pain ratings are double-entered to reduce error. The steps that turn the REDCap export into the reformatted files (filtering, deduplication, error checking, and computing the MEP derivatives) are documented in the cleaning workflow that comes with the release (`FuntionalCRF_data_quality_checks_and_reformat.html`).
+
+### Other
+
+- **Movement-evoked pain, not resting pain.** The MEP derivatives are change scores tied to a specific task, so they behave differently from resting or clinical pain measures.
+- **Cohort-specific batteries.** The TKA and thoracic cohorts do not share tasks, so `mep_walk` and `mep_5tsts` show up only for the TKA cohort, while the thoracic file carries the deep breathing and coughing measures instead.
+- **Sample size after merging.** Joining with other modalities can shrink the effective sample size, so the counts are worth a glance after each merge.
+- **Quality control.** The cleaning and derivative code has been reviewed, and a derivative can be reproduced from the raw pain ratings using the accompanying workflow.
+
+### Citations
+
+{{< include _snippets/a2cps_citations.qmd >}}
