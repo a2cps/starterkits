@@ -1,0 +1,145 @@
+---
+authors:
+  - name: Briha Ansari
+  - name: Patrick Sadil
+---
+
+# Demographics {#sec-demographics}
+
+The demographics form captures the descriptive and background characteristics of each A2CPS participant: age, sex, gender identity, race and ethnicity, education, employment, marital status, household income, disability status, dominant hand, height and weight, pain duration, and a few COVID-related items. Almost every A2CPS analysis draws on these fields so demographics is often the first modality a project touches. Participants also belong to one of two surgical cohorts (knee arthroplasty and thoracic surgery), and since these cohorts differ systematically in age and body composition, the demographic variables matter when we interpret cohort comparisons.
+
+Many fields are coded categorical values (for example, `sex` is `1 = Male`, `2 = Female`), with the codes defined in the accompanying data dictionary. In addition to the raw fields, the cleaning workflow computes a validated **body mass index (BMI)** from height and weight, and attaches a set of **data-quality flags** that mark implausible or logically inconsistent values so that we can decide how to handle them.
+
+## Starting Project
+
+### Locate Data
+
+Where are the relevant files?
+
+```bash
+$ {{< var release.root >}}/{{< var release.dir >}}/demographics/reformatted
+```
+
+The reformatted data are in a single file, `reformatted_demo.csv` (one row per participant), together with `demo_dict_updated.csv`. The dictionary is essential here, since it lists the coded values for every categorical field (`sex`, `genident`, `ethnic`, `edulevel`, `empstat`, `maristat`, `incmlvl`, and so on) alongside the fields added during cleaning.
+
+### Extract Data
+
+The file is a plain CSV, and here we use the [`tidyverse`](https://www.tidyverse.org/).
+
+```{r setup}
+library(tidyverse)
+```
+
+```{r load}
+demo <- read_csv("data/pre-surgery/demographics/reformatted/reformatted_demo.csv")
+```
+
+Since the categorical fields are stored as numeric codes, using the data dictionary as a reference is highly recommended (`demo_dict_updated.csv`).
+
+```{r dict}
+demo_dict <- read_csv("data/pre-surgery/demographics/reformatted/demo_dict_updated.csv")
+
+demo_dict |>
+  filter(field_name == "sex") |>
+  select(field_name, select_choices_or_calculations)
+```
+
+Next, a quick look at the continuous fields and the cohort label:
+
+```{r peek}
+demo |>
+  select(record_id, cohort, age, sex, bmi_kg_m2, paindur) |>
+  head()
+```
+
+`glimpse()` confirms the data types. Note that the coded categoricals come in as numbers, so we recode them to labelled factors before summarizing or plotting.
+
+```{r glimpse}
+demo |>
+  select(record_id, cohort, age, sex, edulevel, bmi_kg_m2, paindur) |>
+  glimpse()
+```
+
+### Data Quality
+
+The reformatted file has already been cleaned. It keeps the implausible values and flags them instead of dropping them, which lets the end user decide how to handle each flagged value. The flag columns are:
+
+- **`bmi_measurement_issue`** and **`height_weight_check`**: these mark BMI values built from missing or implausible height and weight. Most records are `"Valid Range"`, but a small number are flagged. The raw `bmi_kg_m2` column still contains extreme values (as low as 2 and as high as 64).
+- **`paindur_outlier_flag`**: flags pain-duration values that are zero or negative (~200 records), extreme statistical outliers (~80), or logically impossible (pain lasting longer than the participant has been alive).
+- **`age_outlier_flag`** and **`age_pain_logic_error`**: these mark missing ages and cases where the reported pain duration exceeds the participant's total months of life.
+- **`covid_logic_error`**: flags internally inconsistent COVID responses (e.g., a "No" with a follow-up detail still answered).
+- **`dom_hand_status`** and **`incmlvl_clean`**: cleaned, human-readable versions of dominant hand and income level.
+
+It helps to tally a flag first and see how many records get affected:
+
+```{r qc}
+demo |>
+  count(bmi_measurement_issue)
+```
+
+### Cross-Modality Links
+
+Every file includes `record_id` and `guid`, which uniquely identify a participant and let us link demographics to other A2CPS modalities. Since demographics is almost always used as covariates for another modality, the typical join attaches these background fields to a primary analysis table:
+
+```{r cross-modality}
+#| eval: false
+inner_join(other_modality, demo, by = intersect(names(other_modality), names(demo)))
+```
+
+## Exploratory data analysis
+
+Since the two surgical cohorts are recruited separately, a useful way to get oriented is to compare their basic demographics, because the differences here shape the interpretation of cohort comparisons. We look at age and BMI, and we use the quality flags to keep only the analysis-ready BMI values.
+
+```{r prep}
+demo_clean <- demo |>
+  mutate(
+    cohort = factor(cohort),
+    bmi = if_else(bmi_measurement_issue == "Valid Range", bmi_kg_m2, NA_real_)
+  )
+
+demo_clean |>
+  group_by(cohort) |>
+  summarise(
+    n          = n(),
+    age_mean   = mean(age, na.rm = TRUE),
+    bmi_mean   = mean(bmi, na.rm = TRUE)
+  )
+```
+
+As expected, the knee (TKA) cohort is both older and heavier on average (age ≈ 65 vs. 60; BMI ≈ 31 vs. 29), which fits the usual clinical profile of knee-arthroplasty candidates. Let's look at the full distributions with side-by-side boxplots.
+
+```{r plot-age}
+ggplot(demo_clean, aes(x = cohort, y = age, fill = cohort)) +
+  geom_boxplot(show.legend = FALSE) +
+  labs(title = "Age by cohort", x = NULL, y = "Age (years)") +
+  theme_minimal()
+```
+
+```{r plot-bmi}
+demo_clean |>
+  filter(!is.na(bmi)) |>
+  ggplot(aes(x = cohort, y = bmi, fill = cohort)) +
+  geom_boxplot(show.legend = FALSE) +
+  labs(title = "BMI by cohort (quality-flagged values removed)",
+       x = NULL, y = expression(BMI~(kg/m^2))) +
+  theme_minimal()
+```
+
+The takeaway for planning is that the cohorts are not demographically interchangeable, so age and BMI are natural covariates to consider whenever we pool or compare them.
+
+## Considerations While Working on the Project
+
+### Data Generation
+
+Demographic information is self-reported by participants at baseline through REDCap, following the A2CPS Manual of Procedures. Height and weight are used to derive BMI. The steps that turn the REDCap export into the reformatted file (recoding, BMI computation, and the plausibility and logic checks that populate the flag columns) are documented in the cleaning workflow that comes with the release.
+
+### Other
+
+- **Coded fields.** Most categorical fields are stored as numbers, and the coding differs from field to field, so it helps keep `demo_dict_updated.csv` handy.
+- **Sparse Data.** A few fields have very sparse levels (for example, the handful of Unknown and Intersex responses in `sex`), which can make those subgroups unstable.
+- **Self-report.** These fields are all self-reported at baseline, so the usual survey caveats apply, such as some missingness, rounding in height, weight, and pain duration, and bias in items like income.
+- **Quality control.** The cleaning pipeline has been reviewed, and the flag columns serve as its record, showing which values were questioned and why. The checks can be re-derived from the accompanying cleaning workflow.
+
+### Citations
+
+{{< include _snippets/a2cps_citations.qmd >}}
