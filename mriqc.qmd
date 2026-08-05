@@ -65,7 +65,7 @@ For a detailed description of these metrics, please see the official MRIQC docum
 One strength of MRIQC is that the pipeline automatically stores the metrics in a centralized database. The centralized database is available via the [MRIQC Web API](https://mriqc.nimh.nih.gov/). An example of interacting with the API can be found in https://github.com/psadil/mriqc-export. In this kit, the metrics have already been downloaded and stored in a set parquet files. Let's use that reference set to rate A2CPS. One of the most important determiners of quality is motion, so let's focus on the average Framewise Displacement. 
 
 ```{r}
-#| label: loadapi
+#| label: load-api
 
 all_bold <- read_parquet_duckdb(dir_ls(
   "data/mriqcwebapi/bold",

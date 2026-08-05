@@ -94,7 +94,7 @@ Clearly, there are groupings in the data. These groupings could partly be driven
 
 ::: {#fig-pairs2}
 ```{r}
-#| label: pairs2
+#| label: pairs-thickness
 
 a2009s |>
   filter(between(SurfArea, 4000, 6000), between(GrayVol, 10000, 20000)) |>

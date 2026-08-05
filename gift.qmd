@@ -125,7 +125,7 @@ Many analyses will be based on either these spatial maps or timecourses\ [but se
 First, define a helper function for estimating the rolling correlation. We'll use a window of 25 timepoints, which, given the 0.8 second Repetition Time, corresponds to 20 seconds.
 
 ```{r}
-#| label: helpercor
+#| label: helper-cor
 
 do_cor <- function(x, y, width = 25) {
   rho <- roll_cor(x, y, width = width)
@@ -136,7 +136,7 @@ do_cor <- function(x, y, width = 25) {
 Next, add a helper function for calculating the total correlation:
 
 ```{r}
-#| label: helpertimecourse
+#| label: helper-timecourse
 
 get_total_correlation <- function(file) {
   timecourse <- readNifti(file)
@@ -174,7 +174,7 @@ d <- crossing(
 And now, plot.
 
 ```{r}
-#| label: mainplot
+#| label: main-plot
 #| fig-cap: "Median Total Connectivity. Total connectivity is the sum of the atanh of all pairs of correlations. The median is taken across scans."
 
 d |>

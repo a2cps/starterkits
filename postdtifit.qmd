@@ -99,7 +99,7 @@ The tabular data is in `diffusion_regional_stats`. As usual, the tables are in [
 Next, peak at the table. 
 
 ```{r}
-#| label: loadstats
+#| label: load-stats
 
 diffusion_regional_stats <- read_parquet_duckdb(
   "data/pre-surgery/mris/derivatives/postdtifit/diffusion_regional_stats"

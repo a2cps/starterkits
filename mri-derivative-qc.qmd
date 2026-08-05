@@ -38,7 +38,7 @@ Let's look through the schema of each table.
 This table contains information about the rating session (e.g., helpful for determining rater consistency).
 
 ```{r}
-#| label: session
+#| label: qc-session
 
 read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/session.parquet") |>
   head()
@@ -59,7 +59,7 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/session.parquet") |>
 This table contains information about the to-be rated targets. 
 
 ```{r}
-#| label: image
+#| label: qc-image
 
 read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   select(-img) |> # just for display purposes, so this webpage is not too big
@@ -88,7 +88,7 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
 This table contains the ratings given as "overall" scores. They apply to ratings for targets fmap coregistration and dtifit.
 
 ```{r}
-#| label: rating
+#| label: qc-rating
 
 read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/rating.parquet") |>
   head()
@@ -110,7 +110,7 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/rating.parquet") |>
 This table contains the coordinates that were clicked during reviews, locations indicating some source data issue. These were used to rate the mask, spatial normalization, and surface localization.
 
 ```{r}
-#| label: coordinate
+#| label: qc-coordinate
 
 read_parquet_duckdb(
   "data/pre-surgery/mris/derivatives/qc/coordinate.parquet"
@@ -175,7 +175,7 @@ to_tbl <- function(.i) {
 Now, return to the image.parquet file, do a filter join to get just a single row, select it, apply the helper, and plot.
 
 ```{r}
-#| label: showimg
+#| label: show-image
 
 # now show the associated blob
 read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
@@ -193,7 +193,7 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
 By referring back to img.parquet file, we can see metadata about the source file.
 
 ```{r}
-#| label: imgmeta
+#| label: image-metadata
 
 read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
   semi_join(img_with_many_clicks, by = join_by(id == img_id)) |>

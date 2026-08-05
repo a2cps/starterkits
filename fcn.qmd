@@ -158,7 +158,7 @@ subs_with_all_runs_ok <- subs_with_all_runs |>
 Use this to filter the connectivity results. We'll select just one of the smaller DiFuMo atlases\ [@dadi_fine_2020]. As before, we'll stick with the empirical estimator.
 
 ```{r}
-#| label: fcn
+#| label: fcn-nested
 
 fcn <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
   filter(atlas == "difumo_dimension-64_resolution-2mm") |>

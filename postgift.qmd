@@ -43,7 +43,7 @@ The tabular data comprise [parquet files](https://parquet.apache.org/) that have
 Let's take a look at just the amplitudes.
 
 ```{r}
-#| label: loadfalff
+#| label: load-falff
 
 amplitude <- read_parquet_duckdb(
   dir_ls(

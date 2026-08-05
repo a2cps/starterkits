@@ -121,7 +121,7 @@ tribble(
 The following table may be used for mapping across datatypes.
 
 ```{r}
-#| label: visitsmapping
+#| label: visits-mapping
 #| echo: false
 
 tribble(

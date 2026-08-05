@@ -40,7 +40,7 @@ The kits are read as much as they are run, so the code is part of the prose. Ple
 - **Prefer current `dplyr`/`tidyr` idiom** over the superseded forms: `slice_max()` over `top_n()`, `across()` over `mutate_all()`, `.default =` over a trailing `TRUE ~`, `if_else()` over `ifelse()`, `drop_na()` over `na.omit()`, `separate_wider_delim()` over `separate()`, and `pick()` over the magrittr `select(., ...)`.
 - **Write anonymous functions as `\(x)`**, not as a `~ .x` formula.
 - **Set axis titles with `labs()`**, not `xlab()`/`ylab()`.
-- **Label every chunk**, in kebab-case. Avoid labels that shadow a function name (`filter`, `image`, `session`); the label ends up in figure filenames and error messages.
+- **When you label a chunk, use kebab-case**, and pick a name that describes what the chunk does. Labels end up in figure filenames and error messages, so avoid ones that shadow a function (`filter`, `image`, `session`) or that run words together (`loadfalff`). Labelling is not required --- `missing-chunk-labels` is switched off in [.panache.toml](.panache.toml) --- but a chunk that produces a figure is worth naming, because otherwise its output is `unnamed-chunk-N-1.png` and the `N` shifts whenever a chunk is added above it.
 - **Reach files under `data/` with `here()`** rather than a relative path, so a chunk works regardless of where it is run from.
 - **Use a plain fence for code that only illustrates** a path or command. See [Code blocks and shortcodes](#code-blocks-and-shortcodes) --- an executable cell with `#| eval: false` looks equivalent but silently breaks `{{{< var >}}}` shortcodes.
 

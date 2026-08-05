@@ -54,7 +54,7 @@ head(fslanat)
 In addition to subcortical volumetric information, that table contains a few fields related to the overall size of the brain (`t1_to_mni_scaling`, `t1_space_orig_volume`, `t1_space_mni_volume`). Drop those fields. To make it easier to join with FreeSurfer values, we'll also unpivot the table into a wider format, and extract information about the hemisphere.
 
 ```{r}
-#| label: fsltidy
+#| label: fsl-tidy
 
 subcort_fsl <- fslanat |>
   select(-starts_with("t1_")) |>
@@ -75,7 +75,7 @@ head(subcort_fsl)
 Now, grab the equivalent information from FreeSurfer.
 
 ```{r}
-#| label: freesurfer
+#| label: subcort-freesurfer
 
 subcort_freesurfer <- read_tsv(
   "data/pre-surgery/mris/derivatives/freesurfer/aseg.tsv",
