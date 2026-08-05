@@ -374,7 +374,7 @@ br_report |>
 
 #### Save:
 
-Save "tka_bio" and data dictionary as .csv files in the folder named "Reformatted"
+Save "tka_bio" and data dictionary as .csv files in the folder named "reformatted"
 
 ```{r}
 #| label: write
@@ -386,7 +386,7 @@ write_csv(
     "data",
     "pre-surgery",
     "blood-draw",
-    "Reformatted",
+    "reformatted",
     "reformatted_tka_bio.csv"
   )
 )
@@ -397,7 +397,7 @@ write_csv(
     "data",
     "pre-surgery",
     "blood-draw",
-    "Reformatted",
+    "reformatted",
     "updated_bio_dict.csv"
   )
 )
@@ -577,7 +577,7 @@ tbr_report |>
 
 #### Save:
 
-Save "thor_bio" and data dictionary as .csv files in the folder named "Reformatted"
+Save "thor_bio" and data dictionary as .csv files in the folder named "reformatted"
 
 ```{r}
 #| eval: false
@@ -586,15 +586,22 @@ write_csv(
   thor_bio,
   file = here(
     "data",
+    "pre-surgery",
     "blood-draw",
-    "Reformatted",
+    "reformatted",
     "reformatted_thor_bio.csv"
   )
 )
 
 write_csv(
   bio_dict,
-  file = here("data", "blood-draw", "Reformatted", "updated_bio_dict.csv")
+  file = here(
+    "data",
+    "pre-surgery",
+    "blood-draw",
+    "reformatted",
+    "updated_bio_dict.csv"
+  )
 )
 ```
 
@@ -632,7 +639,7 @@ tka_meds <- tka_meds |>
 
 #### Save:
 
-Save "tka_meds" and data dictionary as .csv files in the folder named "Reformatted"
+Save "tka_meds" and data dictionary as .csv files in the folder named "reformatted"
 
 ```{r}
 #| eval: false
@@ -641,8 +648,9 @@ write_csv(
   tka_meds,
   file = here(
     "data",
+    "pre-surgery",
     "blood-draw",
-    "Reformatted",
+    "reformatted",
     "reformatted_tka_meds.csv"
   )
 )
@@ -682,7 +690,7 @@ thor_meds <- thor_meds |>
 
 #### Save:
 
-Save "thor_meds" and data dictionary as .csv files in the folder named "Reformatted"
+Save "thor_meds" and data dictionary as .csv files in the folder named "reformatted"
 
 ```{r}
 #| eval: false
@@ -691,8 +699,9 @@ write_csv(
   thor_meds,
   file = here(
     "data",
+    "pre-surgery",
     "blood-draw",
-    "Reformatted",
+    "reformatted",
     "reformatted_thor_meds.csv"
   )
 )

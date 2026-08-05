@@ -907,7 +907,7 @@ write_csv(
     "data",
     "pre-surgery",
     "psychosocial",
-    "Reformatted",
+    "reformatted",
     "reformatted_bpi_body_map.csv"
   )
 )
@@ -917,7 +917,7 @@ write_csv(
     "data",
     "pre-surgery",
     "psychosocial",
-    "Reformatted",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -981,8 +981,9 @@ write_csv(
   bpi_body_pain,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_bpi_body_pain.csv"
   )
 )
@@ -990,8 +991,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -1105,8 +1107,9 @@ write_csv(
   bpi_pain_intrf,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_bpi_pain_intrf.csv"
   )
 )
@@ -1115,8 +1118,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -1347,8 +1351,9 @@ write_csv(
   koos,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_koos.csv"
   )
 )
@@ -1356,8 +1361,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -1546,8 +1552,9 @@ write_csv(
   gad,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_gad.csv"
   )
 )
@@ -1555,8 +1562,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -1724,8 +1732,9 @@ write_csv(
   phq,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_phq.csv"
   )
 )
@@ -1733,8 +1742,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -1900,8 +1910,9 @@ write_csv(
   fabq,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_fabq.csv"
   )
 )
@@ -1909,8 +1920,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -2075,8 +2087,9 @@ write_csv(
   pcs,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_pcs.csv"
   )
 )
@@ -2084,8 +2097,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -2263,8 +2277,9 @@ write_csv(
   ssi,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_ssi.csv"
   )
 )
@@ -2272,8 +2287,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -2572,8 +2588,9 @@ write_csv(
   pdq,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_pdq.csv"
   )
 )
@@ -2581,8 +2598,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -2698,8 +2716,9 @@ write_csv(
   sleep_dur,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_sleep_dur.csv"
   )
 )
@@ -2707,8 +2726,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -3200,8 +3220,9 @@ write_csv(
   prs,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_prs.csv"
   )
 )
@@ -3209,8 +3230,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -3450,14 +3472,21 @@ Save "misci" and updated data dictionary as .csv files in the folder named "refo
 
 write_csv(
   misci,
-  here("data", "Psychosocial", "Reformatted", "reformatted_misci.csv")
+  here(
+    "data",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
+    "reformatted_misci.csv"
+  )
 )
 write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -4539,8 +4568,9 @@ write_csv(
   bfi,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_bfi.csv"
   )
 )
@@ -4548,8 +4578,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -4729,8 +4760,9 @@ write_csv(
   dts,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_dts.csv"
   )
 )
@@ -4738,8 +4770,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )
@@ -4980,8 +5013,9 @@ write_csv(
   rapa,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "reformatted_rapa.csv"
   )
 )
@@ -4989,8 +5023,9 @@ write_csv(
   psy_soc_dict,
   file = here(
     "data",
-    "Psychosocial",
-    "Reformatted",
+    "pre-surgery",
+    "psychosocial",
+    "reformatted",
     "updated_psy_soc_dictionary.csv"
   )
 )

@@ -1010,7 +1010,7 @@ write_csv(
     "data",
     "pre-surgery",
     "imaging",
-    "Reformatted",
+    "reformatted",
     "reformatted_tka_img.csv"
   )
 )
@@ -1021,7 +1021,7 @@ write_csv(
     "data",
     "pre-surgery",
     "imaging",
-    "Reformatted",
+    "reformatted",
     "updated_img_dict.csv"
   )
 )
@@ -1817,7 +1817,7 @@ write_csv(
     "data",
     "pre-surgery",
     "imaging",
-    "Reformatted",
+    "reformatted",
     "reformatted_thor_img.csv"
   )
 )
@@ -1828,7 +1828,7 @@ write_csv(
     "data",
     "pre-surgery",
     "imaging",
-    "Reformatted",
+    "reformatted",
     "updated_img_dict.csv"
   )
 )
@@ -1866,7 +1866,7 @@ tka_img_items <- tka_img_items |>
 
 #### Save:
 
-Save "tka_img_items" and data dictionary as .csv files in the folder named "Reformatted"
+Save "tka_img_items" and data dictionary as .csv files in the folder named "reformatted"
 
 ```{r}
 #| label: write3
@@ -1879,7 +1879,7 @@ write_csv(
     "data",
     "pre-surgery",
     "imaging",
-    "Reformatted",
+    "reformatted",
     "reformatted_tka_img_items.csv"
   )
 )
@@ -1917,7 +1917,7 @@ thor_img_items <- thor_img_items |>
 
 #### Save:
 
-Save "thor_meds" and data dictionary as .csv files in the folder named "Reformatted"
+Save "thor_meds" and data dictionary as .csv files in the folder named "reformatted"
 
 ```{r}
 #| warning: false
@@ -1927,8 +1927,9 @@ write_csv(
   thor_img_items,
   file = here(
     "data",
+    "pre-surgery",
     "imaging",
-    "Reformatted",
+    "reformatted",
     "reformatted_thor_img_items.csv"
   )
 )

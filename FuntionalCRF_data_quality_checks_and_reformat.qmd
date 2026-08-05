@@ -579,7 +579,7 @@ write_csv(
     "data",
     "pre-surgery",
     "functional-testing",
-    "Reformatted",
+    "reformatted",
     "reformatted_tka_func.csv"
   )
 )
@@ -590,7 +590,7 @@ write_csv(
     "data",
     "pre-surgery",
     "functional-testing",
-    "Reformatted",
+    "reformatted",
     "updated_func_dict.csv"
   )
 )
@@ -786,8 +786,9 @@ write_csv(
   thor_func,
   file = here(
     "data",
+    "pre-surgery",
     "functional-testing",
-    "Reformatted",
+    "reformatted",
     "reformatted_thor_func.csv"
   )
 )
@@ -795,8 +796,9 @@ write_csv(
   func_dict,
   file = here(
     "data",
+    "pre-surgery",
     "functional-testing",
-    "Reformatted",
+    "reformatted",
     "updated_func_dict.csv"
   )
 )

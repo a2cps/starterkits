@@ -1717,7 +1717,7 @@ write_csv(
     "data",
     "pre-surgery",
     "qst",
-    "Reformatted",
+    "reformatted",
     "reformatted_tka_qst.csv"
   )
 )
@@ -1728,7 +1728,7 @@ write_csv(
     "data",
     "pre-surgery",
     "qst",
-    "Reformatted",
+    "reformatted",
     "updated_qst_dict.csv"
   )
 )
@@ -3656,7 +3656,7 @@ write_csv(
     "data",
     "pre-surgery",
     "qst",
-    "Reformatted",
+    "reformatted",
     "reformatted_thor_qst.csv"
   )
 )
@@ -3667,7 +3667,7 @@ write_csv(
     "data",
     "pre-surgery",
     "qst",
-    "Reformatted",
+    "reformatted",
     "updated_qst_dict.csv"
   )
 )
