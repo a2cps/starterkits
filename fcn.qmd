@@ -75,6 +75,7 @@ Most users will start with the functional connectivity data. For example, here w
 dmn <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
   filter(atlas == "dmn") |>
   filter(estimator == "empirical") |>
+  arrange(sub, ses, task, run, source, target) |> # for reproducibility
   select(sub, source, target, connectivity) |>
   collect()
 head(dmn)
