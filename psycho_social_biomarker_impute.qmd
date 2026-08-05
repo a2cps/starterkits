@@ -13,15 +13,16 @@ This document goes over score calculation and missing data imputation for each p
 ### Load Libraries
 
 ```{r}
-library(tidyverse)
+#| label: setup
+
+library(dplyr)
 library(ggplot2)
-library(GGally)
-library(here)
 library(hablar)
-library(janitor)
+library(here)
 library(naniar)
-library(ComplexUpset)
-library(gt)
+library(readr)
+library(tibble)
+library(tidyr)
 ```
 
 ### Read in Psycho-social Data
@@ -37,7 +38,7 @@ psy_soc <- read.csv(here(
   "psychosocial",
   "raw",
   "psychosocial-2024-11-06.csv"
-)) %>%
+)) |>
   filter(redcap_event_name == "baseline_visit_arm_1")
 ```
 
@@ -60,7 +61,7 @@ test_records <- c(
   "120000"
 )
 
-psy_soc <- psy_soc %>% filter(!record_id %in% test_records)
+psy_soc <- psy_soc |> filter(!record_id %in% test_records)
 ```
 
 Create a column for cohort type called "cohort"
@@ -68,11 +69,11 @@ Create a column for cohort type called "cohort"
 ```{r}
 #| message: false
 
-psy_soc <- psy_soc %>%
+psy_soc <- psy_soc |>
   mutate(
     cohort = case_when(
       record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA",
-      TRUE ~ "Thoracic"
+      .default = "Thoracic"
     )
   )
 ```
@@ -90,7 +91,7 @@ psy_soc_dict <- read_csv(here(
   "psychosocial",
   "raw",
   "psychosocial-Data-Dictionary-2024-11-06.csv"
-)) %>%
+)) |>
   distinct(field_name, .keep_all = TRUE)
 ```
 
@@ -110,9 +111,8 @@ cohort_new_row <- data.frame(
 # Add the new row after the last row
 
 # TKA
-psy_soc_dict <- psy_soc_dict %>%
-  slice(seq_len(nrow(.))) %>%
-  add_row(.after = nrow(.), !!!cohort_new_row)
+psy_soc_dict <- psy_soc_dict |>
+  add_row(!!!cohort_new_row)
 ```
 
 ### Rules for handling missing data:
@@ -180,7 +180,7 @@ drop_vars <- c(
 ```
 
 ```{r}
-psy_soc1 <- psy_soc %>% select(-all_of(drop_vars))
+psy_soc1 <- psy_soc |> select(-all_of(drop_vars))
 ```
 
 The initial data had 521 field names, we now have 456 fields names after removing 65 field names not needed
@@ -266,11 +266,11 @@ Following are the available psycho-social forms and imputation methods used in t
 
 ### Functions:
 
-We will create a function called 'applyFilter' that subsets the 'psy_soc1' dataset based on field names that match a specified pattern. The function takes two parameters: 'prefix', for form specific field names and 'test_complete_column' for the form specific variable which indicates if the form was complete i.e 2 . It returns a dataset containing the 'record_id', 'redcap_event_name', 'redcap_data_access_group', and the form specific field names for completed forms.
+We will create a function called 'apply_filter' that subsets the 'psy_soc1' dataset based on field names that match a specified pattern. The function takes two parameters: 'prefix', for form specific field names and 'test_complete_column' for the form specific variable which indicates if the form was complete i.e 2 . It returns a dataset containing the 'record_id', 'redcap_event_name', 'redcap_data_access_group', and the form specific field names for completed forms.
 
 ```{r}
-applyFilter <- function(prefix, test_complete_column) {
-  filtered_data <- psy_soc1 %>%
+apply_filter <- function(prefix, test_complete_column) {
+  filtered_data <- psy_soc1 |>
     select(
       record_id,
       guid,
@@ -279,10 +279,10 @@ applyFilter <- function(prefix, test_complete_column) {
       cohort,
       starts_with(prefix),
       {{ test_complete_column }}
-    ) %>%
+    ) |>
     filter({{ test_complete_column }} == 2)
 
-  return(filtered_data)
+  filtered_data
 }
 ```
 
@@ -295,7 +295,7 @@ applyFilter <- function(prefix, test_complete_column) {
 Read in psy_soc1 dataframe and select field names from the BPI data and keep completed forms, we will call this BPI
 
 ```{r}
-BPI <- applyFilter(
+BPI <- apply_filter(
   "BPI",
   bpisf_the_brief_pain_inventory_v23_short_form_bpi_complete
 )
@@ -314,7 +314,7 @@ BPI assesses pain and includes information on:
 Split BPI: We will subset the BPI data into three datasets according to the above information.
 
 ```{r}
-bpi_body_map <- BPI %>%
+bpi_body_map <- BPI |>
   select(
     record_id,
     guid,
@@ -327,7 +327,7 @@ bpi_body_map <- BPI %>%
     bpisf_the_brief_pain_inventory_v23_short_form_bpi_complete
   )
 
-bpi_body_pain <- BPI %>%
+bpi_body_pain <- BPI |>
   select(
     record_id,
     guid,
@@ -339,7 +339,7 @@ bpi_body_pain <- BPI %>%
   )
 
 
-bpi_pain_intrf <- BPI %>%
+bpi_pain_intrf <- BPI |>
   select(
     record_id,
     guid,
@@ -400,81 +400,81 @@ gg_miss_upset(
 We will create a separate field name for each body region and assign a value of 0 if a subject has not selected a body region and has not indicated the duration and intensity of pain for the selected body region i.e. has not experienced any pain in the selected body region, assign 1 if a subject has indicated painful region(s) as well as specified the rate and duration,and 2 if either value (rate or duration) or none of the values are present for the selected body regions or if either value ( rate or duration) is available but the body region is not specified.
 
 ```{r}
-bpi_body_map <- bpi_body_map %>%
+bpi_body_map <- bpi_body_map |>
   mutate(
     head_face_jaw = case_when(
       (grepl("(a00|a01|a02|a25)", bpipainanatsiteareatxt)) ~ 1,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
+  ) |>
   mutate(
-    neck = case_when((grepl("a26", bpipainanatsiteareatxt)) ~ 1, TRUE ~ 0)
-  ) %>%
+    neck = case_when((grepl("a26", bpipainanatsiteareatxt)) ~ 1, .default = 0)
+  ) |>
   mutate(
     chest_or_breast = case_when(
       (grepl("(a03|a04)", bpipainanatsiteareatxt)) ~ 1,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
+  ) |>
   mutate(
     abd_pelvis_groin = case_when(
       (grepl("(a13|a14|a15|a16)", bpipainanatsiteareatxt)) ~ 1,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
+  ) |>
   mutate(
     right_shoulder_arm_wrist = case_when(
       (grepl("(a28|a05|a07|a09|a11)", bpipainanatsiteareatxt)) ~ 1,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
+  ) |>
   mutate(
     left_shoulder_arm_wrist = case_when(
       (grepl("(a27|a06|a08|a10|a12)", bpipainanatsiteareatxt)) ~ 1,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
+  ) |>
   mutate(
     back_buttocks = case_when(
       (grepl("(a29|a30|a33|a34)", bpipainanatsiteareatxt)) ~ 1,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
+  ) |>
   mutate(
     right_hip_leg_foot = case_when(
       (grepl("(a32|a17|a19|a21|a23)", bpipainanatsiteareatxt)) ~ 1,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
+  ) |>
   mutate(
     left_hip_leg_foot = case_when(
       (grepl("(a31|a18|a20|a22|a24)", bpipainanatsiteareatxt)) ~ 1,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
+  ) |>
   mutate(
     head_face_jaw_m = case_when(
       head_face_jaw == 0 & is.na(bpi_mbm_z1_rate) & is.na(bpi_mbm_z1_dur) ~ 0,
       head_face_jaw == 1 & !is.na(bpi_mbm_z1_rate) & !is.na(bpi_mbm_z1_dur) ~ 1,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
+  ) |>
   mutate(
     neck_m = case_when(
       neck == 0 & is.na(bpi_mbm_z2_rate) & is.na(bpi_mbm_z2_dur) ~ 0,
       neck == 1 & !is.na(bpi_mbm_z2_rate) & !is.na(bpi_mbm_z2_dur) ~ 1,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
+  ) |>
   mutate(
     chest_or_breast_m = case_when(
       chest_or_breast == 0 & is.na(bpi_mbm_z3_rate) & is.na(bpi_mbm_z3_dur) ~ 0,
       chest_or_breast == 1 &
         !is.na(bpi_mbm_z3_rate) &
         !is.na(bpi_mbm_z3_dur) ~ 1,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
+  ) |>
   mutate(
     abd_pelvis_groin_m = case_when(
       abd_pelvis_groin == 0 &
@@ -483,9 +483,9 @@ bpi_body_map <- bpi_body_map %>%
       abd_pelvis_groin == 1 &
         !is.na(bpi_mbm_z4_rate) &
         !is.na(bpi_mbm_z4_dur) ~ 1,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
+  ) |>
   mutate(
     right_shoulder_arm_wrist_m = case_when(
       right_shoulder_arm_wrist == 0 &
@@ -494,9 +494,9 @@ bpi_body_map <- bpi_body_map %>%
       right_shoulder_arm_wrist == 1 &
         !is.na(bpi_mbm_z5_rate) &
         !is.na(bpi_mbm_z5_dur) ~ 1,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
+  ) |>
   mutate(
     left_shoulder_arm_wrist_m = case_when(
       left_shoulder_arm_wrist == 0 &
@@ -505,16 +505,16 @@ bpi_body_map <- bpi_body_map %>%
       left_shoulder_arm_wrist == 1 &
         !is.na(bpi_mbm_z6_rate) &
         !is.na(bpi_mbm_z6_dur) ~ 1,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
+  ) |>
   mutate(
     back_buttocks_m = case_when(
       back_buttocks == 0 & is.na(bpi_mbm_z7_rate) & is.na(bpi_mbm_z7_dur) ~ 0,
       back_buttocks == 1 & !is.na(bpi_mbm_z7_rate) & !is.na(bpi_mbm_z7_dur) ~ 1,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
+  ) |>
   mutate(
     right_hip_leg_foot_m = case_when(
       right_hip_leg_foot == 0 &
@@ -523,9 +523,9 @@ bpi_body_map <- bpi_body_map %>%
       right_hip_leg_foot == 1 &
         !is.na(bpi_mbm_z8_rate) &
         !is.na(bpi_mbm_z8_dur) ~ 1,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
+  ) |>
   mutate(
     left_hip_leg_foot_m = case_when(
       left_hip_leg_foot == 0 &
@@ -534,10 +534,10 @@ bpi_body_map <- bpi_body_map %>%
       left_hip_leg_foot == 1 &
         !is.na(bpi_mbm_z9_rate) &
         !is.na(bpi_mbm_z9_dur) ~ 1,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
-  mutate(across(ends_with("_m"), as.factor)) %>%
+  ) |>
+  mutate(across(ends_with("_m"), as.factor)) |>
   relocate(
     record_id,
     guid,
@@ -598,8 +598,8 @@ body_vector <- c(
   "left_hip_leg_foot"
 )
 
-bpi_body_map <- bpi_body_map %>%
-  rowwise() %>%
+bpi_body_map <- bpi_body_map |>
+  rowwise() |>
   mutate(
     number_of_pain_areas = rowSums(across(all_of(body_vector)), na.rm = TRUE)
   )
@@ -761,131 +761,131 @@ pain_areas_new_row <- data.frame(
 
 # Add new rows
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!jawm_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!jaw_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!neckm_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!neck_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!chest_or_breastm_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!chest_or_breast_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!abd_pelvis_groinm_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!abd_pelvis_groin_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!right_shoulder_arm_wristm_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!right_shoulder_arm_wrist_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!left_shoulder_arm_wristm_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!left_shoulder_arm_wrist_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!back_buttocksm_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!back_buttocks_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!right_hip_leg_footm_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!right_hip_leg_foot_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!left_hip_leg_footm_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!left_hip_leg_foot_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pain_areas_new_row,
     .after = match("bpi_mbm_z9_dur", psy_soc_dict$field_name)
@@ -903,7 +903,7 @@ Create a folder for recoded BPI data and save "bpi_bpdy_map" and updated data di
 
 write_csv(
   bpi_body_map,
-  file = here::here(
+  file = here(
     "data",
     "pre-surgery",
     "psychosocial",
@@ -913,7 +913,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "pre-surgery",
     "psychosocial",
@@ -932,14 +932,14 @@ Brief pain intensity -whole body pain assesses other pain intensity (excluding s
 Missing data pattern in bpi_body_pain
 
 ```{r}
-bpi_body_pain %>% miss_var_summary()
+bpi_body_pain |> miss_var_summary()
 ```
 
 There are 32 observations (4.12%) with no response to the question i.e null values for the field name "bpiworstpainratingexclss". We will create a variable "body_pain_intensity" and assign a value of 0 if a subject has not responded to the question, assign 1 if a subject has responded to the question
 
 ```{r}
-bpi_body_pain <- bpi_body_pain %>%
-  mutate(body_pain_intensity = ifelse(is.na(bpiworstpainratingexclss), 0, 1))
+bpi_body_pain <- bpi_body_pain |>
+  mutate(body_pain_intensity = if_else(is.na(bpiworstpainratingexclss), 0, 1))
 ```
 
 We will now pass the field name "bpi_body_pain" as an argument to the table function to look at the frequencies.
@@ -962,7 +962,7 @@ bp_in_new_row <- data.frame(
 )
 
 # Add the new row
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bp_in_new_row,
     .after = match("bpipainintrfrscore", psy_soc_dict$field_name)
@@ -979,7 +979,7 @@ Save "bpi_body_pain" and updated data dictionary as .csv files in the folder nam
 
 write_csv(
   bpi_body_pain,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -988,7 +988,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1007,7 +1007,7 @@ Missing data pattern in bpi_pain_intrf if bpiworstpainratingss is not 0
 
 ```{r}
 gg_miss_upset(
-  bpi_pain_intrf %>% filter(bpiworstpainratingss != 0),
+  bpi_pain_intrf |> filter(bpiworstpainratingss != 0),
   nsets = n_var_miss(bpi_pain_intrf),
   order.by = "degree",
   point.size = 1,
@@ -1019,30 +1019,30 @@ gg_miss_upset(
 We will create a variable "pain_intrf" and assign a value of 1 if worst pain intensity at the surgical site is available and at least 4 of 7 pain interference item are available, 2 if response to worst pain intensity at the surgical site is available and less than or equal to 3 of 7 pain interference items are available, 3 if there is no response to worst pain intensity at the surgical site but at least 4 out 7 pain interference items are available, 4 if there is no response to worst pain intensity at the surgical site and less than or equal to 3 of 7 pain interference items are available.
 
 ```{r}
-bpi_pain_intrf <- bpi_pain_intrf %>%
+bpi_pain_intrf <- bpi_pain_intrf |>
   mutate(
     intrf_not_na = rowSums(
-      !is.na(select(., "bpipainintfrgnrlactvtyscl":"bpipainenjoymntintrfrscl"))
+      !is.na(pick("bpipainintfrgnrlactvtyscl":"bpipainenjoymntintrfrscl"))
     )
-  ) %>%
+  ) |>
   mutate(
     pain_intrf = case_when(
       !is.na(bpiworstpainratingss) & intrf_not_na >= 4 ~ 1,
       !is.na(bpiworstpainratingss) & intrf_not_na <= 3 ~ 2,
       is.na(bpiworstpainratingss) & intrf_not_na >= 4 ~ 3,
       is.na(bpiworstpainratingss) & intrf_not_na <= 3 ~ 4,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
-  select(-intrf_not_na) %>%
-  as_tibble() %>%
+  ) |>
+  select(-intrf_not_na) |>
+  as_tibble() |>
   mutate(pain_intrf = as.factor(pain_intrf))
 ```
 
 We will create a new field "new_bpipainintrfrscore" with pain interference scores for observations that meet the conditions pain_intrf = 1 or pain_intrf = 3.
 
 ```{r}
-bpi_pain_intrf <- bpi_pain_intrf %>%
+bpi_pain_intrf <- bpi_pain_intrf |>
   mutate(
     new_bpipainintrfrscore = case_when(
       pain_intrf == 1 | pain_intrf == 3 ~ bpipainintrfrscore
@@ -1082,11 +1082,11 @@ pain_intrf_new_row2 <- data.frame(
 
 # Add new rows
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pain_intrf_new_row1,
     .after = match("bpipainintrfrscore", psy_soc_dict$field_name)
-  ) %>%
+  ) |>
   add_row(
     !!!pain_intrf_new_row2,
     .after = match("bpipainintrfrscore", psy_soc_dict$field_name)
@@ -1103,7 +1103,7 @@ Save "bpi_pain_intrf" and updated data dictionary as .csv files in the folder na
 
 write_csv(
   bpi_pain_intrf,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1113,7 +1113,7 @@ write_csv(
 
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1139,7 +1139,7 @@ There must be a response to at least half of the items in each sub scale to calc
 Read in psy_soc1 dataframe and select field names from the KOOS-12 data, keeping completed forms will subset to the TKA cohort by default, we will call this koos
 
 ```{r}
-koos <- applyFilter(
+koos <- apply_filter(
   "koos",
   knee_injury_osteoarthritis_outcome_score_koos12_complete
 )
@@ -1203,42 +1203,42 @@ qol <- c(
 all_koos <- c("new_pain_score", "new_func_score", "new_qol_score")
 
 
-koos <- koos %>%
-  mutate(pain_not_na = rowSums(!is.na(select(., all_of(pain))))) %>%
-  mutate(func_not_na = rowSums(!is.na(select(., all_of(func))))) %>%
-  mutate(qol_not_na = rowSums(!is.na(select(., all_of(qol))))) %>%
+koos <- koos |>
+  mutate(pain_not_na = rowSums(!is.na(pick(all_of(pain))))) |>
+  mutate(func_not_na = rowSums(!is.na(pick(all_of(func))))) |>
+  mutate(qol_not_na = rowSums(!is.na(pick(all_of(qol))))) |>
   mutate(
     new_pain_score = case_when(
       pain_not_na >= 2 ~ 100 -
-        ((rowMeans(select(., all_of(pain)), na.rm = TRUE) * 100) / 4)
+        ((rowMeans(pick(all_of(pain)), na.rm = TRUE) * 100) / 4)
     )
-  ) %>%
+  ) |>
   mutate(
     new_func_score = case_when(
       func_not_na >= 2 ~ 100 -
-        ((rowMeans(select(., all_of(func)), na.rm = TRUE) * 100) / 4)
+        ((rowMeans(pick(all_of(func)), na.rm = TRUE) * 100) / 4)
     )
-  ) %>%
+  ) |>
   mutate(
     new_qol_score = case_when(
       qol_not_na >= 2 ~ 100 -
-        ((rowMeans(select(., all_of(qol)), na.rm = TRUE) * 100) / 4)
+        ((rowMeans(pick(all_of(qol)), na.rm = TRUE) * 100) / 4)
     )
-  ) %>%
-  mutate(new_pain_summary = rowMeans(select(., all_of(all_koos))))
+  ) |>
+  mutate(new_pain_summary = rowMeans(pick(all_of(all_koos))))
 ```
 
 We will now check the frequencies of all the scores (new vs. original) after accounting for missing data.
 
 ```{r}
-new_koos <- koos %>%
+new_koos <- koos |>
   select(c(
     "new_qol_score",
     "new_pain_score",
     "new_func_score",
     "new_pain_summary"
   ))
-old_koos <- koos %>%
+old_koos <- koos |>
   select(c(
     "koospainscoret",
     "koosfunctionscoret",
@@ -1314,21 +1314,21 @@ pain_summary_new_row <- data.frame(
 
 # Add new rows
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!qol_score_new_row,
     .after = match("koosqolscoret", psy_soc_dict$field_name)
-  ) %>% # new qol score
+  ) |> # new qol score
   add_row(
     !!!func_score_new_row,
     .after = match("koosfunctionscoret", psy_soc_dict$field_name)
-  ) %>% # new func score
+  ) |> # new func score
   add_row(
     !!!pain_score_new_row,
     .after = match("koospainscoret", psy_soc_dict$field_name)
   ) # new pain score
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pain_summary_new_row,
     .after = match("koossummaryscore", psy_soc_dict$field_name)
@@ -1345,7 +1345,7 @@ Save "koos" and updated data dictionary as .csv files in the folder named "refor
 
 write_csv(
   koos,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1354,7 +1354,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1372,7 +1372,7 @@ The GAD-7 is a 7-item likert scale questionnaire that assesses anxiety levels ov
 Read in psy_soc1 dataframe and select field names from the GAD7 data and keep completed forms, we will call this gad
 
 ```{r}
-gad <- applyFilter(
+gad <- apply_filter(
   "gad",
   generalized_anxiety_disorder_7_item_gad7_scale_sco_complete
 )
@@ -1384,7 +1384,7 @@ Missing data pattern in gad. We will exclude "gad7difficulttowork" since the res
 
 ```{r}
 gg_miss_upset(
-  gad %>% select(-gad7difficulttowork),
+  gad |> select(-gad7difficulttowork),
   nsets = n_var_miss(gad),
   order.by = "degree",
   point.size = 1,
@@ -1410,19 +1410,19 @@ gad_vector <- c(
   "gad7feelafrdscl"
 )
 
-gad <- gad %>%
-  mutate(gad_not_na = rowSums(!is.na(select(., all_of(gad_vector))))) %>%
+gad <- gad |>
+  mutate(gad_not_na = rowSums(!is.na(pick(all_of(gad_vector))))) |>
   mutate(
     gad_diff = case_when(
       !is.na(gad7difficulttowork) & gad_not_na >= 5 ~ 1,
       !is.na(gad7difficulttowork) & gad_not_na < 5 ~ 2,
       is.na(gad7difficulttowork) & gad_not_na >= 5 ~ 3,
       is.na(gad7difficulttowork) & gad_not_na < 5 ~ 4,
-      TRUE ~ 0
+      .default = 0
     )
-  ) %>%
-  as_tibble() %>%
-  mutate(gad_diff = as.factor(gad_diff)) %>%
+  ) |>
+  as_tibble() |>
+  mutate(gad_diff = as.factor(gad_diff)) |>
   filter(gad_not_na != 0)
 ```
 
@@ -1439,21 +1439,21 @@ gad_vector <- c(
   "gad7feelafrdscl"
 )
 
-gad <- gad %>%
-  filter(gad_not_na != 0) %>%
+gad <- gad |>
+  filter(gad_not_na != 0) |>
   mutate(
     mean_gad = case_when(
       gad_diff == 1 | gad_diff == 3 ~ round(rowMeans(
-        select(., all_of(gad_vector)),
+        pick(all_of(gad_vector)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(gad_vector), ~ if_else(is.na(.), mean_gad, .))) %>%
+  ) |>
+  mutate(across(all_of(gad_vector), ~ if_else(is.na(.), mean_gad, .))) |>
   mutate(
     imputed_gad_score = case_when(
       gad_diff == 1 | gad_diff == 3 ~ rowSums(
-        select(., all_of(gad_vector)),
+        pick(all_of(gad_vector)),
         na.rm = TRUE
       )
     )
@@ -1464,7 +1464,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  gad %>% select(-gad7difficulttowork, -mean_gad, -imputed_gad_score),
+  gad |> select(-gad7difficulttowork, -mean_gad, -imputed_gad_score),
   nsets = n_var_miss(gad),
   order.by = "degree",
   point.size = 1,
@@ -1476,9 +1476,9 @@ gg_miss_upset(
 check distributions of gad scores before (gad7totscore) and after imputation (imputed_gad_score)
 
 ```{r}
-gad_plot <- gad %>%
-  filter(between(gad_not_na, 5, 6)) %>%
-  select(guid, gad7totscore, imputed_gad_score) %>%
+gad_plot <- gad |>
+  filter(between(gad_not_na, 5, 6)) |>
+  select(guid, gad7totscore, imputed_gad_score) |>
   pivot_longer(
     cols = c("gad7totscore", "imputed_gad_score"),
     values_to = "score",
@@ -1492,7 +1492,7 @@ ggplot(gad_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-gad <- gad %>% select(-gad_not_na, -mean_gad)
+gad <- gad |> select(-gad_not_na, -mean_gad)
 ```
 
 #### New field name(s)
@@ -1519,7 +1519,7 @@ gad_score_new_row <- data.frame(
 
 # Adding new rows to the data dictionary
 # adding gad_diff
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!gad_diff_new_row,
     .after = match("gad7difficulttowork", psy_soc_dict$field_name)
@@ -1527,7 +1527,7 @@ psy_soc_dict <- psy_soc_dict %>%
 
 # imputed gad score score
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!gad_score_new_row,
     .after = match("gad7difficulttowork", psy_soc_dict$field_name)
@@ -1544,7 +1544,7 @@ Save "gad" and updated data dictionary as .csv files in the folder named "reform
 
 write_csv(
   gad,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1553,7 +1553,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1571,7 +1571,7 @@ The PHQ is a 8-item likert scale questionnaire that assesses depression levels o
 Read in psy_soc1 dataframe and select field names from the PHQ data and keep completed forms, we will call phq
 
 ```{r}
-phq <- applyFilter(
+phq <- apply_filter(
   "phq",
   patient_health_questionnaire_depression_scale_phq_complete
 )
@@ -1611,29 +1611,29 @@ phq_vector <- c(
 )
 
 
-phq <- phq %>%
-  mutate(phq_not_na = rowSums(!is.na(select(., all_of(phq_vector))))) %>%
-  mutate(phq_diff = case_when(phq_not_na >= 6 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
+phq <- phq |>
+  mutate(phq_not_na = rowSums(!is.na(pick(all_of(phq_vector))))) |>
+  mutate(phq_diff = case_when(phq_not_na >= 6 ~ 1, .default = 0)) |>
+  as_tibble() |>
   mutate(phq_diff = as.factor(phq_diff))
 ```
 
 We will now replace missing values with the rounded mean of remaining items if phq_diff = 1 i.e if less than or equal to 2 PHQ items are missing and calculate the total score by taking a sum of all the items.
 
 ```{r}
-phq <- phq %>%
+phq <- phq |>
   mutate(
     mean_phq = case_when(
       phq_diff == 1 ~ round(rowMeans(
-        select(., all_of(phq_vector)),
+        pick(all_of(phq_vector)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(phq_vector), ~ if_else(is.na(.), mean_phq, .))) %>%
+  ) |>
+  mutate(across(all_of(phq_vector), ~ if_else(is.na(.), mean_phq, .))) |>
   mutate(
     imputed_phq_score = case_when(
-      phq_diff == 1 ~ rowSums(select(., all_of(phq_vector)), na.rm = TRUE)
+      phq_diff == 1 ~ rowSums(pick(all_of(phq_vector)), na.rm = TRUE)
     )
   )
 ```
@@ -1642,7 +1642,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  phq %>% select(-mean_phq, -imputed_phq_score),
+  phq |> select(-mean_phq, -imputed_phq_score),
   nsets = n_var_miss(phq),
   order.by = "degree",
   point.size = 1,
@@ -1654,9 +1654,9 @@ gg_miss_upset(
 check distributions of phq scores before (phqtotalscore) and after imputation (imputed_phq_score)
 
 ```{r}
-phq_plot <- phq %>%
-  filter(between(phq_not_na, 6, 8)) %>%
-  select(guid, phqtotalscore, imputed_phq_score) %>%
+phq_plot <- phq |>
+  filter(between(phq_not_na, 6, 8)) |>
+  select(guid, phqtotalscore, imputed_phq_score) |>
   pivot_longer(
     cols = c("phqtotalscore", "imputed_phq_score"),
     values_to = "score",
@@ -1670,7 +1670,7 @@ ggplot(phq_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-phq <- phq %>% select(-phq_not_na, -mean_phq)
+phq <- phq |> select(-phq_not_na, -mean_phq)
 ```
 
 #### New field name(s)
@@ -1697,7 +1697,7 @@ phq_score_new_row <- data.frame(
 
 # Add new rows
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!phq_diff_new_row,
     .after = match("phqtotalscore", psy_soc_dict$field_name)
@@ -1705,7 +1705,7 @@ psy_soc_dict <- psy_soc_dict %>%
 
 
 # imputed phq score
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!phq_score_new_row,
     .after = match("phq_diff", psy_soc_dict$field_name)
@@ -1722,7 +1722,7 @@ Save "phq" and updated data dictionary as .csv files in the folder named "reform
 
 write_csv(
   phq,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1731,7 +1731,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1749,7 +1749,7 @@ The FABQ is a 4-item questionnaire that assesses fear avoidance behavior. The re
 Read in psy_soc1 dataframe and select field names from the FABQ data and keep completed forms, we will call FABQ
 
 ```{r}
-fabq <- applyFilter(
+fabq <- apply_filter(
   "fabq",
   fearavoidance_beliefs_questionnaire_v03_fabq_complete
 )
@@ -1784,32 +1784,32 @@ fabq_vector <- c(
   "fabqphysactvtycnntdoscl"
 )
 
-fabq <- fabq %>%
-  mutate(fabq_not_na = rowSums(!is.na(select(., all_of(fabq_vector))))) %>%
-  mutate(fabq_diff = case_when(fabq_not_na >= 3 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
+fabq <- fabq |>
+  mutate(fabq_not_na = rowSums(!is.na(pick(all_of(fabq_vector))))) |>
+  mutate(fabq_diff = case_when(fabq_not_na >= 3 ~ 1, .default = 0)) |>
+  as_tibble() |>
   mutate(fabq_diff = as.factor(fabq_diff))
 ```
 
 We will now replace missing values with the rounded mean of remaining items if fabq_diff = 1 i.e if less than or equal to 1 FABQ item is missing and calculate the total score by taking a sum of all the items.
 
 ```{r}
-fabq <- fabq %>%
+fabq <- fabq |>
   mutate(
-    raw_fabq_score = rowSums(select(., all_of(fabq_vector)), na.rm = TRUE)
-  ) %>%
+    raw_fabq_score = rowSums(pick(all_of(fabq_vector)), na.rm = TRUE)
+  ) |>
   mutate(
     mean_fabq = case_when(
       fabq_diff == 1 ~ round(rowMeans(
-        select(., all_of(fabq_vector)),
+        pick(all_of(fabq_vector)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(fabq_vector), ~ if_else(is.na(.), mean_fabq, .))) %>%
+  ) |>
+  mutate(across(all_of(fabq_vector), ~ if_else(is.na(.), mean_fabq, .))) |>
   mutate(
     imputed_fabq_score = case_when(
-      fabq_diff == 1 ~ rowSums(select(., all_of(fabq_vector)), na.rm = TRUE)
+      fabq_diff == 1 ~ rowSums(pick(all_of(fabq_vector)), na.rm = TRUE)
     )
   )
 ```
@@ -1830,9 +1830,9 @@ gg_miss_upset(
 check distributions of fabq scores before (raw_fabq_score) and after imputation (imputed_fabq_score)
 
 ```{r}
-fabq_plot <- fabq %>%
-  filter(between(fabq_not_na, 3, 4)) %>%
-  select(guid, raw_fabq_score, imputed_fabq_score) %>%
+fabq_plot <- fabq |>
+  filter(between(fabq_not_na, 3, 4)) |>
+  select(guid, raw_fabq_score, imputed_fabq_score) |>
   pivot_longer(
     cols = c("raw_fabq_score", "imputed_fabq_score"),
     values_to = "score",
@@ -1846,7 +1846,7 @@ ggplot(fabq_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-fabq <- fabq %>% select(-fabq_not_na, -mean_fabq)
+fabq <- fabq |> select(-fabq_not_na, -mean_fabq)
 ```
 
 #### New field name(s)
@@ -1873,7 +1873,7 @@ fabq_score_new_row <- data.frame(
 
 # Adding new rows to the data dictionary
 # adding fabq_diff
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!fabq_diff_new_row,
     .after = match("fabqphysclactvtybckhrmscl", psy_soc_dict$field_name)
@@ -1881,7 +1881,7 @@ psy_soc_dict <- psy_soc_dict %>%
 
 # imputed fabq score
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!fabq_score_new_row,
     .after = match("fabqphysclactvtybckhrmscl", psy_soc_dict$field_name)
@@ -1898,7 +1898,7 @@ Save "fabq" and updated data dictionary as .csv files in the folder named "refor
 
 write_csv(
   fabq,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1907,7 +1907,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -1925,7 +1925,7 @@ The PCS-6 comprises six questions, each item is rated on a scale of 0 to 4, wher
 Read in psy_soc1 dataframe and select field names from the PCS-6 data and keep completed forms, we will call "pcs"
 
 ```{r}
-pcs <- applyFilter("pcq", pain_catastrophizing_questionnaire_pcs6_complete)
+pcs <- apply_filter("pcq", pain_catastrophizing_questionnaire_pcs6_complete)
 ```
 
 #### Missing Data:
@@ -1934,7 +1934,7 @@ Missing data pattern in pcs.
 
 ```{r}
 gg_miss_upset(
-  pcs %>% select(-pcqtotalscoreval),
+  pcs |> select(-pcqtotalscoreval),
   nsets = n_var_miss(pcs),
   order.by = "degree",
   point.size = 1,
@@ -1960,33 +1960,33 @@ pcs_vector <- c(
 )
 
 
-pcs <- pcs %>%
-  mutate(pcs_not_na = rowSums(!is.na(select(., all_of(pcs_vector))))) %>%
-  mutate(pcs_diff = case_when(pcs_not_na >= 5 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
-  mutate(pcs_diff = as.factor(pcs_diff)) %>%
+pcs <- pcs |>
+  mutate(pcs_not_na = rowSums(!is.na(pick(all_of(pcs_vector))))) |>
+  mutate(pcs_diff = case_when(pcs_not_na >= 5 ~ 1, .default = 0)) |>
+  as_tibble() |>
+  mutate(pcs_diff = as.factor(pcs_diff)) |>
   filter(pcs_not_na != 0)
 ```
 
 We will now replace missing values with the rounded mean of remaining items if pcs_diff = 1 i.e if 1 pcs item is missing, and calculate the total score by taking a sum of all the items.
 
 ```{r}
-pcs <- pcs %>%
+pcs <- pcs |>
   mutate(
-    raw_pcs_score = rowSums(select(., all_of(pcs_vector)), na.rm = TRUE)
-  ) %>%
+    raw_pcs_score = rowSums(pick(all_of(pcs_vector)), na.rm = TRUE)
+  ) |>
   mutate(
     mean_pcs = case_when(
       pcs_diff == 1 ~ round(rowMeans(
-        select(., all_of(pcs_vector)),
+        pick(all_of(pcs_vector)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(pcs_vector), ~ if_else(is.na(.), mean_pcs, .))) %>%
+  ) |>
+  mutate(across(all_of(pcs_vector), ~ if_else(is.na(.), mean_pcs, .))) |>
   mutate(
     imputed_pcs_score = case_when(
-      pcs_diff == 1 ~ rowSums(select(., all_of(pcs_vector)), na.rm = TRUE)
+      pcs_diff == 1 ~ rowSums(pick(all_of(pcs_vector)), na.rm = TRUE)
     )
   )
 ```
@@ -1995,7 +1995,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  pcs %>% select(-pcqtotalscoreval, -raw_pcs_score, -imputed_pcs_score),
+  pcs |> select(-pcqtotalscoreval, -raw_pcs_score, -imputed_pcs_score),
   nsets = n_var_miss(pcs),
   order.by = "degree",
   point.size = 1,
@@ -2007,9 +2007,9 @@ gg_miss_upset(
 check distributions of PCS scores before (raw_pcs_score) and after imputation (imputed_pcs_score)
 
 ```{r}
-pcs_plot <- pcs %>%
-  filter(between(pcs_not_na, 5, 6)) %>%
-  select(guid, raw_pcs_score, imputed_pcs_score) %>%
+pcs_plot <- pcs |>
+  filter(between(pcs_not_na, 5, 6)) |>
+  select(guid, raw_pcs_score, imputed_pcs_score) |>
   pivot_longer(
     cols = c("raw_pcs_score", "imputed_pcs_score"),
     values_to = "score",
@@ -2023,7 +2023,7 @@ ggplot(pcs_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-pcs <- pcs %>% select(-pcs_not_na, -mean_pcs, -raw_pcs_score)
+pcs <- pcs |> select(-pcs_not_na, -mean_pcs, -raw_pcs_score)
 ```
 
 #### New field name(s)
@@ -2048,7 +2048,7 @@ pcs_score_new_row <- data.frame(
 )
 
 # adding pcs_diff
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pcs_diff_new_row,
     .after = match("pcqtotalscoreval", psy_soc_dict$field_name)
@@ -2056,7 +2056,7 @@ psy_soc_dict <- psy_soc_dict %>%
 
 # imputed pcs score
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pcs_score_new_row,
     .after = match("pcqtotalscoreval", psy_soc_dict$field_name)
@@ -2073,7 +2073,7 @@ Save "pcs" and updated data dictionary as .csv files in the folder named "reform
 
 write_csv(
   pcs,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -2082,7 +2082,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -2100,7 +2100,7 @@ The SSI measures the severity of fatigue, cognitive dysfunction, and unrefreshed
 Read in psy_soc1 dataframe and select field names from the SSI data and keep completed forms, we will call "ssi"
 
 ```{r}
-ssi <- applyFilter("ssi", symptom_severity_index_v10_ssi_complete)
+ssi <- apply_filter("ssi", symptom_severity_index_v10_ssi_complete)
 ```
 
 #### Missing Data:
@@ -2109,7 +2109,7 @@ Missing data pattern in SSI, we will exclude "ssi_chronicyn" since the response 
 
 ```{r}
 gg_miss_upset(
-  ssi %>% select(-ssi_chronicyn),
+  ssi |> select(-ssi_chronicyn),
   nsets = n_var_miss(ssi),
   order.by = "degree",
   point.size = 1,
@@ -2137,36 +2137,36 @@ ssi_symptoms <- c("ssi_fatigue", "ssi_cognitive", "ssi_tired")
 ssi_history <- c("ssi_abdpainyn", "ssi_depressyn", "ssi_headacheyn")
 ssi_all <- c("ssi_symp_score", "ssi_hist_score")
 
-ssi <- ssi %>%
+ssi <- ssi |>
   mutate(
-    ssi_symp_score = rowSums(select(., all_of(ssi_symptoms)), na.rm = FALSE)
-  ) %>%
+    ssi_symp_score = rowSums(pick(all_of(ssi_symptoms)), na.rm = FALSE)
+  ) |>
   mutate(
-    ssi_hist_score = rowSums(select(., all_of(ssi_history)), na.rm = FALSE)
-  ) %>%
-  mutate(ssi_total_score = rowSums(select(., all_of(ssi_all)), na.rm = FALSE))
+    ssi_hist_score = rowSums(pick(all_of(ssi_history)), na.rm = FALSE)
+  ) |>
+  mutate(ssi_total_score = rowSums(pick(all_of(ssi_all)), na.rm = FALSE))
 ```
 
 We will now create a field name "ssi_diff", and assign a value of 0 if both ssi_symp_score and ssi_hist_score are missing, 1 if only ssi_symp_score is available, 2 if only ssi_hist_score is available and 3 if both scores and invariably the total score is available. If the sum of the scores of fatigue, waking unrefreshed, and cognitive symptoms is more than 0, an additional question (ssi_chronicyn) related to the duration of symptoms is asked. We will create a field name "ssi_missing_chronic" and assign a value of 0 if "ssi_symp_score" \> 0 and "ssi_chronicyn" is missing, of 1 if "ssi_symp_score" \> 0 and "ssi_chronicyn" is not missing, 2 if "ssi_sym_score" = 0 or "ssi_sym_score" is missing and "ssi_chronicyn" is missing.
 
 ```{r}
-ssi <- ssi %>%
+ssi <- ssi |>
   mutate(
     ssi_diff = case_when(
       is.na(ssi_symp_score) & is.na(ssi_hist_score) ~ 0,
       !is.na(ssi_symp_score) & is.na(ssi_hist_score) ~ 1,
       is.na(ssi_symp_score) & !is.na(ssi_hist_score) ~ 2,
-      TRUE ~ 3
+      .default = 3
     )
-  ) %>%
+  ) |>
   mutate(
     ssi_missing_chronic = case_when(
       ssi_symp_score > 0 & !is.na(ssi_chronicyn) ~ 1,
       ssi_symp_score > 0 & is.na(ssi_chronicyn) ~ 0,
-      TRUE ~ 2
+      .default = 2
     )
-  ) %>%
-  mutate(ssi_diff = as.factor(ssi_diff)) %>%
+  ) |>
+  mutate(ssi_diff = as.factor(ssi_diff)) |>
   mutate(ssi_missing_chronic = as.factor(ssi_missing_chronic))
 ```
 
@@ -2217,34 +2217,34 @@ ssi_missing_chronic_new_row <- data.frame(
 
 
 # adding new rows
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!ssi_symp_score_new_row,
     .after = match("ssi_headacheyn", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!ssi_hist_score_new_row,
     .after = match("ssi_headacheyn", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!ssi_total_score_new_row,
     .after = match("ssi_headacheyn", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!ssi_diff_new_row,
     .after = match("ssi_headacheyn", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!ssi_missing_chronic_new_row,
     .after = match("ssi_headacheyn", psy_soc_dict$field_name)
@@ -2261,7 +2261,7 @@ Save "ssi" and updated data dictionary as .csv files in the folder named "reform
 
 write_csv(
   ssi,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -2270,7 +2270,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -2290,7 +2290,7 @@ Each item in the initial seven questions is rated on a scale of 0 to 5, where 0 
 Read in psy_soc1 dataframe and select field names from the PD-Q data and keep completed forms, we will call "pdq"
 
 ```{r}
-pdq <- applyFilter("pd", pain_detect_questionnaire_pdq_complete)
+pdq <- apply_filter("pd", pain_detect_questionnaire_pdq_complete)
 ```
 
 #### Missing Data:
@@ -2309,20 +2309,20 @@ pdq_seven <- c(
   "pdnumb",
   "pdslightpress"
 )
-pdq_zero <- pdq %>%
+pdq_zero <- pdq |>
   mutate(
-    pdq_seven_score = rowSums(select(., all_of(pdq_seven)), na.rm = TRUE)
-  ) %>%
+    pdq_seven_score = rowSums(pick(all_of(pdq_seven)), na.rm = TRUE)
+  ) |>
   mutate(
     pdqpaincourse = case_when(
       pdq_seven_score == 0 & is.na(pdqpaincourse) ~ 99,
-      TRUE ~ pdqpaincourse,
+      .default = pdqpaincourse,
     )
-  ) %>%
+  ) |>
   mutate(
     pdradiateregions = case_when(
       pdq_seven_score == 0 & is.na(pdradiateregions) ~ 99,
-      TRUE ~ pdradiateregions,
+      .default = pdradiateregions,
     )
   )
 ```
@@ -2356,32 +2356,32 @@ pdq_seven <- c(
   "pdnumb",
   "pdslightpress"
 )
-pdq <- pdq %>%
-  mutate(pdq_not_na = rowSums(!is.na(.[, pdq_seven]))) %>%
-  mutate(pdq_diff = case_when(pdq_not_na >= 5 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
+pdq <- pdq |>
+  mutate(pdq_not_na = rowSums(!is.na(pick(all_of(pdq_seven))))) |>
+  mutate(pdq_diff = case_when(pdq_not_na >= 5 ~ 1, .default = 0)) |>
+  as_tibble() |>
   mutate(pdq_diff = as.factor(pdq_diff))
 ```
 
 We will now replace missing values with the rounded mean of remaining items if pdq_diff = 1 and calculate a score by taking a sum of the 7 neuropathic pain related items, we will call this "imputed_pdq_score."
 
 ```{r}
-pdq <- pdq %>%
+pdq <- pdq |>
   mutate(
-    raw_pdq_score = rowSums(select(., all_of(pdq_seven)), na.rm = TRUE)
-  ) %>%
+    raw_pdq_score = rowSums(pick(all_of(pdq_seven)), na.rm = TRUE)
+  ) |>
   mutate(
     mean_pdq = case_when(
       pdq_diff == 1 ~ round(rowMeans(
-        select(., all_of(pdq_seven)),
+        pick(all_of(pdq_seven)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(pdq_seven), ~ if_else(is.na(.), mean_pdq, .))) %>%
+  ) |>
+  mutate(across(all_of(pdq_seven), ~ if_else(is.na(.), mean_pdq, .))) |>
   mutate(
     imputed_pdq_score = case_when(
-      pdq_diff == 1 ~ rowSums(select(., all_of(pdq_seven)), na.rm = TRUE)
+      pdq_diff == 1 ~ rowSums(pick(all_of(pdq_seven)), na.rm = TRUE)
     )
   )
 ```
@@ -2389,20 +2389,20 @@ pdq <- pdq %>%
 Check missingness pattern after imputation
 
 ```{r}
-pdq_zero_imputed <- pdq_zero %>%
-  mutate(pdq_not_na = rowSums(!is.na(.[, pdq_seven]))) %>%
-  mutate(pdq_diff = case_when(pdq_not_na >= 5 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
-  mutate(pdq_diff = as.factor(pdq_diff)) %>%
+pdq_zero_imputed <- pdq_zero |>
+  mutate(pdq_not_na = rowSums(!is.na(pick(all_of(pdq_seven))))) |>
+  mutate(pdq_diff = case_when(pdq_not_na >= 5 ~ 1, .default = 0)) |>
+  as_tibble() |>
+  mutate(pdq_diff = as.factor(pdq_diff)) |>
   mutate(
     mean_pdq = case_when(
       pdq_diff == 1 ~ round(rowMeans(
-        select(., all_of(pdq_seven)),
+        pick(all_of(pdq_seven)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(pdq_seven), ~ if_else(is.na(.), mean_pdq, .))) %>%
+  ) |>
+  mutate(across(all_of(pdq_seven), ~ if_else(is.na(.), mean_pdq, .))) |>
   select(-pdq_seven_score, -pdq_diff, -pdq_not_na, -mean_pdq)
 
 gg_miss_upset(
@@ -2418,9 +2418,9 @@ gg_miss_upset(
 check distributions of PDQ scores before (raw_pdq_score) and after imputation (imputed_pdq_score)
 
 ```{r}
-pdq_plot <- pdq %>%
-  filter(between(pdq_not_na, 5, 7)) %>%
-  select(guid, raw_pdq_score, imputed_pdq_score) %>%
+pdq_plot <- pdq |>
+  filter(between(pdq_not_na, 5, 7)) |>
+  select(guid, raw_pdq_score, imputed_pdq_score) |>
   pivot_longer(
     cols = c("raw_pdq_score", "imputed_pdq_score"),
     values_to = "score",
@@ -2434,7 +2434,7 @@ ggplot(pdq_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-pdq <- pdq %>% select(-pdq_not_na, -mean_pdq, -raw_pdq_score)
+pdq <- pdq |> select(-pdq_not_na, -mean_pdq, -raw_pdq_score)
 ```
 
 #### Scoring:
@@ -2450,21 +2450,21 @@ pdq <- pdq %>% select(-pdq_not_na, -mean_pdq, -raw_pdq_score)
 Recode values for "pdqpaincourse" and "pdradiateregions", we will call these "pdqpaincourse_recoded" and "pdradiateregions_recoded"
 
 ```{r}
-pdq <- pdq %>%
+pdq <- pdq |>
   mutate(
     pdqpaincourse_recoded = case_when(
       pdqpaincourse == 1 ~ 0,
       pdqpaincourse == 2 ~ -1,
       pdqpaincourse == 3 ~ 1,
       pdqpaincourse == 4 ~ 1,
-      TRUE ~ pdqpaincourse
+      .default = pdqpaincourse
     )
-  ) %>%
+  ) |>
   mutate(
     pdradiateregions_recoded = case_when(
       pdradiateregions == 0 ~ 0,
       pdradiateregions == 1 ~ 2,
-      TRUE ~ pdradiateregions
+      .default = pdradiateregions
     )
   )
 ```
@@ -2477,11 +2477,11 @@ pd_neuro <- c(
   "pdradiateregions_recoded",
   "imputed_pdq_score"
 )
-pdq <- pdq %>%
+pdq <- pdq |>
   mutate(
-    pd_neuro_total_score = rowSums(select(., all_of(pd_neuro)), na.rm = FALSE)
-  ) %>%
-  mutate(pdqpaincourse_recoded = as.factor(pdqpaincourse_recoded)) %>%
+    pd_neuro_total_score = rowSums(pick(all_of(pd_neuro)), na.rm = FALSE)
+  ) |>
+  mutate(pdqpaincourse_recoded = as.factor(pdqpaincourse_recoded)) |>
   mutate(pdradiateregions_recoded = as.factor(pdradiateregions_recoded))
 ```
 
@@ -2529,31 +2529,31 @@ pdq_neuro_score_new_row <- data.frame(
 
 
 # adding rows
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pdq_diff_new_row,
     .after = match("pdradiateregions", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pdq_score_new_row,
     .after = match("pdradiateregions", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pdq_course_new_row,
     .after = match("pdradiateregions", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pdq_radiate_new_row,
     .after = match("pdradiateregions", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!pdq_neuro_score_new_row,
     .after = match("pdradiateregions", psy_soc_dict$field_name)
@@ -2570,7 +2570,7 @@ Save "pdq" and updated data dictionary as .csv files in the folder named "reform
 
 write_csv(
   pdq,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -2579,7 +2579,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -2609,7 +2609,7 @@ The Sleep II form measures the average number of hours and minutes of sleep each
 Read in psy_soc1 dataframe and select field names from the Sleep Duration data and keep completed forms, we will call "sleep_dur"
 
 ```{r}
-sleep_dur <- applyFilter("sleep", painsleep_duration_sleep_ii_complete) %>%
+sleep_dur <- apply_filter("sleep", painsleep_duration_sleep_ii_complete) |>
   retype()
 ```
 
@@ -2629,7 +2629,7 @@ We will create a variable "sleep_outlier_hours" and assign a value of 0 if "slee
 We will also create a variable "sleep_outlier_mins" and assign a value of 1 if "sleepnighthourmindurmins" is less than or equal to 59 (within range) and 2 if "sleepnighthourmindurmins" is more than 59 (out of range), and 3 if "sleepnighthourmindurmins" is missing.
 
 ```{r}
-sleep_dur <- sleep_dur %>%
+sleep_dur <- sleep_dur |>
   mutate(
     sleep_outlier_hours = case_when(
       is.na(sleepnighthourmindurhrs) & !is.na(sleepnighthourmindurmins) ~ 0,
@@ -2637,17 +2637,17 @@ sleep_dur <- sleep_dur %>%
       sleepnighthourmindurhrs > 23 ~ 2,
       is.na(sleepnighthourmindurhrs) & is.na(sleepnighthourmindurmins) ~ 4
     )
-  ) %>%
+  ) |>
   mutate(sleep_outlier_hours = as.factor(sleep_outlier_hours))
 
-sleep_dur <- sleep_dur %>%
+sleep_dur <- sleep_dur |>
   mutate(
     sleep_outlier_mins = case_when(
       sleepnighthourmindurmins <= 59 ~ 1,
       sleepnighthourmindurmins > 59 ~ 2,
-      TRUE ~ 3
+      .default = 3
     )
-  ) %>%
+  ) |>
   mutate(sleep_outlier_mins = as.factor(sleep_outlier_mins))
 ```
 
@@ -2673,13 +2673,13 @@ sleep_mins_new_row <- data.frame(
 
 
 # adding rows
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!sleep_hour_new_row,
     .after = match("sleepnighthourmindur", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!sleep_mins_new_row,
     .after = match("sleepnighthourmindur", psy_soc_dict$field_name)
@@ -2696,7 +2696,7 @@ Save "sleep_dur" and updated data dictionary as .csv files in the folder named "
 
 write_csv(
   sleep_dur,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -2705,7 +2705,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -2729,7 +2729,7 @@ Each item is rated on a scale of 0 to 4, where 0 indicates "not at all" and 4 in
 Read in psy_soc1 dataframe and select field names from the PRS forms and keep completed forms, we will call this "prs"
 
 ```{r}
-prs <- applyFilter("prs", pain_resilience_scale_prs_complete)
+prs <- apply_filter("prs", pain_resilience_scale_prs_complete)
 ```
 
 #### Behavioral Perseverance (items 1-5): Handling missing data and scoring
@@ -2738,7 +2738,7 @@ Missing data pattern in Behavioral Perseverance.
 
 ```{r}
 gg_miss_upset(
-  prs %>%
+  prs |>
     select(
       prsbackoutscl,
       prsworkgoalsscl,
@@ -2770,32 +2770,32 @@ prs_bhv_five <- c(
 )
 
 
-prs <- prs %>%
-  mutate(prs_bhv_not_na = rowSums(!is.na(select(., all_of(prs_bhv_five))))) %>%
-  mutate(prs_bhv_diff = case_when(prs_bhv_not_na >= 4 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
+prs <- prs |>
+  mutate(prs_bhv_not_na = rowSums(!is.na(pick(all_of(prs_bhv_five))))) |>
+  mutate(prs_bhv_diff = case_when(prs_bhv_not_na >= 4 ~ 1, .default = 0)) |>
+  as_tibble() |>
   mutate(prs_bhv_diff = as.factor(prs_bhv_diff))
 ```
 
 We will now replace missing values with the rounded mean of remaining items if prs_bhv_diff = 1 and calculate a behavioral perseverance score by taking a sum of 5 associated item, we will call this "imputed_bhv_score."
 
 ```{r}
-prs <- prs %>%
+prs <- prs |>
   mutate(
-    raw_bhv_score = rowSums(select(., all_of(prs_bhv_five)), na.rm = TRUE)
-  ) %>%
+    raw_bhv_score = rowSums(pick(all_of(prs_bhv_five)), na.rm = TRUE)
+  ) |>
   mutate(
     mean_bhv_prs = case_when(
       prs_bhv_diff == 1 ~ round(rowMeans(
-        select(., all_of(prs_bhv_five)),
+        pick(all_of(prs_bhv_five)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(prs_bhv_five), ~ if_else(is.na(.), mean_bhv_prs, .))) %>%
+  ) |>
+  mutate(across(all_of(prs_bhv_five), ~ if_else(is.na(.), mean_bhv_prs, .))) |>
   mutate(
     imputed_bhv_score = case_when(
-      prs_bhv_diff == 1 ~ rowSums(select(., all_of(prs_bhv_five)), na.rm = TRUE)
+      prs_bhv_diff == 1 ~ rowSums(pick(all_of(prs_bhv_five)), na.rm = TRUE)
     )
   )
 ```
@@ -2804,7 +2804,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  prs %>%
+  prs |>
     select(
       prsbackoutscl,
       prsworkgoalsscl,
@@ -2823,9 +2823,9 @@ gg_miss_upset(
 check distributions of behavioral perseverance scores before (raw_bhv_score) and after imputation (imputed_bhv_score)
 
 ```{r}
-prs_bhv_plot <- prs %>%
-  filter(between(prs_bhv_not_na, 4, 5)) %>%
-  select(guid, raw_bhv_score, imputed_bhv_score) %>%
+prs_bhv_plot <- prs |>
+  filter(between(prs_bhv_not_na, 4, 5)) |>
+  select(guid, raw_bhv_score, imputed_bhv_score) |>
   pivot_longer(
     cols = c("raw_bhv_score", "imputed_bhv_score"),
     values_to = "score",
@@ -2839,7 +2839,7 @@ ggplot(prs_bhv_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-prs <- prs %>% select(-prs_bhv_not_na, -mean_bhv_prs, -raw_bhv_score)
+prs <- prs |> select(-prs_bhv_not_na, -mean_bhv_prs, -raw_bhv_score)
 ```
 
 #### Cognitive/Affective positivity: Handling missing data and scoring
@@ -2848,7 +2848,7 @@ Missing Data Pattern
 
 ```{r}
 gg_miss_upset(
-  prs %>%
+  prs |>
     select(
       prsfocuspositivescl,
       prsposattitudescl,
@@ -2888,32 +2888,32 @@ prs_cog_nine <- c(
 )
 
 
-prs <- prs %>%
-  mutate(prs_cog_not_na = rowSums(!is.na(.[, prs_cog_nine]))) %>%
-  mutate(prs_cog_diff = case_when(prs_cog_not_na >= 7 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
+prs <- prs |>
+  mutate(prs_cog_not_na = rowSums(!is.na(pick(all_of(prs_cog_nine))))) |>
+  mutate(prs_cog_diff = case_when(prs_cog_not_na >= 7 ~ 1, .default = 0)) |>
+  as_tibble() |>
   mutate(prs_cog_diff = as.factor(prs_cog_diff))
 ```
 
 We will now replace missing values with the rounded mean of remaining items if prs_cog_diff = 1 and calculate a Cognitive/Affective positivity score by taking a sum of 9 associated item, we will call this "imputed_prs_cog_score."
 
 ```{r}
-prs <- prs %>%
+prs <- prs |>
   mutate(
-    raw_prs_cog_score = rowSums(select(., all_of(prs_cog_nine)), na.rm = TRUE)
-  ) %>%
+    raw_prs_cog_score = rowSums(pick(all_of(prs_cog_nine)), na.rm = TRUE)
+  ) |>
   mutate(
     mean_cog_prs = case_when(
       prs_cog_diff == 1 ~ round(rowMeans(
-        select(., all_of(prs_cog_nine)),
+        pick(all_of(prs_cog_nine)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(prs_cog_nine), ~ if_else(is.na(.), mean_cog_prs, .))) %>%
+  ) |>
+  mutate(across(all_of(prs_cog_nine), ~ if_else(is.na(.), mean_cog_prs, .))) |>
   mutate(
     imputed_prs_cog_score = case_when(
-      prs_cog_diff == 1 ~ rowSums(select(., all_of(prs_cog_nine)), na.rm = TRUE)
+      prs_cog_diff == 1 ~ rowSums(pick(all_of(prs_cog_nine)), na.rm = TRUE)
     )
   )
 ```
@@ -2922,7 +2922,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  prs %>%
+  prs |>
     select(
       prsfocuspositivescl,
       prsposattitudescl,
@@ -2945,9 +2945,9 @@ gg_miss_upset(
 Check distributions Cognitive/Affective positivity scores before (raw_prs_cog_score) and after imputation (imputed_prs_cog_score)
 
 ```{r}
-prs_cog_plot <- prs %>%
-  filter(between(prs_cog_not_na, 7, 9)) %>%
-  select(guid, raw_prs_cog_score, imputed_prs_cog_score) %>%
+prs_cog_plot <- prs |>
+  filter(between(prs_cog_not_na, 7, 9)) |>
+  select(guid, raw_prs_cog_score, imputed_prs_cog_score) |>
   pivot_longer(
     cols = c("raw_prs_cog_score", "imputed_prs_cog_score"),
     values_to = "score",
@@ -2961,7 +2961,7 @@ ggplot(prs_cog_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-prs <- prs %>% select(-prs_cog_not_na, -mean_cog_prs, -raw_prs_cog_score)
+prs <- prs |> select(-prs_cog_not_na, -mean_cog_prs, -raw_prs_cog_score)
 ```
 
 #### Total PRS Score: Handling missing data and scoring
@@ -2970,7 +2970,7 @@ Missing data pattern in prs.
 
 ```{r}
 gg_miss_upset(
-  prs %>%
+  prs |>
     select(
       prsbackoutscl,
       prsworkgoalsscl,
@@ -3026,32 +3026,32 @@ prs_fourteen <- c(
 )
 
 
-prs <- prs %>%
-  mutate(prs_not_na = rowSums(!is.na(.[, prs_fourteen]))) %>%
-  mutate(prs_diff = case_when(prs_not_na >= 10 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
+prs <- prs |>
+  mutate(prs_not_na = rowSums(!is.na(pick(all_of(prs_fourteen))))) |>
+  mutate(prs_diff = case_when(prs_not_na >= 10 ~ 1, .default = 0)) |>
+  as_tibble() |>
   mutate(prs_diff = as.factor(prs_diff))
 ```
 
 We will now replace missing values with the rounded mean of remaining items if prs_diff = 1 and calculate a total score by taking a sum of all fourteen items, we will call this "imputed_prs_score."
 
 ```{r}
-prs <- prs %>%
+prs <- prs |>
   mutate(
-    raw_prs_score = rowSums(select(., all_of(prs_fourteen)), na.rm = TRUE)
-  ) %>%
+    raw_prs_score = rowSums(pick(all_of(prs_fourteen)), na.rm = TRUE)
+  ) |>
   mutate(
     mean_prs = case_when(
       prs_diff == 1 ~ round(rowMeans(
-        select(., all_of(prs_fourteen)),
+        pick(all_of(prs_fourteen)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(prs_fourteen), ~ if_else(is.na(.), mean_prs, .))) %>%
+  ) |>
+  mutate(across(all_of(prs_fourteen), ~ if_else(is.na(.), mean_prs, .))) |>
   mutate(
     imputed_prs_score = case_when(
-      prs_diff == 1 ~ rowSums(select(., all_of(prs_fourteen)), na.rm = TRUE)
+      prs_diff == 1 ~ rowSums(pick(all_of(prs_fourteen)), na.rm = TRUE)
     )
   )
 ```
@@ -3060,7 +3060,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  prs %>%
+  prs |>
     select(
       -ends_with("score"),
       -mean_prs,
@@ -3079,9 +3079,9 @@ gg_miss_upset(
 check distributions of total PRS scores before (raw_prs_score) and after imputation (imputed_prs_score)
 
 ```{r}
-prs_plot <- prs %>%
-  filter(between(prs_not_na, 10, 14)) %>%
-  select(guid, raw_prs_score, imputed_prs_score) %>%
+prs_plot <- prs |>
+  filter(between(prs_not_na, 10, 14)) |>
+  select(guid, raw_prs_score, imputed_prs_score) |>
   pivot_longer(
     cols = c("raw_prs_score", "imputed_prs_score"),
     values_to = "score",
@@ -3095,7 +3095,7 @@ ggplot(prs_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-prs <- prs %>% select(-prs_not_na, -mean_prs, -raw_prs_score)
+prs <- prs |> select(-prs_not_na, -mean_prs, -raw_prs_score)
 ```
 
 #### New field name(s)
@@ -3151,37 +3151,37 @@ prs_bhv_score_new_row <- data.frame(
 
 
 # adding rows
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!prs_diff_new_row,
     .after = match("prscognitivescore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!prs_cog_diff_new_row,
     .after = match("prscognitivescore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!prs_bhv_diff_new_row,
     .after = match("prscognitivescore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!prs_score_new_row,
     .after = match("prscognitivescore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!prs_cog_score_new_row,
     .after = match("prscognitivescore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!prs_bhv_score_new_row,
     .after = match("prscognitivescore", psy_soc_dict$field_name)
@@ -3198,7 +3198,7 @@ Save "prs" and updated data dictionary as .csv files in the folder named "reform
 
 write_csv(
   prs,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -3207,7 +3207,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -3225,7 +3225,7 @@ Multidimensional Inventory of Subjective Cognitive Impairment (MISCI) is used to
 Read in psy_soc1 dataframe and select field names from the MISCI form and keep completed forms, we will call "misci"
 
 ```{r}
-misci <- applyFilter(
+misci <- apply_filter(
   "misci",
   multidimensional_inventory_of_subjective_cognitive_complete
 )
@@ -3244,10 +3244,10 @@ We will reverse code the last four items which assess cognitive difficulties. Fo
 Reverse code last 4 items: We can accomplish this by subtracting the original values from 6.
 
 ```{r}
-misci <- misci %>%
-  mutate(miscishiftactivscl_reverse = 6 - miscishiftactivscl) %>%
-  mutate(misciplanningscl_reverse = 6 - misciplanningscl) %>%
-  mutate(misciexpressscl_reverse = 6 - misciexpressscl) %>%
+misci <- misci |>
+  mutate(miscishiftactivscl_reverse = 6 - miscishiftactivscl) |>
+  mutate(misciplanningscl_reverse = 6 - misciplanningscl) |>
+  mutate(misciexpressscl_reverse = 6 - misciexpressscl) |>
   mutate(miscirightwordsscl_reverse = 6 - miscirightwordsscl)
 ```
 
@@ -3270,7 +3270,7 @@ misci_ten <- c(
 )
 
 gg_miss_upset(
-  misci %>% select(all_of(misci_ten)),
+  misci |> select(all_of(misci_ten)),
   nsets = n_var_miss(misci),
   order.by = "degree",
   point.size = 1,
@@ -3284,32 +3284,32 @@ Missing values can be imputed if the responses to 8 of 10 items are available (l
 We will create a variable "misci_diff" and assign a value of 1 if there is a response to more than or equal to 8 of 10 items and 0 if there is a response to less than 8 of 10 items. The missing responses are first replaced with the average score of the completed items and then a total score is calculated by adding the scores for all the ten items.
 
 ```{r}
-misci <- misci %>%
-  mutate(misci_not_na = rowSums(!is.na(.[, misci_ten]))) %>%
-  mutate(misci_diff = case_when(misci_not_na >= 8 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
+misci <- misci |>
+  mutate(misci_not_na = rowSums(!is.na(pick(all_of(misci_ten))))) |>
+  mutate(misci_diff = case_when(misci_not_na >= 8 ~ 1, .default = 0)) |>
+  as_tibble() |>
   mutate(misci_diff = as.factor(misci_diff))
 ```
 
 We will now replace missing values with the rounded mean of remaining items if misci_diff = 1 and calculate the total score by taking a sum of all ten items, we will call this "imputed_misci_score."
 
 ```{r}
-misci <- misci %>%
+misci <- misci |>
   mutate(
-    raw_misci_score = rowSums(select(., all_of(misci_ten)), na.rm = TRUE)
-  ) %>%
+    raw_misci_score = rowSums(pick(all_of(misci_ten)), na.rm = TRUE)
+  ) |>
   mutate(
     mean_misci = case_when(
       misci_diff == 1 ~ round(rowMeans(
-        select(., all_of(misci_ten)),
+        pick(all_of(misci_ten)),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(misci_ten), ~ if_else(is.na(.), mean_misci, .))) %>%
+  ) |>
+  mutate(across(all_of(misci_ten), ~ if_else(is.na(.), mean_misci, .))) |>
   mutate(
     imputed_misci_score = case_when(
-      misci_diff == 1 ~ rowSums(select(., all_of(misci_ten)), na.rm = TRUE)
+      misci_diff == 1 ~ rowSums(pick(all_of(misci_ten)), na.rm = TRUE)
     )
   )
 ```
@@ -3318,7 +3318,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  misci %>% select(all_of(misci_ten)),
+  misci |> select(all_of(misci_ten)),
   nsets = n_var_miss(misci),
   order.by = "degree",
   point.size = 1,
@@ -3330,9 +3330,9 @@ gg_miss_upset(
 check distributions of misci total scores before (raw_misci_score) and after imputation (imputed_misci_score)
 
 ```{r}
-misci_plot <- misci %>%
-  filter(misci_diff == 1) %>%
-  select(guid, raw_misci_score, imputed_misci_score) %>%
+misci_plot <- misci |>
+  filter(misci_diff == 1) |>
+  select(guid, raw_misci_score, imputed_misci_score) |>
   pivot_longer(
     cols = c("raw_misci_score", "imputed_misci_score"),
     values_to = "score",
@@ -3346,7 +3346,7 @@ ggplot(misci_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-misci <- misci %>% select(-misci_not_na, -mean_misci, -raw_misci_score)
+misci <- misci |> select(-misci_not_na, -mean_misci, -raw_misci_score)
 ```
 
 #### New field name(s)
@@ -3403,37 +3403,37 @@ miscirightwordsscl_reverse_new_row <- data.frame(
 
 
 # adding rows
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!misci_diff_new_row,
     .after = match("miscitotalscore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!misci_score_new_row,
     .after = match("miscitotalscore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!miscishiftactivscl_reverse_new_row,
     .after = match("miscitotalscore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!misciplanningscl_reverse_new_row,
     .after = match("miscitotalscore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!misciexpressscl_reverse_new_row,
     .after = match("miscitotalscore", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!miscirightwordsscl_reverse_new_row,
     .after = match("miscitotalscore", psy_soc_dict$field_name)
@@ -3454,7 +3454,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -3518,7 +3518,7 @@ Following table shows the five domains and the specific facet traits:
 Read in psy_soc1 dataframe and select field names from the BFI-2-S form and keep completed forms, we will call this "bfi"
 
 ```{r}
-bfi <- applyFilter("bfi", the_big_five_inventory_bfi2s_complete)
+bfi <- apply_filter("bfi", the_big_five_inventory_bfi2s_complete)
 ```
 
 We will reverse code the items denoted by "R" in the table. For example, Sociability related question such as "Tends to be quiet" is rated on a scale of 1 to 5 where 1 is "Disagree strongly" and 5 is "Agree strongly". We will reverse code this to indicate 5 as "Disagree strongly" and 1 as "Agree strongly". The structure will look as follows:
@@ -3534,7 +3534,7 @@ We will reverse code the items denoted by "R" in the table. For example, Sociabi
 Reverse code the items denoted by "R": We can accomplish this by subtracting the original values from 6.
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(across(
     .cols = c(
       bfi2squietscl,
@@ -3577,7 +3577,7 @@ extra_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>% select(all_of(extra_vector)),
+  bfi |> select(all_of(extra_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3589,10 +3589,10 @@ gg_miss_upset(
 Scale score is calculated by taking the mean of the domain specific items. We will calculate raw scale score (without imputed items)
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     raw_extraversion_score = round(rowMeans(
-      select(., all_of(extra_vector)),
+      pick(all_of(extra_vector)),
       na.rm = TRUE
     ))
   )
@@ -3603,38 +3603,38 @@ For missing items, response to the closest item can be used. For instance if "Te
 Replace missing items with the closest matching item.
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
-    bfi2squietscl_reverse = ifelse(
+    bfi2squietscl_reverse = if_else(
       is.na(bfi2squietscl_reverse),
       bfi2soutgoingscl,
       bfi2squietscl_reverse
     ),
-    bfi2soutgoingscl = ifelse(
+    bfi2soutgoingscl = if_else(
       is.na(bfi2soutgoingscl),
       bfi2squietscl_reverse,
       bfi2soutgoingscl
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2sdominantscl = ifelse(
+    bfi2sdominantscl = if_else(
       is.na(bfi2sdominantscl),
       bfi2stakechargescl_reverse,
       bfi2sdominantscl
     ),
-    bfi2stakechargescl_reverse = ifelse(
+    bfi2stakechargescl_reverse = if_else(
       is.na(bfi2stakechargescl_reverse),
       bfi2sdominantscl,
       bfi2stakechargescl_reverse
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2senergyscl = ifelse(
+    bfi2senergyscl = if_else(
       is.na(bfi2senergyscl),
       bfi2slessactivescl_reverse,
       bfi2senergyscl
     ),
-    bfi2slessactivescl_reverse = ifelse(
+    bfi2slessactivescl_reverse = if_else(
       is.na(bfi2slessactivescl_reverse),
       bfi2senergyscl,
       bfi2slessactivescl_reverse
@@ -3646,7 +3646,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>% select(all_of(extra_vector)),
+  bfi |> select(all_of(extra_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3658,10 +3658,10 @@ gg_miss_upset(
 We will now calculate the imputed scale score
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     imputed_extraversion_score = round(rowMeans(
-      select(., all_of(extra_vector)),
+      pick(all_of(extra_vector)),
       na.rm = TRUE
     ))
   )
@@ -3670,18 +3670,18 @@ bfi <- bfi %>%
 check distributions of extraversion scores before (raw_extraversion_score) and after imputation (imputed_extraversion_score)
 
 ```{r}
-bfi_ext_plot <- bfi %>%
-  select(guid, raw_extraversion_score, imputed_extraversion_score) %>%
+bfi_ext_plot <- bfi |>
+  select(guid, raw_extraversion_score, imputed_extraversion_score) |>
   pivot_longer(
     cols = c("raw_extraversion_score", "imputed_extraversion_score"),
     values_to = "score",
     names_to = "score_name"
-  ) %>%
-  mutate(score_name = as.factor(score_name)) %>%
-  mutate(score = as.factor(score)) %>%
-  group_by(score_name, score) %>%
-  count() %>%
-  ungroup() %>%
+  ) |>
+  mutate(score_name = as.factor(score_name)) |>
+  mutate(score = as.factor(score)) |>
+  group_by(score_name, score) |>
+  count() |>
+  ungroup() |>
   rename(score_count = n)
 
 ggplot(bfi_ext_plot, aes(x = score, y = score_count, fill = score_name)) +
@@ -3692,7 +3692,7 @@ ggplot(bfi_ext_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>% select(-raw_extraversion_score)
+bfi <- bfi |> select(-raw_extraversion_score)
 ```
 
 #### **Agreeableness**
@@ -3712,7 +3712,7 @@ agree_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>% select(all_of(agree_vector)),
+  bfi |> select(all_of(agree_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3724,10 +3724,10 @@ gg_miss_upset(
 Scale score is calculated by taking the mean of the domain specific items. We will calculate raw scale score (without imputed items)
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     raw_agreeableness_score = round(rowMeans(
-      select(., all_of(agree_vector)),
+      pick(all_of(agree_vector)),
       na.rm = TRUE
     ))
   )
@@ -3738,38 +3738,38 @@ For missing items, response to the closest item can be used [Berkeley personalit
 Replace missing items with the closest matching item.
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
-    bfi2scompassionatescl = ifelse(
+    bfi2scompassionatescl = if_else(
       is.na(bfi2scompassionatescl),
       bfi2suncaringscl_reverse,
       bfi2scompassionatescl
     ),
-    bfi2suncaringscl_reverse = ifelse(
+    bfi2suncaringscl_reverse = if_else(
       is.na(bfi2suncaringscl_reverse),
       bfi2scompassionatescl,
       bfi2suncaringscl_reverse
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2srudescl_reverse = ifelse(
+    bfi2srudescl_reverse = if_else(
       is.na(bfi2srudescl_reverse),
       bfi2srespectfulscl,
       bfi2srudescl_reverse
     ),
-    bfi2srespectfulscl = ifelse(
+    bfi2srespectfulscl = if_else(
       is.na(bfi2srespectfulscl),
       bfi2srudescl_reverse,
       bfi2srespectfulscl
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2sassumingbestscl = ifelse(
+    bfi2sassumingbestscl = if_else(
       is.na(bfi2sassumingbestscl),
       bfi2sfaultwithothersscl_reverse,
       bfi2sassumingbestscl
     ),
-    bfi2sfaultwithothersscl_reverse = ifelse(
+    bfi2sfaultwithothersscl_reverse = if_else(
       is.na(bfi2sfaultwithothersscl_reverse),
       bfi2sassumingbestscl,
       bfi2sfaultwithothersscl_reverse
@@ -3781,7 +3781,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>% select(all_of(agree_vector)),
+  bfi |> select(all_of(agree_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3793,10 +3793,10 @@ gg_miss_upset(
 We will now calculate the imputed scale score
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     imputed_agreeableness_score = round(rowMeans(
-      select(., all_of(agree_vector)),
+      pick(all_of(agree_vector)),
       na.rm = TRUE
     ))
   )
@@ -3805,18 +3805,18 @@ bfi <- bfi %>%
 check distributions of agreeableness scores before (raw_agreeableness_score) and after imputation (imputed_agreeableness_score)
 
 ```{r}
-bfi_agree_plot <- bfi %>%
-  select(guid, raw_agreeableness_score, imputed_agreeableness_score) %>%
+bfi_agree_plot <- bfi |>
+  select(guid, raw_agreeableness_score, imputed_agreeableness_score) |>
   pivot_longer(
     cols = c("raw_agreeableness_score", "imputed_agreeableness_score"),
     values_to = "score",
     names_to = "score_name"
-  ) %>%
-  mutate(score_name = as.factor(score_name)) %>%
-  mutate(score = as.factor(score)) %>%
-  group_by(score_name, score) %>%
-  count() %>%
-  ungroup() %>%
+  ) |>
+  mutate(score_name = as.factor(score_name)) |>
+  mutate(score = as.factor(score)) |>
+  group_by(score_name, score) |>
+  count() |>
+  ungroup() |>
   rename(score_count = n)
 
 ggplot(bfi_agree_plot, aes(x = score, y = score_count, fill = score_name)) +
@@ -3827,7 +3827,7 @@ ggplot(bfi_agree_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>% select(-raw_agreeableness_score)
+bfi <- bfi |> select(-raw_agreeableness_score)
 ```
 
 #### **Conscientiousness**
@@ -3847,7 +3847,7 @@ cons_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>% select(all_of(cons_vector)),
+  bfi |> select(all_of(cons_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3859,10 +3859,10 @@ gg_miss_upset(
 Scale score is calculated by taking the mean of the domain specific items. We will calculate raw scale score (without imputed items)
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     raw_cons_score = round(rowMeans(
-      select(., all_of(cons_vector)),
+      pick(all_of(cons_vector)),
       na.rm = TRUE
     ))
   )
@@ -3873,38 +3873,38 @@ For missing items response to the closest item can be used.[Berkeley personality
 Replace missing items with the closest matching item.
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
-    bfi2sdisorganizedscl_reverse = ifelse(
+    bfi2sdisorganizedscl_reverse = if_else(
       is.na(bfi2sdisorganizedscl_reverse),
       bfi2stidyscl,
       bfi2sdisorganizedscl_reverse
     ),
-    bfi2stidyscl = ifelse(
+    bfi2stidyscl = if_else(
       is.na(bfi2stidyscl),
       bfi2sdisorganizedscl_reverse,
       bfi2stidyscl
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2sdifficultstartscl_reverse = ifelse(
+    bfi2sdifficultstartscl_reverse = if_else(
       is.na(bfi2sdifficultstartscl_reverse),
       bfi2spersistentscl,
       bfi2sdifficultstartscl_reverse
     ),
-    bfi2spersistentscl = ifelse(
+    bfi2spersistentscl = if_else(
       is.na(bfi2spersistentscl),
       bfi2sdifficultstartscl_reverse,
       bfi2spersistentscl
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2sreliablescl = ifelse(
+    bfi2sreliablescl = if_else(
       is.na(bfi2sreliablescl),
       bfi2scarelessscl_reverse,
       bfi2sreliablescl
     ),
-    bfi2scarelessscl_reverse = ifelse(
+    bfi2scarelessscl_reverse = if_else(
       is.na(bfi2scarelessscl_reverse),
       bfi2sreliablescl,
       bfi2scarelessscl_reverse
@@ -3916,7 +3916,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>% select(all_of(cons_vector)),
+  bfi |> select(all_of(cons_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3928,10 +3928,10 @@ gg_miss_upset(
 We will now calculate the imputed scale score
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     imputed_cons_score = round(rowMeans(
-      select(., all_of(cons_vector)),
+      pick(all_of(cons_vector)),
       na.rm = TRUE
     ))
   )
@@ -3940,18 +3940,18 @@ bfi <- bfi %>%
 Check distributions of conscientiousness scores before (raw_cons_score) and after imputation (imputed_cons_score)
 
 ```{r}
-bfi_cons_plot <- bfi %>%
-  select(guid, raw_cons_score, imputed_cons_score) %>%
+bfi_cons_plot <- bfi |>
+  select(guid, raw_cons_score, imputed_cons_score) |>
   pivot_longer(
     cols = c("raw_cons_score", "imputed_cons_score"),
     values_to = "score",
     names_to = "score_name"
-  ) %>%
-  mutate(score_name = as.factor(score_name)) %>%
-  mutate(score = as.factor(score)) %>%
-  group_by(score_name, score) %>%
-  count() %>%
-  ungroup() %>%
+  ) |>
+  mutate(score_name = as.factor(score_name)) |>
+  mutate(score = as.factor(score)) |>
+  group_by(score_name, score) |>
+  count() |>
+  ungroup() |>
   rename(score_count = n)
 
 ggplot(bfi_cons_plot, aes(x = score, y = score_count, fill = score_name)) +
@@ -3962,7 +3962,7 @@ ggplot(bfi_cons_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>% select(-raw_cons_score)
+bfi <- bfi |> select(-raw_cons_score)
 ```
 
 #### **Negative Emotionality**
@@ -3982,7 +3982,7 @@ emotion_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>% select(all_of(emotion_vector)),
+  bfi |> select(all_of(emotion_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -3994,10 +3994,10 @@ gg_miss_upset(
 Scale score is calculated by taking the mean of the domain specific items. We will calculate raw scale score (without imputed items)
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     raw_emotional_score = round(rowMeans(
-      select(., all_of(emotion_vector)),
+      pick(all_of(emotion_vector)),
       na.rm = TRUE
     ))
   )
@@ -4008,38 +4008,38 @@ For missing items response to the closest item can be used [Berkeley personality
 Replace missing items with the closest matching item.
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
-    bfi2sworriesscl = ifelse(
+    bfi2sworriesscl = if_else(
       is.na(bfi2sworriesscl),
       bfi2srelaxedscl_reverse,
       bfi2sworriesscl
     ),
-    bfi2srelaxedscl_reverse = ifelse(
+    bfi2srelaxedscl_reverse = if_else(
       is.na(bfi2srelaxedscl_reverse),
       bfi2sworriesscl,
       bfi2srelaxedscl_reverse
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2sdepressedscl = ifelse(
+    bfi2sdepressedscl = if_else(
       is.na(bfi2sdepressedscl),
       bfi2ssecurescl_reverse,
       bfi2sdepressedscl
     ),
-    bfi2ssecurescl_reverse = ifelse(
+    bfi2ssecurescl_reverse = if_else(
       is.na(bfi2ssecurescl_reverse),
       bfi2sdepressedscl,
       bfi2ssecurescl_reverse
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2stemperamentalscl = ifelse(
+    bfi2stemperamentalscl = if_else(
       is.na(bfi2stemperamentalscl),
       bfi2sstableemotionscl_reverse,
       bfi2stemperamentalscl
     ),
-    bfi2sstableemotionscl_reverse = ifelse(
+    bfi2sstableemotionscl_reverse = if_else(
       is.na(bfi2sstableemotionscl_reverse),
       bfi2stemperamentalscl,
       bfi2sstableemotionscl_reverse
@@ -4051,7 +4051,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>% select(all_of(emotion_vector)),
+  bfi |> select(all_of(emotion_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -4063,10 +4063,10 @@ gg_miss_upset(
 We will now calculate the imputed scale score
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     imputed_emotional_score = round(rowMeans(
-      select(., all_of(emotion_vector)),
+      pick(all_of(emotion_vector)),
       na.rm = TRUE
     ))
   )
@@ -4075,18 +4075,18 @@ bfi <- bfi %>%
 Check distributions negative emotionality scores before (raw_emotional_score) and after imputation (imputed_emotional_score).
 
 ```{r}
-bfi_emo_plot <- bfi %>%
-  select(guid, raw_emotional_score, imputed_emotional_score) %>%
+bfi_emo_plot <- bfi |>
+  select(guid, raw_emotional_score, imputed_emotional_score) |>
   pivot_longer(
     cols = c("raw_emotional_score", "imputed_emotional_score"),
     values_to = "score",
     names_to = "score_name"
-  ) %>%
-  mutate(score_name = as.factor(score_name)) %>%
-  mutate(score = as.factor(score)) %>%
-  group_by(score_name, score) %>%
-  count() %>%
-  ungroup() %>%
+  ) |>
+  mutate(score_name = as.factor(score_name)) |>
+  mutate(score = as.factor(score)) |>
+  group_by(score_name, score) |>
+  count() |>
+  ungroup() |>
   rename(score_count = n)
 
 ggplot(bfi_emo_plot, aes(x = score, y = score_count, fill = score_name)) +
@@ -4097,7 +4097,7 @@ ggplot(bfi_emo_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>% select(-raw_emotional_score)
+bfi <- bfi |> select(-raw_emotional_score)
 ```
 
 #### **Open-Mindedness**
@@ -4117,7 +4117,7 @@ open_vector <- c(
 )
 
 gg_miss_upset(
-  bfi %>% select(all_of(open_vector)),
+  bfi |> select(all_of(open_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -4129,10 +4129,10 @@ gg_miss_upset(
 Scale score is calculated by taking the mean of the domain specific items. We will calculate raw scale score (without imputed items)
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     raw_open_score = round(rowMeans(
-      select(., all_of(open_vector)),
+      pick(all_of(open_vector)),
       na.rm = TRUE
     ))
   )
@@ -4143,38 +4143,38 @@ For missing items response to the closest item can be used.[Berkeley personality
 Replace missing items with the closest matching item.
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
-    bfi2sfascinatedscl = ifelse(
+    bfi2sfascinatedscl = if_else(
       is.na(bfi2sfascinatedscl),
       bfi2sfewartinterestscl_reverse,
       bfi2sfascinatedscl
     ),
-    bfi2sfewartinterestscl_reverse = ifelse(
+    bfi2sfewartinterestscl_reverse = if_else(
       is.na(bfi2sfewartinterestscl_reverse),
       bfi2sfascinatedscl,
       bfi2sfewartinterestscl_reverse
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2sllittleinterestscl_reverse = ifelse(
+    bfi2sllittleinterestscl_reverse = if_else(
       is.na(bfi2sllittleinterestscl_reverse),
       bfi2sthinkerscl,
       bfi2sllittleinterestscl_reverse
     ),
-    bfi2sthinkerscl = ifelse(
+    bfi2sthinkerscl = if_else(
       is.na(bfi2sthinkerscl),
       bfi2sllittleinterestscl_reverse,
       bfi2sthinkerscl
     )
-  ) %>%
+  ) |>
   mutate(
-    bfi2soriginalscl = ifelse(
+    bfi2soriginalscl = if_else(
       is.na(bfi2soriginalscl),
       bfi2slittlecreativityscl_reverse,
       bfi2soriginalscl
     ),
-    bfi2slittlecreativityscl_reverse = ifelse(
+    bfi2slittlecreativityscl_reverse = if_else(
       is.na(bfi2slittlecreativityscl_reverse),
       bfi2soriginalscl,
       bfi2slittlecreativityscl_reverse
@@ -4186,7 +4186,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  bfi %>% select(all_of(open_vector)),
+  bfi |> select(all_of(open_vector)),
   nsets = n_var_miss(bfi),
   order.by = "degree",
   point.size = 1,
@@ -4198,10 +4198,10 @@ gg_miss_upset(
 We will now calculate the imputed scale score
 
 ```{r}
-bfi <- bfi %>%
+bfi <- bfi |>
   mutate(
     imputed_open_score = round(rowMeans(
-      select(., all_of(open_vector)),
+      pick(all_of(open_vector)),
       na.rm = TRUE
     ))
   )
@@ -4210,18 +4210,18 @@ bfi <- bfi %>%
 Check distributions of open-mindedness scores before (raw_open_score) and after imputation (imputed_open_score)
 
 ```{r}
-bfi_open_plot <- bfi %>%
-  select(guid, raw_open_score, imputed_open_score) %>%
+bfi_open_plot <- bfi |>
+  select(guid, raw_open_score, imputed_open_score) |>
   pivot_longer(
     cols = c("raw_open_score", "imputed_open_score"),
     values_to = "score",
     names_to = "score_name"
-  ) %>%
-  mutate(score_name = as.factor(score_name)) %>%
-  mutate(score = as.factor(score)) %>%
-  group_by(score_name, score) %>%
-  count() %>%
-  ungroup() %>%
+  ) |>
+  mutate(score_name = as.factor(score_name)) |>
+  mutate(score = as.factor(score)) |>
+  group_by(score_name, score) |>
+  count() |>
+  ungroup() |>
   rename(score_count = n)
 
 ggplot(bfi_open_plot, aes(x = score, y = score_count, fill = score_name)) +
@@ -4232,7 +4232,7 @@ ggplot(bfi_open_plot, aes(x = score, y = score_count, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-bfi <- bfi %>% select(-raw_open_score)
+bfi <- bfi |> select(-raw_open_score)
 ```
 
 #### New field name(s)
@@ -4401,126 +4401,126 @@ bfi2slittlecreativityscl_reverse_new_row <- data.frame(
 
 ```{r}
 # adding rows
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!extra_score_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!agree_score_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!cons_score_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!emo_score_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!open_score_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2squietscl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2stakechargescl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2slessactivescl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2suncaringscl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2srudescl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2sfaultwithothersscl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2sdisorganizedscl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2sdifficultstartscl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2scarelessscl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2srelaxedscl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2ssecurescl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2sstableemotionscl_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2sfewartinterestscl_reverse_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2sllittleinterestscl_reverse_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!bfi2slittlecreativityscl_reverse_new_row,
     .after = match("bfi2slittlecreativityscl", psy_soc_dict$field_name)
@@ -4537,7 +4537,7 @@ Save "bfi" and updated data dictionary as .csv files in the folder named "reform
 
 write_csv(
   bfi,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -4546,7 +4546,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -4564,7 +4564,7 @@ The Danish Thoracic Surgery Questionnaire comprises 17 items to assess functiona
 Read in psy_soc1 dataframe and select field names from the The Danish Thoracic Surgery Questionnaire data and keep completed forms. Keeping completed forms will subset to the thoracotomy cohort by default, we will call "dts"
 
 ```{r}
-dts <- applyFilter("dts", danish_thoracic_surgery_questionnaire_v02_complete)
+dts <- apply_filter("dts", danish_thoracic_surgery_questionnaire_v02_complete)
 ```
 
 #### Missing Data:
@@ -4609,36 +4609,36 @@ dts_vector <- c(
   "dtssleepscl"
 )
 
-dts <- dts %>%
-  mutate(dts_not_na = rowSums(!is.na(.[, dts_vector]))) %>%
-  mutate(dts_diff = case_when(dts_not_na >= 13 ~ 1, TRUE ~ 0)) %>%
-  as_tibble() %>%
+dts <- dts |>
+  mutate(dts_not_na = rowSums(!is.na(pick(all_of(dts_vector))))) |>
+  mutate(dts_diff = case_when(dts_not_na >= 13 ~ 1, .default = 0)) |>
+  as_tibble() |>
   mutate(dts_diff = as.factor(dts_diff))
 ```
 
 We will now replace missing values with the rounded mean of remaining items if dts_diff = 1 i.e if 13 of 17 items are available and calculate the total score by taking a sum of all the items. We will exclude responses indicated by a "96" i.e. "I never do this activity" from all calculations.
 
 ```{r}
-dts <- dts %>%
+dts <- dts |>
   mutate(
     raw_dts_score = rowSums(
-      select(., all_of(dts_vector)) * (select(., all_of(dts_vector)) != 96),
+      pick(all_of(dts_vector)) * (pick(all_of(dts_vector)) != 96),
       na.rm = TRUE
     )
-  ) %>%
+  ) |>
   mutate(
     mean_dts = case_when(
       dts_diff == 1 ~ round(rowMeans(
-        select(., all_of(dts_vector)) * (select(., all_of(dts_vector)) != 96),
+        pick(all_of(dts_vector)) * (pick(all_of(dts_vector)) != 96),
         na.rm = TRUE
       ))
     )
-  ) %>%
-  mutate(across(all_of(dts_vector), ~ if_else(is.na(.), mean_dts, .))) %>%
+  ) |>
+  mutate(across(all_of(dts_vector), ~ if_else(is.na(.), mean_dts, .))) |>
   mutate(
     imputed_dts_score = case_when(
       dts_diff == 1 ~ rowSums(
-        select(., all_of(dts_vector)) * (select(., all_of(dts_vector)) != 96),
+        pick(all_of(dts_vector)) * (pick(all_of(dts_vector)) != 96),
         na.rm = TRUE
       )
     )
@@ -4649,7 +4649,7 @@ Check missingness pattern after imputation
 
 ```{r}
 gg_miss_upset(
-  dts %>% select(-imputed_dts_score, -mean_dts),
+  dts |> select(-imputed_dts_score, -mean_dts),
   nsets = n_var_miss(dts),
   order.by = "degree",
   point.size = 1,
@@ -4661,9 +4661,9 @@ gg_miss_upset(
 Check distributions of DTS scores before (raw_dts_score) and after imputation (imputed_dts_score)
 
 ```{r}
-dts_plot <- dts %>%
-  filter(between(dts_not_na, 13, 17)) %>%
-  select(guid, raw_dts_score, imputed_dts_score) %>%
+dts_plot <- dts |>
+  filter(between(dts_not_na, 13, 17)) |>
+  select(guid, raw_dts_score, imputed_dts_score) |>
   pivot_longer(
     cols = c("raw_dts_score", "imputed_dts_score"),
     values_to = "score",
@@ -4677,7 +4677,7 @@ ggplot(dts_plot, aes(x = score_name, y = score, fill = score_name)) +
 Remove intermediate field names not needed
 
 ```{r}
-dts <- dts %>% select(-dts_not_na, -mean_dts, raw_dts_score)
+dts <- dts |> select(-dts_not_na, -mean_dts, raw_dts_score)
 ```
 
 #### New field name(s):
@@ -4702,7 +4702,7 @@ dts_score_new_row <- data.frame(
 )
 
 # adding fabq_diff
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!dts_diff_new_row,
     .after = match("dtssleepscl", psy_soc_dict$field_name)
@@ -4710,7 +4710,7 @@ psy_soc_dict <- psy_soc_dict %>%
 
 # imputed fabq score
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!dts_score_new_row,
     .after = match("dtssleepscl", psy_soc_dict$field_name)
@@ -4727,7 +4727,7 @@ Save "dts" and updated data dictionary as .csv files in the folder named "reform
 
 write_csv(
   dts,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -4736,7 +4736,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -4754,28 +4754,34 @@ The Rapid Assessment of Physical Activity Questionnaire comprises 9 items to ass
 Read in psy_soc1 dataframe and select field names from the RAPA and keep completed forms, we will call "rapa"
 
 ```{r}
-rapa <- applyFilter(
+rapa <- apply_filter(
   "rapa",
   rapid_assessment_of_physical_activity_v10_rapa_complete
-) %>%
+) |>
   retype()
 ```
 
 Missing values cannot be imputed, we well compute aerobic activity score based on the highest affirmative response.
 
 ```{r}
-rapa <- rapa %>%
+rapa <- rapa |>
   mutate(
-    rapa_rarly1 = case_when(rapa_rarly == 1 ~ 1, TRUE ~ rapa_rarly),
-    rapa_light1 = case_when(rapa_light == 1 ~ 2, TRUE ~ rapa_light),
+    rapa_rarly1 = case_when(rapa_rarly == 1 ~ 1, .default = rapa_rarly),
+    rapa_light1 = case_when(rapa_light == 1 ~ 2, .default = rapa_light),
     rapa_lightweekly1 = case_when(
       rapa_lightweekly == 1 ~ 3,
-      TRUE ~ rapa_lightweekly
+      .default = rapa_lightweekly
     ),
-    rapa_mod1 = case_when(rapa_mod == 1 ~ 4, TRUE ~ rapa_mod),
-    rapa_vig1 = case_when(rapa_vig == 1 ~ 4, TRUE ~ rapa_vig),
-    rapa_modweekly1 = case_when(rapa_modweekly == 1 ~ 5, TRUE ~ rapa_modweekly),
-    rapa_vigweekly1 = case_when(rapa_vigweekly == 1 ~ 5, TRUE ~ rapa_vigweekly),
+    rapa_mod1 = case_when(rapa_mod == 1 ~ 4, .default = rapa_mod),
+    rapa_vig1 = case_when(rapa_vig == 1 ~ 4, .default = rapa_vig),
+    rapa_modweekly1 = case_when(
+      rapa_modweekly == 1 ~ 5,
+      .default = rapa_modweekly
+    ),
+    rapa_vigweekly1 = case_when(
+      rapa_vigweekly == 1 ~ 5,
+      .default = rapa_vigweekly
+    ),
     rapa_aerobic_score = pmax(
       rapa_rarly1,
       rapa_light1,
@@ -4786,7 +4792,7 @@ rapa <- rapa %>%
       rapa_vigweekly1,
       na.rm = TRUE
     )
-  ) %>%
+  ) |>
   mutate(
     rapa_aerobic_category = case_when(
       rapa_aerobic_score == 1 ~ "sedentary",
@@ -4795,18 +4801,21 @@ rapa <- rapa %>%
       rapa_aerobic_score == 4 ~ "underactive_regular",
       rapa_aerobic_score == 5 ~ "active",
       rapa_aerobic_score == 0 ~ "answered_no_to_all_aerobic_items",
-      TRUE ~ NA
+      .default = NA
     )
-  ) %>%
+  ) |>
   mutate(rapa_aerobic_category = as.factor(rapa_aerobic_category))
 ```
 
 We will create a variable "rapa_aerobic_missing" and assign a value of 1 if "rapa_aerobic_score" is missing and 0 if "rapa_aerobic_score" is available
 
 ```{r}
-rapa <- rapa %>%
+rapa <- rapa |>
   mutate(
-    rapa_aerobic_missing = case_when(is.na(rapa_aerobic_score) ~ 1, TRUE ~ 0)
+    rapa_aerobic_missing = case_when(
+      is.na(rapa_aerobic_score) ~ 1,
+      .default = 0
+    )
   )
 ```
 
@@ -4896,63 +4905,63 @@ rapa7_new_row <- data.frame(
 
 ####
 # adding rows
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!aerobic_score_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!aerobic_category_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!aerobic_missing_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
   )
 
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!rapa1_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!rapa2_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!rapa3_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!rapa4_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!rapa5_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!rapa6_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
   )
 
-psy_soc_dict <- psy_soc_dict %>%
+psy_soc_dict <- psy_soc_dict |>
   add_row(
     !!!rapa7_new_row,
     .after = match("rapa_2score", psy_soc_dict$field_name)
@@ -4969,7 +4978,7 @@ Save "rapa" and updated data dictionary as .csv files in the folder named "refor
 
 write_csv(
   rapa,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
@@ -4978,7 +4987,7 @@ write_csv(
 )
 write_csv(
   psy_soc_dict,
-  file = here::here(
+  file = here(
     "data",
     "Psychosocial",
     "Reformatted",
