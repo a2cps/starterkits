@@ -165,6 +165,7 @@ fcn <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
   filter(atlas == "difumo_dimension-64_resolution-2mm") |>
   filter(estimator == "empirical") |>
   semi_join(subs_with_all_runs_ok, by = join_by(sub)) |>
+  arrange(sub, task, run, source, target) |> # for reproducibility
   mutate(scan = str_c(task, run)) |>
   select(-atlas, -ses, -task, -run, -estimator) |>
   collect()
