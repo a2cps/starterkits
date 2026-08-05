@@ -148,6 +148,7 @@ img_with_many_clicks <- read_parquet_duckdb(
   filter(!is.na(x)) |>
   semi_join(spatial_norm_images, by = join_by(img_id == id)) |>
   summarise(n_clicks = n(), .by = c(img_id)) |>
+  arrange(img_id) |> # for reproducibility
   slice_head(n = 1, by = n_clicks)
 img_with_many_clicks
 ```
@@ -227,6 +228,7 @@ definite_coregistration_failures <- read_parquet_duckdb(
     run = str_extract(file1, "(?<=run-0)[1|2]")
   ) |>
   distinct(sub, task, run) |>
+  arrange(sub, task, run) |> # for reproducibility
   collect()
 ```
 
