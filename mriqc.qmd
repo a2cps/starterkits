@@ -88,7 +88,7 @@ Let's create a simple scatter plot to compare motion in A2CPS against motion in 
 bind_rows(list(a2cps = group_bold, mriqc = all_bold), .id = "source") |>
   ggplot(aes(x = source, y = fd_mean)) +
   geom_violin() +
-  geom_scattermore(position = position_jitter(height = 0)) +
+  geom_scattermore(position = position_jitter(height = 0, seed = 1)) +
   coord_cartesian(ylim = c(0, 5))
 ```
 
