@@ -40,14 +40,29 @@ To explore this, we first load the relevant datasets.
 ```{r}
 #| label: setup
 
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(here)
+library(readr)
 ```
 
 ```{r}
 #| label: load
 
-gad <- read_csv("data/pre-surgery/psychosocial/reformatted/reformatted_gad.csv")
-phq <- read_csv("data/pre-surgery/psychosocial/reformatted/reformatted_phq.csv")
+gad <- read_csv(here(
+  "data",
+  "pre-surgery",
+  "psychosocial",
+  "reformatted",
+  "reformatted_gad.csv"
+))
+phq <- read_csv(here(
+  "data",
+  "pre-surgery",
+  "psychosocial",
+  "reformatted",
+  "reformatted_phq.csv"
+))
 ```
 
 Next, we join the datasets using the unique identifiers `record_id` and `guid`. These identifiers allow you to link records across different psychosocial forms, as well as to other modalities (like neuroimaging or genomics). The `inner_join` function is used here to keep only rows that exist in both tables.
@@ -61,7 +76,7 @@ gad_phq <- inner_join(gad, phq, by = intersect(names(gad), names(phq)))
 View columns available after merging the two datasets
 
 ```{r}
-#| label: peak
+#| label: peek
 
 head(gad_phq)
 ```
@@ -76,7 +91,7 @@ glimpse(gad_phq)
 
 ## Exploratory data analysis
 
-Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations\ [@kircanski_investigating_2017]. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the `glimpse()` functiona that those variables are stored as ordered and numeric.
+Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations\ [@kircanski_investigating_2017]. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the `glimpse()` function that those variables are stored as ordered and numeric.
 
 **Spearman Correlation**:
 
@@ -94,7 +109,7 @@ As expected we see a very strong correlation between anxiety and depression with
 #| label: plot
 
 # Remove rows with NA in either column
-gad_phq_clean <- gad_phq %>%
+gad_phq_clean <- gad_phq |>
   filter(!is.na(imputed_gad_score), !is.na(imputed_phq_score))
 
 # Create the plot
@@ -120,9 +135,9 @@ We see that there is a positive association between Anxiety and Depression score
 
 ## Considerations While Working on the Project
 
-### Methods
+### Data Generation
 
-Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI) (see below for more details). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessement and a mood assessment.
+Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessment and a mood assessment.
 
 ### Data Quality
 
@@ -131,12 +146,6 @@ The data were exported from REDCap and may contain errors or missing values. The
 ### Cross-Modality Links
 
 All files include `record_id` and `guid`, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.
-
-## Considerations While Working on the Project
-
-### Data Generation
-
-Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessement and a mood assessment.
 
 ### Missing Data
 
