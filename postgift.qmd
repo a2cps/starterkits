@@ -109,7 +109,7 @@ do_ma_plot <- function(.d) {
 run1_amplitudes_without_red <- run1_amplitudes |>
   anti_join(red_run1_scans, by = join_by(sub))
 
-run1_amplitudes |> do_ma_plot()
+run1_amplitudes_without_red |> do_ma_plot()
 ```
 
 Fractional Amplitude of Low Frequency Fluctuations. Each panel is a distinct component. The x-axis is a mean average, and the y-axis is a ratio of the two fALFFs. 

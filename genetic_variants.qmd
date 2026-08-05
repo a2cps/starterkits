@@ -769,11 +769,18 @@ matched_rows <- fam.file[prefix %in% drop_not_in_freeze2_list, .(V1, V2)]
 
 fwrite(matched_rows, col.names = FALSE, sep = " ", "notFreeze2.txt")
 
-previous_drops <- fread("/Users/sethberke/a2cps.gv.qc.auto/A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List.txt")
+previous_drops <- fread(
+  "./A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List.txt"
+)
 
 total_drops <- rbind(matched_rows, previous_drops)
 
-fwrite(total_drops, col.names = FALSE, sep = " ", "/Users/sethberke/a2cps.gv.qc.auto/A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List_Only_Freeze_2.txt")
+fwrite(
+  total_drops,
+  "./A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List_Only_Freeze_2.txt",
+  col.names = FALSE,
+  sep = " "
+)
 ```
 
 </details>
@@ -844,7 +851,7 @@ fam_with_race <- merge(fam, bioDF_Mapping_Cols, by = "biospecimen_id", all.x = T
 # PCA
 library(tidyverse)
 setwd("./Freeze_2/principle_components_analysis/PCA")
-pca <- read_table2("./pca_info.eigenvec", col_names = FALSE)
+pca <- read_table("./pca_info.eigenvec", col_names = FALSE)
 eigenval <- scan("./pca_info.eigenval")
 pca$X2 <- sub("_.*", "", pca$X2)
 pca <- pca[,-1]

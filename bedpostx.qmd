@@ -61,7 +61,7 @@ First, let's grab the `mean_f1samples` file, which is an estimate of how much of
 ```{r}
 #| label: load-f1
 
-# take every 10th slice
+# take every 5th slice
 f1 <- to_tbl(
   "data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/mean_f1samples.nii.gz",
   measure = "f1"
@@ -92,13 +92,13 @@ Signal Contribution of the First Fiber. Higher values indicate stronger influenc
 Information about the fiber orientation is stored in the "dyads" file. Each of these dyad files is the mean of the principle diffusion direction, stored as a 3d vector; that is, the nifti files are 4d, with the third dimension corresponding to the x, y, and z coordinates. To visualize these vectors, we're going to map the coordinates onto the Red Green Blue color space\ [for a discussion of color scales, see @pajevic1999color].
 
 ```{r}
-gamma <- 1.8
+gamma_correction <- 1.8
 fiber <- to_tbl(
   "data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/dyads1.nii.gz"
 ) |>
   inner_join(f1, by = join_by(i, j, k)) |>
   mutate(
-    value = (abs(value) * f1)^(1 / 1.8) # gamma correction to make colors easier to see
+    value = (abs(value) * f1)^(1 / gamma_correction)
   ) |>
   pivot_wider(names_from = t) |>
   mutate(
@@ -121,9 +121,9 @@ df_legend <- expand_grid(
   mutate(
     z = sqrt(1 - x^2 - y^2),
 
-    r = (abs(x))^(1 / 1.8),
-    g = (abs(y))^(1 / 1.8),
-    b = (abs(z))^(1 / 1.8),
+    r = (abs(x))^(1 / gamma_correction),
+    g = (abs(y))^(1 / gamma_correction),
+    b = (abs(z))^(1 / gamma_correction),
 
     across(c(r, g, b), \(x) pmin(pmax(x, 0), 1)),
     hex_color = rgb(r, g, b)

@@ -159,7 +159,7 @@ red_dmri <- read_tsv(
 ) |>
   filter(str_detect(filename, "dwi.nii.gz")) |>
   mutate(
-    sub = str_extract(filename, "(?<=sub-)[[:digit:]]+") |> as.numeric()
+    sub = str_extract(filename, "(?<=sub-)[[:digit:]]+") |> as.integer()
   ) |>
   filter(rating == "red")
 
