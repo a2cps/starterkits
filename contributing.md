@@ -29,6 +29,23 @@ When writing or updating a starter kit, please adhere to the following guideline
 - **Complexity:** Avoid writing overly complicated code chunks. If a kit needs a complex example or figure, suggest it with a placeholder or plain English explanation. The main focus should be on clear prose.
 - **Structural Consistency:** Kits must adhere to the structure defined in `_template.qmd`. See the template for the required sections: "Starting Project" (Locate Data, Extract Data, Data Quality, Cross-Modality Links) and "Considerations While Working on the Project" (Data Generation, Other, Citations).
 
+## `R` Style
+
+The kits are read as much as they are run, so the code is part of the prose. Please follow the [tidyverse style guide](https://style.tidyverse.org/), plus the conventions below. Formatting (indentation, line width, `<-`) is handled automatically by [`air`](https://posit-dev.github.io/air/) via the `prek` hooks, so it is not something to think about while writing.
+
+- **Use the native pipe `|>`**, not `%>%`. Nothing in the book needs magrittr.
+- **Load every package in one `setup` chunk**, placed immediately after the chapter's `#` heading and labelled `#| label: setup`. List the packages alphabetically, and only the ones the chapter actually uses.
+- **Do not call `pkg::fun()`.** If a chapter uses a function, it loads that function's package. Namespacing a single call is the thing the `setup` chunk exists to avoid.
+- **Load individual packages, not `library(tidyverse)`**, so a reader can see which package supplies which verb. The kits are aimed at researchers who may not know the tidyverse.
+- **Prefer current `dplyr`/`tidyr` idiom** over the superseded forms: `slice_max()` over `top_n()`, `across()` over `mutate_all()`, `.default =` over a trailing `TRUE ~`, `if_else()` over `ifelse()`, `drop_na()` over `na.omit()`, `separate_wider_delim()` over `separate()`, and `pick()` over the magrittr `select(., ...)`.
+- **Write anonymous functions as `\(x)`**, not as a `~ .x` formula.
+- **Set axis titles with `labs()`**, not `xlab()`/`ylab()`.
+- **Label every chunk**, in kebab-case. Avoid labels that shadow a function name (`filter`, `image`, `session`); the label ends up in figure filenames and error messages.
+- **Reach files under `data/` with `here()`** rather than a relative path, so a chunk works regardless of where it is run from.
+- **Use a plain fence for code that only illustrates** a path or command. See [Code blocks and shortcodes](#code-blocks-and-shortcodes) --- an executable cell with `#| eval: false` looks equivalent but silently breaks `{{{< var >}}}` shortcodes.
+
+Note that `read.csv()` appears deliberately in a few of the CRF appendices, where `read_csv()` reports parsing errors on the raw exports; those are paired with `hablar::retype()` and should be left alone.
+
 ## To Update
 
 The following is a minimal workflow for updating the site. 
@@ -152,7 +169,7 @@ This repo comes with a template for new kits: [_template.qmd](_template.qmd).
 By default, all tables are rendered into markdown with [`knitr::kable`](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html)[^kable], which will attempt to render the entire table. For tables larger than a few rows, this is likely not what is wanted; adding many rows will make the website very large and slow, and we do not want to accidentally share an entire dataset. Here are three options to consider, in no particular order
 
 - For an individual `*qmd`, change the default formatter to something that prints only a few rows 
-  - For example, [freesurfer.qmd](freesurfer.qmd)
+  - For example, [bids-qc-joining.qmd](bids-qc-joining.qmd)
   - For a list of options, see: https://quarto.org/docs/reference/formats/html.html#tables
 - Manually print individual tables using a different formatter 
   - For example, [DT](https://rstudio.github.io/DT/)
