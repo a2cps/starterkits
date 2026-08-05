@@ -149,7 +149,8 @@ networks |>
   ggplot(aes(y = ModuleName, x = value)) +
   facet_wrap(~metric, scales = "free_x") +
   geom_boxplot(outliers = FALSE) +
-  geom_jitter(alpha = 0.2)
+  # seeded so the figure is reproducible across renders
+  geom_point(alpha = 0.2, position = position_jitter(seed = 1))
 ```
 
 Distribution of Structural Connectivity Metrics Related to Primary dMRI Biomarker. Deg_mean: Average degree within network. Density: Total degree of network divided by the number of nodes in the network. WM_connections: 2x the density. Note that these are calculated after thresholding the WholeNetwork density to 10%.
