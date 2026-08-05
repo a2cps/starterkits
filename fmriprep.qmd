@@ -1,9 +1,3 @@
-```{r}
-#| label: setup
-
-library(readr)
-```
-
 # fMRIPrep {#sec-fmriprep}
 
 Before being analyzed, raw structural and functional neuroimaging data must undergo a core set of preprocessing steps. Without these steps, the raw MR signals are dominated by noise sources (e.g., participant head motion, scanner drift, magnetic field inhomogeneities) rather than the underlying neural activity. 

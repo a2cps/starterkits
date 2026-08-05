@@ -5,8 +5,9 @@
 
 library(dplyr)
 library(ggplot2)
-library(tidyr)
+library(nio)
 library(patchwork)
+library(tidyr)
 ```
 
 There are several ways to reconstruct the microstructural properties and orientation of white matter tracts from diffusion MRI (dMRI). A relatively simple and common method is the Diffusion Tensor Imaging (DTI) model (see @sec-postdtifit for regional summary metrics derived from DTI), which works well for regions with a single, coherent fiber direction (e.g. the corpus callosum). However, DTI fails in regions containing "crossing fibers" (where multiple neural tracts intersect within a single voxel), which account for a substantial portion of the brain's white matter. 
@@ -61,7 +62,7 @@ First, let's grab the `mean_f1samples` file, which is an estimate of how much of
 #| label: load-f1
 
 # take every 10th slice
-f1 <- nio::to_tbl(
+f1 <- to_tbl(
   "data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/mean_f1samples.nii.gz",
   measure = "f1"
 ) |>
@@ -92,7 +93,7 @@ Information about the fiber orientation is stored in the "dyads" file. Each of t
 
 ```{r}
 gamma <- 1.8
-fiber <- nio::to_tbl(
+fiber <- to_tbl(
   "data/pre-surgery/mris/derivatives/bedpostx/sub-10003/ses-V1/dwi.bedpostx/dyads1.nii.gz"
 ) |>
   inner_join(f1, by = join_by(i, j, k)) |>
@@ -101,7 +102,7 @@ fiber <- nio::to_tbl(
   ) |>
   pivot_wider(names_from = t) |>
   mutate(
-    across(c(`1`, `2`, `3`), ~ pmin(pmax(.x, 0), 1)),
+    across(c(`1`, `2`, `3`), \(x) pmin(pmax(x, 0), 1)),
     hex_color = rgb(`1`, `2`, `3`)
   )
 
@@ -124,7 +125,7 @@ df_legend <- expand_grid(
     g = (abs(y))^(1 / 1.8),
     b = (abs(z))^(1 / 1.8),
 
-    across(c(r, g, b), ~ pmin(pmax(.x, 0), 1)),
+    across(c(r, g, b), \(x) pmin(pmax(x, 0), 1)),
     hex_color = rgb(r, g, b)
   )
 

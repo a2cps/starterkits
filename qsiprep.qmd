@@ -1,10 +1,3 @@
-```{r}
-#| label: setup
-#| include: false
-
-library(readr)
-```
-
 # QSIPrep {#sec-qsiprep}
 
 Before being analyzed, structural and diffusion neuroimaging data undergo a core set of preprocessing steps. Diffusion MRI (dMRI) is particularly sensitive to a variety of artifacts, including head motion, eddy currents (magnetic field distortions induced by rapid gradient switching), susceptibility distortions (geometric warping near air-tissue interfaces), and thermal noise. Mitigating these artifacts is crucial for accurate reconstruction of white matter tracts.
@@ -21,9 +14,7 @@ The A2CPS project performs this specialized preprocessing using [QSIPrep](https:
 
 The QSIPrep derivatives are underneath `derivatives/qsiprep-V1`. Let's take a look.
 
-```{bash}
-#| eval: false
-
+```bash
 $ ls mris/derivatives/qsiprep-V1 | head
 sub-10003
 sub-10003.html

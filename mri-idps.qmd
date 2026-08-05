@@ -1,5 +1,12 @@
 # MRI Image Derived Phenotypes {#sec-mri-idps}
 
+```{r}
+#| label: setup
+
+library(readr)
+library(tidyselect)
+```
+
 Often, researchers may wish to simply have a set of features that they can use to train and test predictive models. When those features are extracted from neuroimaging data, we refer to them as Image-Derived Phenotypes (IDPs). For an excellent overview of how IDPs are generated and used in large-scale studies, see the [UK Biobank Brain Imaging Documentation](https://www.fmrib.ox.ac.uk/ukbiobank/index.html).
 
 This kit describes a subset of IDPs that have been compiled into a single table. While this table does not encompass all available measurements, it is a great place to start your analyses. The selection of phenotypes was based on those available within the UK Biobank\ [@miller_multimodal_2016], derived from structural and functional MRI scans (diffusion MRI phenotypes will be available in a subsequent release). A full data dictionary is available [here](https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/mri.json).
@@ -16,18 +23,14 @@ These IDPs include:
 
 The primary IDP table, `mri.tsv`, is located underneath the `idp` folder. Let's take a look.
 
-```{bash}
-#| eval: false
-
+```bash
 $ ls mris/idp/
 mask_volumes.json  mask_volumes.tsv  mri.json  mri.tsv
 ```
 
 Even though this represents only a subset of all possible neuroimaging derivatives, the table is quite wide because it contains features extracted across many brain regions and multiple functional tasks.
 
-```{bash}
-#| eval: false
-
+```bash
 $ awk '{print NF; exit}' mris/idp/mri.tsv 
 21886
 ```
@@ -39,9 +42,9 @@ Because this table is saved as a tab-separated values (`tsv`) file, any software
 For example, if we are only interested in the resting state (REST1) fALFF measurements for our participants, we can select just the `sub` (participant identifier) column and any column matching that specific functional task.
 
 ```{r}
-readr::read_tsv(
+read_tsv(
   "data/pre-surgery/mris/idp/mri.tsv",
-  col_select = c("sub", tidyselect::matches("task_rest_run_1.*falff"))
+  col_select = c("sub", matches("task_rest_run_1.*falff"))
 ) |>
   head()
 ```

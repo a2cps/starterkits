@@ -3,11 +3,10 @@
 ```{r}
 #| label: setup
 
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-library(readr)
 library(fs)
+library(ggplot2)
+library(readr)
+library(tidyr)
 ```
 
 In @sec-bedpostx, we covered the outputs of BedpostX, which is a method for modeling how water diffuses in each voxel and estimating their implied fiber orientation distributions. The outputs of BedpostX were used as the inputs for probabilistic tractography---a technique that repeatedly samples from these distributions to build "streamlines" representing probable neural tracts. By modeling the uncertainty of fiber orientations, probabilistic tractography is uniquely capable of reconstructing complex, long-distance networks, including the corticolimbic network.
@@ -130,7 +129,7 @@ The tables always have the same schema and so can be loaded together using stand
 ```{r}
 #| label: networks
 
-networks <- read_tsv(fs::dir_ls(
+networks <- read_tsv(dir_ls(
   "data/pre-surgery/mris/derivatives/dwi_biomarker1/networks",
   glob = "*tsv",
   recurse = TRUE

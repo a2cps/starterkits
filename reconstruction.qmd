@@ -1,10 +1,3 @@
-```{r}
-#| label: setup
-#| include: false
-
-library(readr)
-```
-
 # Orientation Distribution Function Reconstruction {#sec-reconstruction}
 
 One of the primary aims of collecting diffusion MRI data is to estimate or "reconstruct" the voxel-wise Orientation Distribution Functions (ODFs) and Fiber Orientation Distributions (FODs). Briefly, these functions describe how water diffuses within each 3D pixel (voxel) of the brain. In white matter tracts, water preferentially diffuses along the length of axons rather than across them. By modeling this diffusion, researchers can infer the underlying microstructural architecture of the brain.
@@ -20,7 +13,6 @@ There are many different mathematical models for reconstructing these functions 
 These outputs are under `mris/derivatives/qsirecon_fsl_dtifit`. There are three groups of outputs.
 
 ```bash
-#| eval: false
 $ ls mris/derivatives/qsirecon_fsl_dtifit
 dtifit  qsirecon-fsl  split_shells
 ```

@@ -1,21 +1,22 @@
 # EDDY QC {#sec-eddyqc}
 
+```{r}
+#| label: setup
+
+library(dplyr)
+library(fs)
+library(ggdist)
+library(ggplot2)
+library(jsonlite)
+library(purrr)
+library(tidyr)
+```
+
 This kit reviews the key quality control metrics provided by [FSL's EDDY QC](https://fsl.fmrib.ox.ac.uk/fsl/docs/diffusion/eddyqc.html)\ [@bastiani_2019_automated], which are included in A2CPS data releases. 
 
 Diffusion MRI (dMRI) is highly sensitive to macroscopic head motion and to eddy currents---rapidly changing magnetic gradients that cause geometric distortions and blurring in the reconstructed images. FSL's EDDY tool is a gold-standard approach for correcting these artifacts. As a byproduct of the correction process, EDDY generates several quantitative quality control metrics. While these metrics are not used in the automated rating of dMRI images in A2CPS, they provide valuable, objective information about the severity of movement and magnetic susceptibility artifacts on a scan (e.g., Contrast-to-Noise Ratio).
 
 ## Starting Project
-
-```{r}
-#| label: setup
-
-library(dplyr)
-library(purrr)
-library(ggplot2)
-library(fs)
-library(tidyr)
-library(ggdist)
-```
 
 ### Locate Data
 
@@ -71,16 +72,16 @@ Let's collate the QC metrics into a single table. To do so, we recursively searc
 #| label: gather
 
 qcs <- tibble(
-  src = fs::dir_ls(
+  src = dir_ls(
     "data/pre-surgery/mris/derivatives/eddyqc",
     recurse = TRUE,
     glob = "*qc.json"
   )
 ) |>
   mutate(
-    qc = purrr::map(
+    qc = map(
       src,
-      ~ jsonlite::read_json(.x, simplifyVector = TRUE),
+      \(x) read_json(x, simplifyVector = TRUE),
       .progress = TRUE
     )
   )
@@ -99,7 +100,7 @@ cnr <- qcs |>
   mutate(
     qc = map(
       qc,
-      ~ tibble(CNR = .x$qc_cnr_avg, b = c(0, 500, 1000, 2000, 3000)),
+      \(x) tibble(CNR = x$qc_cnr_avg, b = c(0, 500, 1000, 2000, 3000))
     )
   ) |>
   unnest(qc) |>

@@ -3,13 +3,14 @@
 ```{r}
 #| label: setup
 
-library(readr)
 library(dplyr)
-library(ggplot2)
 library(duckplyr)
 library(fs)
+library(ggplot2)
+library(lme4)
+library(readr)
+library(stringr)
 library(tidyr)
-library(ggdist)
 ```
 
 The @sec-gift products provide outputs in a raw format that will be familiar to users of that library. To facilitate analyses, A2CPS has repackaged those products into a tabular format. This kit covers the repackaged structure.
@@ -26,9 +27,7 @@ As a brief primer, extracting functional networks via ICA allows researchers to 
 
 The derivatives are underneath `derivatives/postgift`. Let's take a look.
 
-```{bash}
-#| eval: false
-
+```bash
 $ ls postgift
 amplitude  amplitude.json  biomarkers  biomarkers.json  connectivity  connectivity.json
 ```
@@ -79,9 +78,9 @@ red_run1_scans <- read_tsv(
   dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
   na = "n/a"
 ) |>
-  filter(rating == "red", stringr::str_detect(filename, "cuff_run-0[12]")) |>
+  filter(rating == "red", str_detect(filename, "cuff_run-0[12]")) |>
   mutate(
-    sub = stringr::str_extract(filename, "[[:digit:]]{5}") |> as.integer()
+    sub = str_extract(filename, "[[:digit:]]{5}") |> as.integer()
   ) |>
   select(sub)
 ```
@@ -93,15 +92,17 @@ red_run1_scans <- read_tsv(
 do_ma_plot <- function(.d) {
   .d |>
     pivot_wider(names_from = task, values_from = fALFF) |>
-    na.omit() |> # not every participant has a REST1 and CUFF1
+    drop_na() |> # not every participant has a REST1 and CUFF1
     mutate(a = (log2(rest) + log2(cuff)) / 2, m = log2(cuff) - log2(rest)) |>
     ggplot(aes(x = a, y = m)) +
     facet_wrap(~component, scales = "free", nrow = 15) +
     geom_point(alpha = 0.2) +
     geom_hline(yintercept = 0, color = "blue") +
     geom_smooth(method = "lm", color = "red") +
-    xlab("Average Log Intensity") +
-    ylab("CUFF1 - REST1 Log Intensities") +
+    labs(
+      x = "Average Log Intensity",
+      y = "CUFF1 - REST1 Log Intensities"
+    ) +
     theme(strip.background = element_blank(), strip.text = element_blank())
 }
 
@@ -117,7 +118,7 @@ Fractional Amplitude of Low Frequency Fluctuations. Each panel is a distinct com
 For the most part, there is not a substantially large difference in the log intensities. However, it may be interesting that there appears to be a trend such that amplitudes are somewhat lower in the CUFF as compared to REST conditions. 
 
 ```{r}
-lme4::lmer(
+lmer(
   log(fALFF) ~ task + (1 | sub) + (1 | component),
   run1_amplitudes_without_red
 ) |>

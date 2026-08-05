@@ -1,15 +1,23 @@
 # Raw MRI Data Starter Kit {#sec-raw-mri}
 
 ```{r}
+#| label: setup
+
+library(glue)
+library(tibble)
+library(yaml)
+```
+
+```{r}
 #| label: vars
 #| include: false
 
 # Release-coupled values live in _variables.yml, which is also the source for the
 # var shortcodes used elsewhere. They are read here because the URLs below are
 # assembled inside R strings, where shortcodes are not expanded.
-.vars <- yaml::read_yaml("_variables.yml")
-snapshot_tag <- .vars$snapshot$tag
-bids_version <- .vars$bids$version
+variables <- read_yaml("_variables.yml")
+snapshot_tag <- variables$snapshot$tag
+bids_version <- variables$bids$version
 ```
 
 This page describes how to work with the raw MRI data from A2CPS. For background on collection and availability, see the "Imaging Data" section of [a2cps.org](https://a2cps.org/researchers/data-releases/about-the-data/). 
@@ -40,7 +48,7 @@ sub-10010
 
 ### Extract Data {#sec-raw-mri-extract}
 
-The raw MRI data are organized according to [`{r} bids_version`](`{r} glue::glue("https://bids-specification.readthedocs.io/en/{bids_version}/")`) of the BIDS standard. 
+The raw MRI data are organized according to [`{r} bids_version`](`{r} glue("https://bids-specification.readthedocs.io/en/{bids_version}/")`) of the BIDS standard. 
 
 In BIDS data for individual subjects are stored in folders named "sub-\[record_id\]". For an example A2CPS session this format results in the following[^tree]:
 
@@ -93,9 +101,9 @@ Under BIDS, you'll see various folders corresponding to the different types of s
 
 The "session" refers to the visit. Currently only the baseline (pre-surgery) data is included, so all sessions have the label "V1". Information about each participant's visit is stored in the `sub-\[record_id\]/sub-\[record_id\]_sessions.tsv` file.
 
-The pressures that were applied during the CUFF scans are recorded in the [`sub-\[record_id\]_ses-\[ses_id\]_task-cuff_run-\[run_id\]_events.tsv` tables](`{r} glue::glue("https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/task-events.html")`).
+The pressures that were applied during the CUFF scans are recorded in the [`sub-\[record_id\]_ses-\[ses_id\]_task-cuff_run-\[run_id\]_events.tsv` tables](`{r} glue("https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/task-events.html")`).
 
-BIDS requires that the diffusion gradient information is stored according to the FSL format, in `*bval` and `*bvec` files in the `/dwi` directory. For details see: [Magnetic Resonance Imaging - Brain Imaging Data Structure](`{r} glue::glue("https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/magnetic-resonance-imaging-data.html#required-gradient-orientation-information")`).
+BIDS requires that the diffusion gradient information is stored according to the FSL format, in `*bval` and `*bvec` files in the `/dwi` directory. For details see: [Magnetic Resonance Imaging - Brain Imaging Data Structure](`{r} glue("https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/magnetic-resonance-imaging-data.html#required-gradient-orientation-information")`).
 
 Files at the top level of the bids folder contain information that applies to multiple participants. This includes
 
@@ -103,21 +111,21 @@ Files at the top level of the bids folder contain information that applies to mu
 #| label: docs
 #| echo: false
 
-tibble::tribble(
+tribble(
   ~File                                                                                                                                                                                                   ,
   ~Documentation                                                                                                                                                                                          ,
-  glue::glue("README ([A2CPS file](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/README.md))")                                                                                  ,
-  glue::glue("[modality agnostic files](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html)")                                                                       ,
-  glue::glue("participants.tsv ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/participants.json))")                                                                ,
-  glue::glue("[participants file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#participants-file)")                                                           ,
-  glue::glue("sub-\\[record_id\\]_ses-\\[ses_id\\]_scans.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/scans.json))")                                      ,
-  glue::glue("[scans file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#scans-file)")                                                                         ,
-  glue::glue("sub-\\[record_id\\]_sessions.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/sessions.json))")                                               ,
-  glue::glue("[sessions file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#sessions-file)")                                                                   ,
-  glue::glue("sub-\\[record_id\\]_ses-\\[ses_id\\]_task-cuff_run-\\[run_id\\]_events.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/task-cuff_events.json))") ,
-  glue::glue("[task events](https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/task-events.html)")                                                                       ,
-  glue::glue("dataset_description.json ([A2CPS file](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/dataset_description.json))")                                                 ,
-  glue::glue("[dataset descriptions](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#dataset_descriptionjson)")
+  glue("README ([A2CPS file](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/README.md))")                                                                                        ,
+  glue("[modality agnostic files](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html)")                                                                             ,
+  glue("participants.tsv ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/participants.json))")                                                                      ,
+  glue("[participants file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#participants-file)")                                                                 ,
+  glue("sub-\\[record_id\\]_ses-\\[ses_id\\]_scans.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/scans.json))")                                        ,
+  glue("[scans file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#scans-file)")                                                                               ,
+  glue("sub-\\[record_id\\]_sessions.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/sessions.json))")                                                   ,
+  glue("[sessions file](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#sessions-file)")                                                                         ,
+  glue("sub-\\[record_id\\]_ses-\\[ses_id\\]_task-cuff_run-\\[run_id\\]_events.tsv tables ([dictionary](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/task-cuff_events.json))") ,
+  glue("[task events](https://bids-specification.readthedocs.io/en/{bids_version}/modality-specific-files/task-events.html)")                                                                             ,
+  glue("dataset_description.json ([A2CPS file](https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/dataset_description.json))")                                                       ,
+  glue("[dataset descriptions](https://bids-specification.readthedocs.io/en/{bids_version}/modality-agnostic-files.html#dataset_descriptionjson)")
 )
 ```
 
@@ -143,7 +151,7 @@ fmap/sub-10003_ses-V1_acq-dwib0_dir-AP_epi.nii.gz   n/a
 fmap/sub-10003_ses-V1_acq-dwib0_dir-PA_epi.nii.gz   n/a
 ```
 
-For a description of the reviews, see the [scans.json data dictionary](`{r} glue::glue("https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/scans.json")`). Re-evaluation of quality and inclusion/exclusion criteria in the context of a specific analysis is always reasonable, but we would advise against including scans labeled "red" in most analyses.
+For a description of the reviews, see the [scans.json data dictionary](`{r} glue("https://github.com/a2cps/snapshot/blob/{snapshot_tag}/src/snapshot/data/scans.json")`). Re-evaluation of quality and inclusion/exclusion criteria in the context of a specific analysis is always reasonable, but we would advise against including scans labeled "red" in most analyses.
 
 Note that some "cuff" scans were collected without cuff inflation. These scans can be identified by the "applied_pressure" column of the `*events.tsv` file. For example
 

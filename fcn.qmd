@@ -1,24 +1,24 @@
 # Functional Connectivity {#sec-functional-connectivity}
 
-Functional connectivity is a measurement of how activity in different regions of the brain relates to one another over time. It is calculated by reducing the voxel-wise BOLD timeseries into a smaller set of regional timecourses, and then calculating a measure of correlation between those regional timecourses. 
-
-To define these regions, researchers rely on "brain parcellations" or atlases. Some atlases divide the brain into discrete, non-overlapping anatomical regions. Other methods, like [Dictionary Learning for Functional Regions (DiFuMo)](https://nilearn.github.io/modules/generated/nilearn.regions.fetch_atlas_difumo.html), do not create a strict parcellation. Instead, DiFuMo extracts a set of "soft", overlapping functional networks based on massive amounts of fMRI data. When using these different approaches, it is important to remember that you are correlating activity between fundamentally different kinds of brain divisions.
-
-This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations and soft atlases. For functional connectivity derived from subject-specific independent components, see @sec-gift.
-
 ```{r}
 #| label: setup
 
 library(arrow)
 library(dplyr)
-library(tidyr)
-library(purrr)
-library(stringr)
 library(fs)
-library(readr)
-library(mgc)
 library(ggplot2)
+library(mgc)
+library(purrr)
+library(readr)
+library(stringr)
+library(tidyr)
 ```
+
+Functional connectivity is a measurement of how activity in different regions of the brain relates to one another over time. It is calculated by reducing the voxel-wise BOLD timeseries into a smaller set of regional timecourses, and then calculating a measure of correlation between those regional timecourses. 
+
+To define these regions, researchers rely on "brain parcellations" or atlases. Some atlases divide the brain into discrete, non-overlapping anatomical regions. Other methods, like [Dictionary Learning for Functional Regions (DiFuMo)](https://nilearn.github.io/modules/generated/nilearn.regions.fetch_atlas_difumo.html), do not create a strict parcellation. Instead, DiFuMo extracts a set of "soft", overlapping functional networks based on massive amounts of fMRI data. When using these different approaches, it is important to remember that you are correlating activity between fundamentally different kinds of brain divisions.
+
+This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations and soft atlases. For functional connectivity derived from subject-specific independent components, see @sec-gift.
 
 ## Starting Project
 
@@ -151,7 +151,8 @@ Of the list of participants with all four functional scans, filter out the parti
 ```{r}
 #| label: subs-with-all-runs-ok
 
-subs_with_all_runs_ok <- subs_with_all_runs |> anti_join(red_fmri)
+subs_with_all_runs_ok <- subs_with_all_runs |>
+  anti_join(red_fmri, by = join_by(sub))
 ```
 
 Use this to filter the connectivity results. We'll select just one of the smaller DiFuMo atlases\ [@dadi_fine_2020]. As before, we'll stick with the empirical estimator.
@@ -194,7 +195,7 @@ join_fcn_to_combinations <- function(.data, fcn) {
       data = map2(
         data.x,
         data.y,
-        ~ left_join(.x, .y, by = join_by(source, target, sub))
+        \(x, y) left_join(x, y, by = join_by(source, target, sub))
       )
     ) |>
     select(-starts_with("data."))

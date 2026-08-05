@@ -3,10 +3,11 @@
 ```{r}
 #| label: setup
 
-library(readr)
 library(dplyr)
-library(ggplot2)
 library(duckplyr)
+library(fs)
+library(ggplot2)
+library(readr)
 library(scattermore)
 ```
 
@@ -66,12 +67,12 @@ One strength of MRIQC is that the pipeline automatically stores the metrics in a
 ```{r}
 #| label: loadapi
 
-all_bold <- duckplyr::read_parquet_duckdb(fs::dir_ls(
+all_bold <- read_parquet_duckdb(dir_ls(
   "data/mriqcwebapi/bold",
   recurse = TRUE,
   glob = "*parquet"
 )) |>
-  dplyr::select(`_id`, fd_mean) |>
+  select(`_id`, fd_mean) |>
   collect()
 
 nrow(all_bold)
@@ -84,7 +85,7 @@ Let's create a simple scatter plot to compare motion in A2CPS against motion in 
 ```{r}
 #| label: cnr
 
-dplyr::bind_rows(list(a2cps = group_bold, mriqc = all_bold), .id = "source") |>
+bind_rows(list(a2cps = group_bold, mriqc = all_bold), .id = "source") |>
   ggplot(aes(x = source, y = fd_mean)) +
   geom_violin() +
   geom_scattermore(position = position_jitter(height = 0)) +
@@ -94,7 +95,7 @@ dplyr::bind_rows(list(a2cps = group_bold, mriqc = all_bold), .id = "source") |>
 Quantitatively, the dataset is in the upper quantiles of motion, which is to be expected given the study population (i.e. patients suffering from chronic pain and discomfort).
 
 ```{r}
-#| fig-caption: "Quantiles of Mean Framewise Displacement in A2CPS. The quantiles are calculated from an empirical CDF derived from the MRIQC reference database."
+#| fig-cap: "Quantiles of Mean Framewise Displacement in A2CPS. The quantiles are calculated from an empirical CDF derived from the MRIQC reference database."
 
 empirical_motion_cdf <- ecdf(all_bold$fd_mean)
 

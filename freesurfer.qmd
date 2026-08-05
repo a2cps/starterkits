@@ -1,5 +1,14 @@
 # FreeSurfer Measures {#sec-freesurfer}
 
+```{r}
+#| label: setup
+
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyr)
+```
+
 ![Cortical Mesh (source: https://freesurfer.net)](https://freesurfer.net/landing/images/brain.png)
 
 One of the core scans in the A2CPS neuroimaging protocol is a T1w scan, which is used to capture structural information. These scans are processed using a software suite called [FreeSurfer](https://freesurfer.net/). FreeSurfer takes the 3D image, segments it into pre-defined anatomical regions (like the hippocampus or amygdala), and also creates a triangular "mesh" of cerebral cortex from which it derives measurements of structural morphometry, including cortical thickness, surface area, and curvature. These measurements are related to a wide range of diseases, including chronic pain, and are often used as a source of features for predictive modeling. A2CPS has compiled the measurements into tabular files, providing a rich set of neuroanatomical variables ready for statistical analysis to explore brain-behavior relationships or group differences. This kit provides an overview of those tabular files. 
@@ -43,15 +52,6 @@ Copies of the data dictionaries are available online for preview: [aparc.json](h
 ### Extract data
 
 In this kit, we will explore the cortical parcellations. 
-
-```{r}
-#| label: setup
-
-library(readr)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-```
 
 As described above, the parcellation information is stored in `aparc.tsv`. 
 

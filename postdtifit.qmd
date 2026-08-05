@@ -3,14 +3,14 @@
 ```{r}
 #| label: setup
 
-library(readr)
+library(agree)
 library(dplyr)
-library(ggplot2)
 library(duckplyr)
 library(fs)
+library(ggplot2)
+library(readr)
 library(stringr)
 library(tidyr)
-library(agree)
 ```
 
 The @sec-reconstruction products provide voxel-wise outputs in a raw format that will be familiar to many diffusion imaging experts. To facilitate analyses, A2CPS has extracted those voxel-wise maps into regional summary statistics and repackaged them into a tabular format. This kit covers the repackaged structure.
@@ -27,9 +27,7 @@ As a brief primer, the diffusion tensor model produces several scalar metrics th
 
 The derivatives are underneath `derivatives/postdtifit`. Let's take a look.
 
-```{bash}
-#| eval: false
-
+```bash
 $ ls postdtifit/
 diffusion_regional  diffusion_regional_stats  diffusion_regional_stats.json
 ```
@@ -38,7 +36,7 @@ diffusion_regional  diffusion_regional_stats  diffusion_regional_stats.json
 
 The tabular data is in `diffusion_regional_stats`. As usual, the tables are in [parquet files](https://parquet.apache.org/) that have been partitioned in a [hive style](https://hive.apache.org/). Let's take a look at the data dictionary `diffusion_regional_stats.json`.
 
-```{json}
+```json
 {
     "index": {
         "LongName": "Index",
