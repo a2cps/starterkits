@@ -3,10 +3,11 @@
 ```{r}
 #| label: setup
 
-library(readr)
 library(dplyr)
-library(ggplot2)
 library(duckplyr)
+library(fs)
+library(ggplot2)
+library(readr)
 library(scattermore)
 ```
 
@@ -64,14 +65,14 @@ For a detailed description of these metrics, please see the official MRIQC docum
 One strength of MRIQC is that the pipeline automatically stores the metrics in a centralized database. The centralized database is available via the [MRIQC Web API](https://mriqc.nimh.nih.gov/). An example of interacting with the API can be found in https://github.com/psadil/mriqc-export. In this kit, the metrics have already been downloaded and stored in a set parquet files. Let's use that reference set to rate A2CPS. One of the most important determiners of quality is motion, so let's focus on the average Framewise Displacement. 
 
 ```{r}
-#| label: loadapi
+#| label: load-api
 
-all_bold <- duckplyr::read_parquet_duckdb(fs::dir_ls(
+all_bold <- read_parquet_duckdb(dir_ls(
   "data/mriqcwebapi/bold",
   recurse = TRUE,
   glob = "*parquet"
 )) |>
-  dplyr::select(`_id`, fd_mean) |>
+  select(`_id`, fd_mean) |>
   collect()
 
 nrow(all_bold)
@@ -84,17 +85,17 @@ Let's create a simple scatter plot to compare motion in A2CPS against motion in 
 ```{r}
 #| label: cnr
 
-dplyr::bind_rows(list(a2cps = group_bold, mriqc = all_bold), .id = "source") |>
+bind_rows(list(a2cps = group_bold, mriqc = all_bold), .id = "source") |>
   ggplot(aes(x = source, y = fd_mean)) +
   geom_violin() +
-  geom_scattermore(position = position_jitter(height = 0)) +
+  geom_scattermore(position = position_jitter(height = 0, seed = 1)) +
   coord_cartesian(ylim = c(0, 5))
 ```
 
 Quantitatively, the dataset is in the upper quantiles of motion, which is to be expected given the study population (i.e. patients suffering from chronic pain and discomfort).
 
 ```{r}
-#| fig-caption: "Quantiles of Mean Framewise Displacement in A2CPS. The quantiles are calculated from an empirical CDF derived from the MRIQC reference database."
+#| fig-cap: "Quantiles of Mean Framewise Displacement in A2CPS. The quantiles are calculated from an empirical CDF derived from the MRIQC reference database."
 
 empirical_motion_cdf <- ecdf(all_bold$fd_mean)
 

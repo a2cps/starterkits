@@ -11,9 +11,9 @@ For each MRI product, all pipeline derivatives have been included. This means th
 ```{r}
 #| label: setup
 
+library(dplyr)
 library(fs)
 library(readr)
-library(dplyr)
 library(stringr)
 ```
 

@@ -3,11 +3,10 @@
 ```{r}
 #| label: setup
 
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-library(readr)
 library(fs)
+library(ggplot2)
+library(readr)
+library(tidyr)
 ```
 
 In @sec-bedpostx, we covered the outputs of BedpostX, which is a method for modeling how water diffuses in each voxel and estimating their implied fiber orientation distributions. The outputs of BedpostX were used as the inputs for probabilistic tractography---a technique that repeatedly samples from these distributions to build "streamlines" representing probable neural tracts. By modeling the uncertainty of fiber orientations, probabilistic tractography is uniquely capable of reconstructing complex, long-distance networks, including the corticolimbic network.
@@ -130,7 +129,7 @@ The tables always have the same schema and so can be loaded together using stand
 ```{r}
 #| label: networks
 
-networks <- read_tsv(fs::dir_ls(
+networks <- read_tsv(dir_ls(
   "data/pre-surgery/mris/derivatives/dwi_biomarker1/networks",
   glob = "*tsv",
   recurse = TRUE
@@ -150,7 +149,8 @@ networks |>
   ggplot(aes(y = ModuleName, x = value)) +
   facet_wrap(~metric, scales = "free_x") +
   geom_boxplot(outliers = FALSE) +
-  geom_jitter(alpha = 0.2)
+  # seeded so the figure is reproducible across renders
+  geom_point(alpha = 0.2, position = position_jitter(seed = 1))
 ```
 
 Distribution of Structural Connectivity Metrics Related to Primary dMRI Biomarker. Deg_mean: Average degree within network. Density: Total degree of network divided by the number of nodes in the network. WM_connections: 2x the density. Note that these are calculated after thresholding the WholeNetwork density to 10%.

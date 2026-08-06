@@ -1,5 +1,18 @@
 # FSL Anat {#sec-fslanat}
 
+```{r}
+#| label: setup
+
+library(agree)
+library(dplyr)
+library(ggplot2)
+library(irr)
+library(purrr)
+library(readr)
+library(stringr)
+library(tidyr)
+```
+
 ![Subcortical Structures (source: https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.png)
 
 The structural T1w scan in the A2CPS neuroimaging protocol is the source of several pre-specified biomarkers. Two of these biomarkers---the volumes of the hippocampi and amygdalae---are derived from a tool in the Functional Magnetic Resonance Imaging of the Brain (FMRIB) Software Library (FSL): [FMRIB's Integrated Registration and Segmentation Tool (FIRST)](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.html). 
@@ -26,19 +39,6 @@ Many users will not need the raw `fsl_anat` outputs and can instead rely a table
 
 In this kit, we will compare volumetric measurements that are produced by both FIRST and FreeSurfer (@sec-freesurfer). In some circumstances, the volumes are largely interchangeable, but for some structures these tools are known to produce fairly different estimates of volume\ [@sadil_comparing_2024]. Let's replicate part of that analysis.
 
-```{r}
-#| label: setup
-
-library(readr)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(stringr)
-library(purrr)
-library(irr)
-library(agree)
-```
-
 First, load in the cortical volumes provided by FSL.
 
 ```{r}
@@ -54,12 +54,20 @@ head(fslanat)
 In addition to subcortical volumetric information, that table contains a few fields related to the overall size of the brain (`t1_to_mni_scaling`, `t1_space_orig_volume`, `t1_space_mni_volume`). Drop those fields. To make it easier to join with FreeSurfer values, we'll also unpivot the table into a wider format, and extract information about the hemisphere.
 
 ```{r}
-#| label: fsltidy
+#| label: fsl-tidy
 
 subcort_fsl <- fslanat |>
   select(-starts_with("t1_")) |>
   pivot_longer(-c(sub, ses), values_to = "volume", names_to = "structure") |>
-  separate(structure, c("hemisphere", "structure"), sep = "-")
+  # too_many = "drop" keeps only the stem: FSL's "Left-Thalamus-Proper" and
+  # "Left-Accumbens-area" have to reduce to "Thalamus"/"Accumbens" to line up
+  # with the FreeSurfer names below. separate() did this via a suppressed warning.
+  separate_wider_delim(
+    structure,
+    delim = "-",
+    names = c("hemisphere", "structure"),
+    too_many = "drop"
+  )
 
 head(subcort_fsl)
 ```
@@ -67,7 +75,7 @@ head(subcort_fsl)
 Now, grab the equivalent information from FreeSurfer.
 
 ```{r}
-#| label: freesurfer
+#| label: subcort-freesurfer
 
 subcort_freesurfer <- read_tsv(
   "data/pre-surgery/mris/derivatives/freesurfer/aseg.tsv",
@@ -77,7 +85,12 @@ subcort_freesurfer <- read_tsv(
     StructName,
     "Thalamus|Putamen|Pallidum|Hippocampus|Amygdala|Accumbens"
   )) |>
-  separate(StructName, into = c("hemisphere", "structure"), sep = "-") |>
+  separate_wider_delim(
+    StructName,
+    delim = "-",
+    names = c("hemisphere", "structure"),
+    too_many = "drop"
+  ) |>
   select(volume = Volume_mm3, hemisphere, structure, sub, ses)
 ```
 
@@ -91,7 +104,7 @@ subcort <- bind_rows(
   .id = "method"
 ) |>
   pivot_wider(names_from = method, values_from = volume) |>
-  na.omit() # not every structure is available in both methods, and not every participant has been processed by both pipelines
+  drop_na() # not every structure is available in both methods, and not every participant has been processed by both pipelines
 
 
 # check which structures we have available
@@ -111,8 +124,10 @@ subcort |>
   geom_point(alpha = 0.1, shape = 20) +
   geom_hline(yintercept = 0) +
   geom_ba() +
-  ylab("Difference (FSL - FreeSurfer)") +
-  xlab("Average ([FSL + FreeSurfer]/2)")
+  labs(
+    x = "Average ([FSL + FreeSurfer]/2)",
+    y = "Difference (FSL - FreeSurfer)"
+  )
 ```
 
 Comparison of Subcortical Volumes as Estimated by FSL and FreeSurfer. Each dot corresponds to a single structure of a single participant. The blue lines span the 95% confidence interval around the difference of the two estimates of volume, and the red lines are confidence intervals around the limits of agreement. 
@@ -129,12 +144,14 @@ subcort |>
   mutate(
     fit = map(
       data,
-      ~ icc(
-        cbind(.x$fsl, .x$freesurfer),
-        model = "twoway",
-        type = "consistency",
-        unit = "single"
-      )
+      \(x) {
+        icc(
+          cbind(x$fsl, x$freesurfer),
+          model = "twoway",
+          type = "consistency",
+          unit = "single"
+        )
+      }
     ),
     estimate = map_dbl(fit, pluck, "value"),
     lower = map_dbl(fit, pluck, "lbound"),

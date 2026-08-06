@@ -11,11 +11,10 @@ This starter kit walks through the "Brain Age" outputs that have been derived fr
 ```{r}
 #| label: setup
 
-library(readr)
+library(dplyr)
 library(fs)
 library(ggplot2)
-library(dplyr)
-library(tidyr)
+library(readr)
 library(stringr)
 ```
 
@@ -143,7 +142,7 @@ By plotting the predicted ages against the true ages, we can review the accuracy
 
 ```{r}
 #| label: brainage
-#| caption: "Predicted and Chronological Age. Each point corresponds to a participant."
+#| fig-cap: "Predicted and Chronological Age. Each point corresponds to a participant."
 
 lm_eqn <- function(fit) {
   eq <- substitute(
@@ -171,12 +170,12 @@ brainage |>
 The "brain age gap" is the difference between predicted and true age. Positive gaps indicate "older" brains, and younger gaps indicate "younger" brains.
 
 ```{r}
-#| label: brainage2
+#| label: brainage-gap
 
 brainage |>
   ggplot(aes(x = brain_age_gap)) +
   geom_histogram() +
-  xlab("(<-- Younger) Brain Age Gap (Older -->)")
+  labs(x = "(<-- Younger) Brain Age Gap (Older -->)")
 ```
 
 ### Correction
