@@ -776,6 +776,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://freesurfer.net/landing/images/brain.png" class="img-fluid figure-img"></p>
@@ -788,7 +794,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <section id="locate-data" class="level3" data-number="9.1.1">
 <h3 data-number="9.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">9.1.1</span> Locate data</h3>
 <p>In the release, data are stored underneath the <code>mris/derivatives</code> folder:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/mris/derivatives/freesurfer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/mris/derivatives/freesurfer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This folder contains all of the FreeSurfer outputs for every participant (e.g., this is the directory that could correspond to the FreeSurfer environment variable <code>$SUBJECTS_DIR</code>), which subject folders of the form <code>sub-[recordid]_ses-[protocolid]</code>.</p>
 <p>Most users will not need the raw FreeSurfer outputs and can instead rely on tables in which the morphological measures have been aggregated. There are three relevant tables</p>
 <ul>
@@ -809,22 +815,16 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </ul></li>
 </ul>
 <p>For each of these, there are data dictionaries in <code>json</code> files (e.g., <code>aparc.json</code> explains the columns of <code>aparc.tsv</code>).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/freesurfer/<span class="pp">*</span><span class="dt">{json</span><span class="op">,</span><span class="dt">tsv}</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/freesurfer/aparc.json</span>  mris/derivatives/freesurfer/gm_morph.tsv</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/freesurfer/aparc.tsv</span>   mris/derivatives/freesurfer/headers.json</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/freesurfer/aseg.json</span>   mris/derivatives/freesurfer/headers.tsv</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/freesurfer/aseg.tsv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/freesurfer/<span class="pp">*</span><span class="dt">{json</span><span class="op">,</span><span class="dt">tsv}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/freesurfer/aparc.json</span>  mris/derivatives/freesurfer/gm_morph.tsv</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/freesurfer/aparc.tsv</span>   mris/derivatives/freesurfer/headers.json</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/freesurfer/aseg.json</span>   mris/derivatives/freesurfer/headers.tsv</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">mris/derivatives/freesurfer/aseg.tsv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Copies of the data dictionaries are available online for preview: <a href="https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/aparc.json">aparc.json</a>, <a href="https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/aseg.json">aseg.json</a>, <a href="https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/headers.json">headers.json</a>.</p>
 </section>
 <section id="extract-data" class="level3" data-number="9.1.2">
 <h3 data-number="9.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">9.1.2</span> Extract data</h3>
 <p>In this kit, we will explore the cortical parcellations.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <p>As described above, the parcellation information is stored in <code>aparc.tsv</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>aparc <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(</span>
@@ -1152,7 +1152,7 @@ Figure&nbsp;9.1: Cortical Gray Matter Volume (mm^3) and Surface Area (mm^2). Eac
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="freesurfer_files/figure-html/pairs2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="freesurfer_files/figure-html/pairs-thickness-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

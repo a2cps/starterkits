@@ -775,14 +775,14 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agree)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(duckplyr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agree)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(duckplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <a href="reconstruction.html" class="quarto-xref"><span>Chapter 13</span></a> products provide voxel-wise outputs in a raw format that will be familiar to many diffusion imaging experts. To facilitate analyses, A2CPS has extracted those voxel-wise maps into regional summary statistics and repackaged them into a tabular format. This kit covers the repackaged structure.</p>
 <p>As a brief primer, the diffusion tensor model produces several scalar metrics that are commonly used to assess white matter microstructural integrity. The two most common are: - <strong>Fractional Anisotropy (FA)</strong>: A measure of the degree to which diffusion is highly directional. High FA typically indicates intact, densely packed, and highly myelinated white matter tracts (like a bundle of straws), whereas low FA suggests less directional organization (like in gray matter or cerebrospinal fluid). - <strong>Mean Diffusivity (MD)</strong>: The overall rate of diffusion within a voxel, regardless of direction. Higher MD generally reflects lower cellular density or more free water (e.g., in ventricles or areas of inflammation/edema).</p>
@@ -794,16 +794,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The derivatives are underneath <code>derivatives/postdtifit</code>. Let’s take a look.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls postdtifit/</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls postdtifit/</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">diffusion_regional</span>  diffusion_regional_stats  diffusion_regional_stats.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 </section>
 <section id="extract-data" class="level3" data-number="14.1.2">
 <h3 data-number="14.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">14.1.2</span> Extract Data</h3>
 <p>The tabular data is in <code>diffusion_regional_stats</code>. As usual, the tables are in <a href="https://parquet.apache.org/">parquet files</a> that have been partitioned in a <a href="https://hive.apache.org/">hive style</a>. Let’s take a look at the data dictionary <code>diffusion_regional_stats.json</code>.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"index"</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"LongName"</span><span class="fu">:</span> <span class="st">"Index"</span><span class="fu">,</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Integer index of region in atlas"</span></span>
@@ -860,7 +857,6 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"Description"</span><span class="fu">:</span> <span class="st">"Maximum of the metric within given region"</span></span>
 <span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
 <span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <p>Next, peak at the table.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>diffusion_regional_stats <span class="ot">&lt;-</span> <span class="fu">read_parquet_duckdb</span>(</span>
@@ -1100,7 +1096,7 @@ Figure&nbsp;14.1: Differences in Tensor Values Between b1000 and Multishell data
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(filename, <span class="st">"dwi.nii.gz"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="fu">str_extract</span>(filename, <span class="st">"(?&lt;=sub-)[[:digit:]]+"</span>) <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="fu">str_extract</span>(filename, <span class="st">"(?&lt;=sub-)[[:digit:]]+"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>()</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rating <span class="sc">==</span> <span class="st">"red"</span>)</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>

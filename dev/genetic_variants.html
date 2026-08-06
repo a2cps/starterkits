@@ -784,7 +784,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This page provides considerations for A2CPS projects that involve the Genetic Variant data.</p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/DNA_double_helix_%2813081113544%29.jpg" class="img-fluid" width="500"> <!-- This file is licensed under the Creative Commons Attribution 2.0 Generic license. --></p>
@@ -1300,73 +1301,100 @@ Click to show Supplementary RScript #1: Determining High Missingness Individuals
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># read in and combine .imiss file (individual-level missingness)</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>) {</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"./qc_derivatives/2_summary_stats/RL1-5_ss_chr%d.imiss"</span>, i)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  current_data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(file_name, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  combined_data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(combined_data, current_data)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co"># DAT HAS EACH MISSING CALL RATE (22 per participant)</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> combined_data<span class="sc">$</span><span class="st">"F_MISS"</span> </span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>number.geno <span class="ot">&lt;-</span> combined_data<span class="sc">$</span>N_GENO <span class="co"># total genotyped SNPs across autosomes</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>number.missed <span class="ot">&lt;-</span> combined_data<span class="sc">$</span>N_MISS <span class="co"># total missed SNPs across autosomes across participants</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>matrix.geno <span class="ot">&lt;-</span> <span class="fu">matrix</span>(number.geno,<span class="at">ncol=</span><span class="dv">22</span>)</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>summed.geno <span class="ot">&lt;-</span> <span class="fu">sum</span>(matrix.geno[<span class="dv">1</span>,]) <span class="co"># total autosomal SNPs</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>matrix.missed <span class="ot">&lt;-</span> <span class="fu">matrix</span>(number.missed,<span class="at">ncol=</span><span class="dv">22</span>)</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>individual.missed.percent <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(matrix.missed) <span class="sc">/</span> summed.geno</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>missingness.table <span class="ot">&lt;-</span>  <span class="fu">data.table</span>(</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">FAMID =</span> current_data<span class="sc">$</span>FID,</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> current_data<span class="sc">$</span>IID,</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">Missingness =</span> individual.missed.percent</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(missingness.table, <span class="st">"./helpers/A2CPS_RL1-5_Missingness.csv"</span>)</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="co"># subset those with over %2 missingness</span></span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>over.two <span class="ot">&lt;-</span> <span class="fu">which</span>(individual.missed.percent <span class="sc">&gt;</span> <span class="fl">0.02</span>)</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>over.two.values <span class="ot">&lt;-</span> individual.missed.percent[over.two]</span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>over.two.missing.SNPs <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(matrix.missed)[over.two]</span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>subject_ID <span class="ot">&lt;-</span> combined_data<span class="sc">$</span>IID[over.two]</span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>high.ind.missingness <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> over.two,</span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">SUBJECT_ID =</span> subject_ID,</span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">MISSINGNESS =</span> over.two.values,</span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>  <span class="at">SNPs_MISSED =</span> over.two.missing.SNPs</span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="co"># table with high missingness individuals for PLINK Dropping</span></span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>for_drop <span class="ot">&lt;-</span> high.ind.missingness[, .(ID, SUBJECT_ID)]</span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(for_drop, <span class="st">"./helpers/A2CPS_Ind_Missingness_Drop.txt"</span>, <span class="at">sep =</span> <span class="st">" "</span>, <span class="at">col.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a><span class="co"># spaghetti plots across chromosomes</span></span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">range</span>(dat)</span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"./plots/missingness.samples.perchr.spaghetti.A2CPS.pdf"</span>,<span class="at">width=</span><span class="dv">9</span>,<span class="at">height=</span><span class="dv">7</span>)</span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">las=</span><span class="dv">1</span>)</span>
-<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(dat,<span class="at">ncol=</span><span class="dv">22</span>)</span>
-<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">22</span>),r,<span class="at">type=</span><span class="st">"n"</span>,<span class="at">xlab=</span><span class="st">"chromosome"</span>,<span class="at">ylab=</span><span class="st">"% missing"</span>,<span class="at">xaxt=</span><span class="st">"n"</span>)</span>
-<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axis</span>(<span class="dv">1</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>)</span>
-<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(tmp))) <span class="fu">lines</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>,tmp[j,],<span class="at">col=</span><span class="st">"orange"</span>)</span>
-<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a><span class="co"># boxplot sample average</span></span>
-<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(dat,<span class="at">ncol=</span><span class="dv">22</span>) <span class="co">#temp is a matrix with rows as participants and columns as chr## and cells as FMISS </span></span>
-<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>z.pm <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(tmp) <span class="co"># z.pm is a vector with the mean values of FMISS for each participant ie. what is their average FMISS rate across participants</span></span>
-<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"./plots/missingness.samples.averages.A2CPS.pdf"</span>,<span class="at">width=</span><span class="dv">9</span>,<span class="at">height=</span><span class="dv">6</span>)</span>
-<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="at">las=</span><span class="dv">1</span>)</span>
-<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">boxplot</span>(z.pm)</span>
-<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">boxplot</span>(z.pm,<span class="at">log=</span><span class="st">"y"</span>)</span>
-<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a><span class="co"># percentile missingness plot</span></span>
-<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(z.pm)</span>
-<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"./plots/missingness.samples.percentile.A2CPS.pdf"</span>,<span class="at">width=</span><span class="dv">8</span>,<span class="at">height=</span><span class="dv">7</span>)</span>
-<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">las=</span><span class="dv">1</span>)</span>
-<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">c</span>(<span class="fl">0.9</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.4</span>),<span class="at">type=</span><span class="st">"n"</span>,<span class="at">xlab=</span><span class="st">"percentile missingness"</span>,<span class="at">ylab=</span><span class="st">"% missing"</span>)</span>
-<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">0.1</span>,<span class="fl">0.01</span>),<span class="at">lty=</span><span class="st">"dotted"</span>,<span class="at">col=</span><span class="st">"lightgrey"</span>)</span>
-<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>((<span class="dv">1</span><span class="sc">:</span>n)<span class="sc">/</span>n,<span class="fu">sort</span>(z.pm),<span class="at">type=</span><span class="st">"b"</span>,<span class="at">cex=</span><span class="fl">0.5</span>,<span class="at">pch=</span><span class="dv">20</span>)</span>
-<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"./qc_derivatives/2_summary_stats/RL1-5_ss_chr%d.imiss"</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    i</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  current_data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(file_name, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  combined_data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(combined_data, current_data)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># DAT HAS EACH MISSING CALL RATE (22 per participant)</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> combined_data<span class="sc">$</span><span class="st">"F_MISS"</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>number_geno <span class="ot">&lt;-</span> combined_data<span class="sc">$</span>N_GENO <span class="co"># total genotyped SNPs across autosomes</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>number_missed <span class="ot">&lt;-</span> combined_data<span class="sc">$</span>N_MISS <span class="co"># total missed SNPs across autosomes across participants</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>matrix_geno <span class="ot">&lt;-</span> <span class="fu">matrix</span>(number_geno, <span class="at">ncol =</span> <span class="dv">22</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>summed_geno <span class="ot">&lt;-</span> <span class="fu">sum</span>(matrix_geno[<span class="dv">1</span>, ]) <span class="co"># total autosomal SNPs</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>matrix_missed <span class="ot">&lt;-</span> <span class="fu">matrix</span>(number_missed, <span class="at">ncol =</span> <span class="dv">22</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>individual_missed_percent <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(matrix_missed) <span class="sc">/</span> summed_geno</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>missingness_table <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">FAMID =</span> current_data<span class="sc">$</span>FID,</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> current_data<span class="sc">$</span>IID,</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">Missingness =</span> individual_missed_percent</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(missingness_table, <span class="st">"./helpers/A2CPS_RL1-5_Missingness.csv"</span>)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="co"># subset those with over %2 missingness</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>over_two <span class="ot">&lt;-</span> <span class="fu">which</span>(individual_missed_percent <span class="sc">&gt;</span> <span class="fl">0.02</span>)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>over_two_values <span class="ot">&lt;-</span> individual_missed_percent[over_two]</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>over_two_missing_snps <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(matrix_missed)[over_two]</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>subject_ID <span class="ot">&lt;-</span> combined_data<span class="sc">$</span>IID[over_two]</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>high_ind_missingness <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> over_two,</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">SUBJECT_ID =</span> subject_ID,</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">MISSINGNESS =</span> over_two_values,</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">SNPs_MISSED =</span> over_two_missing_snps</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a><span class="co"># table with high missingness individuals for PLINK Dropping</span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>for_drop <span class="ot">&lt;-</span> high_ind_missingness[, .(ID, SUBJECT_ID)]</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>  for_drop,</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./helpers/A2CPS_Ind_Missingness_Drop.txt"</span>,</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">" "</span>,</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a><span class="co"># spaghetti plots across chromosomes</span></span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">range</span>(dat)</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./plots/missingness.samples.perchr.spaghetti.A2CPS.pdf"</span>,</span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">9</span>,</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">7</span></span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(dat, <span class="at">ncol =</span> <span class="dv">22</span>)</span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">22</span>),</span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>  r,</span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"chromosome"</span>,</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"% missing"</span>,</span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>  <span class="at">xaxt =</span> <span class="st">"n"</span></span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>)</span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(tmp))) {</span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>, tmp[j, ], <span class="at">col =</span> <span class="st">"orange"</span>)</span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a><span class="co"># boxplot sample average</span></span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(dat, <span class="at">ncol =</span> <span class="dv">22</span>) <span class="co">#temp is a matrix with rows as participants and columns as chr## and cells as FMISS</span></span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>z_pm <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(tmp) <span class="co"># z_pm is a vector with the mean values of FMISS for each participant ie. what is their average FMISS rate across participants</span></span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"./plots/missingness.samples.averages.A2CPS.pdf"</span>, <span class="at">width =</span> <span class="dv">9</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(z_pm)</span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(z_pm, <span class="at">log =</span> <span class="st">"y"</span>)</span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a><span class="co"># percentile missingness plot</span></span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(z_pm)</span>
+<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"./plots/missingness.samples.percentile.A2CPS.pdf"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">7</span>)</span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>), <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="dv">1</span>),</span>
+<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.4</span>),</span>
+<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"percentile missingness"</span>,</span>
+<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"% missing"</span></span>
+<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.1</span>, <span class="fl">0.01</span>), <span class="at">lty =</span> <span class="st">"dotted"</span>, <span class="at">col =</span> <span class="st">"lightgrey"</span>)</span>
+<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>((<span class="dv">1</span><span class="sc">:</span>n) <span class="sc">/</span> n, <span class="fu">sort</span>(z_pm), <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">cex =</span> <span class="fl">0.5</span>, <span class="at">pch =</span> <span class="dv">20</span>)</span>
+<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <details>
 <summary>
@@ -1378,28 +1406,72 @@ Click to show Supplementary RScript #2: Heterozygosity and Relatedness Checks (h
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(user_wd)</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------- </span><span class="al">TESTING</span><span class="co"> HETEROZYGOSITY ------------</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>a2cps.h <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./qc_derivatives/7_Merged/RL1-5_Merged_Het.het"</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(a2cps.h) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"FID"</span>,<span class="st">"IID"</span>,<span class="st">"O_HOM"</span>, <span class="st">"E_HOM"</span>, <span class="st">"N_NM"</span>,  <span class="st">"F"</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>a2cps.h[,<span class="st">'Het_Rate'</span> <span class="sc">:</span><span class="er">=</span> (N_NM <span class="sc">-</span> O_HOM)<span class="sc">/</span>N_NM]</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>a2cps.h[, <span class="st">'Pop'</span> <span class="sc">:</span><span class="er">=</span> <span class="st">"A2CPS"</span>]</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>dat2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(a2cps.h)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>p.ht <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>dat2, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">factor</span>(Pop, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"A2CPS"</span>)), <span class="at">y=</span>Het_Rate, <span class="at">group=</span>Pop, <span class="at">color=</span>Pop)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">"red"</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Populations"</span>) <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Het Rate"</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.0</span>,<span class="fl">0.32</span>)) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Heterozygosity Rates"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>, <span class="at">color=</span><span class="st">"black"</span>,<span class="at">hjust=</span><span class="dv">1</span>), <span class="at">axis.text.y=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>, <span class="at">color =</span> <span class="st">"black"</span>), <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>), <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>), <span class="at">panel.background=</span><span class="fu">element_blank</span>(), <span class="at">panel.grid.minor=</span><span class="fu">element_blank</span>(), <span class="at">panel.grid.major=</span><span class="fu">element_blank</span>(), <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size=</span><span class="dv">20</span>, <span class="at">face =</span> <span class="st">"bold"</span>))</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"./plots/A2CPS_RL1-5_Het.png"</span>, p.ht, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>a2cps_h <span class="ot">&lt;-</span> <span class="fu">fread</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./qc_derivatives/7_Merged/RL1-5_Merged_Het.het"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(a2cps_h) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"FID"</span>, <span class="st">"IID"</span>, <span class="st">"O_HOM"</span>, <span class="st">"E_HOM"</span>, <span class="st">"N_NM"</span>, <span class="st">"F"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>a2cps_h[, <span class="st">'Het_Rate'</span> <span class="sc">:</span><span class="er">=</span> (N_NM <span class="sc">-</span> O_HOM) <span class="sc">/</span> N_NM]</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>a2cps_h[, <span class="st">'Pop'</span> <span class="sc">:</span><span class="er">=</span> <span class="st">"A2CPS"</span>]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>dat2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(a2cps_h)</span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------- </span><span class="al">TESTING</span><span class="co"> PARENTAL RELATEDNESS ------------</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>philippines <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./qc_derivatives/7_Merged/RL1-5_Merged_IBD.genome"</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>philippines <span class="ot">&lt;-</span> philippines[<span class="fu">which</span>(philippines<span class="sc">$</span>Z0 <span class="sc">!=</span> <span class="dv">1</span>)]</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">"./plots/A2CPS_RL1-5_Relatedness.png"</span>, <span class="at">width=</span><span class="dv">3000</span>, <span class="at">height=</span><span class="dv">2000</span>, <span class="at">res=</span><span class="dv">300</span>)</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">pch=</span><span class="dv">16</span>)</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(philippines, <span class="fu">plot</span>(Z0, Z1, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"n"</span>, <span class="at">main=</span><span class="st">"A2CPS Z1 &gt; 0 Relatedness"</span>))</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">subset</span>(philippines, RT <span class="sc">==</span> <span class="st">"UN"</span>), <span class="fu">points</span>(Z0, Z1, <span class="at">col=</span><span class="dv">1</span>, <span class="at">cex=</span><span class="fl">0.4</span>))</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>related <span class="ot">&lt;-</span> philippines[<span class="fu">which</span>(philippines<span class="sc">$</span>Z0 <span class="sc">&lt;</span> <span class="fl">0.5</span>), ]</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(related, <span class="st">"./helpers/A2CPS_RL1-5_related.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>p_ht <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat2,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">factor</span>(Pop, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"A2CPS"</span>)),</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> Het_Rate,</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> Pop,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> Pop</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">"red"</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Populations"</span>) <span class="sc">+</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Het Rate"</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.0</span>, <span class="fl">0.32</span>)) <span class="sc">+</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Heterozygosity Rates"</span>) <span class="sc">+</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">color =</span> <span class="st">"black"</span>),</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">20</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"./plots/A2CPS_RL1-5_Het.png"</span>, p_ht, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------- </span><span class="al">TESTING</span><span class="co"> PARENTAL RELATEDNESS ------------</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>philippines <span class="ot">&lt;-</span> <span class="fu">fread</span>(</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./qc_derivatives/7_Merged/RL1-5_Merged_IBD.genome"</span>,</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>philippines <span class="ot">&lt;-</span> philippines[<span class="fu">which</span>(philippines<span class="sc">$</span>Z0 <span class="sc">!=</span> <span class="dv">1</span>)]</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./plots/A2CPS_RL1-5_Relatedness.png"</span>,</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">3000</span>,</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">2000</span>,</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">res =</span> <span class="dv">300</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>  philippines,</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>    Z0,</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>    Z1,</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">"A2CPS Z1 &gt; 0 Relatedness"</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">subset</span>(philippines, RT <span class="sc">==</span> <span class="st">"UN"</span>), <span class="fu">points</span>(Z0, Z1, <span class="at">col =</span> <span class="dv">1</span>, <span class="at">cex =</span> <span class="fl">0.4</span>))</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>related <span class="ot">&lt;-</span> philippines[<span class="fu">which</span>(philippines<span class="sc">$</span>Z0 <span class="sc">&lt;</span> <span class="fl">0.5</span>), ]</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(related, <span class="st">"./helpers/A2CPS_RL1-5_related.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </details>
 <details>
@@ -1411,43 +1483,57 @@ Click to show Supplementary RScript #3: Determining which Related Participants t
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>user_wd <span class="ot">&lt;-</span> args[<span class="dv">1</span>]</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(user_wd)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>missingness.table <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./helpers/A2CPS_RL1-5_Missingness.csv"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>missingness_table <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./helpers/A2CPS_RL1-5_Missingness.csv"</span>)</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>related <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./helpers/A2CPS_RL1-5_related.csv"</span>)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>related_IDs_row1 <span class="ot">&lt;-</span> related<span class="sc">$</span>FID1</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>related_IDs_row2 <span class="ot">&lt;-</span> related<span class="sc">$</span>FID2</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>related_missingness_row1 <span class="ot">&lt;-</span> missingness.table[<span class="fu">which</span>(missingness.table<span class="sc">$</span>FAMID <span class="sc">%in%</span> related_IDs_row1), ]</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>related_missingness_row2 <span class="ot">&lt;-</span> missingness.table[<span class="fu">which</span>(missingness.table<span class="sc">$</span>FAMID <span class="sc">%in%</span> related_IDs_row2), ]</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder to match related_IDs_row1 and related_IDs_row2</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>comp1 <span class="ot">&lt;-</span> related_missingness_row1[<span class="fu">match</span>(related_IDs_row1, related_missingness_row1<span class="sc">$</span>FAMID)]</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>comp2 <span class="ot">&lt;-</span> related_missingness_row2[<span class="fu">match</span>(related_IDs_row2, related_missingness_row2<span class="sc">$</span>FAMID)]</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>complist <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ind <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(comp1))) {</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  related_pair <span class="ot">&lt;-</span> <span class="fu">c</span>(comp1<span class="sc">$</span>FAMID[ind], comp2<span class="sc">$</span>FAMID[ind])</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  complist[[ind]] <span class="ot">&lt;-</span> related_pair</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>drop.list <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pair <span class="cf">in</span> complist) {</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  missingness<span class="fl">.1</span> <span class="ot">&lt;-</span> missingness.table<span class="sc">$</span>Missingness[pair[<span class="dv">1</span>]]</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  missingness<span class="fl">.2</span> <span class="ot">&lt;-</span> missingness.table<span class="sc">$</span>Missingness[pair[<span class="dv">2</span>]]</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (missingness<span class="fl">.1</span> <span class="sc">&gt;</span> missingness<span class="fl">.2</span>) {</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    drop.list <span class="ot">&lt;-</span> <span class="fu">c</span>(drop.list, pair[<span class="dv">1</span>])</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    drop.list <span class="ot">&lt;-</span> <span class="fu">c</span>(drop.list, pair[<span class="dv">2</span>])</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>IID <span class="ot">&lt;-</span> missingness.table[<span class="fu">match</span>(drop.list, missingness.table<span class="sc">$</span>FAMID), ]<span class="sc">$</span>ID</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>drop.table <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">FAMID =</span> drop.list, <span class="at">IID =</span> IID)</span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop the higher-missingness related / duplicate individual</span></span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(drop.table, <span class="at">sep =</span> <span class="st">" "</span>, <span class="at">col.names =</span>  <span class="cn">FALSE</span>, <span class="st">"./helpers/A2CPS_related_drop.txt"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>related_ids_row1 <span class="ot">&lt;-</span> related<span class="sc">$</span>FID1</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>related_ids_row2 <span class="ot">&lt;-</span> related<span class="sc">$</span>FID2</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>related_missingness_row1 <span class="ot">&lt;-</span> missingness_table[</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">which</span>(missingness_table<span class="sc">$</span>FAMID <span class="sc">%in%</span> related_ids_row1),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>related_missingness_row2 <span class="ot">&lt;-</span> missingness_table[</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">which</span>(missingness_table<span class="sc">$</span>FAMID <span class="sc">%in%</span> related_ids_row2),</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder to match related_ids_row1 and related_ids_row2</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>comp1 <span class="ot">&lt;-</span> related_missingness_row1[<span class="fu">match</span>(</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  related_ids_row1,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  related_missingness_row1<span class="sc">$</span>FAMID</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>comp2 <span class="ot">&lt;-</span> related_missingness_row2[<span class="fu">match</span>(</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  related_ids_row2,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  related_missingness_row2<span class="sc">$</span>FAMID</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>complist <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ind <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(comp1))) {</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  related_pair <span class="ot">&lt;-</span> <span class="fu">c</span>(comp1<span class="sc">$</span>FAMID[ind], comp2<span class="sc">$</span>FAMID[ind])</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  complist[[ind]] <span class="ot">&lt;-</span> related_pair</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>drop_list <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pair <span class="cf">in</span> complist) {</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>  missingness<span class="fl">.1</span> <span class="ot">&lt;-</span> missingness_table<span class="sc">$</span>Missingness[pair[<span class="dv">1</span>]]</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  missingness<span class="fl">.2</span> <span class="ot">&lt;-</span> missingness_table<span class="sc">$</span>Missingness[pair[<span class="dv">2</span>]]</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (missingness<span class="fl">.1</span> <span class="sc">&gt;</span> missingness<span class="fl">.2</span>) {</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    drop_list <span class="ot">&lt;-</span> <span class="fu">c</span>(drop_list, pair[<span class="dv">1</span>])</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>    drop_list <span class="ot">&lt;-</span> <span class="fu">c</span>(drop_list, pair[<span class="dv">2</span>])</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>IID <span class="ot">&lt;-</span> missingness_table[<span class="fu">match</span>(drop_list, missingness_table<span class="sc">$</span>FAMID), ]<span class="sc">$</span>ID</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>drop_table <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">FAMID =</span> drop_list, <span class="at">IID =</span> IID)</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop the higher-missingness related / duplicate individual</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>  drop_table,</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">" "</span>,</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./helpers/A2CPS_related_drop.txt"</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </details>
 <details>
@@ -1459,97 +1545,159 @@ Click to show Supplementary RScript #4: Sex Typing Discrepancy Analysis and Hand
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>user_wd <span class="ot">&lt;-</span> args[<span class="dv">1</span>]</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(user_wd)</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>st_Info <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"qc_derivatives/sex_typing/sex_check.sexcheck"</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>st_Info_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(st_Info)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>st_info <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"qc_derivatives/sex_typing/sex_check.sexcheck"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>st_info_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(st_info)</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>ok_df <span class="ot">&lt;-</span> st_Info_df[st_Info_df<span class="sc">$</span>STATUS <span class="sc">==</span> <span class="st">"OK"</span>, ]</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>problem_df <span class="ot">&lt;-</span> st_Info_df[st_Info_df<span class="sc">$</span>STATUS <span class="sc">==</span> <span class="st">"PROBLEM"</span>, ]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>ok_df <span class="ot">&lt;-</span> st_info_df[st_info_df<span class="sc">$</span>STATUS <span class="sc">==</span> <span class="st">"OK"</span>, ]</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>problem_df <span class="ot">&lt;-</span> st_info_df[st_info_df<span class="sc">$</span>STATUS <span class="sc">==</span> <span class="st">"PROBLEM"</span>, ]</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>info1_4 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./demographic_data/2025-01-13_UCSD_GV_Genotypes_Runlists_1-4_QC.csv"</span>)[, <span class="fu">c</span>(<span class="st">"subject_guid"</span>,<span class="st">"individual_file_tag"</span>)]</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>info5 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./demographic_data/2025-02-11_UCSD_GV_Genotypes_Runlist_5_QC.csv"</span>)[, <span class="fu">c</span>(<span class="st">"subject_guid"</span>,<span class="st">"individual_file_tag"</span>)]</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>info_all <span class="ot">&lt;-</span> <span class="fu">rbind</span>(info1_4, info5)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>problem_IIDs <span class="ot">&lt;-</span> problem_df<span class="sc">$</span>IID <span class="do">## The subject IDs of the problematic samples</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>info_problem_IIDs <span class="ot">&lt;-</span> info_all[<span class="fu">which</span>(info_all<span class="sc">$</span>individual_file_tag <span class="sc">%in%</span> problem_IIDs), ]</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>merged_dt <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  problem_df, </span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  info_problem_IIDs, </span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.x =</span> <span class="st">"IID"</span>, </span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.y =</span> <span class="st">"individual_file_tag"</span>, </span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.x =</span> <span class="cn">TRUE</span>  </span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(merged_dt)</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>merged_dt[, subject_guid <span class="sc">:</span><span class="er">=</span> <span class="fu">toupper</span>(<span class="fu">as.character</span>(subject_guid))]</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>redcap <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./demographic_data/REDCap/demographics-2025-01-10 (1).csv"</span>)</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>redcap.genident <span class="ot">&lt;-</span> redcap<span class="sc">$</span>genident</span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>redcap.sex <span class="ot">&lt;-</span> redcap<span class="sc">$</span>sex</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(redcap)</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>merged_dt <span class="ot">&lt;-</span> redcap[, .(guid, genident)][merged_dt, on <span class="ot">=</span> .(<span class="at">guid =</span> subject_guid)]</span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>merged_dt <span class="ot">&lt;-</span> redcap[, .(guid, sex)][merged_dt, on <span class="ot">=</span> .(<span class="at">guid =</span> guid)]</span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>ehr1 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./demographic_data/EHR/reformatted_ns_clinicals_and_case_characteristics.csv"</span>)[, <span class="fu">c</span>(<span class="st">"guid"</span>, <span class="st">"sex_ehr"</span>)]</span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>ehr2 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./demographic_data/EHR/reformatted_ru_clinicals_and_case_characteristics.csv"</span>)[, <span class="fu">c</span>(<span class="st">"guid"</span>, <span class="st">"sex_ehr"</span>)]</span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>ehr3 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./demographic_data/EHR/reformatted_um_clinicals_and_case_characteristics.csv"</span>)[, <span class="fu">c</span>(<span class="st">"guid"</span>, <span class="st">"sex_ehr"</span>)]</span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>ehr <span class="ot">&lt;-</span> <span class="fu">rbind</span>(ehr1, ehr2, ehr3)</span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>merged_dt <span class="ot">&lt;-</span> ehr[, .(guid, sex_ehr)][merged_dt, on <span class="ot">=</span> .(<span class="at">guid =</span> guid)]</span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="fu">setnames</span>(merged_dt,</span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>         <span class="at">old =</span> <span class="fu">c</span>(<span class="st">"sex"</span>, <span class="st">"genident"</span>, <span class="st">"sex_ehr"</span>),</span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>         <span class="at">new =</span> <span class="fu">c</span>(<span class="st">"REDCap: sex"</span>, <span class="st">"REDCap: genident"</span>, <span class="st">"EHR: sex_ehr"</span>))</span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>merged_dt[, rescue <span class="sc">:</span><span class="er">=</span> <span class="fu">ifelse</span>(</span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>  (SNPSEX <span class="sc">!=</span> <span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span>) <span class="sc">&amp;</span> <span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span>)) <span class="sc">|</span></span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>    (SNPSEX <span class="sc">!=</span> <span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span>) <span class="sc">&amp;</span> <span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span>)) <span class="sc">|</span></span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>    (SNPSEX <span class="sc">!=</span> <span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span> <span class="sc">&amp;</span> SNPSEX <span class="sc">!=</span> <span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span>) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span>)),</span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>  <span class="st">"NO"</span>,</span>
-<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>  <span class="st">"YES"</span></span>
-<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>merged_dt_no <span class="ot">&lt;-</span> merged_dt[<span class="fu">which</span>(merged_dt<span class="sc">$</span>rescue <span class="sc">==</span> <span class="st">"NO"</span>), ]</span>
-<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>merged_dt_yes <span class="ot">&lt;-</span> merged_dt[<span class="fu">which</span>(merged_dt<span class="sc">$</span>rescue <span class="sc">==</span> <span class="st">"YES"</span>), ]</span>
-<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>drop_sex_discrepancy <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
-<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> merged_dt_no<span class="sc">$</span>FID,</span>
-<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>  <span class="at">IID =</span> merged_dt_no<span class="sc">$</span>IID</span>
-<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>related_drop <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./helpers/A2CPS_related_drop.txt"</span>)</span>
-<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a><span class="fu">setnames</span>(related_drop, <span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"IID"</span>))</span>
-<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>drop_sex_discrepancy_and_related <span class="ot">&lt;-</span> <span class="fu">rbind</span>(drop_sex_discrepancy, related_drop)</span>
-<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(drop_sex_discrepancy_and_related, <span class="at">col.names =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span> <span class="st">" "</span>, <span class="st">"helpers/A2CPS_related_and_sex_discrepancy_drop.txt"</span>)</span>
-<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>update_sex <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
-<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> merged_dt_yes<span class="sc">$</span>FID,</span>
-<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>  <span class="at">IID =</span> merged_dt_yes<span class="sc">$</span>IID,</span>
-<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">Sex =</span> merged_dt_yes<span class="sc">$</span>SNPSEX</span>
-<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(update_sex, <span class="at">col.names =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span> <span class="st">" "</span>, <span class="st">"./helpers/A2CPS_update_sex.txt"</span>)</span>
-<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a><span class="do">## Graphing</span></span>
-<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a>ok_df<span class="sc">$</span>LegendStatus <span class="ot">&lt;-</span> <span class="st">"OK"</span></span>
-<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a>problem_df<span class="sc">$</span>LegendStatus <span class="ot">&lt;-</span> <span class="st">"PROBLEM"</span></span>
-<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a>combined_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(ok_df, problem_df)</span>
-<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">"./plots/A2CPS_RL1-5_Sex_Typing.png"</span>, <span class="at">width =</span> <span class="dv">3000</span>, <span class="at">height =</span> <span class="dv">2000</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
-<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> ok_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="cn">FALSE</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="fu">factor</span>(PEDSEX), <span class="at">shape =</span> <span class="st">"OK"</span>, <span class="at">size =</span> <span class="st">"OK"</span>, <span class="at">alpha =</span> <span class="st">"OK"</span>),</span>
-<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a>               <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="dv">0</span>, <span class="at">height =</span> <span class="fl">0.1</span>)) <span class="sc">+</span></span>
-<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> problem_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="cn">FALSE</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="fu">factor</span>(PEDSEX), <span class="at">shape =</span> <span class="st">"PROBLEM"</span>, <span class="at">size =</span> <span class="st">"PROBLEM"</span>, <span class="at">alpha =</span> <span class="st">"PROBLEM"</span>),</span>
-<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a>               <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="dv">0</span>, <span class="at">height =</span> <span class="fl">0.1</span>)) <span class="sc">+</span></span>
-<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"2"</span> <span class="ot">=</span> <span class="st">"magenta"</span>)) <span class="sc">+</span></span>
-<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_shape_manual</span>(<span class="at">name =</span> <span class="st">"Status"</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"OK"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"PROBLEM"</span> <span class="ot">=</span> <span class="dv">19</span>)) <span class="sc">+</span></span>
-<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_size_manual</span>(<span class="at">name =</span> <span class="st">"Status"</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"OK"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"PROBLEM"</span> <span class="ot">=</span> <span class="dv">3</span>)) <span class="sc">+</span></span>
-<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_alpha_manual</span>(<span class="at">name =</span> <span class="st">"Status"</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"OK"</span> <span class="ot">=</span> <span class="fl">0.4</span>, <span class="st">"PROBLEM"</span> <span class="ot">=</span> <span class="fl">0.9</span>)) <span class="sc">+</span></span>
-<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"A2CPS Sex Discrepancies"</span>,</span>
-<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">"F Statistic"</span>,</span>
-<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">""</span>,</span>
-<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a>         <span class="at">color =</span> <span class="st">"PEDSEX"</span>) <span class="sc">+</span></span>
-<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
-<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>())</span>
-<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(p)</span>
-<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>info1_4 <span class="ot">&lt;-</span> <span class="fu">fread</span>(</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./demographic_data/2025-01-13_UCSD_GV_Genotypes_Runlists_1-4_QC.csv"</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>)[, <span class="fu">c</span>(<span class="st">"subject_guid"</span>, <span class="st">"individual_file_tag"</span>)]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>info5 <span class="ot">&lt;-</span> <span class="fu">fread</span>(</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./demographic_data/2025-02-11_UCSD_GV_Genotypes_Runlist_5_QC.csv"</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>)[, <span class="fu">c</span>(<span class="st">"subject_guid"</span>, <span class="st">"individual_file_tag"</span>)]</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>info_all <span class="ot">&lt;-</span> <span class="fu">rbind</span>(info1_4, info5)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>problem_iids <span class="ot">&lt;-</span> problem_df<span class="sc">$</span>IID <span class="do">## The subject IDs of the problematic samples</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>info_problem_iids <span class="ot">&lt;-</span> info_all[</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">which</span>(info_all<span class="sc">$</span>individual_file_tag <span class="sc">%in%</span> problem_iids),</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>merged_dt <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  problem_df,</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  info_problem_iids,</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.x =</span> <span class="st">"IID"</span>,</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.y =</span> <span class="st">"individual_file_tag"</span>,</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.x =</span> <span class="cn">TRUE</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(merged_dt)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>merged_dt[, subject_guid <span class="sc">:</span><span class="er">=</span> <span class="fu">toupper</span>(<span class="fu">as.character</span>(subject_guid))]</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>redcap <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./demographic_data/REDCap/demographics-2025-01-10 (1).csv"</span>)</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>redcap_genident <span class="ot">&lt;-</span> redcap<span class="sc">$</span>genident</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>redcap_sex <span class="ot">&lt;-</span> redcap<span class="sc">$</span>sex</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(redcap)</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>merged_dt <span class="ot">&lt;-</span> redcap[, .(guid, genident)][merged_dt, on <span class="ot">=</span> .(<span class="at">guid =</span> subject_guid)]</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>merged_dt <span class="ot">&lt;-</span> redcap[, .(guid, sex)][merged_dt, on <span class="ot">=</span> .(<span class="at">guid =</span> guid)]</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>ehr1 <span class="ot">&lt;-</span> <span class="fu">fread</span>(</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./demographic_data/EHR/reformatted_ns_clinicals_and_case_characteristics.csv"</span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>)[, <span class="fu">c</span>(<span class="st">"guid"</span>, <span class="st">"sex_ehr"</span>)]</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>ehr2 <span class="ot">&lt;-</span> <span class="fu">fread</span>(</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./demographic_data/EHR/reformatted_ru_clinicals_and_case_characteristics.csv"</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>)[, <span class="fu">c</span>(<span class="st">"guid"</span>, <span class="st">"sex_ehr"</span>)]</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>ehr3 <span class="ot">&lt;-</span> <span class="fu">fread</span>(</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./demographic_data/EHR/reformatted_um_clinicals_and_case_characteristics.csv"</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>)[, <span class="fu">c</span>(<span class="st">"guid"</span>, <span class="st">"sex_ehr"</span>)]</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>ehr <span class="ot">&lt;-</span> <span class="fu">rbind</span>(ehr1, ehr2, ehr3)</span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>merged_dt <span class="ot">&lt;-</span> ehr[, .(guid, sex_ehr)][merged_dt, on <span class="ot">=</span> .(<span class="at">guid =</span> guid)]</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="fu">setnames</span>(</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>  merged_dt,</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>  <span class="at">old =</span> <span class="fu">c</span>(<span class="st">"sex"</span>, <span class="st">"genident"</span>, <span class="st">"sex_ehr"</span>),</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>  <span class="at">new =</span> <span class="fu">c</span>(<span class="st">"REDCap: sex"</span>, <span class="st">"REDCap: genident"</span>, <span class="st">"EHR: sex_ehr"</span>)</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>merged_dt[,</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>  rescue <span class="sc">:</span><span class="er">=</span> <span class="fu">ifelse</span>(</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>    (SNPSEX <span class="sc">!=</span> <span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span> <span class="sc">&amp;</span></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span>) <span class="sc">&amp;</span></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>      <span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span>)) <span class="sc">|</span></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>      (SNPSEX <span class="sc">!=</span> <span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span> <span class="sc">&amp;</span></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>        <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span>) <span class="sc">&amp;</span></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>        <span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span>)) <span class="sc">|</span></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>      (SNPSEX <span class="sc">!=</span> <span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span> <span class="sc">&amp;</span></span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>        SNPSEX <span class="sc">!=</span> <span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span> <span class="sc">&amp;</span></span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>        <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: genident</span><span class="st">`</span>) <span class="sc">&amp;</span></span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>        <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">REDCap: sex</span><span class="st">`</span>)),</span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NO"</span>,</span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a>    <span class="st">"YES"</span></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a>merged_dt_no <span class="ot">&lt;-</span> merged_dt[<span class="fu">which</span>(merged_dt<span class="sc">$</span>rescue <span class="sc">==</span> <span class="st">"NO"</span>), ]</span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a>merged_dt_yes <span class="ot">&lt;-</span> merged_dt[<span class="fu">which</span>(merged_dt<span class="sc">$</span>rescue <span class="sc">==</span> <span class="st">"YES"</span>), ]</span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a>drop_sex_discrepancy <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> merged_dt_no<span class="sc">$</span>FID,</span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a>  <span class="at">IID =</span> merged_dt_no<span class="sc">$</span>IID</span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a>related_drop <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./helpers/A2CPS_related_drop.txt"</span>)</span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a><span class="fu">setnames</span>(related_drop, <span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"IID"</span>))</span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a>drop_sex_discrepancy_and_related <span class="ot">&lt;-</span> <span class="fu">rbind</span>(drop_sex_discrepancy, related_drop)</span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a>  drop_sex_discrepancy_and_related,</span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">" "</span>,</span>
+<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a>  <span class="st">"helpers/A2CPS_related_and_sex_discrepancy_drop.txt"</span></span>
+<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a>update_sex <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> merged_dt_yes<span class="sc">$</span>FID,</span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a>  <span class="at">IID =</span> merged_dt_yes<span class="sc">$</span>IID,</span>
+<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a>  <span class="at">Sex =</span> merged_dt_yes<span class="sc">$</span>SNPSEX</span>
+<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a>  update_sex,</span>
+<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">" "</span>,</span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./helpers/A2CPS_update_sex.txt"</span></span>
+<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a><span class="do">## Graphing</span></span>
+<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a>ok_df<span class="sc">$</span>LegendStatus <span class="ot">&lt;-</span> <span class="st">"OK"</span></span>
+<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a>problem_df<span class="sc">$</span>LegendStatus <span class="ot">&lt;-</span> <span class="st">"PROBLEM"</span></span>
+<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a>combined_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(ok_df, problem_df)</span>
+<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(</span>
+<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./plots/A2CPS_RL1-5_Sex_Typing.png"</span>,</span>
+<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">3000</span>,</span>
+<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">2000</span>,</span>
+<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a>  <span class="at">res =</span> <span class="dv">300</span></span>
+<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> ok_df,</span>
+<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="fu">factor</span>(PEDSEX),</span>
+<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> <span class="st">"OK"</span>,</span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="st">"OK"</span>,</span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="st">"OK"</span></span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="dv">0</span>, <span class="at">height =</span> <span class="fl">0.1</span>)</span>
+<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> problem_df,</span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="fu">factor</span>(PEDSEX),</span>
+<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> <span class="st">"PROBLEM"</span>,</span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="st">"PROBLEM"</span>,</span>
+<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="st">"PROBLEM"</span></span>
+<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="dv">0</span>, <span class="at">height =</span> <span class="fl">0.1</span>)</span>
+<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"2"</span> <span class="ot">=</span> <span class="st">"magenta"</span>)) <span class="sc">+</span></span>
+<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">name =</span> <span class="st">"Status"</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"OK"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"PROBLEM"</span> <span class="ot">=</span> <span class="dv">19</span>)) <span class="sc">+</span></span>
+<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_manual</span>(<span class="at">name =</span> <span class="st">"Status"</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"OK"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"PROBLEM"</span> <span class="ot">=</span> <span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_alpha_manual</span>(<span class="at">name =</span> <span class="st">"Status"</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"OK"</span> <span class="ot">=</span> <span class="fl">0.4</span>, <span class="st">"PROBLEM"</span> <span class="ot">=</span> <span class="fl">0.9</span>)) <span class="sc">+</span></span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A2CPS Sex Discrepancies"</span>,</span>
+<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"F Statistic"</span>,</span>
+<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">""</span>,</span>
+<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"PEDSEX"</span></span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span>
+<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </details>
 <details>
@@ -1565,21 +1713,30 @@ Click to show Supplementary RScript #5: Subsetting just Freeze 2 Participants (F
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>current_biospecimen_id <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"_.*"</span>, <span class="st">""</span>, <span class="fu">fread</span>(<span class="st">"A2CPS_RL1-5_QCed.fam"</span>)<span class="sc">$</span>V2)</span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>freeze2 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"freeze2_ids_ucsd_gv.csv"</span>)<span class="sc">$</span>biospecimen_id</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>drop_not_in_freeze2_list <span class="ot">&lt;-</span> current_biospecimen_id[<span class="fu">which</span>(current_biospecimen_id <span class="sc">%notin%</span> freeze2)]</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>fam.file <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"A2CPS_RL1-5_QCed.fam"</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>drop_not_in_freeze2_list <span class="ot">&lt;-</span> current_biospecimen_id[<span class="fu">which</span>(</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  current_biospecimen_id <span class="sc">%notin%</span> freeze2</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>)]</span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>fam.file[, prefix <span class="sc">:</span><span class="er">=</span> <span class="fu">sub</span>(<span class="st">"_.*"</span>, <span class="st">""</span>, V2)]</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>fam_file <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"A2CPS_RL1-5_QCed.fam"</span>)</span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>matched_rows <span class="ot">&lt;-</span> fam.file[prefix <span class="sc">%in%</span> drop_not_in_freeze2_list, .(V1, V2)]</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>fam_file[, prefix <span class="sc">:</span><span class="er">=</span> <span class="fu">sub</span>(<span class="st">"_.*"</span>, <span class="st">""</span>, V2)]</span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(matched_rows, <span class="at">col.names =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span> <span class="st">" "</span>, <span class="st">"notFreeze2.txt"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>matched_rows <span class="ot">&lt;-</span> fam_file[prefix <span class="sc">%in%</span> drop_not_in_freeze2_list, .(V1, V2)]</span>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>previous_drops <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"/Users/sethberke/a2cps.gv.qc.auto/A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List.txt"</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(matched_rows, <span class="at">col.names =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span> <span class="st">" "</span>, <span class="st">"notFreeze2.txt"</span>)</span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>total_drops <span class="ot">&lt;-</span> <span class="fu">rbind</span>(matched_rows, previous_drops)</span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(total_drops, <span class="at">col.names =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span> <span class="st">" "</span>, <span class="st">"/Users/sethberke/a2cps.gv.qc.auto/A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List_Only_Freeze_2.txt"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>previous_drops <span class="ot">&lt;-</span> <span class="fu">fread</span>(</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List.txt"</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>total_drops <span class="ot">&lt;-</span> <span class="fu">rbind</span>(matched_rows, previous_drops)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>  total_drops,</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./A2CPS_RL1-5_Preparation_Files/A2CPS_RL1-5_Final_Sample_Drop_List_Only_Freeze_2.txt"</span>,</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">" "</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </details>
 <hr>
@@ -1624,85 +1781,123 @@ Click to show Supplementary RScript #6: Principal Components Analysis (pca.r)
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>user_wd <span class="ot">&lt;-</span> args[<span class="dv">1</span>]</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(user_wd)</span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>base_url<span class="ot">=</span><span class="st">"https://vbr-api.a2cps.cloud"</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://vbr-api.a2cps.cloud"</span></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>username <span class="ot">&lt;-</span> VBR_Username</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>password <span class="ot">&lt;-</span> VBR_Password</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">=</span> <span class="fu">POST</span>(<span class="fu">paste</span>(base_url, <span class="st">"/auth/token"</span>, <span class="at">sep=</span><span class="st">""</span>), <span class="at">body =</span> <span class="fu">list</span>(<span class="at">username=</span>username, <span class="at">password=</span>password), <span class="at">encode =</span> <span class="st">"form"</span>)</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>access_token <span class="ot">=</span> <span class="fu">content</span>(resp, <span class="at">as=</span><span class="st">"parsed"</span>)<span class="sc">$</span>access_token</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">=</span> <span class="fu">GET</span>(<span class="fu">paste</span>(base_url, <span class="st">"/biospecimens/private?offset=0&amp;limit=0"</span>, <span class="at">sep=</span><span class="st">""</span>), <span class="fu">add_headers</span>(<span class="at">authorization=</span><span class="fu">paste</span>(<span class="st">"Bearer"</span>, access_token)))</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>bio <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(<span class="fu">content</span>(resp, <span class="at">as =</span> <span class="st">"text"</span>))</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>bioDF <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(bio)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>fam <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./Freeze_2/A2CPS_Freeze_2.fam"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>bioID_PLINK <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"_.*"</span>, <span class="st">""</span>, fam<span class="sc">$</span>V2)</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>bioDF_Mapping_Plink <span class="ot">&lt;-</span> bioDF[<span class="fu">which</span>(bioDF<span class="sc">$</span>biospecimen_id <span class="sc">%in%</span> bioID_PLINK), ]</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co"># BioID and Race</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>bioDF_Mapping_Cols <span class="ot">&lt;-</span> bioDF_Mapping_Plink[, <span class="fu">c</span>(<span class="st">"biospecimen_id"</span>,<span class="st">"race"</span>)]</span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>fam <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./Freeze_2/A2CPS_Freeze_2.fam"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>fam<span class="sc">$</span>V2 <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"_.*"</span>, <span class="st">""</span>, fam<span class="sc">$</span>V2)</span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(fam) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Famid"</span>, <span class="st">"biospecimen_id"</span>, <span class="st">"Fatid"</span>, <span class="st">"Motid"</span>, <span class="st">"Gender"</span>, <span class="st">"Phenotype"</span>)</span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>fam_with_race <span class="ot">&lt;-</span> <span class="fu">merge</span>(fam, bioDF_Mapping_Cols, <span class="at">by =</span> <span class="st">"biospecimen_id"</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">&lt;-</span> <span class="fu">POST</span>(</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(base_url, <span class="st">"/auth/token"</span>, <span class="at">sep =</span> <span class="st">""</span>),</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">body =</span> <span class="fu">list</span>(<span class="at">username =</span> username, <span class="at">password =</span> password),</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">encode =</span> <span class="st">"form"</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>access_token <span class="ot">&lt;-</span> <span class="fu">content</span>(resp, <span class="at">as =</span> <span class="st">"parsed"</span>)<span class="sc">$</span>access_token</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">&lt;-</span> <span class="fu">GET</span>(</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(base_url, <span class="st">"/biospecimens/private?offset=0&amp;limit=0"</span>, <span class="at">sep =</span> <span class="st">""</span>),</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_headers</span>(<span class="at">authorization =</span> <span class="fu">paste</span>(<span class="st">"Bearer"</span>, access_token))</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>bio <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(<span class="fu">content</span>(resp, <span class="at">as =</span> <span class="st">"text"</span>))</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>bio_df <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(bio)</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>fam <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./Freeze_2/A2CPS_Freeze_2.fam"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>bio_id_plink <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"_.*"</span>, <span class="st">""</span>, fam<span class="sc">$</span>V2)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>bio_df_mapping_plink <span class="ot">&lt;-</span> bio_df[<span class="fu">which</span>(bio_df<span class="sc">$</span>biospecimen_id <span class="sc">%in%</span> bio_id_plink), ]</span>
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA</span></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"./Freeze_2/principle_components_analysis/PCA"</span>)</span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">read_table2</span>(<span class="st">"./pca_info.eigenvec"</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>eigenval <span class="ot">&lt;-</span> <span class="fu">scan</span>(<span class="st">"./pca_info.eigenval"</span>)</span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>pca<span class="sc">$</span>X2 <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"_.*"</span>, <span class="st">""</span>, pca<span class="sc">$</span>X2)</span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> pca[,<span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pca)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"biospecimen_id"</span></span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pca)[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(pca)] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"PC"</span>,<span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(pca)<span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">merge</span>(pca, bioDF_Mapping_Cols, <span class="at">by =</span> <span class="st">"biospecimen_id"</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> pca[<span class="sc">!</span><span class="fu">duplicated</span>(pca<span class="sc">$</span>biospecimen_id), ]</span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Subsetting for Graph</span></span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>race <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(pca<span class="sc">$</span>biospecimen_id))</span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"White"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"White"</span></span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"African-American"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"Black or African-American"</span></span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"Asian"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"Asian"</span></span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"American Indian or Alaska Native"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"American Indian or Alaska Native"</span></span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"Unknown"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"Unknown"</span></span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"Not Reported"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"Not Reported"</span></span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">as.tibble</span>(<span class="fu">data.frame</span>(pca, race))</span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>pve <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">PC =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">pve =</span> eigenval<span class="sc">/</span><span class="fu">sum</span>(eigenval)<span class="sc">*</span><span class="dv">100</span>)</span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>percent_variance_explained <span class="ot">&lt;-</span> pve<span class="sc">$</span>pve</span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(user_wd)</span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Graphing</span></span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">"./Freeze_2/principle_components_analysis/PCA/A2CPS_RL1-5_PCA_Scree_Plot.png"</span>, <span class="at">width =</span> <span class="dv">3000</span>, <span class="at">height =</span> <span class="dv">2000</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(pve, <span class="fu">aes</span>(PC, pve)) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)</span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>  a <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Percentage Variance Explained"</span>) <span class="sc">+</span> <span class="fu">theme_light</span>()</span>
-<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(a)</span>
-<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">"./Freeze_2/principle_components_analysis/PCA/A2CPS_RL1-5_PCA_Plot.png"</span>, <span class="at">width =</span> <span class="dv">3000</span>, <span class="at">height =</span> <span class="dv">2000</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
-<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(pca, <span class="fu">aes</span>(PC1, PC2, <span class="at">col =</span> race)) <span class="sc">+</span></span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.075</span>) <span class="sc">+</span></span>
-<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
-<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"PCA Genetic Ancestry"</span>) <span class="sc">+</span></span>
-<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="fu">paste0</span>(<span class="st">"PC1 ("</span>, <span class="fu">signif</span>(pve<span class="sc">$</span>pve[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">"%)"</span>)) <span class="sc">+</span> </span>
-<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">paste0</span>(<span class="st">"PC2 ("</span>, <span class="fu">signif</span>(pve<span class="sc">$</span>pve[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"%)"</span>)) <span class="sc">+</span></span>
-<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
-<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="st">"cm"</span>),</span>
-<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>, <span class="at">family =</span> <span class="st">"Arial"</span>),</span>
-<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>, <span class="at">family =</span> <span class="st">"Arial"</span>),</span>
-<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">4</span>, <span class="at">family =</span> <span class="st">"Arial"</span>),</span>
-<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>, <span class="at">family =</span> <span class="st">"Arial"</span>),</span>
-<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>),</span>
-<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>)</span>
-<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">name =</span> <span class="st">"Ancestry Group"</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"black"</span>, <span class="st">"black"</span>, <span class="st">"purple"</span>))</span>
-<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(b)</span>
-<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a><span class="co"># PC Values for each participant</span></span>
-<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> pca[, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">22</span>)]</span>
-<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(pca, <span class="st">"./Freeze_2/principle_components_analysis/PCA/A2CPS_RL1-5_PCA_Ind_Info.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co"># BioID and Race</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>bio_df_mapping_cols <span class="ot">&lt;-</span> bio_df_mapping_plink[, <span class="fu">c</span>(<span class="st">"biospecimen_id"</span>, <span class="st">"race"</span>)]</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>fam <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./Freeze_2/A2CPS_Freeze_2.fam"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>fam<span class="sc">$</span>V2 <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"_.*"</span>, <span class="st">""</span>, fam<span class="sc">$</span>V2)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(fam) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Famid"</span>,</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"biospecimen_id"</span>,</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Fatid"</span>,</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Motid"</span>,</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Gender"</span>,</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Phenotype"</span></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>fam_with_race <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>  fam,</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>  bio_df_mapping_cols,</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">"biospecimen_id"</span>,</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.x =</span> <span class="cn">TRUE</span></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA</span></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"./Freeze_2/principle_components_analysis/PCA"</span>)</span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="st">"./pca_info.eigenvec"</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>eigenval <span class="ot">&lt;-</span> <span class="fu">scan</span>(<span class="st">"./pca_info.eigenval"</span>)</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>pca<span class="sc">$</span>X2 <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"_.*"</span>, <span class="st">""</span>, pca<span class="sc">$</span>X2)</span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> pca[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pca)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"biospecimen_id"</span></span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pca)[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(pca)] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"PC"</span>, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(pca) <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">merge</span>(pca, bio_df_mapping_cols, <span class="at">by =</span> <span class="st">"biospecimen_id"</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> pca[<span class="sc">!</span><span class="fu">duplicated</span>(pca<span class="sc">$</span>biospecimen_id), ]</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Subsetting for Graph</span></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>race <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(pca<span class="sc">$</span>biospecimen_id))</span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"White"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"White"</span></span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"African-American"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"Black or African-American"</span></span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"Asian"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"Asian"</span></span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(</span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>  <span class="st">"American Indian or Alaska Native"</span>,</span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>  pca<span class="sc">$</span>race</span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>)] <span class="ot">&lt;-</span> <span class="st">"American Indian or Alaska Native"</span></span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"Unknown"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"Unknown"</span></span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>race[<span class="fu">grep</span>(<span class="st">"Not Reported"</span>, pca<span class="sc">$</span>race)] <span class="ot">&lt;-</span> <span class="st">"Not Reported"</span></span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">as.tibble</span>(<span class="fu">data.frame</span>(pca, race))</span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>pve <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">PC =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">pve =</span> eigenval <span class="sc">/</span> <span class="fu">sum</span>(eigenval) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a>percent_variance_explained <span class="ot">&lt;-</span> pve<span class="sc">$</span>pve</span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(user_wd)</span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a><span class="co"># Graphing</span></span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(</span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./Freeze_2/principle_components_analysis/PCA/A2CPS_RL1-5_PCA_Scree_Plot.png"</span>,</span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">3000</span>,</span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">2000</span>,</span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a>  <span class="at">res =</span> <span class="dv">300</span></span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(pve, <span class="fu">aes</span>(PC, pve)) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)</span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>a <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Percentage Variance Explained"</span>) <span class="sc">+</span> <span class="fu">theme_light</span>()</span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(a)</span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(</span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./Freeze_2/principle_components_analysis/PCA/A2CPS_RL1-5_PCA_Plot.png"</span>,</span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">3000</span>,</span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">2000</span>,</span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a>  <span class="at">res =</span> <span class="dv">300</span></span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(pca, <span class="fu">aes</span>(PC1, PC2, <span class="at">col =</span> race)) <span class="sc">+</span></span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.075</span>) <span class="sc">+</span></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"PCA Genetic Ancestry"</span>) <span class="sc">+</span></span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="fu">paste0</span>(<span class="st">"PC1 ("</span>, <span class="fu">signif</span>(pve<span class="sc">$</span>pve[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">"%)"</span>)) <span class="sc">+</span></span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">paste0</span>(<span class="st">"PC2 ("</span>, <span class="fu">signif</span>(pve<span class="sc">$</span>pve[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"%)"</span>)) <span class="sc">+</span></span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a>    <span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="st">"cm"</span>),</span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>, <span class="at">family =</span> <span class="st">"Arial"</span>),</span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>, <span class="at">family =</span> <span class="st">"Arial"</span>),</span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">4</span>, <span class="at">family =</span> <span class="st">"Arial"</span>),</span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>, <span class="at">family =</span> <span class="st">"Arial"</span>),</span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">6</span>),</span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>)</span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(</span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Ancestry Group"</span>,</span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"black"</span>, <span class="st">"black"</span>, <span class="st">"purple"</span>)</span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(b)</span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="co"># PC Values for each participant</span></span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> pca[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">22</span>)]</span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a>  pca,</span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a>  <span class="st">"./Freeze_2/principle_components_analysis/PCA/A2CPS_RL1-5_PCA_Ind_Info.csv"</span></span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-pcascree" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A2CPS PCA Scree Plot">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1764,7 +1959,7 @@ Figure&nbsp;2.4: A2CPS Relatedness Plot
 <h3 data-number="2.3.8" class="anchored" data-anchor-id="citations"><span class="header-section-number">2.3.8</span> Citations</h3>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
-<p>Data were provided [in part] by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/ Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
+<p>Data were provided (in part) by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
 </blockquote>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">

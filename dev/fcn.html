@@ -774,20 +774,20 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>Functional connectivity is a measurement of how activity in different regions of the brain relates to one another over time. It is calculated by reducing the voxel-wise BOLD timeseries into a smaller set of regional timecourses, and then calculating a measure of correlation between those regional timecourses.</p>
-<p>To define these regions, researchers rely on “brain parcellations” or atlases. Some atlases divide the brain into discrete, non-overlapping anatomical regions. Other methods, like <a href="https://nilearn.github.io/modules/generated/nilearn.regions.fetch_atlas_difumo.html">Dictionary Learning for Functional Regions (DiFuMo)</a>, do not create a strict parcellation. Instead, DiFuMo extracts a set of “soft”, overlapping functional networks based on massive amounts of fMRI data. When using these different approaches, it is important to remember that you are correlating activity between fundamentally different kinds of brain divisions.</p>
-<p>This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations and soft atlases. For functional connectivity derived from subject-specific independent components, see <a href="gift.html" class="quarto-xref"><span>Chapter 18</span></a>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mgc)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mgc)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>Functional connectivity is a measurement of how activity in different regions of the brain relates to one another over time. It is calculated by reducing the voxel-wise BOLD timeseries into a smaller set of regional timecourses, and then calculating a measure of correlation between those regional timecourses.</p>
+<p>To define these regions, researchers rely on “brain parcellations” or atlases. Some atlases divide the brain into discrete, non-overlapping anatomical regions. Other methods, like <a href="https://nilearn.github.io/modules/generated/nilearn.regions.fetch_atlas_difumo.html">Dictionary Learning for Functional Regions (DiFuMo)</a>, do not create a strict parcellation. Instead, DiFuMo extracts a set of “soft”, overlapping functional networks based on massive amounts of fMRI data. When using these different approaches, it is important to remember that you are correlating activity between fundamentally different kinds of brain divisions.</p>
+<p>This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations and soft atlases. For functional connectivity derived from subject-specific independent components, see <a href="gift.html" class="quarto-xref"><span>Chapter 18</span></a>.</p>
 <section id="starting-project" class="level2 page-columns page-full" data-number="17.1">
 <h2 data-number="17.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">17.1</span> Starting Project</h2>
 <section id="locate-data" class="level3 page-columns page-full" data-number="17.1.1">
@@ -833,9 +833,10 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dmn <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(<span class="st">"data/pre-surgery/mris/derivatives/fcn/connectivity"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas <span class="sc">==</span> <span class="st">"dmn"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator <span class="sc">==</span> <span class="st">"empirical"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, source, target, connectivity) <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(sub, ses, task, run, source, target) <span class="sc">|&gt;</span> <span class="co"># for reproducibility</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, source, target, connectivity) <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dmn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -1070,7 +1071,8 @@ Baliki, M. N., Petre, B., Torbey, S., Herrmann, K. M., Huang, L., Schnitzer, T. 
 </div>
 <p>Of the list of participants with all four functional scans, filter out the participants for which any of the scans were red.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs_ok <span class="ot">&lt;-</span> subs_with_all_runs <span class="sc">|&gt;</span> <span class="fu">anti_join</span>(red_fmri)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>subs_with_all_runs_ok <span class="ot">&lt;-</span> subs_with_all_runs <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(red_fmri, <span class="at">by =</span> <span class="fu">join_by</span>(sub))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Use this to filter the connectivity results. We’ll select just one of the smaller DiFuMo atlases&nbsp;<span class="citation" data-cites="dadi_fine_2020">(<a href="references.html#ref-dadi_fine_2020" role="doc-biblioref">Dadi et al., 2020</a>)</span>. As before, we’ll stick with the empirical estimator.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-dadi_fine_2020" class="csl-entry" role="listitem">
@@ -1080,10 +1082,11 @@ Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wasserma
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas <span class="sc">==</span> <span class="st">"difumo_dimension-64_resolution-2mm"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(estimator <span class="sc">==</span> <span class="st">"empirical"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(subs_with_all_runs_ok, <span class="at">by =</span> <span class="fu">join_by</span>(sub)) <span class="sc">|&gt;</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">scan =</span> <span class="fu">str_c</span>(task, run)) <span class="sc">|&gt;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>atlas, <span class="sc">-</span>ses, <span class="sc">-</span>task, <span class="sc">-</span>run, <span class="sc">-</span>estimator) <span class="sc">|&gt;</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fcn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(sub, task, run, source, target) <span class="sc">|&gt;</span> <span class="co"># for reproducibility</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">scan =</span> <span class="fu">str_c</span>(task, run)) <span class="sc">|&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>atlas, <span class="sc">-</span>ses, <span class="sc">-</span>task, <span class="sc">-</span>run, <span class="sc">-</span>estimator) <span class="sc">|&gt;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fcn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -1099,45 +1102,45 @@ Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wasserma
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0.2253246</td>
-<td style="text-align: right;">10045</td>
-<td style="text-align: left;">rest1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0832526</td>
+<td style="text-align: right;">10010</td>
+<td style="text-align: left;">cuff1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">-0.1303705</td>
-<td style="text-align: right;">10045</td>
-<td style="text-align: left;">rest1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.6190895</td>
+<td style="text-align: right;">10010</td>
+<td style="text-align: left;">cuff1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">-0.0550502</td>
-<td style="text-align: right;">10045</td>
-<td style="text-align: left;">rest1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.4174389</td>
+<td style="text-align: right;">10010</td>
+<td style="text-align: left;">cuff1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">0.2433223</td>
-<td style="text-align: right;">10045</td>
-<td style="text-align: left;">rest1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.1506552</td>
+<td style="text-align: right;">10010</td>
+<td style="text-align: left;">cuff1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">0.2054040</td>
-<td style="text-align: right;">10045</td>
-<td style="text-align: left;">rest1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-0.0530966</td>
+<td style="text-align: right;">10010</td>
+<td style="text-align: left;">cuff1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">0.3261834</td>
-<td style="text-align: right;">10045</td>
-<td style="text-align: left;">rest1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.6338826</td>
+<td style="text-align: right;">10010</td>
+<td style="text-align: left;">cuff1</td>
 </tr>
 </tbody>
 </table>
@@ -1166,7 +1169,7 @@ Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wasserma
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">map2</span>(</span>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        data.x,</span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        data.y,</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">left_join</span>(.x, .y, <span class="at">by =</span> <span class="fu">join_by</span>(source, target, sub))</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        \(x, y) <span class="fu">left_join</span>(x, y, <span class="at">by =</span> <span class="fu">join_by</span>(source, target, sub))</span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>      )</span>
 <span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">"data."</span>))</span>

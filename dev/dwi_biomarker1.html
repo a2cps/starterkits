@@ -778,11 +778,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In <a href="bedpostx.html" class="quarto-xref"><span>Chapter 15</span></a>, we covered the outputs of BedpostX, which is a method for modeling how water diffuses in each voxel and estimating their implied fiber orientation distributions. The outputs of BedpostX were used as the inputs for probabilistic tractography—a technique that repeatedly samples from these distributions to build “streamlines” representing probable neural tracts. By modeling the uncertainty of fiber orientations, probabilistic tractography is uniquely capable of reconstructing complex, long-distance networks, including the corticolimbic network.</p>
 <p>Specifically, this kit describes the derivatives produced while extracting one of the primary A2CPS biomarkers. This biomarker is based on a finding reported by <span class="citation" data-cites="vachon2016corticolimbic"><span class="nocase">Vachon-Presseau et al.</span> (<a href="references.html#ref-vachon2016corticolimbic" role="doc-biblioref">2016</a>)</span>: as compared with patients whose subacute back pain recovered, those whose pain persisted exhibited higher connectivity at baseline within a corticolimbic subnetwork involving the amygdala, nucleus accumbens, and the dorsal medial prefrontal cortex (Am-NAc-mPFC).</p>
@@ -898,7 +897,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <h3 data-number="16.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">16.1.2</span> Extract Data</h3>
 <p>The tables always have the same schema and so can be loaded together using standard tools.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>networks <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(fs<span class="sc">::</span><span class="fu">dir_ls</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>networks <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="fu">dir_ls</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/derivatives/dwi_biomarker1/networks"</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">glob =</span> <span class="st">"*tsv"</span>,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">recurse =</span> <span class="cn">TRUE</span></span>
@@ -1006,7 +1005,8 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> ModuleName, <span class="at">x =</span> value)) <span class="sc">+</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>metric, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outliers =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># seeded so the figure is reproducible across renders</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">seed =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

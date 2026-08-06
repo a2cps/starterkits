@@ -775,6 +775,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyselect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>Often, researchers may wish to simply have a set of features that they can use to train and test predictive models. When those features are extracted from neuroimaging data, we refer to them as Image-Derived Phenotypes (IDPs). For an excellent overview of how IDPs are generated and used in large-scale studies, see the <a href="https://www.fmrib.ox.ac.uk/ukbiobank/index.html">UK Biobank Brain Imaging Documentation</a>.</p>
 <p>This kit describes a subset of IDPs that have been compiled into a single table. While this table does not encompass all available measurements, it is a great place to start your analyses. The selection of phenotypes was based on those available within the UK Biobank&nbsp;<span class="citation" data-cites="miller_multimodal_2016">(<a href="references.html#ref-miller_multimodal_2016" role="doc-biblioref"><span class="nocase">Miller et al.</span>, 2016</a>)</span>, derived from structural and functional MRI scans (diffusion MRI phenotypes will be available in a subsequent release). A full data dictionary is available <a href="https://github.com/a2cps/snapshot/blob/main/src/snapshot/data/mri.json">here</a>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-miller_multimodal_2016" class="csl-entry" role="listitem">
@@ -785,29 +789,25 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <section id="locate-data" class="level3" data-number="4.1.1">
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">4.1.1</span> Locate Data</h3>
 <p>On TACC, the data are stored underneath the releases. For example, data release v2.1.0 is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The primary IDP table, <code>mri.tsv</code>, is located underneath the <code>idp</code> folder. Let’s take a look.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/idp/</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mask_volumes.json</span>  mask_volumes.tsv  mri.json  mri.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/idp/</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mask_volumes.json</span>  mask_volumes.tsv  mri.json  mri.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Even though this represents only a subset of all possible neuroimaging derivatives, the table is quite wide because it contains features extracted across many brain regions and multiple functional tasks.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> awk <span class="st">'{print NF; exit}'</span> mris/idp/mri.tsv </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">21886</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> awk <span class="st">'{print NF; exit}'</span> mris/idp/mri.tsv </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">21886</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="extract-data" class="level3" data-number="4.1.2">
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">4.1.2</span> Extract Data</h3>
 <p>Because this table is saved as a tab-separated values (<code>tsv</code>) file, any software capable of reading delimited text can load it. However, because it contains tens of thousands of columns, it is often best practice to load only the specific features you need for your analysis.</p>
 <p>For example, if we are only interested in the resting state (REST1) fALFF measurements for our participants, we can select just the <code>sub</code> (participant identifier) column and any column matching that specific functional task.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">read_tsv</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/idp/mri.tsv"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_select =</span> <span class="fu">c</span>(<span class="st">"sub"</span>, tidyselect<span class="sc">::</span><span class="fu">matches</span>(<span class="st">"task_rest_run_1.*falff"</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_tsv</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/idp/mri.tsv"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_select =</span> <span class="fu">c</span>(<span class="st">"sub"</span>, <span class="fu">matches</span>(<span class="st">"task_rest_run_1.*falff"</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">

@@ -803,6 +803,16 @@ window.Quarto = {
 </header>
 
 
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agree)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/first.png" class="img-fluid figure-img"></p>
@@ -817,7 +827,7 @@ window.Quarto = {
 <section id="locate-data" class="level3" data-number="7.1.1">
 <h3 data-number="7.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">7.1.1</span> Locate data</h3>
 <p>In the release, data are stored underneath the <code>mris/derivatives</code> folder:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/mris/derivatives/fslanat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/mris/derivatives/fslanat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This folder contains all of the outputs for every participant, with subject folders of the form <code>sub-[recordid]_ses-[protocolid]_T1w.anat</code>. Detailed descriptions of the outputs are available in the <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html#outputs"><code>fsl_anat</code> documentation</a>.</p>
 <p>Many users will not need the raw <code>fsl_anat</code> outputs and can instead rely a table in which the subcortical measures have been aggregated: <code>fslanat.tsv</code>. A data dictionary for this table is available in the <code>fslanat.json</code> file, and also <a href="https://github.com/a2cps/snapshot/blob/v2.1.0/src/snapshot/data/fslanat.json">online</a>.</p>
 </section>
@@ -826,17 +836,7 @@ window.Quarto = {
 <p>In this kit, we will compare volumetric measurements that are produced by both FIRST and FreeSurfer (<a href="freesurfer.html" class="quarto-xref"><span>Chapter 9</span></a>). In some circumstances, the volumes are largely interchangeable, but for some structures these tools are known to produce fairly different estimates of volume&nbsp;<span class="citation" data-cites="sadil_comparing_2024">(<a href="references.html#ref-sadil_comparing_2024" role="doc-biblioref">Sadil &amp; Lindquist, 2024</a>)</span>. Let’s replicate part of that analysis.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-sadil_comparing_2024" class="csl-entry" role="listitem">
 Sadil, P., &amp; Lindquist, M. A. (2024). Comparing automated subcortical volume estimation methods; amygdala volumes estimated by FSL and FreeSurfer have poor consistency. In <em>Human Brain Mapping</em> (No. 17; Vol. 45, p. e70027). <a href="https://doi.org/10.1002/hbm.70027">https://doi.org/10.1002/hbm.70027</a>
-</div></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agree)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>First, load in the cortical volumes provided by FSL.</p>
+</div></div><p>First, load in the cortical volumes provided by FSL.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fslanat <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/derivatives/fslanat/fslanat.tsv"</span>,</span>
@@ -1035,9 +1035,17 @@ Sadil, P., &amp; Lindquist, M. A. (2024). Comparing automated subcortical volume
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>subcort_fsl <span class="ot">&lt;-</span> fslanat <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">"t1_"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(sub, ses), <span class="at">values_to =</span> <span class="st">"volume"</span>, <span class="at">names_to =</span> <span class="st">"structure"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(structure, <span class="fu">c</span>(<span class="st">"hemisphere"</span>, <span class="st">"structure"</span>), <span class="at">sep =</span> <span class="st">"-"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(subcort_fsl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># too_many = "drop" keeps only the stem: FSL's "Left-Thalamus-Proper" and</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Left-Accumbens-area" have to reduce to "Thalamus"/"Accumbens" to line up</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># with the FreeSurfer names below. separate() did this via a suppressed warning.</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_wider_delim</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    structure,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">delim =</span> <span class="st">"-"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"hemisphere"</span>, <span class="st">"structure"</span>),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">too_many =</span> <span class="st">"drop"</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(subcort_fsl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -1108,8 +1116,13 @@ Sadil, P., &amp; Lindquist, M. A. (2024). Comparing automated subcortical volume
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    StructName,</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Thalamus|Putamen|Pallidum|Hippocampus|Amygdala|Accumbens"</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(StructName, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"hemisphere"</span>, <span class="st">"structure"</span>), <span class="at">sep =</span> <span class="st">"-"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">volume =</span> Volume_mm3, hemisphere, structure, sub, ses)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_wider_delim</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    StructName,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">delim =</span> <span class="st">"-"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"hemisphere"</span>, <span class="st">"structure"</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">too_many =</span> <span class="st">"drop"</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">volume =</span> Volume_mm3, hemisphere, structure, sub, ses)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The tables may now be combined. Note that, while combining them, we add an additional column to keep track of which method produced the volume.</p>
 <div class="cell">
@@ -1118,7 +1131,7 @@ Sadil, P., &amp; Lindquist, M. A. (2024). Comparing automated subcortical volume
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"method"</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> method, <span class="at">values_from =</span> volume) <span class="sc">|&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="co"># not every structure is available in both methods, and not every participant has been processed by both pipelines</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="co"># not every structure is available in both methods, and not every participant has been processed by both pipelines</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check which structures we have available</span></span>
@@ -1167,8 +1180,10 @@ Sadil, P., &amp; Lindquist, M. A. (2024). Comparing automated subcortical volume
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">shape =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ba</span>() <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Difference (FSL - FreeSurfer)"</span>) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Average ([FSL + FreeSurfer]/2)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Average ([FSL + FreeSurfer]/2)"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Difference (FSL - FreeSurfer)"</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1198,19 +1213,21 @@ McGraw, K. O., &amp; Wong, S. P. (1996). Forming inferences about some intraclas
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fit =</span> <span class="fu">map</span>(</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      data,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">icc</span>(</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cbind</span>(.x<span class="sc">$</span>fsl, .x<span class="sc">$</span>freesurfer),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">model =</span> <span class="st">"twoway"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"consistency"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">unit =</span> <span class="st">"single"</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">map_dbl</span>(fit, pluck, <span class="st">"value"</span>),</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="fu">map_dbl</span>(fit, pluck, <span class="st">"lbound"</span>),</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper =</span> <span class="fu">map_dbl</span>(fit, pluck, <span class="st">"ubound"</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>data, <span class="sc">-</span>fit) <span class="sc">|&gt;</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(structure, hemisphere)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      \(x) {</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">icc</span>(</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>          <span class="fu">cbind</span>(x<span class="sc">$</span>fsl, x<span class="sc">$</span>freesurfer),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">model =</span> <span class="st">"twoway"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="st">"consistency"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">unit =</span> <span class="st">"single"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">map_dbl</span>(fit, pluck, <span class="st">"value"</span>),</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="fu">map_dbl</span>(fit, pluck, <span class="st">"lbound"</span>),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper =</span> <span class="fu">map_dbl</span>(fit, pluck, <span class="st">"ubound"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>data, <span class="sc">-</span>fit) <span class="sc">|&gt;</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(structure, hemisphere)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">

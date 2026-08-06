@@ -880,54 +880,21 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">SIIPS1 =</span> <span class="st">`</span><span class="at">137subjmap_weighted_mean</span><span class="st">`</span>, <span class="at">NPS =</span> <span class="st">`</span><span class="at">grouppred_cvpcr</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 712 × 4
-     sub ses     SIIPS1      NPS
+     sub ses        NPS   SIIPS1
    &lt;int&gt; &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
- 1 10003 V1    -0.00162  0.0331 
- 2 10010 V1    -0.0611  -0.0200 
- 3 10011 V1    -0.00652 -0.0740 
- 4 10008 V1    -0.0407  -0.0581 
- 5 10013 V1    -0.0279   0.0234 
- 6 10014 V1    -0.00120 -0.0146 
- 7 10017 V1    -0.0165   0.0263 
- 8 10015 V1    -0.0576  -0.0178 
- 9 10020 V1    -0.0103  -0.0530 
-10 10023 V1     0.0116  -0.00789
+ 1 10010 V1    -0.0200  -0.0611 
+ 2 10003 V1     0.0331  -0.00162
+ 3 10008 V1    -0.0581  -0.0407 
+ 4 10011 V1    -0.0740  -0.00652
+ 5 10013 V1     0.0234  -0.0279 
+ 6 10014 V1    -0.0146  -0.00120
+ 7 10015 V1    -0.0178  -0.0576 
+ 8 10017 V1     0.0263  -0.0165 
+ 9 10020 V1    -0.0530  -0.0103 
+10 10023 V1    -0.00789  0.0116 
 # ℹ 702 more rows</code></pre>
 </div>
 </div>
-<p>In python, a good choice is the <a href="https://docs.pola.rs/"><code>polars</code></a> library</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pl.read_parquet(<span class="st">"data/pre-surgery/mris/derivatives/signatures/signatures-by-run"</span>).<span class="bu">filter</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"signature"</span>).is_in([<span class="st">"grouppred_cvpcr"</span>, <span class="st">"137subjmap_weighted_mean"</span>])</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>).<span class="bu">filter</span>(pl.col(<span class="st">"task"</span>) <span class="op">==</span> <span class="st">"cuff"</span>, pl.col(<span class="st">"run"</span>) <span class="op">==</span> <span class="dv">1</span>).rename(</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"correlation"</span>: <span class="st">"value"</span>}</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>).select(</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"signature"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"value"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sub"</span>,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ses"</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>).pivot(on<span class="op">=</span><span class="st">"signature"</span>, index<span class="op">=</span>[<span class="st">"sub"</span>, <span class="st">"ses"</span>]).rename(</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"grouppred_cvpcr"</span>: <span class="st">"NPS"</span>, <span class="st">"137subjmap_weighted_mean"</span>: <span class="st">"SIIPS1"</span>}</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">shape:</span> <span class="er">(</span><span class="ex">716,</span> 4<span class="kw">)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">┌───────┬─────┬───────────┬───────────┐</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> sub   ┆ ses ┆ SIIPS1    ┆ NPS       │</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> <span class="at">---</span>   ┆ <span class="at">---</span> ┆ <span class="at">---</span>       ┆ <span class="at">---</span>       │</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> i64   ┆ str ┆ f64       ┆ f64       │</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ex">╞═══════╪═════╪═══════════╪═══════════╡</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10003 ┆ V1  ┆ <span class="at">-0.001619</span> ┆ 0.033091  │</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10008 ┆ V1  ┆ <span class="at">-0.040698</span> ┆ <span class="at">-0.058134</span> │</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10010 ┆ V1  ┆ <span class="at">-0.061107</span> ┆ <span class="at">-0.019997</span> │</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10011 ┆ V1  ┆ <span class="at">-0.006518</span> ┆ <span class="at">-0.074017</span> │</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 10013 ┆ V1  ┆ <span class="at">-0.027933</span> ┆ 0.023413  │</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> …     ┆ …   ┆ …         ┆ …         │</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25266 ┆ V1  ┆ <span class="at">-0.058184</span> ┆ <span class="at">-0.032597</span> │</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25271 ┆ V1  ┆ <span class="at">-0.039983</span> ┆ <span class="at">-0.092517</span> │</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25273 ┆ V1  ┆ <span class="at">-0.038248</span> ┆ <span class="at">-0.02306</span>  │</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25275 ┆ V1  ┆ <span class="at">-0.052387</span> ┆ <span class="at">-0.06732</span>  │</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> 25277 ┆ V1  ┆ 0.023143  ┆ <span class="at">-0.063882</span> │</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="ex">└───────┴─────┴───────────┴───────────┘</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="considerations-while-working-on-the-project" class="level2" data-number="21.2">

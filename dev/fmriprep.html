@@ -775,9 +775,6 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <p>Before being analyzed, raw structural and functional neuroimaging data must undergo a core set of preprocessing steps. Without these steps, the raw MR signals are dominated by noise sources (e.g., participant head motion, scanner drift, magnetic field inhomogeneities) rather than the underlying neural activity.</p>
 <p>Preprocessing mitigates these artifacts. The need for these preprocessing steps is relatively uncontroversial across the field, and they include intensity non-uniformity correction (for structural scans), correction for motion across volumes (functional scans), and coregistration (aligning structural and functional images into the same physical space), among others.</p>
 <p>These outputs are the result of a minimal preprocessing stream using <a href="https://fmriprep.org/en/stable/">fMRIPrep</a>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> That is, these derivatives have not undergone many advanced cleaning steps that are common in downstream pipelines, such as denoising, nuisance regression, or scrubbing. If you need data that have already gone through advanced data cleaning, please see either <a href="fcn.html" class="quarto-xref"><span>Chapter 17</span></a> or <a href="neural-pain-signatures.html" class="quarto-xref"><span>Chapter 21</span></a>. The fMRIPrep derivatives are most useful for tasks like reviewing the quality of preprocessing, implementing your own custom cleaning pipeline, or working from HCP-style <a href="https://www.nitrc.org/projects/cifti/">CIFTI data</a>.</p>
@@ -786,20 +783,20 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <section id="locate-data" class="level3" data-number="10.1.1">
 <h3 data-number="10.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">10.1.1</span> Locate Data</h3>
 <p>On TACC, the data are stored underneath the releases. For example, data release v2.1.0 is underneath</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The fMRIPrep derivatives are underneath <code>derivatives/fmriprep</code>. Let’s take a look.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/fmriprep/ <span class="kw">|</span> <span class="fu">head</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dataset_description.json</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">desc-aparcaseg_dseg.tsv</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">desc-aseg_dseg.tsv</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">README</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1.html</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005_ses-V1.html</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1.html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls mris/derivatives/fmriprep/ <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dataset_description.json</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">desc-aparcaseg_dseg.tsv</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">desc-aseg_dseg.tsv</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">README</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10003_ses-V1.html</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10005_ses-V1.html</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">sub-10008_ses-V1.html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="extract-data" class="level3" data-number="10.1.2">
 <h3 data-number="10.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">10.1.2</span> Extract Data</h3>

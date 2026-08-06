@@ -775,13 +775,14 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(duckplyr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(duckplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <a href="gift.html" class="quarto-xref"><span>Chapter 18</span></a> products provide outputs in a raw format that will be familiar to users of that library. To facilitate analyses, A2CPS has repackaged those products into a tabular format. This kit covers the repackaged structure.</p>
 <p>As a brief primer, extracting functional networks via ICA allows researchers to study how different brain regions communicate. Once these networks are identified, two common metrics are calculated: 1. <strong>Connectivity</strong>: The correlation between the activity (timecourses) of different networks. This tells us how strongly two distinct brain systems are communicating with each other. 2. <strong>Amplitude (fALFF)</strong>: The fractional Amplitude of Low Frequency Fluctuations&nbsp;<span class="citation" data-cites="zou_improved_2008">(<a href="references.html#ref-zou_improved_2008" role="doc-biblioref">Zou et al., 2008</a>)</span>. This is a measure of the spontaneous, low-frequency neural activity occurring <em>within</em> a specific network, often used to assess baseline brain function and regional abnormalities in conditions like chronic pain.</p>
@@ -795,10 +796,8 @@ Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Paths in this kit are written relative to that release folder, so the neuroimaging data are underneath <code>mris</code>.</p>
 <p>The derivatives are underneath <code>derivatives/postgift</code>. Let’s take a look.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls postgift</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls postgift</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">amplitude</span>  amplitude.json  biomarkers  biomarkers.json  connectivity  connectivity.json</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 </section>
 <section id="extract-data" class="level3" data-number="19.1.2">
 <h3 data-number="19.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">19.1.2</span> Extract Data</h3>
@@ -836,56 +835,56 @@ Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">8.6803043</td>
+<td style="text-align: right;">2.061823</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">cuff</td>
+<td style="text-align: left;">rest</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">2.5310234</td>
+<td style="text-align: right;">18.220871</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">cuff</td>
+<td style="text-align: left;">rest</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.9546282</td>
+<td style="text-align: right;">2.286946</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">cuff</td>
+<td style="text-align: left;">rest</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">53.1176045</td>
+<td style="text-align: right;">9.823509</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">cuff</td>
+<td style="text-align: left;">rest</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">4.0454076</td>
+<td style="text-align: right;">1.624792</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">cuff</td>
+<td style="text-align: left;">rest</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">9.4316464</td>
+<td style="text-align: right;">1.383541</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">V1</td>
-<td style="text-align: left;">cuff</td>
+<td style="text-align: left;">rest</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">2.0</td>
 </tr>
@@ -917,39 +916,39 @@ Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">25.147259</td>
+<td style="text-align: right;">1.215915</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">37.869579</td>
+<td style="text-align: right;">5.390841</td>
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">7.578384</td>
+<td style="text-align: right;">2.573948</td>
 <td style="text-align: left;">2</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">14.555712</td>
+<td style="text-align: right;">2.491914</td>
 <td style="text-align: left;">3</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">8.680284</td>
+<td style="text-align: right;">1.392216</td>
 <td style="text-align: left;">4</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">6.085272</td>
+<td style="text-align: right;">1.952687</td>
 <td style="text-align: left;">5</td>
-<td style="text-align: right;">10008</td>
+<td style="text-align: right;">10003</td>
 <td style="text-align: left;">cuff</td>
 </tr>
 </tbody>
@@ -963,9 +962,9 @@ Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir_ls</span>(<span class="st">"data/pre-surgery/mris/bids"</span>, <span class="at">glob =</span> <span class="st">"*scans.tsv"</span>, <span class="at">recurse =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">na =</span> <span class="st">"n/a"</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rating <span class="sc">==</span> <span class="st">"red"</span>, stringr<span class="sc">::</span><span class="fu">str_detect</span>(filename, <span class="st">"cuff_run-0[12]"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rating <span class="sc">==</span> <span class="st">"red"</span>, <span class="fu">str_detect</span>(filename, <span class="st">"cuff_run-0[12]"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> stringr<span class="sc">::</span><span class="fu">str_extract</span>(filename, <span class="st">"[[:digit:]]{5}"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="fu">str_extract</span>(filename, <span class="st">"[[:digit:]]{5}"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>()</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -976,26 +975,28 @@ Zou, Q.-H., Zhu, C.-Z., Yang, Y., Zuo, X.-N., Long, X.-Y., Cao, Q.-J., Wang, Y.-
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>do_ma_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(.d) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  .d <span class="sc">|&gt;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> task, <span class="at">values_from =</span> fALFF) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na.omit</span>() <span class="sc">|&gt;</span> <span class="co"># not every participant has a REST1 and CUFF1</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>() <span class="sc">|&gt;</span> <span class="co"># not every participant has a REST1 and CUFF1</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">a =</span> (<span class="fu">log2</span>(rest) <span class="sc">+</span> <span class="fu">log2</span>(cuff)) <span class="sc">/</span> <span class="dv">2</span>, <span class="at">m =</span> <span class="fu">log2</span>(cuff) <span class="sc">-</span> <span class="fu">log2</span>(rest)) <span class="sc">|&gt;</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> a, <span class="at">y =</span> m)) <span class="sc">+</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>component, <span class="at">scales =</span> <span class="st">"free"</span>, <span class="at">nrow =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">"Average Log Intensity"</span>) <span class="sc">+</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">"CUFF1 - REST1 Log Intensities"</span>) <span class="sc">+</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">strip.background =</span> <span class="fu">element_blank</span>(), <span class="at">strip.text =</span> <span class="fu">element_blank</span>())</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>run1_amplitudes_without_red <span class="ot">&lt;-</span> run1_amplitudes <span class="sc">|&gt;</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(red_run1_scans, <span class="at">by =</span> <span class="fu">join_by</span>(sub))</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>run1_amplitudes <span class="sc">|&gt;</span> <span class="fu">do_ma_plot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Average Log Intensity"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"CUFF1 - REST1 Log Intensities"</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">strip.background =</span> <span class="fu">element_blank</span>(), <span class="at">strip.text =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>run1_amplitudes_without_red <span class="ot">&lt;-</span> run1_amplitudes <span class="sc">|&gt;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(red_run1_scans, <span class="at">by =</span> <span class="fu">join_by</span>(sub))</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>run1_amplitudes_without_red <span class="sc">|&gt;</span> <span class="fu">do_ma_plot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="postgift_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="postgift_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1008,7 +1009,7 @@ Figure&nbsp;19.1: Fractional Amplitude of Low Frequency Fluctuations. Each panel
 </div>
 <p>For the most part, there is not a substantially large difference in the log intensities. However, it may be interesting that there appears to be a trend such that amplitudes are somewhat lower in the CUFF as compared to REST conditions.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lme4<span class="sc">::</span><span class="fu">lmer</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lmer</span>(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(fALFF) <span class="sc">~</span> task <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> sub) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> component),</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  run1_amplitudes_without_red</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
@@ -1018,27 +1019,27 @@ Figure&nbsp;19.1: Fractional Amplitude of Low Frequency Fluctuations. Each panel
 Formula: log(fALFF) ~ task + (1 | sub) + (1 | component)
    Data: run1_amplitudes_without_red
 
-REML criterion at convergence: 574960.4
+REML criterion at convergence: 414327
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--5.7346 -0.6331  0.0182  0.6533  5.7212 
+-5.4744 -0.6344  0.0157  0.6561  5.7252 
 
 Random effects:
  Groups    Name        Variance Std.Dev.
- sub       (Intercept) 0.5029   0.7092  
- component (Intercept) 0.5807   0.7620  
- Residual              0.6906   0.8310  
-Number of obs: 230160, groups:  sub, 1286; component, 105
+ sub       (Intercept) 0.4782   0.6915  
+ component (Intercept) 0.5925   0.7698  
+ Residual              0.6940   0.8331  
+Number of obs: 165480, groups:  sub, 921; component, 105
 
 Fixed effects:
             Estimate Std. Error t value
-(Intercept) 0.576065   0.077013    7.48
-taskrest    0.116070   0.003807   30.49
+(Intercept) 0.574080   0.078583   7.305
+taskrest    0.111693   0.004488  24.888
 
 Correlation of Fixed Effects:
          (Intr)
-taskrest -0.032</code></pre>
+taskrest -0.037</code></pre>
 </div>
 </div>
 <p>So, indeed, there is some evidence for higher amplitudes during REST1 as compared with CUFF1. Please note that a more careful analysis should include other factors like scanning site, participant age, or motion.</p>

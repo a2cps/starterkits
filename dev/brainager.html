@@ -779,12 +779,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 <p>This starter kit walks through the “Brain Age” outputs that have been derived from the anatomical scans. The examples in the kit rely on <code>bash</code> and <code>R</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Fundamentally, <code>brainager</code> calculations are about producing an estimated age based on measurable characteristics of a brain image, such as regional variations in gray matter density. The difference between estimated and chronological age is often referred to in the literature as the “brain age gap” (BAG) or “predicted age difference” (PAD), and is usually expressed as estimated minus chronological age. This value is often interpreted as an indicator of brain health, serving as a potential biomarker for neurodegenerative disease, cognitive decline, or general biological aging. For a comprehensive overview of Brain Age, see <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5573489/">Cole and Franke (2017)</a> and the <a href="https://github.com/james-cole/brainageR">brainageR GitHub Repository</a>.</p>
 <section id="starting-project" class="level2 page-columns page-full" data-number="6.1">
@@ -926,7 +925,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </div>
 </div>
 <p>By plotting the predicted ages against the true ages, we can review the accuracy of the predictions.</p>
-<div class="cell" data-caption="Predicted and Chronological Age. Each point corresponds to a participant.">
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>lm_eqn <span class="ot">&lt;-</span> <span class="cf">function</span>(fit) {</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  eq <span class="ot">&lt;-</span> <span class="fu">substitute</span>(</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">italic</span>(y) <span class="sc">==</span> a <span class="sc">+</span> b <span class="sc">%.%</span> <span class="fu">italic</span>(age) <span class="sc">*</span> <span class="st">","</span> <span class="sc">~</span> <span class="er">~</span> <span class="fu">italic</span>(r)<span class="sc">^</span><span class="dv">2</span> <span class="sc">~</span> <span class="st">"="</span> <span class="sc">~</span> r2,</span>
@@ -949,9 +948,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">x =</span> <span class="dv">40</span>, <span class="at">y =</span> <span class="dv">80</span>, <span class="at">label =</span> <span class="fu">lm_eqn</span>(fit), <span class="at">parse =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="brainager_files/figure-html/brainage-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Predicted and Chronological Age. Each point corresponds to a participant.</figcaption>
 </figure>
 </div>
 </div>
@@ -961,11 +961,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>brainage <span class="sc">|&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> brain_age_gap)) <span class="sc">+</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"(&lt;-- Younger) Brain Age Gap (Older --&gt;)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"(&lt;-- Younger) Brain Age Gap (Older --&gt;)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="brainager_files/figure-html/brainage2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="brainager_files/figure-html/brainage-gap-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

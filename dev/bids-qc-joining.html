@@ -739,9 +739,9 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 <p>For each MRI product, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products are known to have poor quality–rated “red” or incomparable. This kit walks through one way to incorporate those outputs for <a href="./freesurfer.html">FreeSurfer products</a>. For details on how the ratings were generated, see <a href="raw-mri.html#sec-raw-mri-quality" class="quarto-xref"><span>Section 5.2.1</span></a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>First, start by loading the table of FreeSurfer outputs. In this example, the cortical parcellations will be used.</p>

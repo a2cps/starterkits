@@ -746,15 +746,11 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="header-section-number">1.2</span> Exploratory data analysis</a></li>
   <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">1.3</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">1.3.1</span> Methods</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">1.3.1</span> Data Generation</a></li>
   <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">1.3.2</span> Data Quality</a></li>
   <li><a href="#cross-modality-links" id="toc-cross-modality-links" class="nav-link" data-scroll-target="#cross-modality-links"><span class="header-section-number">1.3.3</span> Cross-Modality Links</a></li>
-  </ul></li>
-  <li><a href="#considerations-while-working-on-the-project-1" id="toc-considerations-while-working-on-the-project-1" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project-1"><span class="header-section-number">1.4</span> Considerations While Working on the Project</a>
-  <ul class="collapse">
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">1.4.1</span> Data Generation</a></li>
-  <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data"><span class="header-section-number">1.4.2</span> Missing Data</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">1.4.3</span> Citations</a></li>
+  <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data"><span class="header-section-number">1.3.4</span> Missing Data</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">1.3.5</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -853,11 +849,26 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <p>Often, researchers want to examine the relationship between different psychosocial measures. For example, Anxiety (GAD-7) and Depression (PHQ-9) frequently coexist due to shared biological mechanisms.</p>
 <p>To explore this, we first load the relevant datasets.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gad <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/pre-surgery/psychosocial/reformatted/reformatted_gad.csv"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>phq <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/pre-surgery/psychosocial/reformatted/reformatted_phq.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gad <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pre-surgery"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reformatted"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reformatted_gad.csv"</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>phq <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pre-surgery"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reformatted"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reformatted_phq.csv"</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next, we join the datasets using the unique identifiers <code>record_id</code> and <code>guid</code>. These identifiers allow you to link records across different psychosocial forms, as well as to other modalities (like neuroimaging or genomics). The <code>inner_join</code> function is used here to keep only rows that exist in both tables.</p>
 <div class="cell">
@@ -1166,7 +1177,7 @@ $ imputed_phq_score                                           &lt;dbl&gt; 10, 6,
 </section>
 <section id="exploratory-data-analysis" class="level2 page-columns page-full" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="exploratory-data-analysis"><span class="header-section-number">1.2</span> Exploratory data analysis</h2>
-<p>Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations&nbsp;<span class="citation" data-cites="kircanski_investigating_2017">(<a href="references.html#ref-kircanski_investigating_2017" role="doc-biblioref">Kircanski et al., 2017</a>)</span>. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the <code>glimpse()</code> functiona that those variables are stored as ordered and numeric.</p>
+<p>Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations&nbsp;<span class="citation" data-cites="kircanski_investigating_2017">(<a href="references.html#ref-kircanski_investigating_2017" role="doc-biblioref">Kircanski et al., 2017</a>)</span>. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the <code>glimpse()</code> function that those variables are stored as ordered and numeric.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-kircanski_investigating_2017" class="csl-entry" role="listitem">
 Kircanski, K., LeMoult, J., Ordaz, S., &amp; Gotlib, I. H. (2017). Investigating the nature of co-occurring depression and anxiety: Comparing diagnostic and dimensional research approaches. <em>Journal of Affective Disorders</em>, <em>216</em>, 123–135. <a href="https://doi.org/10.1016/j.jad.2016.08.006">https://doi.org/10.1016/j.jad.2016.08.006</a>
 </div></div><p><strong>Spearman Correlation</strong>:</p>
@@ -1180,7 +1191,7 @@ Kircanski, K., LeMoult, J., Ordaz, S., &amp; Gotlib, I. H. (2017). Investigating
 <p>As expected we see a very strong correlation between anxiety and depression within the A2CPS cohort i.e.&nbsp;0.76. Let’s visualize these results with a simple boxplot.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows with NA in either column</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gad_phq_clean <span class="ot">&lt;-</span> gad_phq <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gad_phq_clean <span class="ot">&lt;-</span> gad_phq <span class="sc">|&gt;</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(imputed_gad_score), <span class="sc">!</span><span class="fu">is.na</span>(imputed_phq_score))</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
@@ -1210,11 +1221,11 @@ Kircanski, K., LeMoult, J., Ordaz, S., &amp; Gotlib, I. H. (2017). Investigating
 </div>
 <p>We see that there is a positive association between Anxiety and Depression scores.</p>
 </section>
-<section id="considerations-while-working-on-the-project" class="level2" data-number="1.3">
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">1.3</span> Considerations While Working on the Project</h2>
-<section id="methods" class="level3" data-number="1.3.1">
-<h3 data-number="1.3.1" class="anchored" data-anchor-id="methods"><span class="header-section-number">1.3.1</span> Methods</h3>
-<p>Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI) (see below for more details). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessement and a mood assessment.</p>
+<section id="data-generation" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">1.3.1</span> Data Generation</h3>
+<p>Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessment and a mood assessment.</p>
 </section>
 <section id="data-quality" class="level3" data-number="1.3.2">
 <h3 data-number="1.3.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">1.3.2</span> Data Quality</h3>
@@ -1224,22 +1235,15 @@ Kircanski, K., LeMoult, J., Ordaz, S., &amp; Gotlib, I. H. (2017). Investigating
 <h3 data-number="1.3.3" class="anchored" data-anchor-id="cross-modality-links"><span class="header-section-number">1.3.3</span> Cross-Modality Links</h3>
 <p>All files include <code>record_id</code> and <code>guid</code>, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.</p>
 </section>
-</section>
-<section id="considerations-while-working-on-the-project-1" class="level2 page-columns page-full" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="considerations-while-working-on-the-project-1"><span class="header-section-number">1.4</span> Considerations While Working on the Project</h2>
-<section id="data-generation" class="level3" data-number="1.4.1">
-<h3 data-number="1.4.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">1.4.1</span> Data Generation</h3>
-<p>Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessement and a mood assessment.</p>
-</section>
-<section id="missing-data" class="level3" data-number="1.4.2">
-<h3 data-number="1.4.2" class="anchored" data-anchor-id="missing-data"><span class="header-section-number">1.4.2</span> Missing Data</h3>
+<section id="missing-data" class="level3" data-number="1.3.4">
+<h3 data-number="1.3.4" class="anchored" data-anchor-id="missing-data"><span class="header-section-number">1.3.4</span> Missing Data</h3>
 <p>Proceed with caution when merging data across psychosocial data or different modalities. Merging datasets often leads to a reduced sample size due to missing data or incomplete forms. This can lower statistical power and limit the ability to draw reliable conclusions.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="1.4.3">
-<h3 data-number="1.4.3" class="anchored" data-anchor-id="citations"><span class="header-section-number">1.4.3</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="1.3.5">
+<h3 data-number="1.3.5" class="anchored" data-anchor-id="citations"><span class="header-section-number">1.3.5</span> Citations</h3>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
-<p>Data were provided [in part] by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/ Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
+<p>Data were provided (in part) by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
 </blockquote>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
