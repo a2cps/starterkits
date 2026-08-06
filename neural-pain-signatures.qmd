@@ -131,46 +131,6 @@ open_dataset(
   rename(SIIPS1 = `137subjmap_weighted_mean`, NPS = `grouppred_cvpcr`)
 ```
 
-In python, a good choice is the [`polars`](https://docs.pola.rs/) library
-
-```python
-import polars as pl
-
-pl.read_parquet("data/pre-surgery/mris/derivatives/signatures/signatures-by-run").filter(
-    pl.col("signature").is_in(["grouppred_cvpcr", "137subjmap_weighted_mean"])
-).filter(pl.col("task") == "cuff", pl.col("run") == 1).rename(
-    {"correlation": "value"}
-).select(
-    "signature",
-    "value",
-    "sub",
-    "ses",
-).pivot(on="signature", index=["sub", "ses"]).rename(
-    {"grouppred_cvpcr": "NPS", "137subjmap_weighted_mean": "SIIPS1"}
-)
-```
-
-```bash
-shape: (716, 4)
-┌───────┬─────┬───────────┬───────────┐
-│ sub   ┆ ses ┆ SIIPS1    ┆ NPS       │
-│ ---   ┆ --- ┆ ---       ┆ ---       │
-│ i64   ┆ str ┆ f64       ┆ f64       │
-╞═══════╪═════╪═══════════╪═══════════╡
-│ 10003 ┆ V1  ┆ -0.001619 ┆ 0.033091  │
-│ 10008 ┆ V1  ┆ -0.040698 ┆ -0.058134 │
-│ 10010 ┆ V1  ┆ -0.061107 ┆ -0.019997 │
-│ 10011 ┆ V1  ┆ -0.006518 ┆ -0.074017 │
-│ 10013 ┆ V1  ┆ -0.027933 ┆ 0.023413  │
-│ …     ┆ …   ┆ …         ┆ …         │
-│ 25266 ┆ V1  ┆ -0.058184 ┆ -0.032597 │
-│ 25271 ┆ V1  ┆ -0.039983 ┆ -0.092517 │
-│ 25273 ┆ V1  ┆ -0.038248 ┆ -0.02306  │
-│ 25275 ┆ V1  ┆ -0.052387 ┆ -0.06732  │
-│ 25277 ┆ V1  ┆ 0.023143  ┆ -0.063882 │
-└───────┴─────┴───────────┴───────────┘
-```
-
 ## Considerations While Working on the Project
 
 ### Variability Across Scanners
