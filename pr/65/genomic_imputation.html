@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Imputed Genomics – A2CPS Starter Kits</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./mri-idps.html" rel="next">
+<link href="./genetic_variants.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-343830dee7e81009abd9657442190b55.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-febdc0bd1cf710de19db6afa0751cb89.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-343830dee7e81009abd9657442190b55.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-K3383Z78V7"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
+</script>
+<script defer="" src="assets/js/version.js"></script>
+
+
+<link rel="stylesheet" href="assets/css/version.css">
+<meta name="citation_title" content="[[3]{.chapter-number}&nbsp; [Imputed Genomics]{.chapter-title}]{#sec-genomics .quarto-section-identifier}">
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=Corticostriatal functional connectivity predicts transition to chronic back pain;,citation_author=Marwan N Baliki;,citation_author=Bogdan Petre;,citation_author=Souraya Torbey;,citation_author=Kristina M Herrmann;,citation_author=Lejian Huang;,citation_author=Thomas J Schnitzer;,citation_author=Howard L Fields;,citation_author=A Vania Apkarian;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=8;,citation_doi=10.1038/nn.3153;,citation_volume=15;,citation_journal_title=Nature neuroscience;,citation_publisher=Nature Publishing Group US New York;">
+<meta name="citation_reference" content="citation_title=MRI signatures of brain age and disease over the lifespan based on a deep brain network and 14 468 individuals worldwide;,citation_author=Vishnu M Bashyam;,citation_author=Guray Erus;,citation_author=Jimit Doshi;,citation_author=Mohamad Habes;,citation_author=Ilya M Nasrallah;,citation_author=Monica Truelove-Hill;,citation_author=Dhivya Srinivasan;,citation_author=Liz Mamourian;,citation_author=Raymond Pomponio;,citation_author=Yong Fan;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_issue=7;,citation_doi=10.1093/brain/awaa160;,citation_volume=143;,citation_journal_title=Brain;,citation_publisher=Oxford University Press;">
+<meta name="citation_reference" content="citation_title=MR diffusion tensor spectroscopy and imaging;,citation_author=Peter J Basser;,citation_author=James Mattiello;,citation_author=Denis LeBihan;,citation_publication_date=1994;,citation_cover_date=1994;,citation_year=1994;,citation_issue=1;,citation_doi=10.1016/S0006-3495(94)80775-1;,citation_volume=66;,citation_journal_title=Biophysical journal;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Automated quality control for within and between studies diffusion MRI data using a non-parametric framework for movement and distortion correction;,citation_author=Matteo Bastiani;,citation_author=Michiel Cottaar;,citation_author=Sean P Fitzgibbon;,citation_author=Sana Suri;,citation_author=Fidel Alfaro-Almagro;,citation_author=Stamatios N Sotiropoulos;,citation_author=Saad Jbabdi;,citation_author=Jesper LR Andersson;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_doi=10.1016/j.neuroimage.2018.09.073;,citation_volume=184;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Mapping brain structure variability in chronic pain: The role of widespreadness and pain type and its mediating relationship with suicide attempt;,citation_author=Ravi R Bhatt;,citation_author=Elizabeth Haddad;,citation_author=Alyssa H Zhu;,citation_author=Paul M Thompson;,citation_author=Arpana Gupta;,citation_author=Emeran A Mayer;,citation_author=Neda Jahanshad;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_issue=5;,citation_doi=10.1016/j.biopsych.2023.07.016;,citation_volume=95;,citation_journal_title=Biological psychiatry;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Brain-age is associated with progression to dementia in memory clinic patients;,citation_author=Francesca Biondo;,citation_author=Amelia Jewell;,citation_author=Megan Pritchard;,citation_author=Dag Aarsland;,citation_author=Claire J Steves;,citation_author=Christoph Mueller;,citation_author=James H Cole;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_doi=10.1016/j.nicl.2022.103175;,citation_volume=36;,citation_journal_title=NeuroImage: Clinical;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Eliminating accidental deviations to minimize generalization error and maximize replicability: Applications in connectomics and genomics;,citation_author=Eric W Bridgeford;,citation_author=Shangsi Wang;,citation_author=Zeyi Wang;,citation_author=Ting Xu;,citation_author=Cameron Craddock;,citation_author=Jayanta Dey;,citation_author=Gregory Kiar;,citation_author=William Gray-Roncal;,citation_author=Carlo Colantuoni;,citation_author=Christopher Douville;,citation_author=others;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_issue=9;,citation_doi=10.1371/journal.pcbi.1009279;,citation_volume=17;,citation_journal_title=PLoS computational biology;,citation_publisher=Public Library of Science San Francisco, CA USA;">
+<meta name="citation_reference" content="citation_title=A method for making group inferences from functional MRI data using independent component analysis;,citation_author=Vince D Calhoun;,citation_author=Tulay Adali;,citation_author=Godfrey D Pearlson;,citation_author=James J Pekar;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_issue=3;,citation_doi=10.1002/hbm.1048;,citation_volume=14;,citation_journal_title=Human brain mapping;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Assessment of brain age in posttraumatic stress disorder: Findings from the ENIGMA PTSD and brain age working groups;,citation_author=Ashley N Clausen;,citation_author=Kelene A Fercho;,citation_author=Molly Monsour;,citation_author=Seth Disner;,citation_author=Lauren Salminen;,citation_author=Courtney C Haswell;,citation_author=Emily Clarke Rubright;,citation_author=Amanda A Watts;,citation_author=M Nicole Buckley;,citation_author=Adi Maron-Katz;,citation_author=others;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_issue=1;,citation_doi=10.1002/brb3.2413;,citation_volume=12;,citation_journal_title=Brain and behavior;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=A (sort of) new image data format standard: NiFTI-1;,citation_author=Robert W Cox;,citation_author=John Ashburner;,citation_author=Hester Breman;,citation_author=Kate Fissell;,citation_author=Christian Haselgrove;,citation_author=Colin J Holmes;,citation_author=Jack L Lancaster;,citation_author=David E Rex;,citation_author=Stephen M Smith;,citation_author=Jeffrey B Woodward;,citation_author=others;,citation_publication_date=2004;,citation_cover_date=2004;,citation_year=2004;,citation_fulltext_html_url=https://nifti.nimh.nih.gov/pub/dist/doc/hbm_nifti_2004.pdf;,citation_volume=22;,citation_conference_title=10th annual meeting of the organization for human brain mapping;">
+<meta name="citation_reference" content="citation_title=Fine-grain atlases of functional modes for fMRI analysis;,citation_author=Kamalaker Dadi;,citation_author=Gaël Varoquaux;,citation_author=Antonia Machlouzarides-Shalit;,citation_author=Krzysztof J Gorgolewski;,citation_author=Demian Wassermann;,citation_author=Bertrand Thirion;,citation_author=Arthur Mensch;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_doi=10.1016/j.neuroimage.2020.117126;,citation_volume=221;,citation_journal_title=NeuroImage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Measurement of signal-to-noise ratios in MR images: Influence of multichannel coils, parallel imaging, and reconstruction filters;,citation_author=Olaf Dietrich;,citation_author=José G Raya;,citation_author=Scott B Reeder;,citation_author=Maximilian F Reiser;,citation_author=Stefan O Schoenberg;,citation_publication_date=2007;,citation_cover_date=2007;,citation_year=2007;,citation_issue=2;,citation_doi=10.1002/jmri.20969;,citation_volume=26;,citation_journal_title=Journal of Magnetic Resonance Imaging: An Official Journal of the International Society for Magnetic Resonance in Medicine;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Group information guided ICA for fMRI data analysis;,citation_author=Yuhui Du;,citation_author=Yong Fan;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_doi=10.1016/j.neuroimage.2012.11.008;,citation_volume=69;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=NeuroMark: An automated and adaptive ICA based pipeline to identify reproducible fMRI markers of brain disorders;,citation_author=Yuhui Du;,citation_author=Zening Fu;,citation_author=Jing Sui;,citation_author=Shuang Gao;,citation_author=Ying Xing;,citation_author=Dongdong Lin;,citation_author=Mustafa Salman;,citation_author=Anees Abrol;,citation_author=Md Abdur Rahaman;,citation_author=Jiayu Chen;,citation_author=others;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_doi=10.1016/j.nicl.2020.102375;,citation_volume=28;,citation_journal_title=NeuroImage: Clinical;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=MRIQC: Advancing the automatic prediction of image quality in MRI from unseen sites;,citation_author=Oscar Esteban;,citation_author=Daniel Birman;,citation_author=Marie Schaer;,citation_author=Oluwasanmi O Koyejo;,citation_author=Russell A Poldrack;,citation_author=Krzysztof J Gorgolewski;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=9;,citation_doi=10.1371/journal.pone.0184661;,citation_volume=12;,citation_journal_title=PloS one;,citation_publisher=Public Library of Science San Francisco, CA USA;">
+<meta name="citation_reference" content="citation_title=Relationship of childhood abuse and household dysfunction to many of the leading causes of death in adults: The adverse childhood experiences (ACE) study;,citation_author=Vincent J Felitti;,citation_author=Robert F Anda;,citation_author=Dale Nordenberg;,citation_author=David F Williamson;,citation_author=Alison M Spitz;,citation_author=Valerie Edwards;,citation_author=James S Marks;,citation_publication_date=1998;,citation_cover_date=1998;,citation_year=1998;,citation_issue=4;,citation_doi=10.1016/S0749-3797(98)00017-8;,citation_volume=14;,citation_journal_title=American journal of preventive medicine;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=The brain imaging data structure, a format for organizing and describing outputs of neuroimaging experiments;,citation_author=Krzysztof J Gorgolewski;,citation_author=Tibor Auer;,citation_author=Vince D Calhoun;,citation_author=R Cameron Craddock;,citation_author=Samir Das;,citation_author=Eugene P Duff;,citation_author=Guillaume Flandin;,citation_author=Satrajit S Ghosh;,citation_author=Tristan Glatard;,citation_author=Yaroslav O Halchenko;,citation_author=others;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_issue=1;,citation_doi=10.1038/sdata.2016.44;,citation_volume=3;,citation_journal_title=Scientific data;,citation_publisher=Nature Publishing Group;">
+<meta name="citation_reference" content="citation_title=Measuring social health in the patient-reported outcomes measurement information system (PROMIS): Item bank development and testing;,citation_author=Elizabeth A Hahn;,citation_author=Robert F DeVellis;,citation_author=Rita K Bode;,citation_author=Sofia F Garcia;,citation_author=Liana D Castel;,citation_author=Susan V Eisen;,citation_author=Hayden B Bosworth;,citation_author=Allen W Heinemann;,citation_author=Nan Rothrock;,citation_author=David Cella;,citation_author=others;,citation_publication_date=2010;,citation_cover_date=2010;,citation_year=2010;,citation_issue=7;,citation_doi=10.1007/s11136-010-9654-0;,citation_volume=19;,citation_journal_title=Quality of Life Research;,citation_publisher=Springer;">
+<meta name="citation_reference" content="citation_title=HeuDiConv—flexible DICOM conversion into structured directory layouts;,citation_author=Yaroslav O Halchenko;,citation_author=Mathias Goncalves;,citation_author=Satrajit Ghosh;,citation_author=Pablo Velasco;,citation_author=Matteo Visconti Oleggio Castello;,citation_author=Taylor Salo;,citation_author=John T Wodder;,citation_author=Michael Hanke;,citation_author=Patrick Sadil;,citation_author=Krzysztof Jacek Gorgolewski;,citation_author=others;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_issue=99;,citation_doi=10.21105/joss.05839;,citation_volume=9;,citation_journal_title=Journal of open source software;">
+<meta name="citation_reference" content="citation_title=Diffusional kurtosis imaging in the diffusion imaging in python project;,citation_author=Rafael Neto Henriques;,citation_author=Marta M Correia;,citation_author=Maurizio Marrale;,citation_author=Elizabeth Huber;,citation_author=John Kruper;,citation_author=Serge Koudoro;,citation_author=Jason D Yeatman;,citation_author=Eleftherios Garyfallidis;,citation_author=Ariel Rokem;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_doi=10.3389/fnhum.2021.675433;,citation_volume=15;,citation_journal_title=Frontiers in Human Neuroscience;,citation_publisher=Frontiers Media SA;">
+<meta name="citation_reference" content="citation_title=Tissue volume estimation and age prediction using rapid structural brain scans;,citation_author=Harriet Hobday;,citation_author=James H Cole;,citation_author=Ryan A Stanyard;,citation_author=Richard E Daws;,citation_author=Vincent Giampietro;,citation_author=Owen O’Daly;,citation_author=Robert Leech;,citation_author=František Váša;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_issue=1;,citation_volume=12;,citation_journal_title=Scientific Reports;,citation_publisher=Nature Publishing Group UK London;">
+<meta name="citation_reference" content="citation_title=SynthStrip: Skull-stripping for any brain image;,citation_author=Andrew Hoopes;,citation_author=Jocelyn S Mora;,citation_author=Adrian V Dalca;,citation_author=Bruce Fischl;,citation_author=Malte Hoffmann;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_doi=10.1016/j.neuroimage.2022.119474;,citation_volume=260;,citation_journal_title=NeuroImage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Identifying canonical and replicable multi-scale intrinsic connectivity networks in 100k+ resting-state fMRI datasets;,citation_author=Armin Iraji;,citation_author=Zening Fu;,citation_author=Ashkan Faghiri;,citation_author=Marlena Duda;,citation_author=Jaiyu Chen;,citation_author=Srinivas Rachakonda;,citation_author=Thomas DeRamus;,citation_author=Peter Kochunov;,citation_author=Bhim M Adhikari;,citation_author=Aysenil Belger;,citation_author=others;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_issue=17;,citation_doi=10.1002/hbm.26472;,citation_volume=44;,citation_journal_title=Human brain mapping;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Improved optimization for the robust and accurate linear registration and motion correction of brain images;,citation_author=Mark Jenkinson;,citation_author=Peter Bannister;,citation_author=Michael Brady;,citation_author=Stephen Smith;,citation_publication_date=2002;,citation_cover_date=2002;,citation_year=2002;,citation_issue=2;,citation_doi=10.1006/nimg.2002.1132;,citation_volume=17;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Diffusional kurtosis imaging: The quantification of non-gaussian water diffusion by means of magnetic resonance imaging;,citation_author=Jens H Jensen;,citation_author=Joseph A Helpern;,citation_author=Anita Ramani;,citation_author=Hanzhang Lu;,citation_author=Kyle Kaczynski;,citation_publication_date=2005;,citation_cover_date=2005;,citation_year=2005;,citation_issue=6;,citation_doi=10.1002/mrm.20508;,citation_volume=53;,citation_journal_title=Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Investigating the nature of co-occurring depression and anxiety: Comparing diagnostic and dimensional research approaches;,citation_author=Katharina Kircanski;,citation_author=Joelle LeMoult;,citation_author=Sarah Ordaz;,citation_author=Ian H Gotlib;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_doi=10.1016/j.jad.2016.08.006;,citation_volume=216;,citation_journal_title=Journal of affective disorders;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Brain-wide functional connectivity artifactually inflates throughout functional magnetic resonance imaging scans;,citation_author=Cole Korponay;,citation_author=Amy C Janes;,citation_author=Blaise B Frederick;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_issue=8;,citation_doi=10.1038/s41562-024-01908-6;,citation_volume=8;,citation_journal_title=Nature human behaviour;,citation_publisher=Nature Publishing Group UK London;">
+<meta name="citation_reference" content="citation_title=The PHQ-8 as a measure of current depression in the general population;,citation_author=Kurt Kroenke;,citation_author=Tara W Strine;,citation_author=Robert L Spitzer;,citation_author=Janet BW Williams;,citation_author=Joyce T Berry;,citation_author=Ali H Mokdad;,citation_publication_date=2009;,citation_cover_date=2009;,citation_year=2009;,citation_issue=1-3;,citation_doi=10.1016/j.jad.2008.06.026;,citation_volume=114;,citation_journal_title=Journal of affective disorders;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=A well-conditioned estimator for large-dimensional covariance matrices;,citation_author=Olivier Ledoit;,citation_author=Michael Wolf;,citation_publication_date=2004;,citation_cover_date=2004;,citation_year=2004;,citation_issue=2;,citation_doi=10.1016/S0047-259X(03)00096-4;,citation_volume=88;,citation_journal_title=Journal of multivariate analysis;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=The first step for neuroimaging data analysis: DICOM to NIfTI conversion;,citation_author=Xiangrui Li;,citation_author=Paul S. Morgan;,citation_author=John Ashburner;,citation_author=Jolinda Smith;,citation_author=Christopher Rorden;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S0165027016300073;,citation_doi=10.1016/j.jneumeth.2016.03.001;,citation_issn=0165-0270;,citation_volume=264;,citation_journal_title=Journal of Neuroscience Methods;">
+<meta name="citation_reference" content="citation_title=Connectomes for 40,000 UK biobank participants: A multi-modal, multi-scale brain network resource;,citation_abstract=We mapped functional and structural brain networks for more than 40,000 UK Biobank participants. Structural connectivity was estimated with tractography and diffusion MRI. Resting-state functional MRI was used to infer regional functional connectivity. We provide high-quality structural and functional connectomes for multiple parcellation granularities, several alternative measures of interregional connectivity, and a variety of common data pre-processing techniques, yielding more than one million connectomes in total and requiring more than 200,000 h of compute time. For a single subject, we provide 28 out-of-the-box versions of structural and functional brain networks, allowing users to select, e.g., the parcellation and connectivity measure that best suit their research goals. Furthermore, we provide code and intermediate data for the time-efficient reconstruction of more than 1000 different versions of a subject’s connectome based on an array of methodological choices. All connectomes are available via the UK Biobank data-sharing platform and our connectome mapping pipelines are openly available. In this report, we describe our connectome resource in detail for users, outline key considerations in developing an efficient pipeline to map an unprecedented number of connectomes, and report on the quality control procedures that were completed to ensure connectome reliability and accuracy. We demonstrate that our structural and functional connectivity matrices meet a number of quality control checks and replicate previously established findings in network neuroscience. We envisage that our resource will enable new studies of the human connectome in health, disease, and aging at an unprecedented scale.;,citation_author=Sina Mansour L.;,citation_author=Maria A. Di Biase;,citation_author=Robert E. Smith;,citation_author=Andrew Zalesky;,citation_author=Caio Seguin;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S105381192300558X;,citation_doi=https://doi.org/10.1016/j.neuroimage.2023.120407;,citation_issn=1053-8119;,citation_volume=283;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Forming inferences about some intraclass correlation coefficients.;,citation_author=Kenneth O McGraw;,citation_author=Seok P Wong;,citation_publication_date=1996;,citation_cover_date=1996;,citation_year=1996;,citation_issue=1;,citation_doi=10.1037/1082-989X.1.1.30;,citation_volume=1;,citation_journal_title=Psychological methods;,citation_publisher=American Psychological Association;">
+<meta name="citation_reference" content="citation_title=Development and evaluation of short forms of the pain catastrophizing scale and the pain self-efficacy questionnaire;,citation_author=LA McWilliams;,citation_author=J Kowal;,citation_author=KG Wilson;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_issue=9;,citation_doi=10.1002/ejp.665;,citation_volume=19;,citation_journal_title=European journal of pain;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Multimodal population brain imaging in the UK biobank prospective epidemiological study;,citation_author=Karla L Miller;,citation_author=Fidel Alfaro-Almagro;,citation_author=Neal K Bangerter;,citation_author=David L Thomas;,citation_author=Essa Yacoub;,citation_author=Junqian Xu;,citation_author=Andreas J Bartsch;,citation_author=Saad Jbabdi;,citation_author=Stamatios N Sotiropoulos;,citation_author=Jesper LR Andersson;,citation_author=others;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_issue=11;,citation_doi=10.1038/nn.4393;,citation_volume=19;,citation_journal_title=Nature neuroscience;,citation_publisher=Nature Publishing Group;">
+<meta name="citation_reference" content="citation_title=Brain-predicted age difference mediates the association between PROMIS sleep impairment, and self-reported pain measure in persons with knee pain;,citation_author=Soamy Montesino-Goicolea;,citation_author=Pedro Valdes-Hernandez;,citation_author=Chavier Laffitte Nodarse;,citation_author=Alisa J Johnson;,citation_author=James H Cole;,citation_author=Lisa H Antoine;,citation_author=Burel R Goodin;,citation_author=Roger B Fillingim;,citation_author=Yenisel Cruz-Almeida;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_doi=10.1016/j.nbas.2023.100088;,citation_volume=4;,citation_journal_title=Aging Brain;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Best practices in data analysis and sharing in neuroimaging using MRI;,citation_author=Thomas E Nichols;,citation_author=Samir Das;,citation_author=Simon B Eickhoff;,citation_author=Alan C Evans;,citation_author=Tristan Glatard;,citation_author=Michael Hanke;,citation_author=Nikolaus Kriegeskorte;,citation_author=Michael P Milham;,citation_author=Russell A Poldrack;,citation_author=Jean-Baptiste Poline;,citation_author=others;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=3;,citation_doi=10.1038/nn.4500;,citation_volume=20;,citation_journal_title=Nature neuroscience;,citation_publisher=Nature Publishing Group US New York;">
+<meta name="citation_reference" content="citation_title=Color schemes to represent the orientation of anisotropic tissues from diffusion tensor data: Application to white matter fiber tract mapping in the human brain;,citation_author=Sinisa Pajevic;,citation_author=Carlo Pierpaoli;,citation_publication_date=1999;,citation_cover_date=1999;,citation_year=1999;,citation_issue=3;,citation_doi=10.1002/(SICI)1522-2594(199909)42:3%3C526::AID-MRM15%3E3.0.CO;2-J;,citation_volume=42;,citation_journal_title=Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Image processing in the acute to chronic pain signatures (A2CPS) project;,citation_abstract=The Acute to Chronic Pain Signatures (A2CPS) project is a large-scale, multi-site initiative aimed at identifying biomarkers and biosignatures that predict the transition from acute to chronic pain. The project is collecting multimodal, longitudinal data from over 2,500 individuals at risk for developing chronic pain after surgery. Here we describe the neuroimaging component of A2CPS, including the acquisition protocols, processing pipelines, and contents of the initial data release. The imaging protocol includes structural, diffusion, resting-state and task-based functional magnetic resonance imaging (MRI) data. Data are collected across multiple clinical sites using different scanner manufacturers, with attention to protocol harmonization and quality control. The processing pipeline integrates several established neuroimaging tools to extract potential biomarkers, including measures of brain structure, connectivity, and pain-related neural signatures. The first data release includes pre-surgical imaging data for 595 participants, with high quality ratings across modalities (98.7% of sMRI, 99.8% of dMRI, and 94.6% of fMRI images were rated as acceptable or better). Initial analyses demonstrate expected relationships between brain-derived measures and clinical variables, such as associations between brain age and psychological factors. This dataset represents a valuable resource for both pain research and neuroimaging methods development, with future releases planned to include additional participants and expanded analysis pipelines and processed data derivatives.Competing Interest StatementThe authors have declared no competing interest.;,citation_author=Patrick Sadil;,citation_author=Konstantinos Arfanakis;,citation_author=Enamul Hoque Bhuiyan;,citation_author=Brian Caffo;,citation_author=Vince D Calhoun;,citation_author=Daniel J Clauw;,citation_author=Mark C DeLano;,citation_author=James C Ford;,citation_author=Ramtalik Gattu;,citation_author=Xiaodong Guo;,citation_author=Richard E Harris;,citation_author=Eric Ichesco;,citation_author=Micah A Johnson;,citation_author=Heejung Jung;,citation_author=Ari B Kahn;,citation_author=Chelsea M Kaplan;,citation_author=Nondas Leloudas;,citation_author=Martin A Lindquist;,citation_author=Qingfei Luo;,citation_author=Todd A Mulderink;,citation_author=Scott J Peltier;,citation_author=Pottumarthi V Prasad;,citation_author=Christopher Sica;,citation_author=Joshua Urrutia;,citation_author=Carol GT Vance;,citation_author=Tor D Wager;,citation_author=Yang Xuan;,citation_author=Xiaohong J Zhou;,citation_author=Yong Zhou;,citation_author=David C Shu;,citation_author=The Acute Chronic Pain Signatures Consortium;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://www.biorxiv.org/content/early/2024/12/20/2024.12.19.627509;,citation_doi=10.1101/2024.12.19.627509;,citation_journal_title=bioRxiv;,citation_publisher=Cold Spring Harbor Laboratory;">
+<meta name="citation_reference" content="citation_title=Comparing automated subcortical volume estimation methods; amygdala volumes estimated by FSL and FreeSurfer have poor consistency;,citation_abstract=Abstract Subcortical volumes are a promising source of biomarkers and features in biosignatures, and automated methods facilitate extracting them in large, phenotypically rich datasets. However, while extensive research has verified that the automated methods produce volumes that are similar to those generated by expert annotation; the consistency of methods with each other is understudied. Using data from the UK Biobank, we compare the estimates of subcortical volumes produced by two popular software suites: FSL and FreeSurfer. Although most subcortical volumes exhibit good to excellent consistency across the methods, the tools produce diverging estimates of amygdalar volume. Through simulation, we show that this poor consistency can lead to conflicting results, where one but not the other tool suggests statistical significance, or where both tools suggest a significant relationship but in opposite directions. Considering these issues, we discuss several ways in which care should be taken when reporting on relationships involving amygdalar volume.;,citation_author=Patrick Sadil;,citation_author=Martin A. Lindquist;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1002/hbm.70027;,citation_doi=10.1002/hbm.70027;,citation_volume=45;,citation_technical_report_number=17;">
+<meta name="citation_reference" content="citation_title=The self-administered comorbidity questionnaire: A new method to assess comorbidity for clinical and health services research;,citation_author=Oliver Sangha;,citation_author=Gerold Stucki;,citation_author=Matthew H Liang;,citation_author=Anne H Fossel;,citation_author=Jeffrey N Katz;,citation_publication_date=2003;,citation_cover_date=2003;,citation_year=2003;,citation_issue=2;,citation_doi=10.1002/art.10993;,citation_volume=49;,citation_journal_title=Arthritis Care &amp;amp;amp; Research: Official Journal of the American College of Rheumatology;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Sensory sensitivity and symptom severity represent unique dimensions of chronic pain: A MAPP research network study;,citation_author=Andrew Schrepf;,citation_author=David A Williams;,citation_author=Robert Gallop;,citation_author=Bruce D Naliboff;,citation_author=Neil Basu;,citation_author=Chelsea Kaplan;,citation_author=Daniel E Harper;,citation_author=J Richard Landis;,citation_author=J Quentin Clemens;,citation_author=Eric Strachan;,citation_author=others;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_issue=10;,citation_doi=10.1097/j.pain.0000000000001299;,citation_volume=159;,citation_journal_title=Pain;,citation_publisher=LWW;">
+<meta name="citation_reference" content="citation_title=Development and initial validation of the pain resilience scale;,citation_author=P Maxwell Slepian;,citation_author=Brett Ankawi;,citation_author=Lina K Himawan;,citation_author=Christopher R France;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_issue=4;,citation_doi=10.1016/j.jpain.2015.12.010;,citation_volume=17;,citation_journal_title=The Journal of Pain;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Estimation of brain age delta from brain imaging;,citation_author=Stephen M Smith;,citation_author=Diego Vidaurre;,citation_author=Fidel Alfaro-Almagro;,citation_author=Thomas E Nichols;,citation_author=Karla L Miller;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_doi=10.1016/j.neuroimage.2019.06.017;,citation_volume=200;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Low frequency systemic hemodynamic “noise” in resting state BOLD fMRI: Characteristics, causes, implications, mitigation strategies, and applications;,citation_author=Yunjie Tong;,citation_author=Lia M Hocke;,citation_author=Blaise B Frederick;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_doi=10.3389/fnins.2019.00787;,citation_volume=13;,citation_journal_title=Frontiers in neuroscience;,citation_publisher=Frontiers Media SA;">
+<meta name="citation_reference" content="citation_title=ReproNim/reproin: 0.11.6.2;,citation_abstract=A setup for automatic generation of shareable, version-controlled BIDS datasets from MR scanners;,citation_author=Matteo Visconti di Oleggio Castello;,citation_author=James E. Dobson;,citation_author=Terry Sackett;,citation_author=Chandana Kodiweera;,citation_author=James V. Haxby;,citation_author=Mathias Goncalves;,citation_author=Satrajit Ghosh;,citation_author=Yaroslav O. Halchenko;,citation_publication_date=2023-05;,citation_cover_date=2023-05;,citation_year=2023;,citation_doi=10.5281/ZENODO.7975330;,citation_publisher=Zenodo;">
+<meta name="citation_reference" content="citation_title=An fMRI-Based Neurologic Signature of Physical Pain;,citation_author=Tor D. Wager;,citation_author=Lauren Y. Atlas;,citation_author=Martin A. Lindquist;,citation_author=Mathieu Roy;,citation_author=Choong-Wan Woo;,citation_author=Ethan Kross;,citation_publication_date=2013-04;,citation_cover_date=2013-04;,citation_year=2013;,citation_issue=15;,citation_doi=10.1056/NEJMoa1204471;,citation_issn=0028-4793, 1533-4406;,citation_volume=368;,citation_language=en-US;,citation_journal_title=New England Journal of Medicine;">
+<meta name="citation_reference" content="citation_title=Quantifying cerebral contributions to pain beyond nociception;,citation_author=Choong-Wan Woo;,citation_author=Liane Schmidt;,citation_author=Anjali Krishnan;,citation_author=Marieke Jepma;,citation_author=Mathieu Roy;,citation_author=Martin A. Lindquist;,citation_author=Lauren Y. Atlas;,citation_author=Tor D. Wager;,citation_publication_date=2017-04;,citation_cover_date=2017-04;,citation_year=2017;,citation_issue=1;,citation_doi=10.1038/ncomms14211;,citation_issn=2041-1723;,citation_volume=8;,citation_language=en-US;,citation_journal_title=Nature Communications;">
+<meta name="citation_reference" content="citation_title=Knee injury and osteoarthritis outcome score (KOOS)development of a self-administered outcome measure;,citation_author=Ewa M. Roos;,citation_author=Harald P. Roos;,citation_author=L. Stefan Lohmander;,citation_author=Charlotte Ekdahl;,citation_author=Bruce D. Beynnon;,citation_publication_date=1998-08;,citation_cover_date=1998-08;,citation_year=1998;,citation_fulltext_html_url=http://dx.doi.org/10.2519/jospt.1998.28.2.88;,citation_issue=2;,citation_doi=10.2519/jospt.1998.28.2.88;,citation_volume=28;,citation_language=en;,citation_journal_title=Journal of Orthopaedic &amp;amp;amp; Sports Physical Therapy;">
+<meta name="citation_reference" content="citation_title=Cleeland CS ryan KM. Pain assessment: Global use of the brief pain inventory. Ann acad med singapore (1994 mar) 23(2):129-38.;,citation_publication_date=1995;,citation_cover_date=1995;,citation_year=1995;,citation_fulltext_html_url=http://dx.doi.org/10.1097/01893697-199513010-00022;,citation_issue=1;,citation_doi=10.1097/01893697-199513010-00022;,citation_volume=13;,citation_language=en;,citation_journal_title=Rehabilitation Oncology;">
+<meta name="citation_reference" content="citation_title=Multi-site observational study to assess biomarkers for susceptibility or resilience to chronic pain: The acute to chronic pain signatures (A2CPS) study protocol;,citation_author=Giovanni Berardi;,citation_author=Laura Frey-Law;,citation_author=Kathleen A. Sluka;,citation_author=Emine O. Bayman;,citation_author=Christopher S. Coffey;,citation_author=Dixie Ecklund;,citation_author=Carol G. T. Vance;,citation_author=Dana L. Dailey;,citation_author=John Burns;,citation_author=Asokumar Buvanendran;,citation_author=Robert J. McCarthy;,citation_author=Joshua Jacobs;,citation_author=Xiaohong Joe Zhou;,citation_author=Richard Wixson;,citation_author=Tessa Balach;,citation_author=Chad M. Brummett;,citation_author=Daniel Clauw;,citation_author=Douglas Colquhoun;,citation_author=Steven E. Harte;,citation_author=Richard E. Harris;,citation_author=David A. Williams;,citation_author=Andrew C. Chang;,citation_author=Jennifer Waljee;,citation_author=Kathleen M. Fisch;,citation_author=Kristen Jepsen;,citation_author=Louise C. Laurent;,citation_author=Michael Olivier;,citation_author=Carl D. Langefeld;,citation_author=Timothy D. Howard;,citation_author=Oliver Fiehn;,citation_author=Jon M. Jacobs;,citation_author=Panshak Dakup;,citation_author=Wei-Jun Qian;,citation_author=Adam C. Swensen;,citation_author=Anna Lokshin;,citation_author=Martin Lindquist;,citation_author=Brian S. Caffo;,citation_author=Ciprian Crainiceanu;,citation_author=Scott Zeger;,citation_author=Ari Kahn;,citation_author=Tor Wager;,citation_author=Margaret Taub;,citation_author=James Ford;,citation_author=Stephani P. Sutherland;,citation_author=Laura D. Wandner;,citation_publication_date=2022-04-25;,citation_cover_date=2022-04-25;,citation_year=2022;,citation_fulltext_html_url=http://dx.doi.org/10.3389/fmed.2022.849214;,citation_doi=10.3389/fmed.2022.849214;,citation_volume=9;,citation_journal_title=Frontiers in Medicine;">
+<meta name="citation_reference" content="citation_title=Predicting chronic postsurgical pain: Current evidence and a novel program to develop predictive biomarker signatures;,citation_author=Kathleen A Sluka;,citation_author=Tor D Wager;,citation_author=Stephani P Sutherland;,citation_author=Patricia A Labosky;,citation_author=Tessa Balach;,citation_author=Emine O Bayman;,citation_author=Giovanni Berardi;,citation_author=Chad M Brummett;,citation_author=John Burns;,citation_author=Asokumar Buvanendran;,citation_author=others;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_issue=9;,citation_doi=10.1097/j.pain.0000000000002938;,citation_volume=164;,citation_journal_title=Pain;,citation_publisher=LWW;">
+<meta name="citation_reference" content="citation_title=A brief measure for assessing generalized anxiety disorder;,citation_author=Robert L. Spitzer;,citation_author=Kurt Kroenke;,citation_author=Janet B. W. Williams;,citation_author=Bernd Löwe;,citation_publication_date=2006-05-22;,citation_cover_date=2006-05-22;,citation_year=2006;,citation_issue=10;,citation_doi=10.1001/archinte.166.10.1092;,citation_volume=166;,citation_language=en;,citation_journal_title=Archives of Internal Medicine;">
+<meta name="citation_reference" content="citation_title=Validity and utility of the patient health questionnaire (PHQ)-2 and PHQ-9 for screening and diagnosis of depression in rural chiapas, mexico: A cross-sectional study;,citation_author=Jafet Arrieta;,citation_author=Mercedes Aguerrebere;,citation_author=Giuseppe Raviola;,citation_author=Hugo Flores;,citation_author=Patrick Elliott;,citation_author=Azucena Espinosa;,citation_author=Andrea Reyes;,citation_author=Eduardo Ortiz-Panozo;,citation_author=Elena G. Rodriguez-Gutierrez;,citation_author=Joia Mukherjee;,citation_author=Daniel Palazuelos;,citation_author=Molly F. Franke;,citation_publication_date=2017-02-13;,citation_cover_date=2017-02-13;,citation_year=2017;,citation_fulltext_html_url=http://dx.doi.org/10.1002/jclp.22390;,citation_issue=9;,citation_doi=10.1002/jclp.22390;,citation_volume=73;,citation_language=en;,citation_journal_title=Journal of Clinical Psychology;">
+<meta name="citation_reference" content="citation_title=The PHQ-8 as a measure of current depression in the general population;,citation_author=Kurt Kroenke;,citation_author=Tara W. Strine;,citation_author=Robert L. Spitzer;,citation_author=Janet B. W. Williams;,citation_author=Joyce T. Berry;,citation_author=Ali H. Mokdad;,citation_publication_date=2009-04;,citation_cover_date=2009-04;,citation_year=2009;,citation_fulltext_html_url=http://dx.doi.org/10.1016/j.jad.2008.06.026;,citation_issue=1-3;,citation_doi=10.1016/j.jad.2008.06.026;,citation_volume=114;,citation_language=en;,citation_journal_title=Journal of Affective Disorders;">
+<meta name="citation_reference" content="citation_title=A fear-avoidance beliefs questionnaire (FABQ) and the role of fear-avoidance beliefs in chronic low back pain and disability;,citation_author=Gordon Waddell;,citation_author=Mary Newton;,citation_author=Iain Henderson;,citation_author=Douglas Somerville;,citation_author=Chris J. Main;,citation_publication_date=1993-02;,citation_cover_date=1993-02;,citation_year=1993;,citation_issue=2;,citation_doi=10.1016/0304-3959(93)90127-b;,citation_volume=52;,citation_language=en;,citation_journal_title=Pain;">
+<meta name="citation_reference" content="citation_title=Mice: Multivariate imputation by chained equations in r;,citation_author=Stef Buuren;,citation_author=Karin Groothuis-Oudshoorn;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_doi=10.18637/jss.v045.i03;,citation_volume=45;">
+<meta name="citation_reference" content="citation_title=Data-driven network analysis identified subgroup-specific low back pain pathways: A cross-sectional GLA:d back study;,citation_author=Bernard X. W. Liew;,citation_author=Jan Hartvigsen;,citation_author=Marco Scutari;,citation_author=Alice Kongsted;,citation_publication_date=2023-01;,citation_cover_date=2023-01;,citation_year=2023;,citation_fulltext_html_url=http://dx.doi.org/10.1016/j.jclinepi.2022.11.010;,citation_doi=10.1016/j.jclinepi.2022.11.010;,citation_volume=153;,citation_language=en;,citation_journal_title=Journal of Clinical Epidemiology;">
+<meta name="citation_reference" content="citation_title=A real data-driven simulation strategy to select an imputation method for mixed-type trait data;,citation_author=Jacqueline A. May;,citation_author=Zeny Feng;,citation_author=Sarah J. Adamowicz;,citation_editor=Jiel Li;,citation_publication_date=2023-03-22;,citation_cover_date=2023-03-22;,citation_year=2023;,citation_fulltext_html_url=http://dx.doi.org/10.1371/journal.pcbi.1010154;,citation_issue=3;,citation_doi=10.1371/journal.pcbi.1010154;,citation_volume=19;,citation_language=en;,citation_journal_title=PLOS Computational Biology;">
+<meta name="citation_reference" content="citation_title=Development and validation of a daily pain catastrophizing scale;,citation_author=Beth D. Darnall;,citation_author=John A. Sturgeon;,citation_author=Karon F. Cook;,citation_author=Chloe J. Taub;,citation_author=Anuradha Roy;,citation_author=John W. Burns;,citation_author=Michael Sullivan;,citation_author=Sean C. Mackey;,citation_publication_date=2017-09;,citation_cover_date=2017-09;,citation_year=2017;,citation_fulltext_html_url=http://dx.doi.org/10.1016/j.jpain.2017.05.003;,citation_issue=9;,citation_doi=10.1016/j.jpain.2017.05.003;,citation_volume=18;,citation_language=en;,citation_journal_title=The Journal of Pain;">
+<meta name="citation_reference" content="citation_title=Development and evaluation of short forms of the pain catastrophizing scale and the pain self-efficacy questionnaire;,citation_author=L. A. McWilliams;,citation_author=J. Kowal;,citation_author=K. G. Wilson;,citation_publication_date=2015-03-11;,citation_cover_date=2015-03-11;,citation_year=2015;,citation_fulltext_html_url=http://dx.doi.org/10.1002/ejp.665;,citation_issue=9;,citation_doi=10.1002/ejp.665;,citation_volume=19;,citation_language=en;,citation_journal_title=European Journal of Pain;">
+<meta name="citation_reference" content="citation_title=2016 revisions to the 2010/2011 fibromyalgia diagnostic criteria;,citation_author=Frederick Wolfe;,citation_author=Daniel J. Clauw;,citation_author=Mary-Ann Fitzcharles;,citation_author=Don L. Goldenberg;,citation_author=Winfried Häuser;,citation_author=Robert L. Katz;,citation_author=Philip J. Mease;,citation_author=Anthony S. Russell;,citation_author=Irwin Jon Russell;,citation_author=Brian Walitt;,citation_publication_date=2016-12;,citation_cover_date=2016-12;,citation_year=2016;,citation_fulltext_html_url=http://dx.doi.org/10.1016/j.semarthrit.2016.08.012;,citation_issue=3;,citation_doi=10.1016/j.semarthrit.2016.08.012;,citation_volume=46;,citation_language=en;,citation_journal_title=Seminars in Arthritis and Rheumatism;">
+<meta name="citation_reference" content="citation_title=Pain&amp;amp;amp;lt;i&amp;gt;DETECT&amp;lt;/i&amp;gt;: A new screening questionnaire to identify neuropathic components in patients with back pain;,citation_author=Rainer Freynhagen;,citation_author=Ralf Baron;,citation_author=Ulrich Gockel;,citation_author=Thomas R. Tölle;,citation_publication_date=2006-08-29;,citation_cover_date=2006-08-29;,citation_year=2006;,citation_fulltext_html_url=http://dx.doi.org/10.1185/030079906X132488;,citation_issue=10;,citation_doi=10.1185/030079906x132488;,citation_volume=22;,citation_language=en;,citation_journal_title=Current Medical Research and Opinion;">
+<meta name="citation_reference" content="citation_title=The patient-reported outcomes measurement information system (PROMIS) developed and tested its first wave of adult self-reported health outcome item banks: 20052008;,citation_author=David Cella;,citation_author=William Riley;,citation_author=Arthur Stone;,citation_author=Nan Rothrock;,citation_author=Bryce Reeve;,citation_author=Susan Yount;,citation_author=Dagmar Amtmann;,citation_author=Rita Bode;,citation_author=Daniel Buysse;,citation_author=Seung Choi;,citation_author=Karon Cook;,citation_author=Robert DeVellis;,citation_author=Darren DeWalt;,citation_author=James F. Fries;,citation_author=Richard Gershon;,citation_author=Elizabeth A. Hahn;,citation_author=Jin-Shei Lai;,citation_author=Paul Pilkonis;,citation_author=Dennis Revicki;,citation_author=Matthias Rose;,citation_author=Kevin Weinfurt;,citation_author=Ron Hays;,citation_publication_date=2010-11;,citation_cover_date=2010-11;,citation_year=2010;,citation_fulltext_html_url=http://dx.doi.org/10.1016/j.jclinepi.2010.04.011;,citation_issue=11;,citation_doi=10.1016/j.jclinepi.2010.04.011;,citation_volume=63;,citation_language=en;,citation_journal_title=Journal of Clinical Epidemiology;">
+<meta name="citation_reference" content="citation_title=The pittsburgh sleep quality index: A new instrument for psychiatric practice and research;,citation_author=Daniel J. Buysse;,citation_author=Charles F. Reynolds;,citation_author=Timothy H. Monk;,citation_author=Susan R. Berman;,citation_author=David J. Kupfer;,citation_publication_date=1989-05;,citation_cover_date=1989-05;,citation_year=1989;,citation_issue=2;,citation_doi=10.1016/0165-1781(89)90047-4;,citation_volume=28;,citation_language=en;,citation_journal_title=Psychiatry Research;">
+<meta name="citation_reference" content="citation_title=Development and initial validation of the pain resilience scale;,citation_author=P. Maxwell Slepian;,citation_author=Brett Ankawi;,citation_author=Lina K. Himawan;,citation_author=Christopher R. France;,citation_publication_date=2016-04;,citation_cover_date=2016-04;,citation_year=2016;,citation_fulltext_html_url=http://dx.doi.org/10.1016/j.jpain.2015.12.010;,citation_issue=4;,citation_doi=10.1016/j.jpain.2015.12.010;,citation_volume=17;,citation_language=en;,citation_journal_title=The Journal of Pain;">
+<meta name="citation_reference" content="citation_title=Short and extra-short forms of the big five inventory2: The BFI-2-s and BFI-2-XS;,citation_author=Christopher J. Soto;,citation_author=Oliver P. John;,citation_publication_date=2017-06;,citation_cover_date=2017-06;,citation_year=2017;,citation_doi=10.1016/j.jrp.2017.02.004;,citation_volume=68;,citation_language=en;,citation_journal_title=Journal of Research in Personality;">
+<meta name="citation_reference" content="citation_title=Pain-related impairment of daily activities after thoracic surgery;,citation_author=Thomas K. Ringsted;,citation_author=Kim Wildgaard;,citation_author=Svend Kreiner;,citation_author=Henrik Kehlet;,citation_publication_date=2013-09;,citation_cover_date=2013-09;,citation_year=2013;,citation_fulltext_html_url=http://dx.doi.org/10.1097/ajp.0b013e318278d4e2;,citation_issue=9;,citation_doi=10.1097/ajp.0b013e318278d4e2;,citation_volume=29;,citation_language=en;,citation_journal_title=The Clinical Journal of Pain;">
+<meta name="citation_reference" content="citation_title=Pain-related limitations in daily activities following thoracic surgery in a united states population;,citation_author=Emine O. Bayman;,citation_publication_date=2017-03-10;,citation_cover_date=2017-03-10;,citation_year=2017;,citation_fulltext_html_url=http://dx.doi.org/10.36076/ppj.2017.e378;,citation_issue=20;3;,citation_doi=10.36076/ppj.2017.e378;,citation_volume=3;,citation_language=en;,citation_journal_title=Pain Physician;">
+<meta name="citation_reference" content="citation_title=(142) the danish questionnaire for pain after thoracic surgery in a united states population;,citation_author=E. Bayman;,citation_author=R. Lennertz;,citation_author=T. Brennan;,citation_publication_date=2016-04;,citation_cover_date=2016-04;,citation_year=2016;,citation_fulltext_html_url=http://dx.doi.org/10.1016/j.jpain.2016.01.045;,citation_issue=4;,citation_doi=10.1016/j.jpain.2016.01.045;,citation_volume=17;,citation_language=en;,citation_journal_title=The Journal of Pain;">
+<meta name="citation_reference" content="citation_title=Development and initial validation of a brief self-report measure of cognitive dysfunction in fibromyalgia;,citation_author=Anna L. Kratz;,citation_author=Stephen G. Schilling;,citation_author=Jenna Goesling;,citation_author=David A. Williams;,citation_publication_date=2015-06;,citation_cover_date=2015-06;,citation_year=2015;,citation_fulltext_html_url=http://dx.doi.org/10.1016/j.jpain.2015.02.008;,citation_issue=6;,citation_doi=10.1016/j.jpain.2015.02.008;,citation_volume=16;,citation_language=en;,citation_journal_title=The Journal of Pain;">
+<meta name="citation_reference" content="citation_title=The PROMIS FatigueFM profile: A self-report measure of fatigue for use in fibromyalgia;,citation_author=Anna L Kratz;,citation_author=Stephen Schilling;,citation_author=Jenna Goesling;,citation_author=David A Williams;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_issue=7;,citation_doi=10.1007/s11136-016-1230-9;,citation_volume=25;,citation_journal_title=Quality of Life Research;,citation_publisher=Springer;">
+<meta name="citation_reference" content="citation_title=An evaluation of the efficacy, reliability, and sensitivity of motion correction strategies for resting-state functional MRI;,citation_author=Linden Parkes;,citation_author=Ben Fulcher;,citation_author=Murat Yücel;,citation_author=Alex Fornito;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.1016/j.neuroimage.2017.12.073;,citation_volume=171;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Spurious but systematic correlations in functional connectivity MRI networks arise from subject motion;,citation_author=Jonathan D Power;,citation_author=Kelly A Barnes;,citation_author=Abraham Z Snyder;,citation_author=Bradley L Schlaggar;,citation_author=Steven E Petersen;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=3;,citation_doi=10.1016/j.neuroimage.2011.10.018;,citation_volume=59;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=The rapid assessment of physical activity (RAPA) among older adults;,citation_author=Tari D Topolski;,citation_author=James LoGerfo;,citation_author=Donald L Patrick;,citation_author=Barbara Williams;,citation_author=Julie Walwick;,citation_author=MAJ Marsha B Patrick;,citation_publication_date=2006;,citation_cover_date=2006;,citation_year=2006;,citation_issue=4;,citation_volume=3;,citation_journal_title=Preventing chronic disease;">
+<meta name="citation_reference" content="citation_title=Brain-predicted age difference estimated using DeepBrainNet is significantly associated with pain and function—a multi-institutional and multiscanner study;,citation_author=Pedro A Valdes-Hernandez;,citation_author=Chavier Laffitte Nodarse;,citation_author=Alisa J Johnson;,citation_author=Soamy Montesino-Goicolea;,citation_author=Vishnu Bashyam;,citation_author=Christos Davatzikos;,citation_author=Julio A Peraza;,citation_author=James H Cole;,citation_author=Zhiguang Huo;,citation_author=Roger B Fillingim;,citation_author=others;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_issue=12;,citation_doi=10.1097/j.pain.0000000000002984;,citation_volume=164;,citation_journal_title=Pain;,citation_publisher=LWW;">
+<meta name="citation_reference" content="citation_title=NIH’s helping to end addiction long-termSM initiative (NIH HEAL initiative) clinical pain management common data element program;,citation_author=Laura Dover Wandner;,citation_author=Anthony F Domenichiello;,citation_author=Jennifer Beierlein;,citation_author=Leah Pogorzala;,citation_author=Guadalupe Aquino;,citation_author=Andrew Siddons;,citation_author=Linda Porter;,citation_author=Jane Atkinson;,citation_author=NIH Pain Consortium Institute;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_issue=3;,citation_doi=10.1016/j.jpain.2021.08.005;,citation_volume=23;,citation_journal_title=The Journal of Pain;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Development of short forms from the PROMIS™ sleep disturbance and sleep-related impairment item banks;,citation_author=Lan Yu;,citation_author=Daniel J Buysse;,citation_author=Anne Germain;,citation_author=Douglas E Moul;,citation_author=Angela Stover;,citation_author=Nathan E Dodds;,citation_author=Kelly L Johnston;,citation_author=Paul A Pilkonis;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=1;,citation_doi=10.1080/15402002.2012.636266;,citation_volume=10;,citation_journal_title=Behavioral sleep medicine;,citation_publisher=Taylor &amp;amp;amp; Francis;">
+<meta name="citation_reference" content="citation_title=An improved approach to detection of amplitude of low-frequency fluctuation (ALFF) for resting-state fMRI: Fractional ALFF;,citation_author=Qi-Hong Zou;,citation_author=Chao-Zhe Zhu;,citation_author=Yihong Yang;,citation_author=Xi-Nian Zuo;,citation_author=Xiang-Yu Long;,citation_author=Qing-Jiu Cao;,citation_author=Yu-Feng Wang;,citation_author=Yu-Feng Zang;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_issue=1;,citation_doi=10.1016/j.jneumeth.2008.04.012;,citation_volume=172;,citation_journal_title=Journal of neuroscience methods;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=fMRIPrep: A robust preprocessing pipeline for functional MRI;,citation_author=Oscar Esteban;,citation_author=Christopher Markiewicz;,citation_author=Ross W Blair;,citation_author=Craig Moodie;,citation_author=Ayse Ilkay Isik;,citation_author=Asier Erramuzpe Aliaga;,citation_author=James Kent;,citation_author=Mathias Goncalves;,citation_author=Elizabeth DuPre;,citation_author=Madeleine Snyder;,citation_author=Hiroyuki Oya;,citation_author=Satrajit Ghosh;,citation_author=Jessey Wright;,citation_author=Joke Durnez;,citation_author=Russell Poldrack;,citation_author=Krzysztof Jacek Gorgolewski;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_doi=10.1038/s41592-018-0235-4;,citation_volume=16;,citation_journal_title=Nature Methods;">
+<meta name="citation_reference" content="citation_title=fMRIPrep 24.1.1;,citation_author=Oscar Esteban;,citation_author=Ross Blair;,citation_author=Christopher J. Markiewicz;,citation_author=Shoshana L. Berleant;,citation_author=Craig Moodie;,citation_author=Feilong Ma;,citation_author=Ayse Ilkay Isik;,citation_author=Asier Erramuzpe;,citation_author=Mathias Kent;,citation_author=Elizabeth DuPre;,citation_author=Kevin R. Sitek;,citation_author=Daniel E. P. Gomez;,citation_author=Daniel J. Lurie;,citation_author=Zhifang Ye;,citation_author=Russell A. Poldrack;,citation_author=Krzysztof J. Gorgolewski;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.5281/zenodo.852659;,citation_journal_title=Software;,citation_publisher=Zenodo;">
+<meta name="citation_reference" content="citation_title=TemplateFlow: FAIR-sharing of multi-scale, multi-species brain models;,citation_author=R. Ciric;,citation_author=William H. Thompson;,citation_author=R. Lorenz;,citation_author=M. Goncalves;,citation_author=E. MacNicol;,citation_author=C. J. Markiewicz;,citation_author=Y. O. Halchenko;,citation_author=S. S. Ghosh;,citation_author=K. J. Gorgolewski;,citation_author=R. A. Poldrack;,citation_author=O. Esteban;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_doi=10.1038/s41592-022-01681-2;,citation_volume=19;,citation_journal_title=Nature Methods;">
+<meta name="citation_reference" content="citation_title=Nipype: A flexible, lightweight and extensible neuroimaging data processing framework in python;,citation_author=K. Gorgolewski;,citation_author=C. D. Burns;,citation_author=C. Madison;,citation_author=D. Clark;,citation_author=Y. O. Halchenko;,citation_author=M. L. Waskom;,citation_author=S. Ghosh;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_doi=10.3389/fninf.2011.00013;,citation_volume=5;,citation_journal_title=Frontiers in Neuroinformatics;">
+<meta name="citation_reference" content="citation_title=Nipype;,citation_author=Krzysztof J. Gorgolewski;,citation_author=Oscar Esteban;,citation_author=Christopher J. Markiewicz;,citation_author=Erik Ziegler;,citation_author=David Gage Ellis;,citation_author=Michael Philipp Notter;,citation_author=Dorota Jarecka;,citation_author=Hans Johnson;,citation_author=Christopher Burns;,citation_author=Alexandre Manhães-Savio;,citation_author=Carlo Hamalainen;,citation_author=Benjamin Yvernault;,citation_author=Taylor Salo;,citation_author=Kesshi Jordan;,citation_author=Mathias Goncalves;,citation_author=Michael Waskom;,citation_author=Daniel Clark;,citation_author=Jason Wong;,citation_author=Fred Loney;,citation_author=Marc Modat;,citation_author=Blake E Dewey;,citation_author=Cindee Madison;,citation_author=Matteo Visconti di Oleggio Castello;,citation_author=Michael G. Clark;,citation_author=Michael Dayan;,citation_author=Dav Clark;,citation_author=Anisha Keshavan;,citation_author=Basile Pinsard;,citation_author=Alexandre Gramfort;,citation_author=Shoshana Berleant;,citation_author=Dylan M. Nielson;,citation_author=Salma Bougacha;,citation_author=Gael Varoquaux;,citation_author=Ben Cipollini;,citation_author=Ross Markello;,citation_author=Ariel Rokem;,citation_author=Brendan Moloney;,citation_author=Yaroslav O. Halchenko;,citation_author=Demian Wassermann;,citation_author=Michael Hanke;,citation_author=Christian Horea;,citation_author=Jakub Kaczmarzyk;,citation_author=Gilles Hollander;,citation_author=Elizabeth DuPre;,citation_author=Ashley Gillman;,citation_author=David Mordom;,citation_author=Colin Buchanan;,citation_author=Rosalia Tungaraza;,citation_author=Wolfgang M. Pauli;,citation_author=Shariq Iqbal;,citation_author=Sharad Sikka;,citation_author=Matteo Mancini;,citation_author=Yannick Schwartz;,citation_author=Ian B. Malone;,citation_author=Mathieu Dubois;,citation_author=Caroline Frohlich;,citation_author=David Welch;,citation_author=Jessica Forbes;,citation_author=James Kent;,citation_author=Aimi Watanabe;,citation_author=Chad Cumba;,citation_author=Julia M. Huntenburg;,citation_author=Erik Kastman;,citation_author=B. Nolan Nichols;,citation_author=Arman Eshaghi;,citation_author=Daniel Ginsburg;,citation_author=Alexander Schaefer;,citation_author=Benjamin Acland;,citation_author=Steven Giavasis;,citation_author=Jens Kleesiek;,citation_author=Drew Erickson;,citation_author=René Küttner;,citation_author=Christian Haselgrove;,citation_author=Carlos Correa;,citation_author=Ali Ghayoor;,citation_author=Franz Liem;,citation_author=Jarrod Millman;,citation_author=Daniel Haehn;,citation_author=Jeff Lai;,citation_author=Dale Zhou;,citation_author=Ross Blair;,citation_author=Tristan Glatard;,citation_author=Mandy Renfro;,citation_author=Siqi Liu;,citation_author=Ari E. Kahn;,citation_author=Fernando Pérez-García;,citation_author=William Triplett;,citation_author=Leonie Lampe;,citation_author=Jörg Stadler;,citation_author=Xiang-Zhen Kong;,citation_author=Michael Hallquist;,citation_author=Andrey Chetverikov;,citation_author=John Salvatore;,citation_author=Anne Park;,citation_author=Russell Poldrack;,citation_author=R. Cameron Craddock;,citation_author=Souheil Inati;,citation_author=Oliver Hinds;,citation_author=Gavin Cooper;,citation_author=L. Nathan Perkins;,citation_author=Ana Marina;,citation_author=Aaron Mattfeld;,citation_author=Maxime Noel;,citation_author=Lukas Snoek;,citation_author=K Matsubara;,citation_author=Brian Cheung;,citation_author=Simon Rothmei;,citation_author=Sebastian Urchs;,citation_author=Joke Durnez;,citation_author=Fred Mertz;,citation_author=Daniel Geisler;,citation_author=Andrew Floren;,citation_author=Stephan Gerhard;,citation_author=Paul Sharp;,citation_author=Miguel Molina-Romero;,citation_author=Alejandro Weinstein;,citation_author=William Broderick;,citation_author=Victor Saase;,citation_author=Sami Kristian Andberg;,citation_author=Robbert Harms;,citation_author=Kai Schlamp;,citation_author=Jaime Arias;,citation_author=Dimitri Papadopoulos Orfanos;,citation_author=Claire Tarbert;,citation_author=Arielle Tambini;,citation_author=Alejandro De La Vega;,citation_author=Thomas Nickson;,citation_author=Matthew Brett;,citation_author=Marcel Falkiewicz;,citation_author=Kornelius Podranski;,citation_author=Janosch Linkersdörfer;,citation_author=Guillaume Flandin;,citation_author=Eduard Ort;,citation_author=Dmitry Shachnev;,citation_author=Daniel McNamee;,citation_author=Andrew Davison;,citation_author=Jan Varada;,citation_author=Isaac Schwabacher;,citation_author=John Pellman;,citation_author=Martin Perez-Guevara;,citation_author=Ranjeet Khanuja;,citation_author=Nicolas Pannetier;,citation_author=Conor McDermottroe;,citation_author=Satrajit Ghosh;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.5281/zenodo.596855;,citation_journal_title=Software;,citation_publisher=Zenodo;">
+<meta name="citation_reference" content="citation_title=N4ITK: Improved N3 bias correction;,citation_author=N. J. Tustison;,citation_author=B. B. Avants;,citation_author=P. A. Cook;,citation_author=Y. Zheng;,citation_author=A. Egan;,citation_author=P. A. Yushkevich;,citation_author=J. C. Gee;,citation_publication_date=2010;,citation_cover_date=2010;,citation_year=2010;,citation_issue=6;,citation_doi=10.1109/TMI.2010.2046908;,citation_issn=0278-0062;,citation_volume=29;,citation_journal_title=IEEE Transactions on Medical Imaging;">
+<meta name="citation_reference" content="citation_title=Cortical surface-based analysis: I. Segmentation and surface reconstruction;,citation_author=Anders M. Dale;,citation_author=Bruce Fischl;,citation_author=Martin I. Sereno;,citation_publication_date=1999;,citation_cover_date=1999;,citation_year=1999;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1053811998903950;,citation_issue=2;,citation_doi=10.1006/nimg.1998.0395;,citation_issn=1053-8119;,citation_volume=9;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Mindboggling morphometry of human brains;,citation_author=Arno Klein;,citation_author=Satrajit S. Ghosh;,citation_author=Forrest S. Bao;,citation_author=Joachim Giard;,citation_author=Yrjö Häme;,citation_author=Eliezer Stavsky;,citation_author=Noah Lee;,citation_author=Brian Rossa;,citation_author=Martin Reuter;,citation_author=Elias Chaibub Neto;,citation_author=Anisha Keshavan;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_fulltext_html_url=https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005350;,citation_issue=2;,citation_doi=10.1371/journal.pcbi.1005350;,citation_issn=1553-7358;,citation_volume=13;,citation_journal_title=PLOS Computational Biology;">
+<meta name="citation_reference" content="citation_title=A Probabilistic Atlas of the Human Brain: Theory and Rationale for Its Development: The International Consortium for Brain Mapping (ICBM);,citation_author=John C. Mazziotta;,citation_author=Arthur W. Toga;,citation_author=Alan Evans;,citation_author=Peter Fox;,citation_author=Jack Lancaster;,citation_publication_date=1995;,citation_cover_date=1995;,citation_year=1995;,citation_issue=2, Part A;,citation_doi=10.1006/nimg.1995.1012;,citation_issn=1053-8119;,citation_volume=2;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Unbiased nonlinear average age-appropriate brain templates from birth to adulthood;,citation_author=VS Fonov;,citation_author=AC Evans;,citation_author=RC McKinstry;,citation_author=CR Almli;,citation_author=DL Collins;,citation_publication_date=2009;,citation_cover_date=2009;,citation_year=2009;,citation_doi=10.1016/S1053-8119(09)70884-5;,citation_volume=47, Supplement 1;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Brain templates and atlases;,citation_author=AC Evans;,citation_author=AL Janke;,citation_author=DL Collins;,citation_author=S Baillet;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=2;,citation_doi=10.1016/j.neuroimage.2012.01.024;,citation_volume=62;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Symmetric diffeomorphic image registration with cross-correlation: Evaluating automated labeling of elderly and neurodegenerative brain;,citation_author=B. B. Avants;,citation_author=C. L. Epstein;,citation_author=M. Grossman;,citation_author=J. C. Gee;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1361841507000606;,citation_issue=1;,citation_doi=10.1016/j.media.2007.06.004;,citation_issn=1361-8415;,citation_volume=12;,citation_journal_title=Medical Image Analysis;">
+<meta name="citation_reference" content="citation_title=Segmentation of brain MR images through a hidden markov random field model and the expectation-maximization algorithm;,citation_author=Y. Zhang;,citation_author=M. Brady;,citation_author=S. Smith;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_issue=1;,citation_doi=10.1109/42.906424;,citation_issn=0278-0062;,citation_volume=20;,citation_journal_title=IEEE Transactions on Medical Imaging;">
+<meta name="citation_reference" content="citation_title=Evaluation of field map and nonlinear registration methods for correction of susceptibility artifacts in diffusion MRI;,citation_author=Sijia Wang;,citation_author=Daniel J. Peterson;,citation_author=J. C. Gatenby;,citation_author=Wenbin Li;,citation_author=Thomas J. Grabowski;,citation_author=Tara M. Madhyastha;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_fulltext_html_url=https://www.frontiersin.org/articles/10.3389/fninf.2017.00017/full;,citation_doi=10.3389/fninf.2017.00017;,citation_issn=1662-5196;,citation_volume=11;,citation_journal_title=Frontiers in Neuroinformatics;">
+<meta name="citation_reference" content="citation_title=Evaluating nonlinear coregistration of BOLD EPI and T1w images;,citation_author=Julia M. Huntenburg;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_fulltext_html_url=https://hdl.handle.net/11858/00-001M-0000-002B-1CB5-A;,citation_dissertation_institution=Freie Universität;">
+<meta name="citation_reference" content="citation_title=Characterization and correction of geometric distortions in 814 diffusion weighted images;,citation_author=Jeffrey Mark Treiber;,citation_author=Nathan S. White;,citation_author=Tyler Christian Steed;,citation_author=Hauke Bartsch;,citation_author=Dominic Holland;,citation_author=Nikdokht Farid;,citation_author=Carrie R. McDonald;,citation_author=Bob S. Carter;,citation_author=Anders Martin Dale;,citation_author=Clark C. Chen;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_fulltext_html_url=https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0152472;,citation_issue=3;,citation_doi=10.1371/journal.pone.0152472;,citation_issn=1932-6203;,citation_volume=11;,citation_journal_title=PLOS ONE;">
+<meta name="citation_reference" content="citation_title=A global optimisation method for robust affine registration of brain images;,citation_author=Mark Jenkinson;,citation_author=Stephen Smith;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1361841501000366;,citation_issue=2;,citation_doi=10.1016/S1361-8415(01)00036-6;,citation_issn=1361-8415;,citation_volume=5;,citation_journal_title=Medical Image Analysis;">
+<meta name="citation_reference" content="citation_title=Improved optimization for the robust and accurate linear registration and motion correction of brain images;,citation_author=Mark Jenkinson;,citation_author=Peter Bannister;,citation_author=Michael Brady;,citation_author=Stephen Smith;,citation_publication_date=2002;,citation_cover_date=2002;,citation_year=2002;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1053811902911328;,citation_issue=2;,citation_doi=10.1006/nimg.2002.1132;,citation_issn=1053-8119;,citation_volume=17;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Accurate and robust brain image alignment using boundary-based registration;,citation_author=Douglas N Greve;,citation_author=Bruce Fischl;,citation_publication_date=2009;,citation_cover_date=2009;,citation_year=2009;,citation_issue=1;,citation_doi=10.1016/j.neuroimage.2009.06.060;,citation_issn=1095-9572;,citation_volume=48;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Methods to detect, characterize, and remove motion artifact in resting state fMRI;,citation_author=Jonathan D. Power;,citation_author=Anish Mitra;,citation_author=Timothy O. Laumann;,citation_author=Abraham Z. Snyder;,citation_author=Bradley L. Schlaggar;,citation_author=Steven E. Petersen;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1053811913009117;,citation_issue=Supplement C;,citation_doi=10.1016/j.neuroimage.2013.08.048;,citation_issn=1053-8119;,citation_volume=84;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=An improved framework for confound regression and filtering for control of motion artifact in the preprocessing of resting-state functional connectivity data;,citation_author=Theodore D. Satterthwaite;,citation_author=Mark A. Elliott;,citation_author=Raphael T. Gerraty;,citation_author=Kosha Ruparel;,citation_author=James Loughead;,citation_author=Monica E. Calkins;,citation_author=Simon B. Eickhoff;,citation_author=Hakon Hakonarson;,citation_author=Ruben C. Gur;,citation_author=Raquel E. Gur;,citation_author=Daniel H. Wolf;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1053811912008609;,citation_issue=1;,citation_doi=10.1016/j.neuroimage.2012.08.052;,citation_issn=10538119;,citation_volume=64;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Machine learning for neuroimaging with scikit-learn;,citation_author=Alexandre Abraham;,citation_author=Fabian Pedregosa;,citation_author=Michael Eickenberg;,citation_author=Philippe Gervais;,citation_author=Andreas Mueller;,citation_author=Jean Kossaifi;,citation_author=Alexandre Gramfort;,citation_author=Bertrand Thirion;,citation_author=Gael Varoquaux;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_fulltext_html_url=https://www.frontiersin.org/articles/10.3389/fninf.2014.00014/full;,citation_doi=10.3389/fninf.2014.00014;,citation_issn=1662-5196;,citation_volume=8;,citation_journal_title=Frontiers in Neuroinformatics;">
+<meta name="citation_reference" content="citation_title=Evaluation of noisy data;,citation_author=C. Lanczos;,citation_publication_date=1964;,citation_cover_date=1964;,citation_year=1964;,citation_fulltext_html_url=https://epubs.siam.org/doi/10.1137/0701007;,citation_issue=1;,citation_doi=10.1137/0701007;,citation_issn=0887-459X;,citation_volume=1;,citation_journal_title=Journal of the Society for Industrial and Applied Mathematics Series B Numerical Analysis;">
+<meta name="citation_reference" content="citation_title=A component based noise correction method (CompCor) for BOLD and perfusion based fMRI;,citation_author=Yashar Behzadi;,citation_author=Khaled Restom;,citation_author=Joy Liau;,citation_author=Thomas T. Liu;,citation_publication_date=2007;,citation_cover_date=2007;,citation_year=2007;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1053811907003837;,citation_issue=1;,citation_doi=10.1016/j.neuroimage.2007.04.042;,citation_issn=1053-8119;,citation_volume=37;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=The minimal preprocessing pipelines for the human connectome project;,citation_author=Matthew F. Glasser;,citation_author=Stamatios N. Sotiropoulos;,citation_author=J. Anthony Wilson;,citation_author=Timothy S. Coalson;,citation_author=Bruce Fischl;,citation_author=Jesper L. Andersson;,citation_author=Junqian Xu;,citation_author=Saad Jbabdi;,citation_author=Matthew Webster;,citation_author=Jonathan R. Polimeni;,citation_author=David C. Van Essen;,citation_author=Mark Jenkinson;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1053811913005053;,citation_doi=10.1016/j.neuroimage.2013.04.127;,citation_issn=1053-8119;,citation_volume=80;,citation_journal_title=NeuroImage;,citation_series_title=Mapping the connectome;">
+<meta name="citation_reference" content="citation_title=Highly accurate inverse consistent registration: A robust approach;,citation_author=Martin Reuter;,citation_author=Herminia Diana Rosas;,citation_author=Bruce Fischl;,citation_publication_date=2010;,citation_cover_date=2010;,citation_year=2010;,citation_issue=4;,citation_doi=10.1016/j.neuroimage.2010.07.020;,citation_volume=53;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Software tools for analysis and visualization of fMRI data;,citation_author=Robert W. Cox;,citation_author=James S. Hyde;,citation_publication_date=1997;,citation_cover_date=1997;,citation_year=1997;,citation_issue=4-5;,citation_doi=10.1002/(SICI)1099-1492(199706/08)10:4/5&amp;amp;amp;lt;171::AID-NBM453&amp;gt;3.0.CO;2-L;,citation_volume=10;,citation_journal_title=NMR in Biomedicine;">
+<meta name="citation_reference" content="citation_title=Enhancement of BOLD-contrast sensitivity by single-shot multi-echo functional MR imaging;,citation_author=Stefan Posse;,citation_author=Stefan Wiese;,citation_author=Daniel Gembris;,citation_author=Klaus Mathiak;,citation_author=Christoph Kessler;,citation_author=Maria-Liisa Grosse-Ruyken;,citation_author=Barbara Elghahwagi;,citation_author=Todd Richards;,citation_author=Stephen R. Dager;,citation_author=Valerij G. Kiselev;,citation_publication_date=1999;,citation_cover_date=1999;,citation_year=1999;,citation_issue=1;,citation_doi=10.1002/(SICI)1522-2594(199907)42:1&amp;amp;amp;lt;87::AID-MRM13&amp;gt;3.0.CO;2-O;,citation_volume=42;,citation_journal_title=Magnetic Resonance in Medicine;">
+<meta name="citation_reference" content="citation_title=How to correct susceptibility distortions in spin-echo echo-planar images: Application to diffusion tensor imaging;,citation_author=Jesper LR Andersson;,citation_author=Stefan Skare;,citation_author=John Ashburner;,citation_publication_date=2003;,citation_cover_date=2003;,citation_year=2003;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1053811903003367;,citation_issue=2;,citation_doi=10.1016/S1053-8119(03)00336-7;,citation_issn=1053-8119;,citation_volume=20;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=An improved model of motion-related signal changes in fMRI;,citation_abstract=Head motion is a significant source of noise in the estimation of functional connectivity from resting-state functional MRI (rs-fMRI). Current strategies to reduce this noise include image realignment, censoring time points corrupted by motion, and including motion realignment parameters and their derivatives as additional nuisance regressors in the general linear model. However, this nuisance regression approach assumes that the motion-induced signal changes are linearly related to the estimated realignment parameters, which is not always the case. In this study we develop an improved model of motion-related signal changes, where nuisance regressors are formed by first rotating and translating a single brain volume according to the estimated motion, re-registering the data, and then performing a principal components analysis (PCA) on the resultant time series of both moved and re-registered data. We show that these “Motion Simulated (MotSim)” regressors account for significantly greater fraction of variance, result in higher temporal signal-to-noise, and lead to functional connectivity estimates that are less affected by motion compared to the most common current approach of using the realignment parameters and their derivatives as nuisance regressors. This improvement should lead to more accurate estimates of functional connectivity, particularly in populations where motion is prevalent, such as patients and young children.;,citation_author=Rémi Patriat;,citation_author=Richard C. Reynolds;,citation_author=Rasmus M. Birn;,citation_publication_date=2017-01;,citation_cover_date=2017-01;,citation_year=2017;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/S1053811916304360;,citation_doi=10.1016/j.neuroimage.2016.08.051;,citation_issn=1053-8119;,citation_volume=144, Part A;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Dipy, a library for the analysis of diffusion MRI data;,citation_author=Eleftherios Garyfallidis;,citation_author=Matthew Brett;,citation_author=Bagrat Amirbekian;,citation_author=Ariel Rokem;,citation_author=Stefan Van Der Walt;,citation_author=Maxime Descoteaux;,citation_author=Ian Nimmo-Smith;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_volume=8;,citation_journal_title=Frontiers in neuroinformatics;,citation_publisher=Frontiers;">
+<meta name="citation_reference" content="citation_title=Evaluating the reliability of human brain white matter tractometry;,citation_author=J. Kruper;,citation_author=J. D. Yeatman;,citation_author=A. Richie-Halford;,citation_author=D. Bloom;,citation_author=M. Grotheer;,citation_author=S. Caffarra;,citation_author=G. Kiar;,citation_author=I. I. Karipidis;,citation_author=E. Roy;,citation_author=B. Q. Chandio;,citation_author=E. Garyfallidis;,citation_author=A. Rokem;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_volume=1;,citation_journal_title=Aperture Neuro;">
+<meta name="citation_reference" content="citation_title=Tract profiles of white matter properties: Automating fiber-tract quantification;,citation_author=Jason D. Yeatman;,citation_author=Robert F. Dougherty;,citation_author=Nathaniel J. Myall;,citation_author=Brian A. Wandell;,citation_author=Heidi M. Feldman;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=11;,citation_doi=10.1371/journal.pone.0049790;,citation_volume=7;,citation_journal_title=PLoS ONE;">
+<meta name="citation_reference" content="citation_title=Unbiased nonlinear average age-appropriate brain templates from birth to adulthood;,citation_author=VS Fonov;,citation_author=AC Evans;,citation_author=RC McKinstry;,citation_author=CR Almli;,citation_author=DL Collins;,citation_publication_date=2009;,citation_cover_date=2009;,citation_year=2009;,citation_fulltext_html_url=http://www.sciencedirect.com/science/article/pii/S1053811909708845;,citation_doi=10.1016/S1053-8119(09)70884-5;,citation_issn=1053-8119;,citation_volume=47, Supplement 1;,citation_journal_title=NeuroImage;,citation_series_title=Organization for human brain mapping 2009 annual meeting;">
+<meta name="citation_reference" content="citation_title=Enhancement of BOLD-contrast sensitivity by single-shot multi-echo functional MR imaging;,citation_author=Stefan Posse;,citation_author=Stefan Wiese;,citation_author=Daniel Gembris;,citation_author=Klaus Mathiak;,citation_author=Christoph Kessler;,citation_author=Maria-Liisa Grosse-Ruyken;,citation_author=Barbara Elghahwagi;,citation_author=Todd Richards;,citation_author=Stephen R. Dager;,citation_author=Valerij G. Kiselev;,citation_publication_date=1999;,citation_cover_date=1999;,citation_year=1999;,citation_issue=1;,citation_doi=10.1002/(SICI)1522-2594(199907)42:1&amp;amp;amp;lt;87::AID-MRM13&amp;gt;3.0.CO;2-O;,citation_volume=42;,citation_journal_title=Magnetic Resonance in Medicine;">
+<meta name="citation_reference" content="citation_title=Denoising of diffusion MRI using random matrix theory;,citation_author=Jelle Veraart;,citation_author=Dmitry S Novikov;,citation_author=Daan Christiaens;,citation_author=Benjamin Ades-Aron;,citation_author=Jan Sijbers;,citation_author=Els Fieremans;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_volume=142;,citation_journal_title=NeuroImage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Diffusion MRI noise mapping using random matrix theory;,citation_author=Jelle Veraart;,citation_author=Els Fieremans;,citation_author=Dmitry S Novikov;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_issue=5;,citation_volume=76;,citation_journal_title=Magnetic resonance in medicine;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Continuous diffusion signal, EAP and ODF estimation via compressive sensing in diffusion MRI;,citation_author=Sylvain L Merlet;,citation_author=Rachid Deriche;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_issue=5;,citation_volume=17;,citation_journal_title=Medical image analysis;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Neuroimaging of the philadelphia neurodevelopmental cohort;,citation_author=Theodore D Satterthwaite;,citation_author=Mark A Elliott;,citation_author=Kosha Ruparel;,citation_author=James Loughead;,citation_author=Karthik Prabhakaran;,citation_author=Monica E Calkins;,citation_author=Ryan Hopson;,citation_author=Chad Jackson;,citation_author=Jack Keefe;,citation_author=Marisa Riley;,citation_author=others;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_volume=86;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Improved white matter response function estimation for 3-tissue constrained spherical deconvolution;,citation_author=T Dhollander;,citation_author=R Mito;,citation_author=D Raffelt;,citation_author=A Connelly;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=Proc. Intl. Soc. Mag. Reson. med;">
+<meta name="citation_reference" content="citation_title=Unsupervised 3-tissue response function estimation from single-shell or multi-shell diffusion MR data without a co-registered T1 image;,citation_author=Thijs Dhollander;,citation_author=David Raffelt;,citation_author=Alan Connelly;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_volume=5;,citation_conference_title=ISMRM workshop on breaking the barriers of diffusion MRI;">
+<meta name="citation_reference" content="citation_title=Multi-tissue constrained spherical deconvolution for improved analysis of multi-shell diffusion MRI data;,citation_author=Ben Jeurissen;,citation_author=Jacques-Donald Tournier;,citation_author=Thijs Dhollander;,citation_author=Alan Connelly;,citation_author=Jan Sijbers;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_volume=103;,citation_journal_title=NeuroImage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=MRtrix3: A fast, flexible and open software framework for medical image processing and visualisation;,citation_author=undefined J-Donald;,citation_author=Robert Smith;,citation_author=David Raffelt;,citation_author=Rami Tabbara;,citation_author=Thijs Dhollander;,citation_author=Maximilian Pietsch;,citation_author=Daan Christiaens;,citation_author=Ben Jeurissen;,citation_author=Chun-Hung Yeh;,citation_author=Alan&amp;amp;amp;quot; Connelly;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_issn=1053-8119;,citation_volume=202;,citation_journal_title=NeuroImage;">
+<meta name="citation_reference" content="citation_title=Direct estimation of the fiber orientation density function from diffusion-weighted MRI data using spherical deconvolution;,citation_author=J-Donald Tournier;,citation_author=Fernando Calamante;,citation_author=David G Gadian;,citation_author=Alan Connelly;,citation_publication_date=2004;,citation_cover_date=2004;,citation_year=2004;,citation_issue=3;,citation_volume=23;,citation_journal_title=NeuroImage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Robust determination of the fibre orientation distribution in diffusion MRI: Non-negativity constrained super-resolved spherical deconvolution;,citation_author=J-Donald Tournier;,citation_author=Fernando Calamante;,citation_author=Alan Connelly;,citation_publication_date=2007;,citation_cover_date=2007;,citation_year=2007;,citation_issue=4;,citation_volume=35;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Resolving crossing fibres using constrained spherical deconvolution: Validation using diffusion-weighted imaging phantom data;,citation_author=J-Donald Tournier;,citation_author=Chun-Hung Yeh;,citation_author=Fernando Calamante;,citation_author=Kuan-Hung Cho;,citation_author=Alan Connelly;,citation_author=Ching-Po Lin;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_issue=2;,citation_volume=42;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Bias field correction and intensity normalisation for quantitative analysis of apparent fibre density;,citation_author=David Raffelt;,citation_author=Thijs Dhollander;,citation_author=J-Donald Tournier;,citation_author=Rami Tabbara;,citation_author=Robert E Smith;,citation_author=Eric Pierre;,citation_author=Alan Connelly;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_volume=25;,citation_conference_title=Proc. Intl. Soc. Mag. Reson. med;">
+<meta name="citation_reference" content="citation_title=Generalized $q$-sampling imaging;,citation_author=Fang-Cheng Yeh;,citation_author=Van Jay Wedeen;,citation_author=Wen-Yih Isaac Tseng;,citation_publication_date=2010;,citation_cover_date=2010;,citation_year=2010;,citation_issue=9;,citation_volume=29;,citation_journal_title=IEEE transactions on medical imaging;,citation_publisher=IEEE;">
+<meta name="citation_reference" content="citation_title=An integrated approach to correction for off-resonance effects and subject movement in diffusion MR imaging;,citation_author=Jesper L. R. Andersson;,citation_author=Stamatios N. Sotiropoulos;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_volume=125;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Incorporating outlier detection and replacement into a non-parametric framework for movement and distortion correction of diffusion MR images;,citation_author=Jesper L. R. Andersson;,citation_author=Mark S. Graham;,citation_author=Enikő Zsoldos;,citation_author=Stamatios N. Sotiropoulos;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_volume=141;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=How to correct susceptibility distortions in spin-echo echo-planar images: Application to diffusion tensor imaging;,citation_author=Jesper L. R. Andersson;,citation_author=Stefan Skare;,citation_author=John Ashburner;,citation_publication_date=2003;,citation_cover_date=2003;,citation_year=2003;,citation_issue=2;,citation_volume=20;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Susceptibility-induced distortion that varies due to motion: Correction in diffusion MR without acquiring additional data;,citation_author=Jesper L. R. Andersson;,citation_author=Mark S. Graham;,citation_author=Ivana Drobnjak;,citation_author=Hui Zhang;,citation_author=Jon Campbell;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_volume=171;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Towards a comprehensive framework for movement and distortion correction of diffusion MR images: Within volume movement;,citation_author=Jesper L. R. Andersson;,citation_author=Mark S. Graham;,citation_author=Ivana Drobnjak;,citation_author=Hui Zhang;,citation_author=Nicola Filippini;,citation_author=Matteo Bastiani;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_volume=152;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Gibbs-ringing artifact removal based on local subvoxel-shifts;,citation_author=Elias Kellner;,citation_author=Bibek Dhital;,citation_author=Valerij G. Kiselev;,citation_author=Marco Reisert;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_issue=5;,citation_volume=76;,citation_journal_title=Magnetic resonance in medicine;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Patch2Self: Denoising diffusion MRI with self-supervised learning​;,citation_author=Shreyas Fadnavis;,citation_author=Joshua Batson;,citation_author=Eleftherios Garyfallidis;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_volume=33;,citation_journal_title=Advances in Neural Information Processing Systems;">
+<meta name="citation_reference" content="citation_title=NODDI: Practical in vivo neurite orientation dispersion and density imaging of the human brain;,citation_author=Hui Zhang;,citation_author=Torben Schneider;,citation_author=Claudia A Wheeler-Kingshott;,citation_author=Daniel C Alexander;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=4;,citation_volume=61;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Accelerated microstructure imaging via convex optimization (AMICO) from diffusion MRI data;,citation_author=Alessandro Daducci;,citation_author=Erick J Canales-Rodrı́guez;,citation_author=Hui Zhang;,citation_author=Tim B Dyrby;,citation_author=Daniel C Alexander;,citation_author=Jean-Philippe Thiran;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_volume=105;,citation_journal_title=NeuroImage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=DR-BUDDI (diffeomorphic registration for blip-up blip-down diffusion imaging) method for correcting echo planar imaging distortions;,citation_author=M Okan Irfanoglu;,citation_author=Pooja Modi;,citation_author=Amritha Nayak;,citation_author=Elizabeth B Hutchinson;,citation_author=Joelle Sarlls;,citation_author=Carlo Pierpaoli;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_volume=106;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=TORTOISE v3: Improvements and new features of the NIH diffusion MRI processing pipeline;,citation_author=Mustafa Okan Irfanoglu;,citation_author=Amritha Nayak;,citation_author=Jeffrey Jenkins;,citation_author=Carlo Pierpaoli;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_conference_title=Program and proceedings of the ISMRM 25th annual meeting and exhibition, honolulu, HI, USA;">
+<meta name="citation_reference" content="citation_title=Removal of partial fourier-induced gibbs (RPG) ringing artifacts in MRI;,citation_author=Hong-Hsi Lee;,citation_author=Dmitry S Novikov;,citation_author=Els Fieremans;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_issue=5;,citation_volume=86;,citation_journal_title=Magnetic Resonance in Medicine;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=SynthSeg: Segmentation of brain MRI scans of any contrast and resolution without retraining;,citation_author=Benjamin Billot;,citation_author=Douglas N Greve;,citation_author=Oula Puonti;,citation_author=Axel Thielscher;,citation_author=Koen Van Leemput;,citation_author=Bruce Fischl;,citation_author=Adrian V Dalca;,citation_author=Juan Eugenio Iglesias;,citation_author=others;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_volume=86;,citation_journal_title=Medical image analysis;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Robust machine learning segmentation for large-scale analysis of heterogeneous clinical brain MRI datasets;,citation_author=Benjamin Billot;,citation_author=Colin Magdamo;,citation_author=You Cheng;,citation_author=Steven E Arnold;,citation_author=Sudeshna Das;,citation_author=Juan Eugenio Iglesias;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_issue=9;,citation_volume=120;,citation_journal_title=Proceedings of the National Academy of Sciences;,citation_publisher=National Acad Sciences;">
+<meta name="citation_reference" content="citation_title=Deterministic diffusion fiber tracking improved by quantitative anisotropy;,citation_author=Fang-Cheng Yeh;,citation_author=Timothy D Verstynen;,citation_author=Yibao Wang;,citation_author=Juan C Fernández-Miranda;,citation_author=Wen-Yih Isaac Tseng;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_issue=11;,citation_volume=8;,citation_journal_title=PloS one;,citation_publisher=Public Library of Science San Francisco, USA;">
+<meta name="citation_reference" content="citation_title=Shape analysis of the human association pathways;,citation_author=Fang-Cheng Yeh;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_volume=223;,citation_journal_title=Neuroimage;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Corticolimbic anatomical characteristics predetermine risk for chronic pain;,citation_author=Etienne Vachon-Presseau;,citation_author=Pascal Tétreault;,citation_author=Bogdan Petre;,citation_author=Lejian Huang;,citation_author=Sara E Berger;,citation_author=Souraya Torbey;,citation_author=Alexis T Baria;,citation_author=Ali R Mansour;,citation_author=Javeria A Hashmi;,citation_author=James W Griffith;,citation_author=others;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_issue=7;,citation_doi=10.1093/brain/aww100;,citation_volume=139;,citation_journal_title=Brain;,citation_publisher=Oxford University Press;">
+</head>
+
+<body class="nav-sidebar floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">A2CPS Starter Kits</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-version" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Version</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-version">    
+        <li class="dropdown-header">empty</li>
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools tools-wide">
+    <a href="https://github.com/a2cps/starterkits" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./genomic_imputation.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Imputed Genomics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Psychosocial_starter_kit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Psychosocial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./genetic_variants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Genetic Variant Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./genomic_imputation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Imputed Genomics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mri-idps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MRI Image Derived Phenotypes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./raw-mri.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Raw MRI Data Starter Kit</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./brainager.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Brain Age</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fslanat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">FSL Anat</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cat12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Voxel-Based Morphometry</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./freesurfer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">FreeSurfer Measures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fmriprep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">fMRIPrep</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./qsiprep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">QSIPrep</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./eddyqc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">EDDY QC</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reconstruction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Orientation Distribution Function Reconstruction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./postdtifit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Summarized Diffusion Tensor Fitting</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bedpostx.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Bayesian Estimation of Diffusion Parameters Obtained using Sampling Techniques (BEDPOSTX)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwi_biomarker1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Primary DWI Biomarker</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fcn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Functional Connectivity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gift.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Group ICA of fMRI Toolbox (GIFT)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./postgift.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">ICA Connectivity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mriqc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">MRIQC</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./neural-pain-signatures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Prior Neural Pain Signature Responses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mri-derivative-qc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Manual Derivative QC</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">FAQ</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bids-qc-joining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Exclude Scans with “Red” Quality</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">ID Information</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./nda-mri.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">NDA Download Example, MRI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mri-harmonization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">MRI Harmonization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./psycho_social_biomarker_impute.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Psychosocial Data Imputation and Biomarker calculations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./biospecimenCRF_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FuntionalCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Functional CRF Data Quality Checks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ImagingCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Imaging CRF Data Quality Checks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./QSTCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">QST CRF Data Quality Checks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">3.1</span> Starting Project</a>
+  <ul class="collapse">
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">3.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">3.1.2</span> Extract Data</a></li>
+  </ul></li>
+  <li><a href="#considerations-while-working-with-these-data" id="toc-considerations-while-working-with-these-data" class="nav-link" data-scroll-target="#considerations-while-working-with-these-data"><span class="header-section-number">3.2</span> Considerations while working with these data</a>
+  <ul class="collapse">
+  <li><a href="#population-structure" id="toc-population-structure" class="nav-link" data-scroll-target="#population-structure"><span class="header-section-number">3.2.1</span> Population Structure</a></li>
+  <li><a href="#custom-filtering" id="toc-custom-filtering" class="nav-link" data-scroll-target="#custom-filtering"><span class="header-section-number">3.2.2</span> Custom Filtering</a></li>
+  <li><a href="#data-generation-imputation-process" id="toc-data-generation-imputation-process" class="nav-link" data-scroll-target="#data-generation-imputation-process"><span class="header-section-number">3.2.3</span> Data Generation (Imputation Process)</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">3.2.4</span> Citations</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-genomics" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Imputed Genomics</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This page provides considerations for A2CPS projects that involve the Imputed Genomics Data.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/df/Human_male_karyotpe_high_resolution.jpg" class="img-fluid" width="500"></p>
+<!-- This picture is free to share -->
+<p>The imputed genomic dataset expands single-nucleotide resolution variant data across the human genome, offering deeper and more comprehensive coverage. Genotype imputation aligns SNP array data with ancestry-specific reference haplotypes to infer untyped variants with high confidence. This process can be compared to filling in missing letters in a sentence based on contextual knowledge — for example:</p>
+<p>“T_e l_zy d_g j___ed _ver the _at.”</p>
+<p>Imputation is particularly important in genetic association studies because it allows researchers to identify disease-associated loci that were not directly genotyped, facilitating meta-analyses across different studies that may have used different SNP arrays. For a deeper dive into the methodology and importance of imputation, see the <a href="https://topmedimpute.readthedocs.io/en/latest/">TOPMed Imputation Server Documentation</a>.</p>
+<p>Following imputation in this dataset, the number of genetic loci increased from 690,126 to 11,016,319, spanning all 22 autosomes and the X chromosome for 1,375 participants. Prior to imputation, data were preprocessed and formatted for compatibility with the Imputation Server. Post-imputation, we applied rigorous quality control, excluding low-confidence variants and those with a minor allele frequency (MAF) below 1%.</p>
+<section id="starting-project" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">3.1</span> Starting Project</h2>
+<section id="locate-data" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">3.1.1</span> Locate Data</h3>
+<p>On TACC, the data are stored underneath the releases. For example, data release <code>v2.1.0</code> is underneath</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/omics/gene_variants</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The single-nucleotide polymorphisms are underneath the <code>omics/gene_variants</code> folder</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls omics/gene_variants</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bed</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bim</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.fam</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.log</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.log</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.nosex</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_PCA_Ind_Info.csv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>These files are in the <a href="https://www.cog-genomics.org/plink/1.9/">PLINK</a> format.</p>
+</section>
+<section id="extract-data" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">3.1.2</span> Extract Data</h3>
+<p>To access the variant data efficiently, you should use <code>plink2</code> (or <code>plink</code> 1.9). Plink can rapidly subset massive genomic datasets to pull only the specific variants or participants you need for an analysis. For more detail on Plink Binary File information and data extraction for genetic variant data, refer to the <a href="./genetic_variants.html">Genetic Variant starter kit</a>.</p>
+</section>
+</section>
+<section id="considerations-while-working-with-these-data" class="level2 page-columns page-full" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="considerations-while-working-with-these-data"><span class="header-section-number">3.2</span> Considerations while working with these data</h2>
+<section id="population-structure" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="population-structure"><span class="header-section-number">3.2.1</span> Population Structure</h3>
+<p>Even after rigorous QC, population structure still exists within the dataset. Systematic differences in ancestry between groups can lead to spurious associations in genetic analyses. You should generally include genetic principal components as covariates in any downstream analyses (e.g., Polygenic Risk Scores or Genome-Wide Association Studies).</p>
+</section>
+<section id="custom-filtering" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="custom-filtering"><span class="header-section-number">3.2.2</span> Custom Filtering</h3>
+<p>Researchers can choose to filter out variants based on other, standard QC measures that suit their specific study designs. The data provided here represents a strong baseline, but it may require additional tailoring depending on your research question.</p>
+</section>
+<section id="data-generation-imputation-process" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="data-generation-imputation-process"><span class="header-section-number">3.2.3</span> Data Generation (Imputation Process)</h3>
+<p>The below procedures were performed with these data:</p>
+<ul>
+<li><code>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed</code></li>
+<li><code>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim</code></li>
+<li><code>2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam</code></li>
+</ul>
+<p><em>(Note: These files originally had the base name A2CPS_Freeze_2, as reflected in the code below)</em></p>
+<section id="pre-imputation-data-preparation" class="level4" data-number="3.2.3.1">
+<h4 data-number="3.2.3.1" class="anchored" data-anchor-id="pre-imputation-data-preparation"><span class="header-section-number">3.2.3.1</span> Pre-Imputation Data Preparation</h4>
+<p>Following the Data Preparation Process as outlined here: <a href="https://topmedimpute.readthedocs.io/en/latest/prepare-your-data/">TOPMed Imputation Server Data Preparation</a></p>
+<details>
+<summary>
+Click to show the Pre-Imputation Data Processing Bash Script, which utilizes Plink 1.9
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> A2CPS_RL1-5_For_Imputation_F2</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Subset out Y Chromosome and MT DNA</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mkdir</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">./plink</span> <span class="at">--bfile</span> Freeze_2/A2CPS_Freeze_2 <span class="at">--chr</span> 1-23 <span class="at">--keep-allele-order</span> <span class="at">--make-bed</span> <span class="at">--out</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Run TOPMed Panel Check</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">./plink</span> <span class="at">--freq</span> <span class="at">--bfile</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2 <span class="at">--out</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">perl</span> HRC-1000G-check-bim-v4.3.0/HRC-1000G-check-bim.pl <span class="at">-b</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2.bim <span class="at">-f</span> A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2.frq <span class="at">-r</span> CreateTOPMed/PASS.Variants.TOPMed_freeze5_hg38_dbSNP.tab <span class="at">-h</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sh</span> ./A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/Run-plink.sh</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Sort GZ.VCF Files by Genomic Position</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mkdir</span> A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">23</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="ex">bcftools</span> sort ./A2CPS_RL1-5_For_Imputation_F2/Plink_Merged/A2CPS_RL1-5_For_Imputation_F2-updated-chr<span class="va">${chr}</span>.vcf.gz <span class="at">-Oz</span> <span class="at">-o</span> ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted/A2CPS_RL1-5_chr<span class="va">${chr}</span>_sorted.vcf.gz</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4. Add chr in front of chromosome number: "If your input data is GRCh38/hg38, please ensure chromosomes are encoded with prefix 'chr' (e.g. chr20)."</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mkdir</span> A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted_With_Chr</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">23</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">zcat</span> ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted/A2CPS_RL1-5_chr<span class="va">${chr}</span>_sorted.vcf.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'BEGIN {OFS="\t"} {if($0 !~ /^#/) $1="chr"$1; print}'</span> <span class="kw">|</span> <span class="ex">bgzip</span> <span class="at">-c</span> <span class="op">&gt;</span> ./A2CPS_RL1-5_For_Imputation_F2/GZ_VCF_By_Chr_Sorted_With_Chr/A2CPS_RL1-5_chr<span class="va">${chr}</span>_sorted_with_chr.vcf.gz</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="imputation" class="level4" data-number="3.2.3.2">
+<h4 data-number="3.2.3.2" class="anchored" data-anchor-id="imputation"><span class="header-section-number">3.2.3.2</span> Imputation</h4>
+<p>After preparing the files, they were run through:</p>
+<p><a href="https://topmedimpute.readthedocs.io/en/latest/pipeline/">TOPMed Imputation Pipeline</a></p>
+</section>
+<section id="post-imputation-quality-control" class="level4" data-number="3.2.3.3">
+<h4 data-number="3.2.3.3" class="anchored" data-anchor-id="post-imputation-quality-control"><span class="header-section-number">3.2.3.3</span> Post-Imputation Quality Control</h4>
+<ul>
+<li>Imputed variants with an imputation quality score (R²) less than 0.3 were excluded.</li>
+<li>Imputed variants with minor allele frequencies (MAF) below 0.01 were excluded to remove extremely rare variants.</li>
+<li>Imputed variants lacking rsIDs (denoted as ‘.’) or sharing duplicated genomic positions were excluded, as these caused issues during PLINK merging.</li>
+</ul>
+<details>
+<summary>
+Click to show the Post-Imputation Quality Control Bash Script, which utilizes Plink 1.9
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Run post_imputation_qc.R </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># This creates update_ids.txt, update_sexes.txt, and chr_${chr}/keep_ranges.txt,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. MAKE Binary Files</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">./plink2</span> <span class="at">--vcf</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>.dose.vcf.gz dosage=DS <span class="at">--make-bed</span> <span class="at">--out</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. UPDATE IDs</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>   <span class="ex">./plink2</span> <span class="at">--bfile</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose <span class="at">--update-ids</span> update_ids.txt <span class="at">--make-bed</span> <span class="at">--out</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_updated_IDs</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. UPDATE SEXES</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>   <span class="ex">./plink2</span> <span class="at">--bfile</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_updated_IDs <span class="at">--update-sex</span> update_sexes.txt <span class="at">--make-bed</span> <span class="at">--out</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_updated_sexes</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Keep variants with (MAF &gt; 0.01 and R2 &gt; 0.3)</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="ex">./plink2</span> <span class="at">--bfile</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_updated_sexes <span class="at">--extract</span> range chr_<span class="va">${chr}</span>/keep_ranges.txt <span class="at">--make-bed</span> <span class="at">--out</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># X CHR #</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. MAKE Binary Files</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink2</span> <span class="at">--vcf</span> chr_X/chrX.dose.vcf.gz dosage=DS <span class="at">--make-bed</span> <span class="at">--update-sex</span> update_sexes_X.txt <span class="at">--out</span> chr_X/chrX_dose</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Update IDs</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink2</span> <span class="at">--bfile</span> chr_X/chrX_dose <span class="at">--make-bed</span> <span class="at">--update-ids</span> update_ids.txt <span class="at">--out</span> chr_X/chrX_updated_IDs</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 8. Keep only variants that passed QC</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink2</span> <span class="at">--bfile</span> chr_X/chrX_updated_IDs <span class="at">--extract</span> range chr_X/keep_ranges.txt <span class="at">--make-bed</span> <span class="at">--out</span> chr_X/chrX_dose_qced</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 9. Rename each file</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ./Imputation_QCed</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span> X<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mv</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced.bed Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced.bed</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mv</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced.bim Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced.bim</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mv</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced.fam Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced.fam</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mv</span> chr_<span class="va">${chr}</span>/chr<span class="va">${chr}</span>_dose_qced.log Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced.log</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="co"># 10. Identify SNPs that were duplicated during Imputation or have "." as their rsID</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="ex">duplicate.R</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="co"># 11. Drop Duplicate and "." SNPs. Merging files for a combined imputed dataset does not function with duplicates for genomic position or identifiers</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ./Imputation_QCed/No_Duplicates</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chr <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">22</span><span class="dt">}</span> X<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>   <span class="ex">./plink</span> <span class="at">--bfile</span> Imputation_QCed/chr<span class="va">${chr}</span>_imputed_qced <span class="at">--exclude</span> Imputation_QCed/duplicate_snp_list.txt <span class="at">--make-bed</span> <span class="at">--out</span> Imputation_QCed/No_Duplicates/chr<span class="va">${chr}</span>_No_Duplicates</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="co"># 12. Drop Variants that are impossibly called for X Chromosome</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">'{print $3}'</span> Imputation_QCed/No_Duplicates/chrX_No_Duplicates.hh <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-u</span> <span class="op">&gt;</span> Imputation_QCed/hh_snps_x_to_exclude.txt</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink</span> <span class="at">--bfile</span> Imputation_QCed/No_Duplicates/chrX_No_Duplicates <span class="at">--exclude</span> Imputation_QCed/hh_snps_x_to_exclude.txt <span class="at">--make-bed</span> <span class="at">--out</span> Imputation_QCed/No_Duplicates/chrX_imputed_qced_no_hh</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="co"># 13. Merge Chromosomes 1 - 22, X</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ./Imputation_QCed/Final</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="ex">./plink</span> <span class="at">--bfile</span> Imputation_QCed/No_Duplicates/chr1_No_Duplicates <span class="at">--merge-list</span> Imputation_QCed/a2cps_imputed_qc_merge_list.txt <span class="at">--make-bed</span> <span class="at">--out</span> Imputation_QCed/Final/A2CPS_Imputed_Genomics</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="supplementary-qc-files-rscripts" class="level4" data-number="3.2.3.4">
+<h4 data-number="3.2.3.4" class="anchored" data-anchor-id="supplementary-qc-files-rscripts"><span class="header-section-number">3.2.3.4</span> Supplementary QC Files: RScripts</h4>
+<details>
+<summary>
+Click to show Supplementary RScript #1: Variant-Level QC Based on Quality Metrics(post_imputation_qc.R
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"./Imputation_Results/"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>chromosomes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>, <span class="st">"X"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (chr <span class="cf">in</span> chromosomes) {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  folder <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"chr_"</span>, chr)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(folder, <span class="fu">paste0</span>(<span class="st">"chr"</span>, chr, <span class="st">".info.gz"</span>))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  dose <span class="ot">&lt;-</span> <span class="fu">fread</span>(file_path)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  dose[,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">"AF"</span>, <span class="st">"MAF"</span>, <span class="st">"AVG_CS"</span>, <span class="st">"R2"</span>) <span class="sc">:</span><span class="er">=</span> {</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      af <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*AF=([^;]*).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, INFO)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>      maf <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*MAF=([^;]*).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, INFO)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      avg_cs <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*AVG_CS=([^;]*).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, INFO)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>      r2 <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*R2=([^;]*).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, INFO)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="fu">as.numeric</span>(af), <span class="fu">as.numeric</span>(maf), <span class="fu">as.numeric</span>(avg_cs), <span class="fu">as.numeric</span>(r2))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  common <span class="ot">&lt;-</span> dose[MAF <span class="sc">&gt;</span> <span class="fl">0.01</span>]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  well_imputed <span class="ot">&lt;-</span> common[R2 <span class="sc">&gt;</span> <span class="fl">0.3</span>]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setnames</span>(well_imputed, <span class="st">"#CHROM"</span>, <span class="st">"CHROM"</span>, <span class="at">skip_absent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  well_imputed[, chr <span class="sc">:</span><span class="er">=</span> <span class="fu">sub</span>(<span class="st">"^chr"</span>, <span class="st">""</span>, CHROM)]</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  well_imputed[, start <span class="sc">:</span><span class="er">=</span> POS]</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  well_imputed[, end <span class="sc">:</span><span class="er">=</span> POS]</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  keep_ranges <span class="ot">&lt;-</span> well_imputed[, .(chr, start, end)]</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fwrite</span>(</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    keep_ranges,</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.path</span>(folder, <span class="st">"keep_ranges.txt"</span>),</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">col.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">quote =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Update IDs</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>fam <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./chr_1/chr1_dose.fam"</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>old_fid <span class="ot">&lt;-</span> fam<span class="sc">$</span>V1</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>old_iid <span class="ot">&lt;-</span> fam<span class="sc">$</span>V2</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>new_fid <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"^(.*?)_.*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, old_iid)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>new_iid <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".*?_(.*)"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, old_iid)</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>update_ids <span class="ot">&lt;-</span> <span class="fu">data.table</span>(old_fid, old_iid, new_fid, new_iid)</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>  update_ids,</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>  <span class="st">"update_ids.txt"</span>,</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>  <span class="at">quote =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Update Sexes</span></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>fam_og <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./A2CPS_RL1-5_For_Imputation_F2.fam"</span>)</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>update_sexes <span class="ot">&lt;-</span> <span class="fu">data.table</span>(fam_og<span class="sc">$</span>V1, fam_og<span class="sc">$</span>V2, fam_og<span class="sc">$</span>V5)</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>  update_sexes,</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>  <span class="st">"update_sexes.txt"</span>,</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>  <span class="at">quote =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>fam_now <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"./chr1_dose.fam"</span>)</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>update_sexes <span class="ot">&lt;-</span> <span class="fu">data.table</span>(fam_now<span class="sc">$</span>V1, fam_now<span class="sc">$</span>V2, fam_og<span class="sc">$</span>V5)</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>  update_sexes,</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>  <span class="st">"update_sexes_X.txt"</span>,</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">quote =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<details>
+<summary>
+Click to show Supplementary RScript #2: Merge Preparation (duplicate.r)
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"./Imputation_Results/Imputation_QCed/"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">V1 =</span> <span class="fu">character</span>(), <span class="at">V2 =</span> <span class="fu">character</span>(), <span class="at">V4 =</span> <span class="fu">integer</span>())</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (chr <span class="cf">in</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">22</span>, <span class="st">"X"</span>)) {</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"chr"</span>, chr, <span class="st">"_imputed_qced.bim"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(file_name, <span class="at">select =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>), <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  combined_data <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(combined_data, dt),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">use.names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">TRUE</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>dup_pos <span class="ot">&lt;-</span> combined_data[, .N, by <span class="ot">=</span> .(V1, V4)][N <span class="sc">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>snps_dup_pos <span class="ot">&lt;-</span> combined_data[dup_pos, on <span class="ot">=</span> .(V1, V4), nomatch <span class="ot">=</span> <span class="dv">0</span>, V2]</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>dup_snps <span class="ot">&lt;-</span> combined_data[, .N, by <span class="ot">=</span> V2][N <span class="sc">&gt;</span> <span class="dv">1</span>, V2]</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>snps_to_exclude <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(snps_dup_pos, dup_snps))</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.table</span>(snps_to_exclude),</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"duplicate_snp_list.txt"</span>,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+</section>
+<section id="citations" class="level3 page-columns page-full" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">3.2.4</span> Citations</h3>
+<p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
+<blockquote class="blockquote">
+<p>Data were provided (in part) by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following published papers should be cited when referring to A2CPS Protocol and Biomarkers: <span class="citation" data-cites="sluka_predicting_2023"><span class="nocase">Sluka et al.</span> (<a href="references.html#ref-sluka_predicting_2023" role="doc-biblioref">2023</a>)</span> <span class="citation" data-cites="berardi_multi_2022">Berardi et al. (<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">2022</a>)</span></p>
+</div>
+</div>
+
+
+<div class="no-row-height column-margin column-container"><div id="ref-berardi_multi_2022" class="csl-entry" role="listitem">
+Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, D., Vance, C. G. T., Dailey, D. L., Burns, J., Buvanendran, A., McCarthy, R. J., Jacobs, J., Zhou, X. J., Wixson, R., Balach, T., Brummett, C. M., Clauw, D., Colquhoun, D., Harte, S. E., … Wandner, L. D. (2022). Multi-site observational study to assess biomarkers for susceptibility or resilience to chronic pain: The acute to chronic pain signatures (A2CPS) study protocol. <em>Frontiers in Medicine</em>, <em>9</em>. <a href="https://doi.org/10.3389/fmed.2022.849214">https://doi.org/10.3389/fmed.2022.849214</a>
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-sluka_predicting_2023" class="csl-entry" role="listitem">
+<span class="nocase">Sluka, K. A., Wager, T. D., Sutherland, S. P., Labosky, P. A., Balach, T., Bayman, E. O., Berardi, G., Brummett, C. M., Burns, J., Buvanendran, A., et al.</span> (2023). Predicting chronic postsurgical pain: Current evidence and a novel program to develop predictive biomarker signatures. <em>Pain</em>, <em>164</em>(9), 1912–1926. <a href="https://doi.org/10.1097/j.pain.0000000000002938">https://doi.org/10.1097/j.pain.0000000000002938</a>
+</div></div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./genetic_variants.html" class="pagination-link" aria-label="Genetic Variant Data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Genetic Variant Data</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./mri-idps.html" class="pagination-link" aria-label="MRI Image Derived Phenotypes">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MRI Image Derived Phenotypes</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
