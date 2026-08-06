@@ -24,23 +24,22 @@ Release-specific values (the version number, the release directory on TACC, the 
 When writing or updating a starter kit, please adhere to the following guidelines:
 
 - **Target Audience:** Kits should be targeted at expert researchers who may be very familiar with their own domain but might not understand the specific datatype discussed in the kit (e.g., a genetics expert reading an MRI kit).
-- **Didactic Tone:** The aim of each kit is to be didactic. Explain *why* certain data processing or extraction steps are taken, not just *how* to run code.
+- **Didactic Tone:** Explain *why* certain data processing or extraction steps are taken, not just *how* to run code.
 - **Background Knowledge:** Do not reinvent the wheel for basic background knowledge (e.g., explaining the physics of fMRI). Instead, point to existing, high-quality external tutorials or review papers.
 - **Complexity:** Avoid writing overly complicated code chunks. If a kit needs a complex example or figure, suggest it with a placeholder or plain English explanation. The main focus should be on clear prose.
-- **Structural Consistency:** Kits must adhere to the structure defined in `_template.qmd`. See the template for the required sections: "Starting Project" (Locate Data, Extract Data, Data Quality, Cross-Modality Links) and "Considerations While Working on the Project" (Data Generation, Other, Citations).
+- **Structural Consistency:** Kits should adhere to the structure defined in `_template.qmd`. See the template for the required sections: "Starting Project" (Locate Data, Extract Data, Data Quality, Cross-Modality Links) and "Considerations While Working on the Project" (Data Generation, Other, Citations).
 
 ## `R` Style
 
-The kits are read as much as they are run, so the code is part of the prose. Please follow the [tidyverse style guide](https://style.tidyverse.org/), plus the conventions below. Formatting (indentation, line width, `<-`) is handled automatically by [`air`](https://posit-dev.github.io/air/) via the `prek` hooks, so it is not something to think about while writing.
+The kits are read as much as they are run, so the code is part of the prose. Please follow the [tidyverse style guide](https://style.tidyverse.org/), plus the conventions below. Formatting (indentation, line width, `<-`) is handled automatically by [`air`](https://posit-dev.github.io/air/) via the `prek` hooks. Here are a few other guidelines that help keep things consistent across the kits.
 
 - **Use the native pipe `|>`**, not `%>%`. Nothing in the book needs magrittr.
 - **Load every package in one `setup` chunk**, placed immediately after the chapter's `#` heading and labelled `#| label: setup`. List the packages alphabetically, and only the ones the chapter actually uses.
 - **Do not call `pkg::fun()`.** If a chapter uses a function, it loads that function's package. Namespacing a single call is the thing the `setup` chunk exists to avoid.
-- **Load individual packages, not `library(tidyverse)`**, so a reader can see which package supplies which verb. The kits are aimed at researchers who may not know the tidyverse.
 - **Prefer current `dplyr`/`tidyr` idiom** over the superseded forms: `slice_max()` over `top_n()`, `across()` over `mutate_all()`, `.default =` over a trailing `TRUE ~`, `if_else()` over `ifelse()`, `drop_na()` over `na.omit()`, `separate_wider_delim()` over `separate()`, and `pick()` over the magrittr `select(., ...)`.
 - **Write anonymous functions as `\(x)`**, not as a `~ .x` formula.
 - **Set axis titles with `labs()`**, not `xlab()`/`ylab()`.
-- **When you label a chunk, use kebab-case**, and pick a name that describes what the chunk does. Labels end up in figure filenames and error messages, so avoid ones that shadow a function (`filter`, `image`, `session`) or that run words together (`loadfalff`). Labelling is not required --- `missing-chunk-labels` is switched off in [.panache.toml](.panache.toml) --- but a chunk that produces a figure is worth naming, because otherwise its output is `unnamed-chunk-N-1.png` and the `N` shifts whenever a chunk is added above it.
+- **When labeling a chunk, use kebab-case**, and pick a name that describes what the chunk does. Labels end up in figure filenames and error messages, so avoid ones that shadow a function (`filter`, `image`, `session`) or that run words together (`loadfalff`). Labeling is not required --- `missing-chunk-labels` is switched off in [.panache.toml](.panache.toml) --- but a chunk that produces a figure is worth naming, because otherwise its output is `unnamed-chunk-N-1.png` and the `N` shifts whenever a chunk is added above it.
 - **Reach files under `data/` with `here()`** rather than a relative path, so a chunk works regardless of where it is run from.
 - **Use a plain fence for code that only illustrates** a path or command. See [Code blocks and shortcodes](#code-blocks-and-shortcodes) --- an executable cell with `#| eval: false` looks equivalent but silently breaks `{{{< var >}}}` shortcodes.
 
