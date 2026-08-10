@@ -24,6 +24,7 @@ book:
   chapters:
     - index.qmd
     - Psychosocial_starter_kit.qmd
+    - QST_starter_kit.qmd
     - genetic_variants.qmd
     - genomic_imputation.qmd
     - mri-idps.qmd
