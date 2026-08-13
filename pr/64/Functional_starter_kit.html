@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1&nbsp; Psychosocial – A2CPS Starter Kits</title>
+<title>2&nbsp; Functional Testing – A2CPS Starter Kits</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -91,8 +91,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./Functional_starter_kit.html" rel="next">
-<link href="./index.html" rel="prev">
+<link href="./genetic_variants.html" rel="next">
+<link href="./Psychosocial_starter_kit.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -147,7 +147,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 
 <link rel="stylesheet" href="assets/css/version.css">
-<meta name="citation_title" content="[[1]{.chapter-number}&nbsp; [Psychosocial]{.chapter-title}]{#sec-psychosocial .quarto-section-identifier}">
+<meta name="citation_title" content="[[2]{.chapter-number}&nbsp; [Functional Testing]{.chapter-title}]{#sec-functional-testing .quarto-section-identifier}">
 <meta name="citation_author" content="Briha Ansari">
 <meta name="citation_author" content="Patrick Sadil">
 <meta name="citation_language" content="en">
@@ -501,7 +501,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Psychosocial_starter_kit.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Psychosocial</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Functional_starter_kit.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Functional Testing</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -521,13 +521,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Psychosocial_starter_kit.html" class="sidebar-item-text sidebar-link active">
+  <a href="./Psychosocial_starter_kit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Psychosocial</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Functional_starter_kit.html" class="sidebar-item-text sidebar-link">
+  <a href="./Functional_starter_kit.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Functional Testing</span></span></a>
   </div>
 </li>
@@ -744,19 +744,18 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">1.1</span> Starting Project</a>
+  <li><a href="#starting-project" id="toc-starting-project" class="nav-link active" data-scroll-target="#starting-project"><span class="header-section-number">2.1</span> Starting Project</a>
   <ul class="collapse">
-  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">1.1.1</span> Locate Data</a></li>
-  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">1.1.2</span> Extract Data</a></li>
+  <li><a href="#locate-data" id="toc-locate-data" class="nav-link" data-scroll-target="#locate-data"><span class="header-section-number">2.1.1</span> Locate Data</a></li>
+  <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data"><span class="header-section-number">2.1.2</span> Extract Data</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">2.1.3</span> Data Quality</a></li>
   </ul></li>
-  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="header-section-number">1.2</span> Exploratory data analysis</a></li>
-  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">1.3</span> Considerations While Working on the Project</a>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="header-section-number">2.2</span> Exploratory data analysis</a></li>
+  <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">2.3</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">1.3.1</span> Data Generation</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">1.3.2</span> Data Quality</a></li>
-  <li><a href="#cross-modality-links" id="toc-cross-modality-links" class="nav-link" data-scroll-target="#cross-modality-links"><span class="header-section-number">1.3.3</span> Cross-Modality Links</a></li>
-  <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data"><span class="header-section-number">1.3.4</span> Missing Data</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">1.3.5</span> Citations</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">2.3.1</span> Data Generation</a></li>
+  <li><a href="#other" id="toc-other" class="nav-link" data-scroll-target="#other"><span class="header-section-number">2.3.2</span> Other</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">2.3.3</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -767,7 +766,7 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-psychosocial" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Psychosocial</span></span></h1>
+<h1 class="title"><span id="sec-functional-testing" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Functional Testing</span></span></h1>
 </div>
 
 
@@ -791,462 +790,279 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
-<p>Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements&nbsp;<span class="citation" data-cites="wandner_nih_2022">(<a href="references.html#ref-wandner_nih_2022" role="doc-biblioref">Wandner et al., 2022</a>)</span> to gain a comprehensive understanding of chronic pain&nbsp;<span class="citation" data-cites="berardi_multi_2022">(<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">Berardi et al., 2022</a>)</span>. For a general introduction to psychosocial assessments in clinical research, see resources such as the <a href="https://heal.nih.gov/data/common-data-elements">NIH HEAL Initiative Common Data Elements</a>.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-wandner_nih_2022" class="csl-entry" role="listitem">
-Wandner, L. D., Domenichiello, A. F., Beierlein, J., Pogorzala, L., Aquino, G., Siddons, A., Porter, L., Atkinson, J., &amp; Institute, N. P. C. (2022). NIH’s helping to end addiction long-termSM initiative (NIH HEAL initiative) clinical pain management common data element program. <em>The Journal of Pain</em>, <em>23</em>(3), 370–378. <a href="https://doi.org/10.1016/j.jpain.2021.08.005">https://doi.org/10.1016/j.jpain.2021.08.005</a>
-</div></div><p>These assessments include:</p>
+<p>Functional testing (also called performance-based testing) is an objective measure of a participants physical functionality and complements self-reported pain and disability. Before surgery, A2CPS collects a short battery of standardized functional tasks, it records the pain a participant reports right before and right after each task. The change in pain across a task gives us a measure of <strong>movement-evoked pain (MEP)</strong>, i.e., pain that is provoked by movement rather than pain at rest. MEP is increasingly recognized as its own meaningful construct.</p>
+<p>The battery is tailored to each surgical cohort:</p>
 <ul>
-<li>Pain related psychosocial constructs
+<li><strong>Knee arthroplasty (TKA) cohort</strong>: lower-limb function is assessed with two tasks.
 <ul>
-<li>These include pain resilience, catastrophizing, kinesiophobia, and multisensory sensitivity. Pain resilience is measured using the Pain Resilience Scale (PRS)<span class="citation" data-cites="slepian_development_2016">(<a href="references.html#ref-slepian_development_2016" role="doc-biblioref">Slepian et al., 2016</a>)</span>. Catastrophizing measures negative appraisal of pain using the Pain Catastrophizing Scale-6 (PCS-6)&nbsp;<span class="citation" data-cites="mcwilliams_development_2015">(<a href="references.html#ref-mcwilliams_development_2015" role="doc-biblioref">McWilliams et al., 2015</a>)</span>. Kinesiophobia (fear of movement) is measured using the Fear Avoidance Beliefs Questionnaire—Physical Activity subscale (FABQ-PA)<span class="citation" data-cites="waddell_fear_1993">(<a href="references.html#ref-waddell_fear_1993" role="doc-biblioref">Waddell et al., 1993</a>)</span>. Sensitivity to sensory stimulation (light, sound, odor, flavor, touch) and interoception (balance, nausea, heart rate) are measured using an 8-item General Sensory Sensitivity (GSS)&nbsp;<span class="citation" data-cites="schrepf_sensory_2018">(<a href="references.html#ref-schrepf_sensory_2018" role="doc-biblioref"><span class="nocase">Schrepf et al.</span>, 2018</a>)</span>.</li>
+<li>The <strong>10-meter walk test (10MWT)</strong>, a standard measure of gait speed. Participants rate their pain before and after walking, and both the walk time and the pain ratings are recorded.</li>
+<li>The <strong>5-times sit-to-stand test (5TSTS)</strong>, which measures lower-limb strength and functional mobility by timing five repetitions of rising from a chair. Pain is again rated before and after the task.</li>
 </ul></li>
-<li>Mood disorders (Depression and Anxiety)
-<ul>
-<li>Depression and Anxiety are measured using the 8-item Patient Health Questionnaire-8 (PHQ-8)&nbsp;<span class="citation" data-cites="kroenke_phq_2009">(<a href="references.html#ref-kroenke_phq_2009" role="doc-biblioref">Kroenke et al., 2009</a>)</span> and the 7-item General Anxiety Disorder (GAD-7) instruments&nbsp;<span class="citation" data-cites="spitzer_brief_2006">(<a href="references.html#ref-spitzer_brief_2006" role="doc-biblioref">Spitzer et al., 2006</a>)</span></li>
-</ul></li>
-<li>Social Support
-<ul>
-<li>PROMIS SFv2.0 Instrumental Support 6a questionnaire is used to measure the quality of social support received by the subjects, and PROMIS SFv2.0 Emotional Support 6a questionnaire measures subjects’ perception about being valued and cared for&nbsp;<span class="citation" data-cites="hahn_measuring_2010">(<a href="references.html#ref-hahn_measuring_2010" role="doc-biblioref"><span class="nocase">Hahn et al.</span>, 2010</a>)</span>.</li>
-</ul></li>
-<li>Cognitive Function and Sleep
-<ul>
-<li>Multidimensional Inventory of Subjective Cognitive Impairment (MISCI)&nbsp;<span class="citation" data-cites="kratz_promis_2016">(<a href="references.html#ref-kratz_promis_2016" role="doc-biblioref">Kratz et al., 2016</a>)</span> measures perceived cognitive dysfunction in patients with fibromyalgia. Sleep is assessed using the PROMIS Short Form v1.0 Sleep Disturbance 6a measure&nbsp;<span class="citation" data-cites="yu_development_2012">(<a href="references.html#ref-yu_development_2012" role="doc-biblioref">Yu et al., 2012</a>)</span> and Pain-Sleep Duration (Sleep II) form&nbsp;<span class="citation" data-cites="buysse_pittsburgh_1989">(<a href="references.html#ref-buysse_pittsburgh_1989" role="doc-biblioref">Buysse et al., 1989</a>)</span>.</li>
-</ul></li>
-<li>Other Assessments Demographic, Comorbidity Questionnaire (SCQ), The Adverse Childhood Experience questionnaire (ACE), Big Five Inventory−2 short form (BFI-2-S)
-<ul>
-<li>The demographic information form captures age, sex, gender, ethnicity, race, level of education, employment status, relationship status, household income, and disability status. Chronic health conditions are captured using the Self-Administered Comorbidity Questionnaire (SCQ)&nbsp;<span class="citation" data-cites="sangha_self_2003">(<a href="references.html#ref-sangha_self_2003" role="doc-biblioref">Sangha et al., 2003</a>)</span>. The Adverse Childhood Experience questionnaire (ACE)&nbsp;<span class="citation" data-cites="felitti_relationship_1998">(<a href="references.html#ref-felitti_relationship_1998" role="doc-biblioref">Felitti et al., 1998</a>)</span> is used to assess the history of childhood abuse and dysfunctional family dynamics retrospectively. Also at baseline, five personality constructs are measured using the Big Five Inventory−2 short form (BFI-2-S), which measure five personality domains, i.e., 1. extraversion, 2. agreeableness, 3. conscientiousness, 4. negative emotionality, and 5. open-mindedness&nbsp;<span class="citation" data-cites="soto_short_2017">(<a href="references.html#ref-soto_short_2017" role="doc-biblioref">Soto &amp; John, 2017</a>)</span>.</li>
-</ul></li>
+<li><strong>Thoracic (thoracic surgery) cohort</strong>: since the surgical site is the chest wall, function here is assessed with a <strong>deep breathing and coughing task</strong>, again with pain rated before and after the maneuver.</li>
 </ul>
-<div class="no-row-height column-margin column-container"><div id="ref-slepian_development_2016" class="csl-entry" role="listitem">
-Slepian, P. M., Ankawi, B., Himawan, L. K., &amp; France, C. R. (2016). Development and initial validation of the pain resilience scale. <em>The Journal of Pain</em>, <em>17</em>(4), 462–472. <a href="https://doi.org/10.1016/j.jpain.2015.12.010">https://doi.org/10.1016/j.jpain.2015.12.010</a>
-</div><div id="ref-mcwilliams_development_2015" class="csl-entry" role="listitem">
-McWilliams, L., Kowal, J., &amp; Wilson, K. (2015). Development and evaluation of short forms of the pain catastrophizing scale and the pain self-efficacy questionnaire. <em>European Journal of Pain</em>, <em>19</em>(9), 1342–1349. <a href="https://doi.org/10.1002/ejp.665">https://doi.org/10.1002/ejp.665</a>
-</div><div id="ref-waddell_fear_1993" class="csl-entry" role="listitem">
-Waddell, G., Newton, M., Henderson, I., Somerville, D., &amp; Main, C. J. (1993). A fear-avoidance beliefs questionnaire (FABQ) and the role of fear-avoidance beliefs in chronic low back pain and disability. <em>Pain</em>, <em>52</em>(2), 157–168. <a href="https://doi.org/10.1016/0304-3959(93)90127-b">https://doi.org/10.1016/0304-3959(93)90127-b</a>
-</div><div id="ref-schrepf_sensory_2018" class="csl-entry" role="listitem">
-<span class="nocase">Schrepf, A., Williams, D. A., Gallop, R., Naliboff, B. D., Basu, N., Kaplan, C., Harper, D. E., Landis, J. R., Clemens, J. Q., Strachan, E., et al.</span> (2018). Sensory sensitivity and symptom severity represent unique dimensions of chronic pain: A MAPP research network study. <em>Pain</em>, <em>159</em>(10), 2002–2011. <a href="https://doi.org/10.1097/j.pain.0000000000001299">https://doi.org/10.1097/j.pain.0000000000001299</a>
-</div><div id="ref-kroenke_phq_2009" class="csl-entry" role="listitem">
-Kroenke, K., Strine, T. W., Spitzer, R. L., Williams, J. B., Berry, J. T., &amp; Mokdad, A. H. (2009). The PHQ-8 as a measure of current depression in the general population. <em>Journal of Affective Disorders</em>, <em>114</em>(1-3), 163–173. <a href="https://doi.org/10.1016/j.jad.2008.06.026">https://doi.org/10.1016/j.jad.2008.06.026</a>
-</div><div id="ref-spitzer_brief_2006" class="csl-entry" role="listitem">
-Spitzer, R. L., Kroenke, K., Williams, J. B. W., &amp; Löwe, B. (2006). A brief measure for assessing generalized anxiety disorder. <em>Archives of Internal Medicine</em>, <em>166</em>(10), 1092. <a href="https://doi.org/10.1001/archinte.166.10.1092">https://doi.org/10.1001/archinte.166.10.1092</a>
-</div><div id="ref-hahn_measuring_2010" class="csl-entry" role="listitem">
-<span class="nocase">Hahn, E. A., DeVellis, R. F., Bode, R. K., Garcia, S. F., Castel, L. D., Eisen, S. V., Bosworth, H. B., Heinemann, A. W., Rothrock, N., Cella, D., et al.</span> (2010). Measuring social health in the patient-reported outcomes measurement information system (PROMIS): Item bank development and testing. <em>Quality of Life Research</em>, <em>19</em>(7), 1035–1044. <a href="https://doi.org/10.1007/s11136-010-9654-0">https://doi.org/10.1007/s11136-010-9654-0</a>
-</div><div id="ref-kratz_promis_2016" class="csl-entry" role="listitem">
-Kratz, A. L., Schilling, S., Goesling, J., &amp; Williams, D. A. (2016). The PROMIS FatigueFM profile: A self-report measure of fatigue for use in fibromyalgia. <em>Quality of Life Research</em>, <em>25</em>(7), 1803–1813. <a href="https://doi.org/10.1007/s11136-016-1230-9">https://doi.org/10.1007/s11136-016-1230-9</a>
-</div><div id="ref-yu_development_2012" class="csl-entry" role="listitem">
-Yu, L., Buysse, D. J., Germain, A., Moul, D. E., Stover, A., Dodds, N. E., Johnston, K. L., &amp; Pilkonis, P. A. (2012). Development of short forms from the PROMIS™ sleep disturbance and sleep-related impairment item banks. <em>Behavioral Sleep Medicine</em>, <em>10</em>(1), 6–24. <a href="https://doi.org/10.1080/15402002.2012.636266">https://doi.org/10.1080/15402002.2012.636266</a>
-</div><div id="ref-buysse_pittsburgh_1989" class="csl-entry" role="listitem">
-Buysse, D. J., Reynolds, C. F., Monk, T. H., Berman, S. R., &amp; Kupfer, D. J. (1989). The pittsburgh sleep quality index: A new instrument for psychiatric practice and research. <em>Psychiatry Research</em>, <em>28</em>(2), 193–213. <a href="https://doi.org/10.1016/0165-1781(89)90047-4">https://doi.org/10.1016/0165-1781(89)90047-4</a>
-</div><div id="ref-sangha_self_2003" class="csl-entry" role="listitem">
-Sangha, O., Stucki, G., Liang, M. H., Fossel, A. H., &amp; Katz, J. N. (2003). The self-administered comorbidity questionnaire: A new method to assess comorbidity for clinical and health services research. <em>Arthritis Care &amp; Research: Official Journal of the American College of Rheumatology</em>, <em>49</em>(2), 156–163. <a href="https://doi.org/10.1002/art.10993">https://doi.org/10.1002/art.10993</a>
-</div><div id="ref-felitti_relationship_1998" class="csl-entry" role="listitem">
-Felitti, V. J., Anda, R. F., Nordenberg, D., Williamson, D. F., Spitz, A. M., Edwards, V., &amp; Marks, J. S. (1998). Relationship of childhood abuse and household dysfunction to many of the leading causes of death in adults: The adverse childhood experiences (ACE) study. <em>American Journal of Preventive Medicine</em>, <em>14</em>(4), 245–258. <a href="https://doi.org/10.1016/S0749-3797(98)00017-8">https://doi.org/10.1016/S0749-3797(98)00017-8</a>
-</div><div id="ref-soto_short_2017" class="csl-entry" role="listitem">
-Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big five inventory<span></span>2: The BFI-2-s and BFI-2-XS. <em>Journal of Research in Personality</em>, <em>68</em>, 69–81. <a href="https://doi.org/10.1016/j.jrp.2017.02.004">https://doi.org/10.1016/j.jrp.2017.02.004</a>
-</div></div><section id="starting-project" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">1.1</span> Starting Project</h2>
-<section id="locate-data" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">1.1.1</span> Locate Data</h3>
+<p>The pain ratings are double-entered (each rating is recorded twice) to guard against errors. The reformatted data also comprises derived MEP scores.</p>
+<section id="starting-project" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="starting-project"><span class="header-section-number">2.1</span> Starting Project</h2>
+<section id="locate-data" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">2.1.1</span> Locate Data</h3>
 <p>Where are the relevant files?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/psychosocial/reformatted</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> /corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/functional-testing/reformatted</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The reformatted data are split by cohort: <code>reformatted_tka_func.csv</code> (knee, with the walk and sit-to-stand measures) and <code>reformatted_thor_func.csv</code> (thoracic, with the deep breathing and coughing measures). Each one comes with an updated data dictionary, <code>updated_func_dict.csv</code>, which lists the original REDCap field names alongside the fields added during cleaning.</p>
 </section>
-<section id="extract-data" class="level3" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">1.1.2</span> Extract Data</h3>
-<p>Often, researchers want to examine the relationship between different psychosocial measures. For example, Anxiety (GAD-7) and Depression (PHQ-9) frequently coexist due to shared biological mechanisms.</p>
-<p>To explore this, we first load the relevant datasets.</p>
+<section id="extract-data" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">2.1.2</span> Extract Data</h3>
+<p>Here we use the <a href="https://www.tidyverse.org/"><code>tidyverse</code></a>, and we focus on the TKA cohort, which has the two lower-limb tasks.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gad <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pre-surgery"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reformatted"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reformatted_gad.csv"</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>phq <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pre-surgery"</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"psychosocial"</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reformatted"</span>,</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reformatted_phq.csv"</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>func <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/pre-surgery/functional-testing/reformatted/reformatted_tka_func.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Next, we join the datasets using the unique identifiers <code>record_id</code> and <code>guid</code>. These identifiers allow you to link records across different psychosocial forms, as well as to other modalities (like neuroimaging or genomics). The <code>inner_join</code> function is used here to keep only rows that exist in both tables.</p>
+<p>The two derived movement-evoked pain scores are <code>mep_walk</code> (10-meter walk) and <code>mep_5tsts</code> (5-times sit-to-stand). Each one is the final pain rating minus the initial pain rating for that task, so higher values mean more pain was evoked by the movement.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>gad_phq <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(gad, phq, <span class="at">by =</span> <span class="fu">intersect</span>(<span class="fu">names</span>(gad), <span class="fu">names</span>(phq)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>View columns available after merging the two datasets</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gad_phq)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>func <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(record_id, walk10initialpainscl, walk10finalpainscl, mep_walk,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         tstsprepainscl, tstspostpainscl, mep_5tsts) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 1%">
-<col style="width: 6%">
-<col style="width: 3%">
-<col style="width: 4%">
-<col style="width: 1%">
-<col style="width: 2%">
-<col style="width: 2%">
-<col style="width: 2%">
-<col style="width: 2%">
-<col style="width: 2%">
-<col style="width: 3%">
-<col style="width: 2%">
-<col style="width: 2%">
-<col style="width: 3%">
+<col style="width: 10%">
+<col style="width: 21%">
+<col style="width: 19%">
 <col style="width: 9%">
-<col style="width: 1%">
-<col style="width: 2%">
-<col style="width: 2%">
-<col style="width: 2%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 2%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 2%">
-<col style="width: 9%">
-<col style="width: 1%">
-<col style="width: 2%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 10%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: right;">record_id</th>
-<th style="text-align: left;">guid</th>
-<th style="text-align: left;">redcap_event_name</th>
-<th style="text-align: left;">redcap_data_access_group</th>
-<th style="text-align: left;">cohort</th>
-<th style="text-align: right;">gad2feelnervscl</th>
-<th style="text-align: right;">gad2notstopwryscl</th>
-<th style="text-align: right;">gad7wrytoomchscl</th>
-<th style="text-align: right;">gad7troubrelxscl</th>
-<th style="text-align: right;">gad7rstlessscl</th>
-<th style="text-align: right;">gad7easyannoyedscl</th>
-<th style="text-align: right;">gad7feelafrdscl</th>
-<th style="text-align: right;">gad7totscore</th>
-<th style="text-align: right;">gad7difficulttowork</th>
-<th style="text-align: right;">generalized_anxiety_disorder_7_item_gad7_scale_sco_complete</th>
-<th style="text-align: right;">gad_diff</th>
-<th style="text-align: right;">imputed_gad_score</th>
-<th style="text-align: right;">phqlitintrstscore</th>
-<th style="text-align: right;">phqdeprssnscore</th>
-<th style="text-align: right;">phqsleepimpairscore</th>
-<th style="text-align: right;">phqtirdlittleenrgyscore</th>
-<th style="text-align: right;">phqabnrmldietscore</th>
-<th style="text-align: right;">phqflngfailrscore</th>
-<th style="text-align: right;">phqconcntrtnimprmntscore</th>
-<th style="text-align: right;">phqmovmntspchimprmntscore</th>
-<th style="text-align: right;">phqtotalscore</th>
-<th style="text-align: right;">patient_health_questionnaire_depression_scale_phq_complete</th>
-<th style="text-align: right;">phq_diff</th>
-<th style="text-align: right;">imputed_phq_score</th>
+<th style="text-align: right;">walk10initialpainscl</th>
+<th style="text-align: right;">walk10finalpainscl</th>
+<th style="text-align: right;">mep_walk</th>
+<th style="text-align: right;">tstsprepainscl</th>
+<th style="text-align: right;">tstspostpainscl</th>
+<th style="text-align: right;">mep_5tsts</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">10001</td>
-<td style="text-align: left;">90F8FC45-5D53-0DE4-6853-284607A8C4E6</td>
-<td style="text-align: left;">baseline_visit_arm_1</td>
-<td style="text-align: left;">rush_university_me</td>
-<td style="text-align: left;">TKA</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">10</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.0</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">10003</td>
-<td style="text-align: left;">3D64236C-04A5-6B6B-D67B-B8DCE42DCE24</td>
-<td style="text-align: left;">baseline_visit_arm_1</td>
-<td style="text-align: left;">rush_university_me</td>
-<td style="text-align: left;">TKA</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3.0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">10004</td>
-<td style="text-align: left;">3D18263F-58E6-0421-355F-0B40D4B49772</td>
-<td style="text-align: left;">baseline_visit_arm_1</td>
-<td style="text-align: left;">rush_university_me</td>
-<td style="text-align: left;">TKA</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">2.0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1.0</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">10005</td>
-<td style="text-align: left;">FB37DE84-DCC7-5F80-0044-EFA96200E30D</td>
-<td style="text-align: left;">baseline_visit_arm_1</td>
-<td style="text-align: left;">rush_university_me</td>
-<td style="text-align: left;">TKA</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">10006</td>
-<td style="text-align: left;">BE03636F-BBB4-424E-875D-1D230C76EC63</td>
-<td style="text-align: left;">baseline_visit_arm_1</td>
-<td style="text-align: left;">rush_university_me</td>
-<td style="text-align: left;">TKA</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.5</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.5</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">10007</td>
-<td style="text-align: left;">DBFF8148-0AA2-EBC1-26E3-4F3E2B0E59C9</td>
-<td style="text-align: left;">baseline_visit_arm_1</td>
-<td style="text-align: left;">rush_university_me</td>
-<td style="text-align: left;">TKA</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<p>Check data types and ensure that character variables are not stored as numeric, and that numeric variables are stored with the correct numeric type—not as character or factor.</p>
+<p>Next, check the data types and make sure the numeric variables are stored as numbers and the categorical variables are not accidentally stored as numeric. <code>glimpse()</code> gives us a quick column-by-column view.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(gad_phq)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(func)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 1,362
-Columns: 29
-$ record_id                                                   &lt;dbl&gt; 10001, 100…
-$ guid                                                        &lt;chr&gt; "90F8FC45-…
-$ redcap_event_name                                           &lt;chr&gt; "baseline_…
-$ redcap_data_access_group                                    &lt;chr&gt; "rush_univ…
-$ cohort                                                      &lt;chr&gt; "TKA", "TK…
-$ gad2feelnervscl                                             &lt;dbl&gt; 1, 2, 0, 1…
-$ gad2notstopwryscl                                           &lt;dbl&gt; 1, 1, 0, 0…
-$ gad7wrytoomchscl                                            &lt;dbl&gt; 1, 1, 0, 0…
-$ gad7troubrelxscl                                            &lt;dbl&gt; 2, 1, 0, 1…
-$ gad7rstlessscl                                              &lt;dbl&gt; 1, 0, 0, 0…
-$ gad7easyannoyedscl                                          &lt;dbl&gt; 2, 0, 0, 0…
-$ gad7feelafrdscl                                             &lt;dbl&gt; 0, 1, 0, 0…
-$ gad7totscore                                                &lt;dbl&gt; 8, 6, 0, 2…
-$ gad7difficulttowork                                         &lt;dbl&gt; 1, 1, 0, 1…
-$ generalized_anxiety_disorder_7_item_gad7_scale_sco_complete &lt;dbl&gt; 2, 2, 2, 2…
-$ gad_diff                                                    &lt;dbl&gt; 1, 1, 1, 1…
-$ imputed_gad_score                                           &lt;dbl&gt; 8, 6, 0, 2…
-$ phqlitintrstscore                                           &lt;dbl&gt; 1, 1, 0, 0…
-$ phqdeprssnscore                                             &lt;dbl&gt; 1, 1, 0, 1…
-$ phqsleepimpairscore                                         &lt;dbl&gt; 2, 1, 0, 1…
-$ phqtirdlittleenrgyscore                                     &lt;dbl&gt; 2, 1, 0, 0…
-$ phqabnrmldietscore                                          &lt;dbl&gt; 0, 0, 0, 0…
-$ phqflngfailrscore                                           &lt;dbl&gt; 2, 1, 0, 0…
-$ phqconcntrtnimprmntscore                                    &lt;dbl&gt; 2, 1, 0, 0…
-$ phqmovmntspchimprmntscore                                   &lt;dbl&gt; 0, 0, 0, 0…
-$ phqtotalscore                                               &lt;dbl&gt; 10, 6, 0, …
-$ patient_health_questionnaire_depression_scale_phq_complete  &lt;dbl&gt; 2, 2, 2, 2…
-$ phq_diff                                                    &lt;dbl&gt; 1, 1, 1, 1…
-$ imputed_phq_score                                           &lt;dbl&gt; 10, 6, 0, …</code></pre>
+<pre><code>Rows: 1,042
+Columns: 40
+$ record_id                   &lt;dbl&gt; 10001, 10003, 10004, 10005, 10006, 10007, …
+$ guid                        &lt;chr&gt; "90F8FC45-5D53-0DE4-6853-284607A8C4E6", "3…
+$ redcap_data_access_group    &lt;chr&gt; "rush_university_me", "rush_university_me"…
+$ redcap_event_name           &lt;chr&gt; "baseline_visit_arm_1", "baseline_visit_ar…
+$ redcap_repeat_instrument    &lt;chr&gt; "functional_testing", "functional_testing"…
+$ redcap_repeat_instance      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ walk10initialpainscl        &lt;dbl&gt; 4.0, 0.0, 1.0, 5.0, 1.0, NA, 2.0, 1.5, 1.0…
+$ walk10initialpainscl1       &lt;dbl&gt; 4.0, 0.0, 1.0, 5.0, 1.0, NA, 2.0, 1.5, 1.0…
+$ walk10finalpainscl          &lt;dbl&gt; 4.0, 2.0, 1.0, 5.0, 1.0, NA, 4.0, 3.0, 1.0…
+$ walk10finalpainscl1         &lt;dbl&gt; 4.0, 2.0, 1.0, 5.0, 1.0, NA, 4.0, 3.0, 1.0…
+$ walk10time                  &lt;dbl&gt; 8.1, 8.3, 5.1, 4.6, 7.6, NA, 7.4, 5.7, 5.1…
+$ walk10time1                 &lt;dbl&gt; 8.1, 8.3, 5.1, 4.6, 7.6, NA, 7.4, 5.7, 5.1…
+$ walk10completeyn            &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ walk10incompletereason      &lt;dbl&gt; NA, NA, NA, NA, NA, 1, NA, NA, NA, NA, NA,…
+$ walk10assistyn              &lt;dbl&gt; 0, 0, 0, 0, 1, NA, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ walk10assist_cane___1       &lt;dbl&gt; 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ walk10assist_crutch___1     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ walk10assist_walkder___1    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ walk10assist_perssuppt___1  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ walk10assist_other___1      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ walk10assist_othertxt       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ walk10comments              &lt;chr&gt; NA, NA, NA, NA, NA, "re-consented to study…
+$ tstsbpscreen                &lt;dbl&gt; 1, 1, 1, 1, 1, NA, 1, 1, 1, 1, 1, 1, 1, 1,…
+$ tstsprepainscl              &lt;dbl&gt; 5.0, 0.0, 2.0, 5.0, 1.5, NA, 0.0, 0.5, 0.0…
+$ tstsprepainscl1             &lt;dbl&gt; 5.0, 0.0, 2.0, 5.0, 1.5, NA, 0.0, 0.5, 0.0…
+$ tstspostpainscl             &lt;dbl&gt; 6.0, 3.0, 1.0, 6.0, 2.0, NA, 3.5, 3.5, 2.0…
+$ tstspostpainscl1            &lt;dbl&gt; 6.0, 3.0, 1.0, 6.0, 2.0, NA, 3.5, 3.5, 2.0…
+$ tststime                    &lt;dbl&gt; 22.6, 15.6, 10.0, 15.7, 25.5, NA, 12.3, 12…
+$ tststime1                   &lt;dbl&gt; 22.6, 15.6, 10.0, 15.7, 25.5, NA, 12.3, 12…
+$ tstscompleteyn              &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, …
+$ tstsnonreasonyn             &lt;dbl&gt; NA, NA, NA, NA, NA, 2, NA, NA, NA, NA, NA,…
+$ tstsnumbrepsyn              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ tstsassistyn                &lt;dbl&gt; 0, 0, 0, 0, 0, NA, 0, 0, 0, 0, 0, 0, 0, 1,…
+$ tstsassist_1___1            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, …
+$ tstsassist_2___1            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ tstsaddnotes                &lt;chr&gt; NA, NA, "She said that the cartilage in he…
+$ functional_testing_complete &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, …
+$ cohort                      &lt;chr&gt; "TKA", "TKA", "TKA", "TKA", "TKA", "TKA", …
+$ mep_walk                    &lt;dbl&gt; 0.0, 2.0, 0.0, 0.0, 0.0, NA, 2.0, 1.5, 0.0…
+$ mep_5tsts                   &lt;dbl&gt; 1.0, 3.0, -1.0, 1.0, 0.5, NA, 3.5, 3.0, 2.…</code></pre>
 </div>
 </div>
 </section>
+<section id="data-quality" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">2.1.3</span> Data Quality</h3>
+<p>The reformatted files have already been curated, following are some of the important steps we used:</p>
+<ul>
+<li><strong>Test records removed.</strong> Placeholder records used during site setup (e.g., <code>record_id</code> values like <code>10000</code> or <code>15000</code>) are dropped.</li>
+<li><strong>Completed tasks only, latest attempt.</strong> Only rows marked complete (<code>functional_testing_complete == 2</code>) are kept, and where a task was repeated, we kept the most recent repeat instance, so we end up with one row per participant and visit.</li>
+<li><strong>Movement-evoked pain needs both endpoints.</strong> <code>mep_walk</code> and <code>mep_5tsts</code> are only defined when both the initial and the final pain rating are present, and otherwise they are missing. So expect a modest number of missing MEP values even among completed tasks.</li>
+<li><strong>Error report.</strong> The cleaning workflow produces an error report that flags discrepancies between the double-entered pain ratings and other internal inconsistencies (for example, a task marked complete but missing a required pain rating). ### Cross-Modality Links</li>
+</ul>
+<p>Every file includes <code>record_id</code> and <code>guid</code>, which are unique participant identifiers used to link their records across other A2CPS modalities (imaging, QST, psychosocial, biospecimen, etc.). To combine functional data with another modality, we join on the shared identifiers:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inner_join</span>(func, other_modality, <span class="at">by =</span> <span class="fu">intersect</span>(<span class="fu">names</span>(func), <span class="fu">names</span>(other_modality)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="exploratory-data-analysis" class="level2 page-columns page-full" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="exploratory-data-analysis"><span class="header-section-number">1.2</span> Exploratory data analysis</h2>
-<p>Anxiety and depression frequently coexist due to shared biological mechanisms and overlapping symptoms. Approximately 50% of patients with depression also meet the criteria for having an anxiety disorder. The co-occurrence of anxiety and depression in an individual increases the risk of suicide, affects social interactions, and results in more hospitalizations&nbsp;<span class="citation" data-cites="kircanski_investigating_2017">(<a href="references.html#ref-kircanski_investigating_2017" role="doc-biblioref">Kircanski et al., 2017</a>)</span>. We are interested in looking at the association between Anxiety scores and Depression scores. While looking at the datatypes, spearman correlation would be the measure of choice since we have confirmed using the <code>glimpse()</code> function that those variables are stored as ordered and numeric.</p>
-<div class="no-row-height column-margin column-container"><div id="ref-kircanski_investigating_2017" class="csl-entry" role="listitem">
-Kircanski, K., LeMoult, J., Ordaz, S., &amp; Gotlib, I. H. (2017). Investigating the nature of co-occurring depression and anxiety: Comparing diagnostic and dimensional research approaches. <em>Journal of Affective Disorders</em>, <em>216</em>, 123–135. <a href="https://doi.org/10.1016/j.jad.2016.08.006">https://doi.org/10.1016/j.jad.2016.08.006</a>
-</div></div><p><strong>Spearman Correlation</strong>:</p>
-<p>Since GAD and PHQ scores are ordered but not continuous, spearman correlation here would be a better choice than pearson since it measures monotonic association between two variables by comparing their ranks, we will add the argument <code>use = "complete.obs"</code> to ignore rows with missing values.</p>
+</section>
+<section id="exploratory-data-analysis" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="exploratory-data-analysis"><span class="header-section-number">2.2</span> Exploratory data analysis</h2>
+<p>Both tasks evoke pain through movement. If walking and standing provoke pain through a common mechanism, then a participant who is sensitive to one should also be sensitive to the other, and the two MEP scores should track together.</p>
+<p>We first compare the two tasks. On average, sit-to-stand evokes noticeably more pain than the 10-meter walk (mean <code>mep_5tsts</code> ≈ 1.85 vs.&nbsp;<code>mep_walk</code> ≈ 0.67), which makes sense since rising from a chair loads the knee more than walking on level ground does.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(gad_phq<span class="sc">$</span>imputed_gad_score, gad_phq<span class="sc">$</span>imputed_phq_score, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>func <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(mep_walk, mep_5tsts),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">n =</span> <span class="sc">~</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(.x)), <span class="at">mean =</span> <span class="sc">~</span><span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">sd =</span> <span class="sc">~</span><span class="fu">sd</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 18%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 19%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">mep_walk_n</th>
+<th style="text-align: right;">mep_walk_mean</th>
+<th style="text-align: right;">mep_walk_sd</th>
+<th style="text-align: right;">mep_5tsts_n</th>
+<th style="text-align: right;">mep_5tsts_mean</th>
+<th style="text-align: right;">mep_5tsts_sd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1015</td>
+<td style="text-align: right;">0.6660099</td>
+<td style="text-align: right;">1.282478</td>
+<td style="text-align: right;">991</td>
+<td style="text-align: right;">1.852674</td>
+<td style="text-align: right;">1.97982</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Since both scores are bounded, discrete difference scores rather than smooth continuous measures, a spearman (rank-based) correlation is a better choice here than pearson. We add <code>use = "complete.obs"</code> to ignore rows that are missing either score.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(func<span class="sc">$</span>mep_walk, func<span class="sc">$</span>mep_5tsts, <span class="at">method =</span> <span class="st">"spearman"</span>, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7626977</code></pre>
+<pre><code>[1] 0.2527416</code></pre>
 </div>
 </div>
-<p>As expected we see a very strong correlation between anxiety and depression within the A2CPS cohort i.e.&nbsp;0.76. Let’s visualize these results with a simple boxplot.</p>
+<p>The correlation is positive but modest (≈ 0.25). So the two tasks are related, but not highly correlated i.e., each one captures a somewhat different aspect of movement-evoked pain. For MEP, it is worth looking at both rather than treating one as a surrogate for the other. Visualize the relationship with a boxplot of sit-to-stand MEP grouped by walk MEP.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows with NA in either column</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gad_phq_clean <span class="ot">&lt;-</span> gad_phq <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(imputed_gad_score), <span class="sc">!</span><span class="fu">is.na</span>(imputed_phq_score))</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  gad_phq_clean,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">factor</span>(imputed_gad_score),</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> imputed_phq_score,</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="fu">factor</span>(imputed_gad_score)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"PHQ Score Distribution by GAD Score"</span>,</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"GAD Score (Imputed)"</span>,</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"PHQ Score (Imputed)"</span>,</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"GAD Score"</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>func <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(mep_walk), <span class="sc">!</span><span class="fu">is.na</span>(mep_5tsts)) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(mep_walk), <span class="at">y =</span> mep_5tsts, <span class="at">fill =</span> <span class="fu">factor</span>(mep_walk))) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Sit-to-stand movement-evoked pain by 10-meter walk movement-evoked pain"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Walk MEP (final minus initial pain)"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"5TSTS MEP (post minus pre pain)"</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Psychosocial_starter_kit_files/figure-html/plot-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Functional_starter_kit_files/figure-html/plot-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We see that there is a positive association between Anxiety and Depression scores.</p>
 </section>
-<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">1.3</span> Considerations While Working on the Project</h2>
-<section id="data-generation" class="level3" data-number="1.3.1">
-<h3 data-number="1.3.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">1.3.1</span> Data Generation</h3>
-<p>Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessment and a mood assessment.</p>
+<section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">2.3</span> Considerations While Working on the Project</h2>
+<section id="data-generation" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">2.3.1</span> Data Generation</h3>
+<p>Functional tasks are administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the walk course, the sit-to-stand protocol, the deep breathing and coughing maneuver, and the timing of the pre- and post-task pain ratings. Raw responses are captured in REDCap, and the pain ratings are double-entered to reduce error. The steps that turn the REDCap export into the reformatted files (filtering, deduplication, error checking, and computing the MEP derivatives) are documented in the cleaning workflow that comes with the release (<code>FuntionalCRF_data_quality_checks_and_reformat.html</code>).</p>
 </section>
-<section id="data-quality" class="level3" data-number="1.3.2">
-<h3 data-number="1.3.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">1.3.2</span> Data Quality</h3>
-<p>The data were exported from REDCap and may contain errors or missing values. Therefore, to ensure high-quality data, the data were cleaned and reformatted. For details, see <a href="psycho_social_biomarker_impute.html" class="quarto-xref"><span>Appendix E</span></a>. There are individual reformatted files as well as a combined file for psychosocial data (look for files ending in TKA and/or Thoracic).</p>
+<section id="other" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="other"><span class="header-section-number">2.3.2</span> Other</h3>
+<ul>
+<li><strong>Movement-evoked pain, not resting pain.</strong> The MEP derivatives are change scores tied to a specific task, so they behave differently from resting or clinical pain measures.</li>
+<li><strong>Cohort-specific batteries.</strong> The TKA and thoracic cohorts do not share tasks, so <code>mep_walk</code> and <code>mep_5tsts</code> show up only for the TKA cohort, while the thoracic file carries the deep breathing and coughing measures instead.</li>
+<li><strong>Sample size after merging.</strong> Joining with other modalities can shrink the effective sample size, so the counts are worth a glance after each merge.</li>
+<li><strong>Quality control.</strong> The cleaning and derivative code has been reviewed, and a derivative can be reproduced from the raw pain ratings using the accompanying workflow.</li>
+</ul>
 </section>
-<section id="cross-modality-links" class="level3" data-number="1.3.3">
-<h3 data-number="1.3.3" class="anchored" data-anchor-id="cross-modality-links"><span class="header-section-number">1.3.3</span> Cross-Modality Links</h3>
-<p>All files include <code>record_id</code> and <code>guid</code>, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.</p>
-</section>
-<section id="missing-data" class="level3" data-number="1.3.4">
-<h3 data-number="1.3.4" class="anchored" data-anchor-id="missing-data"><span class="header-section-number">1.3.4</span> Missing Data</h3>
-<p>Proceed with caution when merging data across psychosocial data or different modalities. Merging datasets often leads to a reduced sample size due to missing data or incomplete forms. This can lower statistical power and limit the ability to draw reliable conclusions.</p>
-</section>
-<section id="citations" class="level3 page-columns page-full" data-number="1.3.5">
-<h3 data-number="1.3.5" class="anchored" data-anchor-id="citations"><span class="header-section-number">1.3.5</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="citations"><span class="header-section-number">2.3.3</span> Citations</h3>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
 <p>Data were provided (in part) by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
@@ -1690,13 +1506,13 @@ Berardi, G., Frey-Law, L., Sluka, K. A., Bayman, E. O., Coffey, C. S., Ecklund, 
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="./Psychosocial_starter_kit.html" class="pagination-link" aria-label="Psychosocial">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Psychosocial</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Functional_starter_kit.html" class="pagination-link" aria-label="Functional Testing">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Functional Testing</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./genetic_variants.html" class="pagination-link" aria-label="Genetic Variant Data">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Genetic Variant Data</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
