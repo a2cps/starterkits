@@ -31,7 +31,7 @@ When writing or updating a starter kit, please adhere to the following guideline
 
 ## `R` Style
 
-The kits are read as much as they are run, so the code is part of the prose. Please follow the [tidyverse style guide](https://style.tidyverse.org/), plus the conventions below. Formatting (indentation, line width, `<-`) is handled automatically by [`air`](https://posit-dev.github.io/air/) via the `prek` hooks. Here are a few other guidelines that help keep things consistent across the kits.
+The kits are read as much as they are run, so the code is part of the prose. Please follow the [tidyverse style guide](https://style.tidyverse.org/), plus the conventions below. Formatting (indentation, line width, `<-`) is handled automatically by [`air`](https://posit-dev.github.io/air/) via the [`prek` hooks](#pre-commit-hooks). Here are a few other guidelines that help keep things consistent across the kits.
 
 - **Use the native pipe `|>`**, not `%>%`. Nothing in the book needs magrittr.
 - **Load every package in one `setup` chunk**, placed immediately after the chapter's `#` heading and labelled `#| label: setup`. List the packages alphabetically, and only the ones the chapter actually uses.
@@ -79,6 +79,8 @@ $ git add *qmd _freeze
 
 $ git commit -m "Update book"
 ```
+
+The commit runs the [pre-commit hooks](#pre-commit-hooks). If a formatter rewrites a file, the commit stops; `git add` the result and run it again.
 
 - Push changes to the remote
 
@@ -136,6 +138,42 @@ The tag builds `/v/2_2_0/`, copies it to [`/latest/`](https://a2cps.github.io/st
 ### Development Environment
 
 The environment is managed with [`pixi`](https://pixi.prefix.dev/latest/), which was chosen because it manages not only `R` packages, the system-level packages required to make those `R` ones run, as well as others (e.g., packages used in development, like the formatters). Therefore, when making substantial changes in this repo (e.g., adding a new kit, re-rendering a qmd), you will need to have `pixi` installed.
+
+### Pre-commit Hooks
+
+Spelling and formatting are checked by hooks that run on `git commit`, managed by [`prek`](https://github.com/j178/prek). Nothing needs to be installed separately for this. `prek` is a `pixi` dependency like everything else, as are the tools it runs (`codespell`, `panache`, `air`), so an environment that can render the book can also run the hooks.
+
+The hooks do nothing in a fresh clone until they are installed once:
+
+```{shell}
+$ pixi run prek install
+```
+
+That writes `.git/hooks/pre-commit`. 
+
+Note that the hooks may rewrite files. Nothing is lost: read the diff, `git add` the reformatted files, and commit again.
+
+The first commit after installing is slow, because `prek` builds an isolated copy of each hook it pulls from a remote repository, pinned to the `rev` recorded in [prek.toml](prek.toml) and independent of the `pixi` copies. Those are cached, so later commits are quick.
+
+To sweep the whole repository without committing (worth doing after a large change):
+
+```{shell}
+$ pixi run prek run --all-files
+```
+
+Naming a hook runs only that one, which is quicker while chasing down a single complaint:
+
+```{shell}
+$ pixi run prek run --all-files codespell
+```
+
+Each tool reads its own configuration rather than taking arguments from [prek.toml](prek.toml):
+
+- [.codespellrc](.codespellrc): paths to skip (`_freeze`, `bib`, generated output) and words to leave alone (`EHR`, `PROMIS`, `notin`). A false positive belongs in `ignore-words-list`, rather than being reworded around.
+- [.panache.toml](.panache.toml): the markdown line width, and which formatter and linter handle the code inside chunks. `panache` carries those tools internally, so naming them there does not mean they have to be installed.
+- [.air.toml](.air.toml): the `R` formatting that `panache` applies: two-space indents, 80 columns, `<-` for assignment. An editor with [air](https://posit-dev.github.io/air/) integration reads the same file, so format-on-save agrees with the hook.
+
+`git commit --no-verify` skips the hooks. That is reasonable for a checkpoint commit on a branch, but the hooks should run before a pull request is merged.
 
 ### Quarto
 
