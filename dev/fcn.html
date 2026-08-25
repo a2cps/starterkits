@@ -744,9 +744,10 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   </ul></li>
   <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">17.2</span> Considerations While Working on the Project</a>
   <ul class="collapse">
-  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">17.2.1</span> Variability Across Scanners</a></li>
-  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">17.2.2</span> Data Quality</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">17.2.3</span> Citations</a></li>
+  <li><a href="#mislabeled-schaefer-atlas" id="toc-mislabeled-schaefer-atlas" class="nav-link" data-scroll-target="#mislabeled-schaefer-atlas"><span class="header-section-number">17.2.1</span> Mislabeled Schaefer Atlas</a></li>
+  <li><a href="#variability-across-scanners" id="toc-variability-across-scanners" class="nav-link" data-scroll-target="#variability-across-scanners"><span class="header-section-number">17.2.2</span> Variability Across Scanners</a></li>
+  <li><a href="#data-quality" id="toc-data-quality" class="nav-link" data-scroll-target="#data-quality"><span class="header-section-number">17.2.3</span> Data Quality</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">17.2.4</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -778,12 +779,13 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fs)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mgc)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mgc)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Functional connectivity is a measurement of how activity in different regions of the brain relates to one another over time. It is calculated by reducing the voxel-wise BOLD timeseries into a smaller set of regional timecourses, and then calculating a measure of correlation between those regional timecourses.</p>
 <p>To define these regions, researchers rely on “brain parcellations” or atlases. Some atlases divide the brain into discrete, non-overlapping anatomical regions. Other methods, like <a href="https://nilearn.github.io/modules/generated/nilearn.regions.fetch_atlas_difumo.html">Dictionary Learning for Functional Regions (DiFuMo)</a>, do not create a strict parcellation. Instead, DiFuMo extracts a set of “soft”, overlapping functional networks based on massive amounts of fMRI data. When using these different approaches, it is important to remember that you are correlating activity between fundamentally different kinds of brain divisions.</p>
@@ -1217,16 +1219,150 @@ Dadi, K., Varoquaux, G., Machlouzarides-Shalit, A., Gorgolewski, K. J., Wasserma
 </section>
 <section id="considerations-while-working-on-the-project" class="level2 page-columns page-full" data-number="17.2">
 <h2 data-number="17.2" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">17.2</span> Considerations While Working on the Project</h2>
-<section id="variability-across-scanners" class="level3" data-number="17.2.1">
-<h3 data-number="17.2.1" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">17.2.1</span> Variability Across Scanners</h3>
+<section id="mislabeled-schaefer-atlas" class="level3" data-number="17.2.1">
+<h3 data-number="17.2.1" class="anchored" data-anchor-id="mislabeled-schaefer-atlas"><span class="header-section-number">17.2.1</span> Mislabeled Schaefer Atlas</h3>
+<p>Two of the pre-computed connectivity matrices are based on <a href="https://github.com/ThomasYeoLab/CBIG/tree/v0.39.0-Zhang2026_EIAD/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal">Schaefer’s atlas</a>. Unfortunately, the labels are stored incorrectly, as described in <a href="https://github.com/a2cps/biomarker-extractor/issues/16">this issue</a>. The fix is relatively straightforward. Here, we download the file referenced in that issue, which contains a mapping between the current and correct labels.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>label_mapping <span class="ot">&lt;-</span> arrow<span class="sc">::</span><span class="fu">read_tsv_arrow</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://github.com/user-attachments/files/22352624/labels_mapping.tsv"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">schema =</span> <span class="fu">schema</span>(<span class="at">current =</span> <span class="fu">int64</span>(), <span class="at">correct =</span> <span class="fu">int64</span>()), <span class="co"># specifying to make the join below easier</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">skip =</span> <span class="dv">1</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">as_data_frame =</span> <span class="cn">FALSE</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(label_mapping)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Table
+6 rows x 2 columns
+$current &lt;int64&gt;
+$correct &lt;int64&gt;</code></pre>
+</div>
+</div>
+<p>We can use those labels to remap the existing source and target columns, as in the code chunk below. Note that the chunk below does this for the <code>schaefer_nrois-400_resolution-2_networks-7</code> atlas, but it will also need to be done for the <code>schaefer_nrois-400_resolution-2_networks-17</code> atlas.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">open_dataset</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/pre-surgery/mris/derivatives/fcn/connectivity"</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(atlas <span class="sc">==</span> <span class="st">"schaefer_nrois-400_resolution-2_networks-7"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(label_mapping, <span class="at">by =</span> <span class="fu">join_by</span>(source <span class="sc">==</span> current)) <span class="sc">|&gt;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    label_mapping,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">join_by</span>(target <span class="sc">==</span> current),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">".source"</span>, <span class="st">".target"</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>source, <span class="sc">-</span>target) <span class="sc">|&gt;</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">source =</span> correct.source, <span class="at">target =</span> correct.target) <span class="sc">|&gt;</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 5%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 42%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">connectivity</th>
+<th style="text-align: right;">sub</th>
+<th style="text-align: left;">ses</th>
+<th style="text-align: left;">task</th>
+<th style="text-align: right;">run</th>
+<th style="text-align: left;">atlas</th>
+<th style="text-align: left;">estimator</th>
+<th style="text-align: right;">source</th>
+<th style="text-align: right;">target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.6768990</td>
+<td style="text-align: right;">10003</td>
+<td style="text-align: left;">V1</td>
+<td style="text-align: left;">cuff</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">schaefer_nrois-400_resolution-2_networks-7</td>
+<td style="text-align: left;">ledoit_wolf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.6125918</td>
+<td style="text-align: right;">10003</td>
+<td style="text-align: left;">V1</td>
+<td style="text-align: left;">cuff</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">schaefer_nrois-400_resolution-2_networks-7</td>
+<td style="text-align: left;">ledoit_wolf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.6882472</td>
+<td style="text-align: right;">10003</td>
+<td style="text-align: left;">V1</td>
+<td style="text-align: left;">cuff</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">schaefer_nrois-400_resolution-2_networks-7</td>
+<td style="text-align: left;">ledoit_wolf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.5958827</td>
+<td style="text-align: right;">10003</td>
+<td style="text-align: left;">V1</td>
+<td style="text-align: left;">cuff</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">schaefer_nrois-400_resolution-2_networks-7</td>
+<td style="text-align: left;">ledoit_wolf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.4730263</td>
+<td style="text-align: right;">10003</td>
+<td style="text-align: left;">V1</td>
+<td style="text-align: left;">cuff</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">schaefer_nrois-400_resolution-2_networks-7</td>
+<td style="text-align: left;">ledoit_wolf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.1177192</td>
+<td style="text-align: right;">10003</td>
+<td style="text-align: left;">V1</td>
+<td style="text-align: left;">cuff</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">schaefer_nrois-400_resolution-2_networks-7</td>
+<td style="text-align: left;">ledoit_wolf</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="variability-across-scanners" class="level3" data-number="17.2.2">
+<h3 data-number="17.2.2" class="anchored" data-anchor-id="variability-across-scanners"><span class="header-section-number">17.2.2</span> Variability Across Scanners</h3>
 <p>Many MRI biomarkers exhibit variability across the scanners, which may confound some analyses. For an up-to-date assessment of the issue and overview of current thinking, please see <a href="mri-harmonization.html" class="quarto-xref"><span>Appendix D</span></a>.</p>
 </section>
-<section id="data-quality" class="level3" data-number="17.2.2">
-<h3 data-number="17.2.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">17.2.2</span> Data Quality</h3>
+<section id="data-quality" class="level3" data-number="17.2.3">
+<h3 data-number="17.2.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">17.2.3</span> Data Quality</h3>
 <p>As with any MRI derivative, all pipeline derivatives have been included. This means that products were included regardless of their quality, and so some products may have been generated from images that are known to have poor quality—rated “red”, or incomparable. For details on the ratings and how to exclude them, see <a href="bids-qc-joining.html" class="quarto-xref"><span>Appendix A</span></a>. Additionally, extensive QC has not yet been performed on the derivatives themselves, and so there may be cases where pipelines produced atypical outputs. For an overview of planned checks, see <a href="https://a2cps.atlassian.net/wiki/spaces/DOC/pages/262471688/Image+Processing+Checks">Confluence</a>.</p>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="17.2.3">
-<h3 data-number="17.2.3" class="anchored" data-anchor-id="citations"><span class="header-section-number">17.2.3</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="17.2.4">
+<h3 data-number="17.2.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">17.2.4</span> Citations</h3>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
 <p>Data were provided (in part) by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>
