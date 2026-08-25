@@ -6,6 +6,7 @@
 library(arrow)
 library(dplyr)
 library(fs)
+library(readr)
 library(ggplot2)
 library(mgc)
 library(purrr)
@@ -14,7 +15,7 @@ library(stringr)
 library(tidyr)
 ```
 
-Functional connectivity is a measurement of how activity in different regions of the brain relates to one another over time. It is calculated by reducing the voxel-wise BOLD timeseries into a smaller set of regional timecourses, and then calculating a measure of correlation between those regional timecourses. 
+Functional connectivity is a measurement of how activity in different regions of the brain relates to one another over time. It is calculated by reducing the voxel-wise BOLD timeseries into a smaller set of regional timecourses, and then calculating a measure of correlation between those regional timecourses.
 
 To define these regions, researchers rely on "brain parcellations" or atlases. Some atlases divide the brain into discrete, non-overlapping anatomical regions. Other methods, like [Dictionary Learning for Functional Regions (DiFuMo)](https://nilearn.github.io/modules/generated/nilearn.regions.fetch_atlas_difumo.html), do not create a strict parcellation. Instead, DiFuMo extracts a set of "soft", overlapping functional networks based on massive amounts of fMRI data. When using these different approaches, it is important to remember that you are correlating activity between fundamentally different kinds of brain divisions.
 
@@ -37,7 +38,7 @@ The functional connectivity data is in a tabular format in the folder `connectiv
 
 To enable flexibility, the timeseries parcellations are also provided in the folder `timeseries`, with data dictionary `timeseries.json`. These enable analyses such as dynamic connectivity or calculation of alternative measures of connectivity (e.g., partial correlation).
 
-The tabular data comprise parquet files that have been partitioned in a [hive style](https://hive.apache.org/). That is, subfolder names contain column information (e.g., participant label). 
+The tabular data comprise parquet files that have been partitioned in a [hive style](https://hive.apache.org/). That is, subfolder names contain column information (e.g., participant label).
 
 ```bash
 $ tree connectivity | head -n 20
@@ -92,7 +93,7 @@ dmn_labels <- read_csv(
 dmn_labels
 ```
 
-After reading in the labels, they can be merged with the functional connectivity results. 
+After reading in the labels, they can be merged with the functional connectivity results.
 
 ```{r}
 #| label: dmn-labeled
@@ -245,6 +246,41 @@ discriminability |>
 Overall, discriminability is around 0.8, with at most minor differences between different pairings of runs.
 
 ## Considerations While Working on the Project
+
+### Mislabeled Schaefer Atlas
+
+Two of the pre-computed connectivity matrices are based on [Schaefer's atlas](https://github.com/ThomasYeoLab/CBIG/tree/v0.39.0-Zhang2026_EIAD/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal). Unfortunately, the labels are stored incorrectly, as described in [this issue](https://github.com/a2cps/biomarker-extractor/issues/16). The fix is relatively straightforward. Here, we download the file referenced in that issue, which contains a mapping between the current and correct labels.
+
+```{r}
+#| label: read-remap-labels
+
+label_mapping <- arrow::read_tsv_arrow(
+  "https://github.com/user-attachments/files/22352624/labels_mapping.tsv",
+  schema = schema(current = int64(), correct = int64()), # specifying to make the join below easier
+  skip = 1,
+  as_data_frame = FALSE
+)
+head(label_mapping)
+```
+
+We can use those labels to remap the existing source and target columns, as in the code chunk below. Note that the chunk below does this for the `schaefer_nrois-400_resolution-2_networks-7` atlas, but it will also need to be done for the `schaefer_nrois-400_resolution-2_networks-17` atlas.
+
+```{r}
+open_dataset(
+  "data/pre-surgery/mris/derivatives/fcn/connectivity"
+) |>
+  filter(atlas == "schaefer_nrois-400_resolution-2_networks-7") |>
+  left_join(label_mapping, by = join_by(source == current)) |>
+  left_join(
+    label_mapping,
+    by = join_by(target == current),
+    suffix = c(".source", ".target")
+  ) |>
+  select(-source, -target) |>
+  rename(source = correct.source, target = correct.target) |>
+  head() |>
+  collect()
+```
 
 ### Variability Across Scanners
 
