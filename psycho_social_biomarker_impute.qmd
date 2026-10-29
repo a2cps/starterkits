@@ -968,7 +968,7 @@ write_csv(
 
 ### Modified BPI -- surgical site pain:
 
-Modified BPI -- surgical site pain records pain intensity and interference. The primary outcome is the worst pain intensity at the surgical site i.e field name "bpiworstpainratingss" over the past 24 hours,using a scale of 0 to 10. The form also includes the pain interference sub-scale\ [@cleeland1995], which assesses the level of interference in the subject's daily activities over the past 24 hours\ [@berardi_multi_2022] due to surgical site pain. Pain interference is scored as the mean of seven interference items, in case of missing data, this mean can still be used if there is a response to at least 4 of 7 items ([BPI user guide](https://www.mdanderson.org/documents/Departments-and-Divisions/Symptom-Research/BPI_UserGuide.pdf)).
+Modified BPI -- surgical site pain records pain intensity and interference. The primary outcome is the worst pain intensity at the surgical site i.e field name "bpiworstpainratingss" over the past 24 hours,using a scale of 0 to 10. The form also includes the pain interference sub-scale\ [@cleeland1995], which assesses the level of interference in the subject's daily activities over the past 24 hours\ [@berardi_multi_2022] due to surgical site pain. Pain interference is scored as the mean of seven interference items, in case of missing data, this mean can still be used if there is a response to at least 4 of 7 items ([BPI user guide](https://web.archive.org/web/20220423080904/https://www.mdanderson.org/documents/Departments-and-Divisions/Symptom-Research/BPI_UserGuide.pdf)).
 
 #### Missing Data:
 
@@ -3573,7 +3573,7 @@ bfi <- bfi |>
   )
 ```
 
-For missing items, response to the closest item can be used. For instance if "Tends to be quiet" is missing, the value from "Is outgoing, sociable" can be used to replace the missing value or vice versa [Berkeley personality lab](https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
+For missing items, response to the closest item can be used. For instance if "Tends to be quiet" is missing, the value from "Is outgoing, sociable" can be used to replace the missing value or vice versa [Berkeley personality lab](https://web.archive.org/web/20200925012450/https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
 
 Replace missing items with the closest matching item.
 
@@ -3708,7 +3708,7 @@ bfi <- bfi |>
   )
 ```
 
-For missing items, response to the closest item can be used [Berkeley personality lab](https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
+For missing items, response to the closest item can be used [Berkeley personality lab](https://web.archive.org/web/20200925012450/https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
 
 Replace missing items with the closest matching item.
 
@@ -3843,7 +3843,7 @@ bfi <- bfi |>
   )
 ```
 
-For missing items response to the closest item can be used.[Berkeley personality lab](https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
+For missing items response to the closest item can be used.[Berkeley personality lab](https://web.archive.org/web/20200925012450/https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
 
 Replace missing items with the closest matching item.
 
@@ -3978,7 +3978,7 @@ bfi <- bfi |>
   )
 ```
 
-For missing items response to the closest item can be used [Berkeley personality lab](https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
+For missing items response to the closest item can be used [Berkeley personality lab](https://web.archive.org/web/20200925012450/https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
 
 Replace missing items with the closest matching item.
 
@@ -4113,7 +4113,7 @@ bfi <- bfi |>
   )
 ```
 
-For missing items response to the closest item can be used.[Berkeley personality lab](https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
+For missing items response to the closest item can be used.[Berkeley personality lab](https://web.archive.org/web/20200925012450/https://www.ocf.berkeley.edu/~johnlab/bfi.htm).
 
 Replace missing items with the closest matching item.
 

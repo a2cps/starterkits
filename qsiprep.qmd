@@ -30,7 +30,7 @@ sub-10013.html
 
 ### Extract Data
 
-For a detailed description of the files produced by QSIPrep, please review [their documentation](https://qsiprep.readthedocs.io/en/latest/preprocessing.html#outputs-of-qsiprep).
+For a detailed description of the files produced by QSIPrep, please review [their documentation](https://qsiprep.readthedocs.io/en/latest/outputs.html).
 
 ## Considerations While Working on the Project
 
@@ -64,7 +64,7 @@ Data was collected with reversed phase-encode blips, resulting in pairs of image
 
 Several confounding time-series were calculated based on the preprocessed DWI: framewise displacement (FD) using the implementation in *Nipype*\ [following the definitions by @power_fd_dvars]. The head-motion estimates calculated in the correction step were also placed within the corresponding confounds file. Slicewise cross correlation was also calculated. The DWI time-series were resampled to ACPC, generating a *preprocessed DWI run in ACPC space* with 1.7mm isotropic voxels.
 
-Many internal operations of *QSIPrep* use *Nilearn* 0.10.1\ [@nilearn, RRID:SCR_001362] and *Dipy*\ [@dipy]. For more details of the pipeline, see [the section corresponding to workflows in *QSIPrep*'s documentation](https://qsiprep.readthedocs.io/en/latest/workflows.html "QSIPrep's documentation").
+Many internal operations of *QSIPrep* use *Nilearn* 0.10.1\ [@nilearn, RRID:SCR_001362] and *Dipy*\ [@dipy]. For more details of the pipeline, see [the section corresponding to workflows in *QSIPrep*'s documentation](https://qsiprep.readthedocs.io/en/latest/methods/index.html "QSIPrep's documentation").
 
 ### Citations
 

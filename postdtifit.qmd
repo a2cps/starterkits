@@ -123,7 +123,7 @@ shell_comparison <- diffusion_regional_stats |>
 head(shell_comparison)
 ```
 
-To get a very high-level overview of the data, generate a [BA plot](https://en.wikipedia.org/wiki/Bland--Altman_plot). 
+To get a very high-level overview of the data, generate a [BA plot](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot). 
 
 ::: {#fig-shell-comparison}
 ```{r}

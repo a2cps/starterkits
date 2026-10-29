@@ -250,7 +250,7 @@ definite_coregistration_failures |> head()
 
 Derivative QC is a work in progress, and so we expect substantial improvements in subsequent releases. As of this release, only fieldmaps coregistrations have been exhaustively checked. In future releases, we expect more targets to be reviewed.
 
-Quality control was done with the A2CPS Derivative Image Review Tool (DIRT), which is under active development here: https://github.com/psadil/django-qcapp-ratings/tree/main/src/django_qcapp_ratings. 
+Quality control was done with the A2CPS Derivative Image Review Tool (DIRT), which is under active development here: <https://github.com/psadil/django-dirt-ratings/tree/main/src/django_dirt_ratings>. 
 
 ### Citations
 

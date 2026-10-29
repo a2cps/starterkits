@@ -202,7 +202,7 @@ Occasionally, scans were collected with acquisition parameters that differed fro
 
 ### Software Packages for Working with BIDS
 
-Several packages in multiple languages have been developed to simplify interacting with BIDS. For a complete list, see: [Benefits](https://bids.neuroimaging.io/benefits.html#other-tools), a subset of which is copied below
+Several packages in multiple languages have been developed to simplify interacting with BIDS. For a complete list, see: [BIDS Tools](https://bids.neuroimaging.io/tools/index.html), a subset of which is copied below
 
 - [bids-matlab](https://github.com/bids-standard/bids-matlab): MATLAB/Octave tools to interact with datasets conforming to the BIDS format
 - [bidser](https://github.com/bbuchsbaum/bidser): Working with Brain Imaging Data Structure in R
