@@ -1897,7 +1897,7 @@ write_csv(
 
 ### Pain Catastrophizing Scale (PCS6)
 
-The PCS-6 comprises six questions, each item is rated on a scale of 0 to 4, where 0 indicates "not at all" and 4 indicates "all the time." The questionnaire also measures three sub-scales that evaluate rumination, magnification, and helplessness. A total score is calculated by adding the scores for all the 6 items and ranges from 0-24, the three sub scale scores can be calculated separately as well[@Darnall2017a][@McWilliams2015]. A higher score indicates higher degree catastrophizing.
+The PCS-6 comprises six questions, each item is rated on a scale of 0 to 4, where 0 indicates "not at all" and 4 indicates "all the time." The questionnaire also measures three sub-scales that evaluate rumination, magnification, and helplessness. A total score is calculated by adding the scores for all the 6 items and ranges from 0-24, the three sub scale scores can be calculated separately as well[@Darnall2017a; @McWilliams2015]. A higher score indicates higher degree catastrophizing.
 
 #### Read in Data:
 
@@ -2422,7 +2422,7 @@ pdq <- pdq |> select(-pdq_not_na, -mean_pdq, -raw_pdq_score)
 
 #### Scoring:
 
-**The scoring for pain behavior pattern (**pdqpaincourse) **and the pain radiation (**pdradiateregions) is as follows[@Freynhagen2006]\[PainDETECT.pdf\](https://www.oregon.gov/oha/HPA/dsi-pmc/PainCareToolbox/PainDETECT.pdf):
+**The scoring for pain behavior pattern (**pdqpaincourse) **and the pain radiation (**pdradiateregions) is as follows[@Freynhagen2006], see [PainDETECT.pdf](https://www.oregon.gov/oha/HPA/dsi-pmc/PainCareToolbox/PainDETECT.pdf):
 
 ![](assets/images/Screen%20Shot%202023-08-18%20at%202.59.07%20PM%203-02.png)
 
@@ -4534,7 +4534,7 @@ write_csv(
 
 ### Danish Thoracic Surgery Questionnaire v0.2
 
-The Danish Thoracic Surgery Questionnaire comprises 17 items to assess functional impairment experienced post thoracotomy. each item is rated on a scale of 0 to 4, where 0 indicates no impairment due to pain and 4 indicates complete impairement due to pain. There is an additional indicator "I never do this activity" for each item. The total score is calculated as the sum of all seventeen items[@ringsted2013][@bayman2017]
+The Danish Thoracic Surgery Questionnaire comprises 17 items to assess functional impairment experienced post thoracotomy. each item is rated on a scale of 0 to 4, where 0 indicates no impairment due to pain and 4 indicates complete impairement due to pain. There is an additional indicator "I never do this activity" for each item. The total score is calculated as the sum of all seventeen items[@ringsted2013; @bayman2017]
 
 #### Read in Data:
 

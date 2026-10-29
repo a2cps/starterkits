@@ -52,7 +52,7 @@ Preprocessing was performed using *QSIPrep* 0.21.5.dev0+g36b93fe.d20240504, whic
 
 #### Anatomical data preprocessing
 
-The T1-weighted (T1w) image was corrected for intensity non-uniformity (INU) using `N4BiasFieldCorrection`\ [@n4, ANTs 2.4.3], and used as an anatomical reference throughout the workflow. The anatomical reference image was reoriented into AC-PC alignment via a 6-DOF transform extracted from a full Affine registration to the MNI152NLin2009cAsym template. A full nonlinear registration to the template from AC-PC space was estimated via symmetric nonlinear registration (SyN) using antsRegistration. Brain extraction was performed on the T1w image using SynthStrip\ [@hoopes_synthstrip_2022] and automated segmentation was performed using SynthSeg\ [@synthseg1, @synthseg2] from FreeSurfer version 7.3.1. 
+The T1-weighted (T1w) image was corrected for intensity non-uniformity (INU) using `N4BiasFieldCorrection`\ [@n4, ANTs 2.4.3], and used as an anatomical reference throughout the workflow. The anatomical reference image was reoriented into AC-PC alignment via a 6-DOF transform extracted from a full Affine registration to the MNI152NLin2009cAsym template. A full nonlinear registration to the template from AC-PC space was estimated via symmetric nonlinear registration (SyN) using antsRegistration. Brain extraction was performed on the T1w image using SynthStrip\ [@hoopes_synthstrip_2022] and automated segmentation was performed using SynthSeg\ [@synthseg1; @synthseg2] from FreeSurfer version 7.3.1. 
 
 #### Diffusion data preprocessing
 
