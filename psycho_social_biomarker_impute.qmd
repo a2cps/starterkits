@@ -194,42 +194,40 @@ dim(psy_soc1)
 
 Following are the available psycho-social forms and imputation methods used in this workflow:
 
-  | Form Name                                                                                 | How was missing data handled                                                             |
-  | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-  | The Brief Pain Inventory v2.3 - Short Form (BPI): General Pain Intensity                  | Indicator for missingness                                                                |
-  | The Brief Pain Inventory v2.3 - Short Form (BPI):Local Pain Intensity                     | BPI user guide                                                                           |
-  | The Brief Pain Inventory v2.3 - Short Form (BPI):pain interference subscore               | BPI user guide                                                                           |
-  | The Brief Pain Inventory v2.3 - Short Form (BPI):Widespread Body Pain (Michigan body map) | Indicator for missingness                                                                |
-  | Knee Injury Osteoarthritis Outcome Score (KOOS-12)                                        | KOOS-12 user guide                                                                       |
-  | Generalized Anxiety Disorder 7 Item (GAD7) Scale Score                                    | Row-wise mean                                                                            |
-  | Patient Health Questionnaire Depression Scale (PHQ) Scored                                | Row-wise mean                                                                            |
-  | Fear avoidance: FABQ                                                                      | Row-wise mean                                                                            |
-  | Pain Catastrophizing Questionnaire (PCS6)                                                 | Row-wise mean                                                                            |
-  | Other Pain Treatments v3 (Other Treatments)                                               | Not imputed: Subject Level Characteristics                                               |
-  | Other Medical Surgical Treatments II v0.5                                                 | Not imputed: Subject Level Characteristics                                               |
-  | Symptom Severity Index v1.0 (SSI)                                                         | Indicator for missingness                                                                |
-  | painDETECT Questionnaire                                                                  | Row-wise mean                                                                            |
-  | PROMIS SF v1.2 - Physical Function 8b                                                     | HealthMeasures Scoring Service                                                           |
-  | PROMIS SF v1.0 - Sleep Disturbance 6a (Sleep I)                                           | HealthMeasures Scoring Service                                                           |
-  | PROMIS SF v1.0 - Fatigue 7a                                                               | HealthMeasures Scoring Service                                                           |
-  | PROMIS SF v2.0 - Emotional Support 6a                                                     | HealthMeasures Scoring Service                                                           |
-  | PROMIS SF v2.0 - Instrumental Support 6a                                                  | HealthMeasures Scoring Service                                                           |
-  | Pain-Sleep Duration (Sleep II)                                                            | Indicator for outliers and missingness                                                   |
-  | Pain Resilience Scale (PRS)                                                               | Row-wise mean                                                                            |
-  | Multidimensional Inventory of Subjective Cognitive Impairment v1.0 (MISCI)                | Row-wise mean                                                                            |
-  | Adverse Childhood Experience Questionnaire (ACE)                                          | Not imputed: Responses in yes/no format                                                  |
-  | TAPS-1                                                                                    | Not imputed: Smoking/substance abuse screener                                            |
-  | TAPS-2                                                                                    | Not imputed: Responses in yes/no format                                                  |
-  | Opioid Use Baseline v1.0 (Opioid Use I)                                                   | Not imputed: Subject Level Characteristics                                               |
-  | Expectation Items                                                                         | Not imputed                                                                              |
-  | Current Opioid Misuse v0.2 (COMM)                                                         | Not imputed: Subject Level Characteristics                                               |
-  | Rapid Assessment of Physical Activity v1.0 (RAPA)                                         | Not imputed: Responses in yes/no format                                                  |
-  |                                                                                           |                                                                                          |
-  |                                                                                           | Aerobic activity items: scored based on the highest activity answered in the affirmative |
-  | General Sensory Sensitivity v0.2 (GSS-8)                                                  | Not imputed: Responses in yes/no format                                                  |
-  | The Big Five Inventory (BFI-2-S)                                                          | Response to the closest matching item (similar meaning) was used                         |
-  | Self-Administered Comorbidity Questionnaire v4 (SCQ)                                      | Not imputed: Subject Level Characteristics                                               |
-  | Danish Thoracic Surgery Questionnaire v0.2                                                | Row-wise mean                                                                            |
+  | Form Name                                                                                 | How was missing data handled                                                                                                      |
+  | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+  | The Brief Pain Inventory v2.3 - Short Form (BPI): General Pain Intensity                  | Indicator for missingness                                                                                                         |
+  | The Brief Pain Inventory v2.3 - Short Form (BPI):Local Pain Intensity                     | BPI user guide                                                                                                                    |
+  | The Brief Pain Inventory v2.3 - Short Form (BPI):pain interference subscore               | BPI user guide                                                                                                                    |
+  | The Brief Pain Inventory v2.3 - Short Form (BPI):Widespread Body Pain (Michigan body map) | Indicator for missingness                                                                                                         |
+  | Knee Injury Osteoarthritis Outcome Score (KOOS-12)                                        | KOOS-12 user guide                                                                                                                |
+  | Generalized Anxiety Disorder 7 Item (GAD7) Scale Score                                    | Row-wise mean                                                                                                                     |
+  | Patient Health Questionnaire Depression Scale (PHQ) Scored                                | Row-wise mean                                                                                                                     |
+  | Fear avoidance: FABQ                                                                      | Row-wise mean                                                                                                                     |
+  | Pain Catastrophizing Questionnaire (PCS6)                                                 | Row-wise mean                                                                                                                     |
+  | Other Pain Treatments v3 (Other Treatments)                                               | Not imputed: Subject Level Characteristics                                                                                        |
+  | Other Medical Surgical Treatments II v0.5                                                 | Not imputed: Subject Level Characteristics                                                                                        |
+  | Symptom Severity Index v1.0 (SSI)                                                         | Indicator for missingness                                                                                                         |
+  | painDETECT Questionnaire                                                                  | Row-wise mean                                                                                                                     |
+  | PROMIS SF v1.2 - Physical Function 8b                                                     | HealthMeasures Scoring Service                                                                                                    |
+  | PROMIS SF v1.0 - Sleep Disturbance 6a (Sleep I)                                           | HealthMeasures Scoring Service                                                                                                    |
+  | PROMIS SF v1.0 - Fatigue 7a                                                               | HealthMeasures Scoring Service                                                                                                    |
+  | PROMIS SF v2.0 - Emotional Support 6a                                                     | HealthMeasures Scoring Service                                                                                                    |
+  | PROMIS SF v2.0 - Instrumental Support 6a                                                  | HealthMeasures Scoring Service                                                                                                    |
+  | Pain-Sleep Duration (Sleep II)                                                            | Indicator for outliers and missingness                                                                                            |
+  | Pain Resilience Scale (PRS)                                                               | Row-wise mean                                                                                                                     |
+  | Multidimensional Inventory of Subjective Cognitive Impairment v1.0 (MISCI)                | Row-wise mean                                                                                                                     |
+  | Adverse Childhood Experience Questionnaire (ACE)                                          | Not imputed: Responses in yes/no format                                                                                           |
+  | TAPS-1                                                                                    | Not imputed: Smoking/substance abuse screener                                                                                     |
+  | TAPS-2                                                                                    | Not imputed: Responses in yes/no format                                                                                           |
+  | Opioid Use Baseline v1.0 (Opioid Use I)                                                   | Not imputed: Subject Level Characteristics                                                                                        |
+  | Expectation Items                                                                         | Not imputed                                                                                                                       |
+  | Current Opioid Misuse v0.2 (COMM)                                                         | Not imputed: Subject Level Characteristics                                                                                        |
+  | Rapid Assessment of Physical Activity v1.0 (RAPA)                                         | Not imputed: Responses in yes/no format. Aerobic activity items: scored based on the highest activity answered in the affirmative |
+  | General Sensory Sensitivity v0.2 (GSS-8)                                                  | Not imputed: Responses in yes/no format                                                                                           |
+  | The Big Five Inventory (BFI-2-S)                                                          | Response to the closest matching item (similar meaning) was used                                                                  |
+  | Self-Administered Comorbidity Questionnaire v4 (SCQ)                                      | Not imputed: Subject Level Characteristics                                                                                        |
+  | Danish Thoracic Surgery Questionnaire v0.2                                                | Row-wise mean                                                                                                                     |
 
 ### Functions:
 
