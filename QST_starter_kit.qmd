@@ -6,61 +6,164 @@ authors:
 
 # Quantitative Sensory Testing {#sec-qst}
 
-Quantitative Sensory Testing (QST) is a set of standardized psychophysical assays that assess how pain is processed. In A2CPS, we use QST to characterize each participant's pain-processing "profile" before surgery, on the hypothesis that these profiles help predict who goes on to develop chronic post-surgical pain.
+Quantitative Sensory Testing (QST) is a set of standardized psychophysical assays that assess how pain is processed. In the Acute to Chronic Pain Signatures Study (A2CPS), we use QST to characterize each participant's pain-processing profile before surgery, on the hypothesis that these profiles help predict who goes on to develop chronic post-surgical pain.
 
-A2CPS collects three complementary QST assays, and each one is tested at both a surgical **index site** (near where surgery will occur, i.e., the knee for the TKA cohort and the chest for the thoracic cohort) and a **remote site** (the contralateral deltoid, which serves as a control location):
+A2CPS collects three complementary QST assays, and each one is tested at both a surgical **index site** (near where surgery will occur) and a **remote site** (a control location):
 
-- **Pressure Pain Threshold (PPT)**: the pressure at which a steadily increasing force first becomes painful, measured with a Wagner algometer over three repetitions per site. PPT is a measure of *static* pain sensitivity. Note that **higher PPT values mean *less* pain sensitivity** (more pressure was needed before the participant reached pain).
-- **Mechanical Temporal Summation (MTS)**: the increase in pain over a train of ten identical pokes delivered at 1 Hz with a Neuropen. MTS captures *pain facilitation*, i.e., the tendency of the central nervous system to amplify repeated input. **Higher MTS means greater facilitation.**
-- **Conditioned Pain Modulation (CPM)**: the change in PPT after a conditioning cold-water hand immersion. CPM captures *descending inhibition*, i.e., the "pain inhibits pain" mechanism. **Negative CPM scores indicate that inhibition is present.**
+- **Pressure Pain Threshold (PPT)**: the pressure at which a steadily increasing force first becomes painful, measured with an algometer over three repetitions per site. PPT is a measure of *static* pain sensitivity. Note that **higher PPT means *less* pain sensitivity** (more pressure was needed before the participant reached pain).
+- **Mechanical Temporal Summation (MTS)**: the increase in pain over a train of identical pokes delivered with a Neuropen. MTS captures *pain facilitation*, the tendency of the central nervous system to amplify repeated input. **Higher MTS means greater facilitation.**
+- **Conditioned Pain Modulation (CPM)**: the change in PPT after a conditioning cold-water hand immersion. CPM captures *descending inhibition*, the "pain inhibits pain" mechanism. **Zero or positive CPM scores indicate no descending inhibition; negative scores indicate inhibition is present.**
 
-For each assay, the cleaning workflow computes a **primary** and a **secondary** outcome, and for PPT and MTS these are reported at both the index and the remote site. The exact definitions follow the A2CPS Manual of Procedures:
+This kit builds on the **thoracic** cohort. The NIMH Data Archive (NDA) release carries the full set of QST trials for the thoracic cohort, so all three assays can be reconstructed from the raw per-repetition ratings. The thoracic QST file already uses the HEAL Common Data Element names\ [@wandner_nih_2022], so no renaming is needed here.
+
+For each assay, we compute a **primary** and a **secondary** outcome, and for PPT and MTS these are reported at both the index and the remote site. The definitions follow the A2CPS Manual of Procedures:
 
 | Biomarker | Primary outcome | Secondary outcome |
 |---|---|---|
 | PPT | Mean PPT at the **index** site | Mean PPT at the **remote** site |
-| MTS | Mean of 3 difference scores (Max minus initial) | Mean of 3 wind-up ratios, (Max + 1)/(initial + 1) |
+| MTS | Mean of 3 difference scores (max minus initial) | Mean of 3 wind-up ratios, (max + 1)/(initial + 1) |
 | CPM | % change: (pre minus post)/pre × 100 | Difference: pre minus post |
 
 ## Starting Project
 
 ### Locate Data
 
-Where are the relevant files?
+The QST measure arrives from NDA as one file per cohort. We use the thoracic file. After downloading the QST structure from your NDA data package, place it under `NDA_data/` so the project looks like this:
 
 ```bash
-$ {{< var release.root >}}/{{< var release.dir >}}/qst/reformatted
+NDA_data/
+└── QST/
+    └── qst_thoracic.csv
 ```
 
-The reformatted data are split by cohort: `reformatted_tka_qst.csv` (knee) and `reformatted_thor_qst.csv` (thoracic). Each one carries the raw per-repetition pain ratings plus the computed biomarker columns, and comes with `updated_qst_dict.csv`, which lists the original REDCap field names alongside the fields added during cleaning.
+The code below reaches this file with `here()`, which resolves paths from the project root, so a chunk runs the same regardless of the working directory.
 
 ### Extract Data
 
-The files are plain CSVs, and here we use the [`tidyverse`](https://www.tidyverse.org/). We focus on the TKA cohort.
+The file is a plain CSV. We use a small set of tidyverse packages, and define two helpers for the temporal-summation formulas so the scoring chunks read cleanly.
 
-```{r setup}
-library(tidyverse)
+```{r}
+#| label: setup
+
+library(dplyr)
+library(ggplot2)
+library(here)
+library(readr)
+library(tidyr)
+
+# temporal summation, per trial, from the start (initial) and end (final) pain ratings.
+# the peak is the higher of the two, so a trial that ends lower than it started counts as no climb.
+
+# how much pain climbed over the trial
+ts_diff <- \(initial, final) {
+  peak <- pmax(initial, final)
+  peak - initial
+}
+
+# the same climb as a ratio; the +1 keeps it defined when the start rating is 0
+ts_wur <- \(initial, final) {
+  peak <- pmax(initial, final)
+  (peak + 1) / (initial + 1)
+}
 ```
 
-```{r load}
-qst <- read_csv("data/pre-surgery/qst/reformatted/reformatted_tka_qst.csv")
+We read the file, convert `record_id` to a number, and drop any exact duplicate rows so that a participant appears only once. We then derive the surgical cohort from `record_id`; every record here is thoracic.
+
+```{r}
+#| label: load-qst
+
+qst <- read_csv(here("NDA_data", "QST", "qst_thoracic.csv"), skip = 1) |>
+  rename(record_id = src_subject_id) |>
+  mutate(record_id = as.numeric(record_id))
+
+# guard: every record_id must parse to a number before filtering and cohort assignment
+if (any(is.na(qst$record_id))) {
+  stop(sum(is.na(qst$record_id)), " record_id value(s) did not parse to a number")
+}
+
+test_records <- c(10000, 15000, 20000, 25000, 40000, 50000,
+                  60000, 70000, 80000, 90000, 100000, 110000, 120000)
+
+qst <- qst |>
+  distinct() |>
+  filter(!record_id %in% test_records) |>
+  mutate(cohort = case_when(
+    record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA",
+    .default = "Thoracic"
+  ))
 ```
 
-The eight derived biomarker columns for the TKA cohort follow a consistent naming scheme: `primary_` or `secondary_`, then the assay (`ppt`, `ts`, `cpm`), and for PPT and MTS the site (`index` or `remote`).
+NDA provides the individual trial ratings rather than the summary biomarkers, so we compute them here following the A2CPS Manual of Procedures. Every mean requires all of its trials, so a missing trial yields a missing biomarker. A completion flag records which sites were tested, coded 1 for both sites, 2 for remote only, and 3 for index only. So for MTS we compute the index outcome when `TScompleted` is 1 or 3, and the remote outcome when it is 1 or 2.
 
-```{r peek}
+For MTS, each site has three Neuropen trials. The per-trial difference is `max(final, initial) - initial`, and the wind-up ratio is `(max + 1)/(initial + 1)`. The primary outcome is the mean of the three differences, the secondary the mean of the three wind-up ratios.
+
+```{r}
+#| label: score-mts
+
+qst <- qst |>
+  mutate(
+    primary_ts_index = if_else(TScompleted %in% c(1, 3),
+      (ts_diff(TSindxR1initial, TSindxR1final) +
+       ts_diff(TSindxR2initial, TSindxR2final) +
+       ts_diff(TSindxR3initial, TSindxR3final)) / 3, NA_real_),
+    secondary_ts_index = if_else(TScompleted %in% c(1, 3),
+      (ts_wur(TSindxR1initial, TSindxR1final) +
+       ts_wur(TSindxR2initial, TSindxR2final) +
+       ts_wur(TSindxR3initial, TSindxR3final)) / 3, NA_real_),
+    primary_ts_remote = if_else(TScompleted %in% c(1, 2),
+      (ts_diff(TSremoteR1initial, TSremoteR1final) +
+       ts_diff(TSremoteR2initial, TSremoteR2final) +
+       ts_diff(TSremoteR3initial, TSremoteR3final)) / 3, NA_real_),
+    secondary_ts_remote = if_else(TScompleted %in% c(1, 2),
+      (ts_wur(TSremoteR1initial, TSremoteR1final) +
+       ts_wur(TSremoteR2initial, TSremoteR2final) +
+       ts_wur(TSremoteR3initial, TSremoteR3final)) / 3, NA_real_)
+  )
+```
+
+For PPT, the primary outcome is the mean of the three index trials and the secondary the mean of the three remote trials. `PPTcompleteYN` uses the same coding as above, so the index outcome is computed when it is 1 or 3 and the remote when it is 1 or 2. CPM compares the remote PPT before conditioning (the secondary PPT) with the PPT measured during cold-water immersion; the primary outcome is the percent change and the secondary the raw difference.
+
+```{r}
+#| label: score-ppt-cpm
+
+qst <- qst |>
+  mutate(
+    # mean PPT at each site (all three trials required)
+    primary_ppt   = if_else(PPTcompleteYN %in% c(1, 3),
+                            (PPTindxR1Val + PPTindxR2Val + PPTindxR3Val) / 3, NA_real_),
+    secondary_ppt = if_else(PPTcompleteYN %in% c(1, 2),
+                            (PPTremoteR1Val + PPTremoteR2Val + PPTremoteR3Val) / 3, NA_real_)
+  ) |>
+  mutate(
+    # CPM compares remote PPT before conditioning with PPT during cold-water immersion
+    ppt_cold      = (CPMPPTremR1Val + CPMPPTremR2Val + CPMPPTremR3Val) / 3,
+    primary_cpm   = if_else(PPTcompleteYN %in% c(1, 2),
+                            (secondary_ppt - ppt_cold) / secondary_ppt * 100, NA_real_),
+    secondary_cpm = if_else(PPTcompleteYN %in% c(1, 2),
+                            secondary_ppt - ppt_cold, NA_real_)
+  ) |>
+  select(-ppt_cold)
+```
+
+A look at the eight biomarker columns.
+
+```{r}
+#| label: peek
+
 qst |>
   select(record_id,
-         primary_ppt_tka, secondary_ppt_tka,
-         primary_ts_index_tka, primary_ts_remote_tka,
-         secondary_ts_index_tka, secondary_ts_remote_tka,
-         primary_cpm_tka, secondary_cpm_tka) |>
+         primary_ppt, secondary_ppt,
+         primary_ts_index, secondary_ts_index,
+         primary_ts_remote, secondary_ts_remote,
+         primary_cpm, secondary_cpm) |>
   head()
 ```
 
-Next, check that the biomarkers are stored as numbers. `glimpse()` gives us a quick column-by-column view of the data types.
+Check that the biomarkers are stored as numbers.
 
-```{r glimpse}
+```{r}
+#| label: check-types
+
 qst |>
   select(record_id, starts_with("primary_"), starts_with("secondary_")) |>
   glimpse()
@@ -68,35 +171,51 @@ qst |>
 
 ### Data Quality
 
-Several cleaning steps have already been applied, and it helps to know what they are before we start:
+A few things are worth knowing before we start:
 
-- **Test records removed.** Only completed assessments (`qst_mcc1_v03_complete == 2`) are kept, and we keep the most recent repeat instance, so we get one row per participant and visit.
-- **Biomarkers need complete component data.** Each biomarker is computed only when all of its underlying pain ratings are present, and a mean over three repetitions is missing if any one repetition is missing. So expect a modest number of missing biomarker values even among completed assessments.
-- **CPM primary (% change) has extreme values.** Dividing by the pre-immersion PPT means a small baseline can blow up the percentage (values below -300 show up), while the secondary CPM (a simple difference) stays within the limits determined by the values.
-- **Error report.** The cleaning workflow produces an error report that flags discrepancies between the double-entered pain ratings and other internal inconsistencies. It is worth a look before you dig into the data.
+- **Biomarkers need complete trial data.** Each mean is computed only when all of its trials are present, so expect a modest number of missing biomarker values even among completed assessments.
+- **CPM percent change can be extreme.** Dividing by the pre-immersion PPT means a small baseline can blow up the percentage, while the secondary CPM (a simple difference) stays bounded by the pressure scale. We tally the biomarker coverage first.
+
+```{r}
+#| label: qc-coverage
+
+qst |>
+  summarise(across(
+    c(primary_ppt, primary_ts_index, primary_ts_remote, primary_cpm),
+    \(x) sum(!is.na(x))
+  ))
+```
 
 ### Cross-Modality Links
 
-Every file includes `record_id` and `guid`, which uniquely identify a participant and let us link the QST data to other A2CPS modalities. QST is especially tied to **imaging**: the cuff-pressure calibration used to evoke a target pain level in the scanner is shared between the two modalities, and the QST cleaning workflow already joins the relevant imaging cuff fields. To combine QST with another modality, we join on the shared identifiers:
+Every file includes `record_id` and `subjectkey`, which uniquely identify a participant and let you link QST to other A2CPS modalities. QST is especially tied to imaging, since the cuff-pressure calibration used to evoke a target pain level in the scanner is shared between the two. To show the join running, we simulate a small table standing in for another modality: it carries the shared identifiers plus a made-up `cuff_pressure`. We set a seed so the simulated values are reproducible, and join on the shared identifiers, which `intersect()` finds automatically.
 
-```{r cross-modality}
-#| eval: false
-inner_join(qst, other_modality, by = intersect(names(qst), names(other_modality)))
+```{r}
+#| label: cross-modality
+
+# a simulated table standing in for another modality:
+# every participant's identifiers plus a made-up cuff pressure
+set.seed(1)
+other_modality <- qst |>
+  select(record_id, subjectkey) |>
+  mutate(cuff_pressure = sample(20:60, n(), replace = TRUE))
+
+inner_join(other_modality, qst, by = intersect(names(other_modality), names(qst)))
 ```
 
 ## Exploratory data analysis
 
-The three assays are meant to capture different pain-processing mechanisms: static sensitivity (PPT), facilitation (MTS), and inhibition (CPM). 
+The three assays are meant to capture different pain-processing mechanisms: static sensitivity (PPT), facilitation (MTS), and inhibition (CPM). We reshape the primary biomarkers into a long format and plot their distributions. Note the different scales: PPT and MTS are on a pressure or pain scale, while CPM percent change is unbounded and heavy-tailed.
 
-We reshape the primary biomarkers into a long format and plot their distributions. Note the different scales: PPT and MTS are on a pain or pressure scale, while CPM % change is unbounded and heavy-tailed.
+```{r}
+#| label: distributions
 
-```{r distributions}
 primary <- qst |>
   select(record_id,
-         `PPT (index)`      = primary_ppt_tka,
-         `MTS (index)`      = primary_ts_index_tka,
-         `MTS (remote)`     = primary_ts_remote_tka,
-         `CPM (% change)`   = primary_cpm_tka)
+         `PPT (index)`    = primary_ppt,
+         `MTS (index)`    = primary_ts_index,
+         `MTS (remote)`   = primary_ts_remote,
+         `CPM (% change)` = primary_cpm)
 
 primary |>
   pivot_longer(-record_id, names_to = "biomarker", values_to = "value") |>
@@ -104,35 +223,34 @@ primary |>
   ggplot(aes(value)) +
   geom_histogram(bins = 30) +
   facet_wrap(~biomarker, scales = "free") +
-  labs(title = "Distributions of primary QST biomarkers (TKA)", x = NULL, y = "Count") +
+  labs(title = "Distributions of primary QST biomarkers (thoracic)", x = NULL, y = "Count") +
   theme_minimal()
 ```
 
-On average, PPT is lower at the index (surgical) site than at the remote site (≈ 2.8 vs. 3.2), which fits with the surgical site being more sensitive. The CPM panel also makes the heavy tail from the % change easy to see.
+The CPM panel makes the heavy tail from the percent change easy to see. Next we look at how the biomarkers relate to one another using a spearman (rank-based) correlation on pairwise-complete observations.
 
-Next we look at how the biomarkers relate to one another using a spearman (rank-based) correlation using pairwise-complete observations.
+```{r}
+#| label: correlation
 
-```{r correlation}
 primary |>
   select(-record_id) |>
   cor(method = "spearman", use = "pairwise.complete.obs") |>
   round(2)
 ```
 
-The pattern is informative. The two MTS sites are strongly correlated (≈ 0.64), i.e., a participant who summates at the knee tends to also summate at the shoulder. Otherwise, PPT, MTS, and CPM are close to independent (correlations near zero, with a weak negative link between PPT and MTS). So the assays are **not** redundant. Each biomarker adds its own information about a participant's pain-processing profile, and that is exactly why A2CPS collects all three rather than a single summary of "pain sensitivity".
+The pattern is informative. The two MTS sites are strongly correlated (around 0.75), so a participant who summates at the index site tends to also summate at the remote site. Otherwise PPT, MTS, and CPM are close to independent. The assays are **not** redundant: each biomarker adds its own information about a participant's pain-processing profile, which is exactly why A2CPS collects all three rather than a single summary of pain sensitivity.
 
 ## Considerations While Working on the Project
 
 ### Data Generation
 
-QST is administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the algometer and Neuropen procedures, the cold-water CPM protocol, the index and remote testing locations, and the double entry of every pain rating. Raw responses are captured in REDCap. The steps that turn the REDCap export into the reformatted files (filtering, deduplication, error checking, and computing the PPT, MTS, and CPM biomarkers) are documented in the cleaning workflow that comes with the release (`QSTCRF_data_quality_checks_and_reformat.html`).
+QST is administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the algometer and Neuropen procedures, the cold-water CPM protocol, and the index and remote testing locations. NDA stores the raw per-trial ratings, so the PPT, MTS, and CPM biomarkers are computed from those trials as shown above.
 
 ### Other
 
 - **Directionality matters.** Higher PPT means less sensitivity, higher MTS means more facilitation, and negative CPM points to inhibition. A flipped sign quietly reverses a result, so the table above is a handy reference.
-- **MTS and WUR are non-negative by construction.** The difference and wind-up scores use `max(final, initial)` in place of the recorded maximum, so they never fall below 0 (difference) or 1 (wind-up ratio). This includes a handful of records where the recorded maximum was below the initial rating, but it is worth knowing when reproducing the values.
-- **Cohort-specific field names.** The TKA and thoracic files use different underlying REDCap field names (for example, the double-entry suffixes differ), and the thoracic cohort also includes a Dynamic Mechanical Allodynia assessment. The biomarker columns are harmonized across cohorts, so they tend to be the easier starting point when comparing the two.
-- **Quality control.** The biomarker code has been reviewed and independently derived from the raw pain ratings, and the error report shows which records were flagged during cleaning.
+- **MTS and the wind-up ratio are non-negative by construction.** The difference and wind-up scores use `max(final, initial)` in place of the recorded maximum, so they never fall below 0 (difference) or 1 (wind-up ratio).
+- **Extra assay.** The thoracic cohort also includes a Dynamic Mechanical Allodynia assessment, which is not part of the three biomarkers above but is available in the same file.
 
 ### Citations
 
