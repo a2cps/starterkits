@@ -6,139 +6,192 @@ authors:
 
 # Demographics {#sec-demographics}
 
-The demographics form captures the descriptive and background characteristics of each A2CPS participant: age, sex, gender identity, race and ethnicity, education, employment, marital status, household income, disability status, dominant hand, height and weight, pain duration, and a few COVID-related items. Almost every A2CPS analysis draws on these fields so demographics is often the first modality a project touches. Participants also belong to one of two surgical cohorts (knee arthroplasty and thoracic surgery), and since these cohorts differ systematically in age and body composition, the demographic variables matter when we interpret cohort comparisons.
+The demographics file captures the descriptive and background characteristics of each Acute to Chronic Pain Signatures Study (A2CPS) participant: age, sex, gender identity, race, education, employment, marital status, household income, disability status, and pain duration. Almost every A2CPS analysis draws on these fields, so demographics is often the first modality a project touches. Participants also belong to one of two surgical cohorts (knee arthroplasty and thoracic surgery), and since the cohorts differ systematically in age, these demographic variables matter when we interpret cohort comparisons.
 
-Many fields are coded categorical values (for example, `sex` is `1 = Male`, `2 = Female`), with the codes defined in the accompanying data dictionary. In addition to the raw fields, the cleaning workflow computes a validated **body mass index (BMI)** from height and weight, and attaches a set of **data-quality flags** that mark implausible or logically inconsistent values so that we can decide how to handle them.
+The file comes from the NIMH Data Archive (NDA), which stores the raw self-reported values without any derived variables or quality flags. Several fields are coded (for example, `sex` is coded as `"M"`, `"F"`, or `"NR"` for not reported), and the codes follow the HEAL Common Data Elements\ [@wandner_nih_2022]. We work with the fields as NDA provides them and apply only light cleaning where a specific analysis needs it.
 
 ## Starting Project
 
 ### Locate Data
 
-Where are the relevant files?
+The demographics measure arrives from NDA as a single file using NDA's own short field names. After downloading the demographics structure from your NDA data package, place it under `NDA_data/` so the project looks like this:
 
 ```bash
-$ {{< var release.root >}}/{{< var release.dir >}}/demographics/reformatted
+NDA_data/
+└── Demographic/
+    └── demographics.csv
 ```
 
-The reformatted data are in a single file, `reformatted_demo.csv` (one row per participant), together with `demo_dict_updated.csv`. The dictionary is essential here, since it lists the coded values for every categorical field (`sex`, `genident`, `ethnic`, `edulevel`, `empstat`, `maristat`, `incmlvl`, and so on) alongside the fields added during cleaning.
+The code below reaches this file with `here()`, which resolves paths from the project root, so a chunk runs the same regardless of the working directory.
 
 ### Extract Data
 
-The file is a plain CSV, and here we use the [`tidyverse`](https://www.tidyverse.org/).
+The file is a plain CSV. We use a small set of tidyverse packages.
 
-```{r setup}
-library(tidyverse)
+```{r}
+#| label: setup
+
+library(dplyr)
+library(ggplot2)
+library(here)
+library(readr)
 ```
 
-```{r load}
-demo <- read_csv("data/pre-surgery/demographics/reformatted/reformatted_demo.csv")
+We read the file, convert `record_id` to a number, and drop any exact duplicate rows so that a participant appears only once. We then derive the surgical cohort from `record_id`.
+
+```{r}
+#| label: load-demo
+
+demo <- read_csv(here("NDA_data", "Demographic", "demographics.csv"), skip = 1) |>
+  rename(record_id = src_subject_id) |>
+  mutate(record_id = as.numeric(record_id))
+
+# guard: every record_id must parse to a number before filtering and cohort assignment
+if (any(is.na(demo$record_id))) {
+  stop(sum(is.na(demo$record_id)), " record_id value(s) did not parse to a number")
+}
+
+test_records <- c(10000, 15000, 20000, 25000, 40000, 50000,
+                  60000, 70000, 80000, 90000, 100000, 110000, 120000)
+
+demo <- demo |>
+  distinct() |>
+  filter(!record_id %in% test_records) |>
+  mutate(cohort = case_when(
+    record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA",
+    .default = "Thoracic"
+  ))
 ```
 
-Since the categorical fields are stored as numeric codes, using the data dictionary as a reference is highly recommended (`demo_dict_updated.csv`).
+The downloaded file uses NDA's short field names (`genident_heal`, `edulevel_heal`, and so on). We rename them to the HEAL Common Data Element names, which the NIH HEAL Initiative defined so that measures are recorded consistently and can be compared across HEAL studies. The mapping below comes from the A2CPS crosswalk. The race fields arrive as separate indicator columns (one per category), which the crosswalk keeps as individual HEAL variables.
 
-```{r dict}
-demo_dict <- read_csv("data/pre-surgery/demographics/reformatted/demo_dict_updated.csv")
+```{r}
+#| label: rename-demo
 
-demo_dict |>
-  filter(field_name == "sex") |>
-  select(field_name, select_choices_or_calculations)
+demo_crosswalk <- c(
+  GENIDENT = "genident_heal",
+  AI_AN = "ai_an",
+  Asian = "asian_heal",
+  Bl_AA = "bl_aa",
+  NH_PI = "nh_pi",
+  White = "white_heal",
+  Unkn = "unkn",
+  Not_Rep = "not_rep",
+  EDULEVEL = "edulevel_heal",
+  EMPSTAT = "empstat_heal",
+  MARISTAT = "maristat_heal",
+  INCMLVL = "incmlvl_heal",
+  DISABINSIND = "disabinsind",
+  PAINDUR = "paindur_y"
+)
+
+demo <- demo |>
+  rename(all_of(demo_crosswalk))
 ```
 
-Next, a quick look at the continuous fields and the cohort label:
+A quick look at a few key fields and the cohort label. Note that both `interview_age` and `PAINDUR` are recorded in months.
 
-```{r peek}
+```{r}
+#| label: peek
+
 demo |>
-  select(record_id, cohort, age, sex, bmi_kg_m2, paindur) |>
+  select(record_id, cohort, sex, interview_age, EDULEVEL, PAINDUR) |>
   head()
 ```
 
-`glimpse()` confirms the data types. Note that the coded categoricals come in as numbers, so we recode them to labelled factors before summarizing or plotting.
+Check data types and confirm that coded categoricals come in as expected (`sex` as text, the coded fields as numbers).
 
-```{r glimpse}
+```{r}
+#| label: check-types
+
 demo |>
-  select(record_id, cohort, age, sex, edulevel, bmi_kg_m2, paindur) |>
+  select(record_id, cohort, sex, interview_age, EDULEVEL, PAINDUR) |>
   glimpse()
 ```
 
 ### Data Quality
 
-The reformatted file has already been cleaned. It keeps the implausible values and flags them instead of dropping them, which lets the end user decide how to handle each flagged value. The flag columns are:
+NDA stores the raw self-reported values, so implausible entries are left in place rather than flagged. Pain duration is the clearest example: a few values are negative, and a few are longer than the participant has been alive (pain duration in months exceeding `interview_age`, which is also in months). We tally those before deciding how to handle them.
 
-- **`bmi_measurement_issue`** and **`height_weight_check`**: these mark BMI values built from missing or implausible height and weight. Most records are `"Valid Range"`, but a small number are flagged. The raw `bmi_kg_m2` column still contains extreme values (as low as 2 and as high as 64).
-- **`paindur_outlier_flag`**: flags pain-duration values that are zero or negative (~200 records), extreme statistical outliers (~80), or logically impossible (pain lasting longer than the participant has been alive).
-- **`age_outlier_flag`** and **`age_pain_logic_error`**: these mark missing ages and cases where the reported pain duration exceeds the participant's total months of life.
-- **`covid_logic_error`**: flags internally inconsistent COVID responses (e.g., a "No" with a follow-up detail still answered).
-- **`dom_hand_status`** and **`incmlvl_clean`**: cleaned, human-readable versions of dominant hand and income level.
+```{r}
+#| label: qc-paindur
 
-It helps to tally a flag first and see how many records get affected:
-
-```{r qc}
 demo |>
-  count(bmi_measurement_issue)
+  summarise(
+    n = n(),
+    pain_negative = sum(PAINDUR < 0, na.rm = TRUE),
+    pain_longer_than_life = sum(PAINDUR > interview_age, na.rm = TRUE),
+    pain_missing = sum(is.na(PAINDUR))
+  )
 ```
 
 ### Cross-Modality Links
 
-Every file includes `record_id` and `guid`, which uniquely identify a participant and let us link demographics to other A2CPS modalities. Since demographics is almost always used as covariates for another modality, the typical join attaches these background fields to a primary analysis table:
+Every file includes `record_id` and `subjectkey`, which uniquely identify a participant and let you link demographics to other A2CPS modalities. Since demographics is almost always used as covariates for another modality, the typical join attaches these background fields to a primary analysis table. To show the join running, we simulate a table standing in for another modality: it carries the shared identifiers (`record_id` and the NDA `subjectkey`) for every participant plus a made-up `pain_score`. We set a seed so the simulated scores are reproducible, and join on the shared identifiers, which `intersect()` finds automatically. In a real join, if a shared background column (such as `interview_date`) can differ between forms, label it by source first so the join keeps everyone.
 
-```{r cross-modality}
-#| eval: false
+```{r}
+#| label: cross-modality
+
+# a simulated table standing in for another modality:
+# every participant's identifiers plus a made-up pain score (0-10)
+set.seed(1)
+other_modality <- demo |>
+  select(record_id, subjectkey) |>
+  mutate(pain_score = sample(0:10, n(), replace = TRUE))
+
 inner_join(other_modality, demo, by = intersect(names(other_modality), names(demo)))
 ```
 
 ## Exploratory data analysis
 
-Since the two surgical cohorts are recruited separately, a useful way to get oriented is to compare their basic demographics, because the differences here shape the interpretation of cohort comparisons. We look at age and BMI, and we use the quality flags to keep only the analysis-ready BMI values.
+Since the two surgical cohorts are recruited separately, a useful way to get oriented is to compare their basic demographics, because the differences here shape the interpretation of cohort comparisons. We look at age and pain duration.
 
-```{r prep}
-demo_clean <- demo |>
-  mutate(
-    cohort = factor(cohort),
-    bmi = if_else(bmi_measurement_issue == "Valid Range", bmi_kg_m2, NA_real_)
-  )
+Pain duration is self-reported and includes imlausible values, so we set the negative ones and the ones longer than the participant has lived to missing before plotting. We work with the field as given and only overwrite the implausible values.
 
-demo_clean |>
-  group_by(cohort) |>
-  summarise(
-    n          = n(),
-    age_mean   = mean(age, na.rm = TRUE),
-    bmi_mean   = mean(bmi, na.rm = TRUE)
-  )
+```{r}
+#| label: clean-paindur
+
+demo <- demo |>
+  mutate(PAINDUR = if_else(PAINDUR >= 0 & PAINDUR <= interview_age, PAINDUR, NA_real_))
 ```
 
-As expected, the knee (TKA) cohort is both older and heavier on average (age ≈ 65 vs. 60; BMI ≈ 31 vs. 29), which fits the usual clinical profile of knee-arthroplasty candidates. Let's look at the full distributions with side-by-side boxplots.
+```{r}
+#| label: age-by-cohort
 
-```{r plot-age}
-ggplot(demo_clean, aes(x = cohort, y = age, fill = cohort)) +
+ggplot(demo, aes(x = cohort, y = interview_age, fill = cohort)) +
   geom_boxplot(show.legend = FALSE) +
-  labs(title = "Age by cohort", x = NULL, y = "Age (years)") +
+  labs(title = "Age by cohort", x = NULL, y = "Age (months)") +
   theme_minimal()
 ```
 
-```{r plot-bmi}
-demo_clean |>
-  filter(!is.na(bmi)) |>
-  ggplot(aes(x = cohort, y = bmi, fill = cohort)) +
+The knee (TKA) cohort is older on average (a median near 66 years against about 62 for thoracic), which fits the usual clinical profile of knee-arthroplasty candidates.
+
+```{r}
+#| label: paindur-by-cohort
+
+demo |>
+  filter(!is.na(PAINDUR)) |>
+  ggplot(aes(x = cohort, y = PAINDUR, fill = cohort)) +
   geom_boxplot(show.legend = FALSE) +
-  labs(title = "BMI by cohort (quality-flagged values removed)",
-       x = NULL, y = expression(BMI~(kg/m^2))) +
+  labs(title = "Pain duration by cohort", x = NULL, y = "Pain duration (months)") +
   theme_minimal()
 ```
 
-The takeaway for planning is that the cohorts are not demographically interchangeable, so age and BMI are natural covariates to consider whenever we pool or compare them.
+The contrast in pain duration is sharper: the TKA cohort reports longer pre-surgical pain (a median around 36 months), while the thoracic cohort reports little or none (a median near zero), consistent with long-standing knee pain against a more acute surgical indication.
+
+The takeaway for planning is that the cohorts are not demographically interchangeable, so age and pain history are natural covariates to consider whenever we pool or compare them.
 
 ## Considerations While Working on the Project
 
 ### Data Generation
 
-Demographic information is self-reported by participants at baseline through REDCap, following the A2CPS Manual of Procedures. Height and weight are used to derive BMI. The steps that turn the REDCap export into the reformatted file (recoding, BMI computation, and the plausibility and logic checks that populate the flag columns) are documented in the cleaning workflow that comes with the release.
+Demographic information is self-reported by participants at baseline, following the A2CPS Manual of Procedures. NDA stores these fields as raw values, so any recoding, derivation, or plausibility checking is left to the end user.
 
 ### Other
 
-- **Coded fields.** Most categorical fields are stored as numbers, and the coding differs from field to field, so it helps keep `demo_dict_updated.csv` handy.
-- **Sparse Data.** A few fields have very sparse levels (for example, the handful of Unknown and Intersex responses in `sex`), which can make those subgroups unstable.
-- **Self-report.** These fields are all self-reported at baseline, so the usual survey caveats apply, such as some missingness, rounding in height, weight, and pain duration, and bias in items like income.
-- **Quality control.** The cleaning pipeline has been reviewed, and the flag columns serve as its record, showing which values were questioned and why. The checks can be re-derived from the accompanying cleaning workflow.
+- **Coded fields.** Many categorical fields are stored as numbers, and the coding differs from field to field, so keep the HEAL Common Data Element definitions handy.
+- **Sparse levels.** A few fields have very sparse levels (for example, the handful of `"NR"` responses in `sex`), which can make those subgroups unstable.
+- **Self-report.** These fields are all self-reported at baseline, so the usual survey caveats apply, such as some missingness, rounding, and bias in items like income.
 
 ### Citations
 
