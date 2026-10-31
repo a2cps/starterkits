@@ -8,34 +8,30 @@ authors:
 
 Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements\ [@wandner_nih_2022] to gain a comprehensive understanding of chronic pain\ [@berardi_multi_2022]. For a general introduction to psychosocial assessments in clinical research, see resources such as the [NIH HEAL Initiative Common Data Elements](https://heal.nih.gov/data/common-data-elements).
 
-These assessments include:
+This kit focuses on the two mood-disorder measures: depression, measured with the 8-item Patient Health Questionnaire-8 (PHQ-8)\ [@kroenke_phq_2009], and anxiety, measured with the 7-item Generalized Anxiety Disorder scale (GAD-7)\ [@spitzer_brief_2006].
 
-- Pain related psychosocial constructs
-  - These include pain resilience, catastrophizing, kinesiophobia, and multisensory sensitivity. Pain resilience is measured using the Pain Resilience Scale (PRS)[@slepian_development_2016]. Catastrophizing measures negative appraisal of pain using the Pain Catastrophizing Scale-6 (PCS-6)\ [@mcwilliams_development_2015]. Kinesiophobia (fear of movement) is measured using the Fear Avoidance Beliefs Questionnaire—Physical Activity subscale (FABQ-PA)[@waddell_fear_1993]. Sensitivity to sensory stimulation (light, sound, odor, flavor, touch) and interoception (balance, nausea, heart rate) are measured using an 8-item General Sensory Sensitivity (GSS)\ [@schrepf_sensory_2018].
-- Mood disorders (Depression and Anxiety)
-  - Depression and Anxiety are measured using the 8-item Patient Health Questionnaire-8 (PHQ-8)\ [@kroenke_phq_2009] and the 7-item General Anxiety Disorder (GAD-7) instruments\ [@spitzer_brief_2006]
-- Social Support
-  - PROMIS SFv2.0 Instrumental Support 6a questionnaire is used to measure the quality of social support received by the subjects, and PROMIS SFv2.0 Emotional Support 6a questionnaire measures subjects' perception about being valued and cared for\ [@hahn_measuring_2010].
-- Cognitive Function and Sleep
-  - Multidimensional Inventory of Subjective Cognitive Impairment (MISCI)\ [@kratz_promis_2016] measures perceived cognitive dysfunction in patients with fibromyalgia. Sleep is assessed using the PROMIS Short Form v1.0 Sleep Disturbance 6a measure\ [@yu_development_2012] and Pain-Sleep Duration (Sleep II) form\ [@buysse_pittsburgh_1989].
-- Other Assessments Demographic, Comorbidity Questionnaire (SCQ), The Adverse Childhood Experience questionnaire (ACE), Big Five Inventory−2 short form (BFI-2-S)
-  - The demographic information form captures age, sex, gender, ethnicity, race, level of education, employment status, relationship status, household income, and disability status. Chronic health conditions are captured using the Self-Administered Comorbidity Questionnaire (SCQ)\ [@sangha_self_2003]. The Adverse Childhood Experience questionnaire (ACE)\ [@felitti_relationship_1998] is used to assess the history of childhood abuse and dysfunctional family dynamics retrospectively. Also at baseline, five personality constructs are measured using the Big Five Inventory−2 short form (BFI-2-S), which measure five personality domains, i.e., 1. extraversion, 2. agreeableness, 3. conscientiousness, 4. negative emotionality, and 5. open-mindedness\ [@soto_short_2017].
+The files are pulled from the NIMH Data Archive (NDA) named `phq9`, but the study used the 8-item PHQ-8. Item 9 (thoughts of self-harm) was dropped from the study forms; the `phq9_9` column is a carry-over from NDA's data structure, coded `-9` for everyone, so we leave it out of scoring.
 
 ## Starting Project
 
 ### Locate Data
 
-Where are the relevant files?
+The psychosocial measures arrive from NDA as separate files, one per instrument, using NDA's own short field names. After downloading the psychosocial structures from your NDA data package, place them under `NDA_data/` so the project looks like this:
 
 ```bash
-$ {{< var release.root >}}/{{< var release.dir >}}/psychosocial/reformatted
+NDA_data/
+└── Psychosocial/
+    ├── gad7.csv
+    └── phq9.csv
 ```
+
+The code below reaches these files with `here()`, which resolves paths from the project root, so a chunk runs the same regardless of the working directory.
 
 ### Extract Data
 
-Often, researchers want to examine the relationship between different psychosocial measures. For example, Anxiety (GAD-7) and Depression (PHQ-9) frequently coexist due to shared biological mechanisms. 
+Often, researchers want to examine the relationship between different psychosocial measures. For example, Anxiety (GAD-7) and Depression (PHQ-8) frequently coexist due to shared biological mechanisms.
 
-To explore this, we first load the relevant datasets.
+To explore this, we first load the relevant datasets. As each file is read, we recode `record_id` to numeric data type and drop any exact duplicate rows so that a participant appears only once.
 
 ```{r}
 #| label: setup
@@ -44,32 +40,163 @@ library(dplyr)
 library(ggplot2)
 library(here)
 library(readr)
+
+# in NDA files a -9 marks an item the participant left blank
+blank_to_na <- \(x) na_if(x, -9)
 ```
 
 ```{r}
-#| label: load
+#| label: load-gad
 
-gad <- read_csv(here(
-  "data",
-  "pre-surgery",
-  "psychosocial",
-  "reformatted",
-  "reformatted_gad.csv"
-))
-phq <- read_csv(here(
-  "data",
-  "pre-surgery",
-  "psychosocial",
-  "reformatted",
-  "reformatted_phq.csv"
-))
+gad <- read_csv(here("NDA_data", "Psychosocial", "gad7.csv"), skip = 1) |>
+  rename(record_id = src_subject_id) |>
+  mutate(record_id = as.numeric(record_id))
+
+# guard: every record_id must parse to a number before filtering and cohort assignment
+if (any(is.na(gad$record_id))) {
+  stop(sum(is.na(gad$record_id)), " record_id value(s) did not parse to a number")
+}
+
+test_records <- c(10000, 15000, 20000, 25000, 40000, 50000,
+                  60000, 70000, 80000, 90000, 100000, 110000, 120000)
+
+gad <- gad |>
+  distinct() |>
+  filter(!record_id %in% test_records) |>
+  mutate(cohort = case_when(
+    record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA",
+    .default = "Thoracic"
+  ))
 ```
 
-Next, we join the datasets using the unique identifiers `record_id` and `guid`. These identifiers allow you to link records across different psychosocial forms, as well as to other modalities (like neuroimaging or genomics). The `inner_join` function is used here to keep only rows that exist in both tables.
+```{r}
+#| label: load-phq
+
+phq <- read_csv(here("NDA_data", "Psychosocial", "phq9.csv"), skip = 1) |>
+  rename(record_id = src_subject_id) |>
+  mutate(record_id = as.numeric(record_id))
+
+# guard: every record_id must parse to a number before filtering and cohort assignment
+if (any(is.na(phq$record_id))) {
+  stop(sum(is.na(phq$record_id)), " record_id value(s) did not parse to a number")
+}
+
+phq <- phq |>
+  distinct() |>
+  filter(!record_id %in% test_records) |>
+  mutate(cohort = case_when(
+    record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA",
+    .default = "Thoracic"
+  ))
+```
+
+The downloaded files use the NDA's short field names (`gad7_1`, `gad7_2`, and so on). We first rename them to the HEAL Common Data Element names, which the NIH HEAL Initiative defined so that measures are recorded consistently and can be compared across HEAL studies. The mapping below comes from the A2CPS crosswalk. Note that `gad7_8` holds the survey language rather than a GAD item, so it is left out.
+
+```{r}
+#| label: rename-gad
+
+gad_crosswalk <- c(
+  GAD2FeelNervScl = "gad7_1",
+  GAD2NotStopWryScl = "gad7_2",
+  GAD7WryTooMchScl = "gad7_3",
+  GAD7TroubRelxScl = "gad7_4",
+  GAD7RstlessScl = "gad7_5",
+  GAD7EasyAnnoyedScl = "gad7_6",
+  GAD7FeelAfrdScl = "gad7_7"
+)
+
+gad <- gad |>
+  rename(all_of(gad_crosswalk))
+```
+
+NDA provides the individual item responses rather than the summary scores, so we compute them here. A missing response is coded `-9`, so we convert those to `NA` before scoring. For GAD-7, when at least five of the seven items are answered we fill any missing items with that person's rounded item mean\ [@Arrieta2017] and then sum the seven items; with fewer than five answered items the score is left missing.
+
+```{r}
+#| label: score-gad
+
+gad_items <- names(gad_crosswalk)
+
+# GAD-7 is scored only when at least 5 of its 7 items are answered
+gad_min_answered <- 5
+
+gad <- gad |>
+  # turn blank items into missing values
+  mutate(across(all_of(gad_items), blank_to_na)) |>
+  # count how many items each person actually answered
+  mutate(gad_n_answered = rowSums(!is.na(across(all_of(gad_items))))) |>
+  # fill a blank item with the person's own rounded average, then add the items up
+  mutate(
+    gad_item_mean = if_else(
+      gad_n_answered >= gad_min_answered,
+      round(rowMeans(across(all_of(gad_items)), na.rm = TRUE)),
+      NA_real_
+    ),
+    across(all_of(gad_items), \(x) coalesce(x, gad_item_mean)),
+    imputed_gad_score = if_else(
+      gad_n_answered >= gad_min_answered,
+      rowSums(across(all_of(gad_items))),
+      NA_real_
+    )
+  ) |>
+  select(-gad_item_mean)
+```
+
+PHQ follows the same pattern. We rename the eight PHQ-8 items to their HEAL names using the crosswalk. The ninth item (`phq9_9`) is excluded as described above, and `phq9_10` records the survey language rather than a response.
+
+```{r}
+#| label: rename-phq
+
+phq_crosswalk <- c(
+  PHQLitIntrstScore = "phq9_1",
+  PHQDeprssnScore = "phq9_2",
+  PHQSleepImpairScore = "phq9_3",
+  PHQTirdLittleEnrgyScore = "phq9_4",
+  PHQAbnrmlDietScore = "phq9_5",
+  PHQFlngFailrScore = "phq9_6",
+  PHQConcntrtnImprmntScore = "phq9_7",
+  PHQMovmntSpchImprmntScore = "phq9_8"
+)
+
+phq <- phq |>
+  rename(all_of(phq_crosswalk))
+```
+
+Missing responses are coded `-9` here as well, so we apply the same recode and then sum the eight items when at least seven of them are answered.
+
+```{r}
+#| label: score-phq
+
+phq_items <- names(phq_crosswalk)
+
+# PHQ-8 is scored only when at least 7 of its 8 items are answered
+phq_min_answered <- 7
+
+phq <- phq |>
+  # turn blank items into missing values
+  mutate(across(all_of(phq_items), blank_to_na)) |>
+  # count how many items each person actually answered
+  mutate(phq_n_answered = rowSums(!is.na(across(all_of(phq_items))))) |>
+  # add the items up, leaving the score missing when too few were answered
+  mutate(
+    phq_score = if_else(
+      phq_n_answered >= phq_min_answered,
+      rowSums(across(all_of(phq_items)), na.rm = TRUE),
+      NA_real_
+    )
+  )
+```
+
+Next, we join the two datasets. A few background columns can differ between forms, since a person may complete GAD and PHQ on different days or in different languages, so we first label `interview_age`, `interview_date`, and `language` with a `gad_` or `phq_` prefix. That leaves the stable identifiers as the only shared columns, so we join on all of them with `intersect()`. The identifier `record_id` links records across psychosocial forms and to other modalities (like neuroimaging or genomics), and `inner_join` keeps only rows present in both tables.
 
 ```{r}
 #| label: join
 
+# a few background columns can differ between forms, so label them by form first
+form_cols <- c("interview_age", "interview_date", "language")
+gad <- gad |> rename_with(\(x) paste0("gad_", x), all_of(form_cols))
+phq <- phq |> rename_with(\(x) paste0("phq_", x), all_of(form_cols))
+
+# the remaining shared columns are the stable identifiers, so join on all of them
 gad_phq <- inner_join(gad, phq, by = intersect(names(gad), names(phq)))
 ```
 
@@ -81,10 +208,10 @@ View columns available after merging the two datasets
 head(gad_phq)
 ```
 
-Check data types and ensure that character variables are not stored as numeric, and that numeric variables are stored with the correct numeric type---not as character or factor.
+Check data types and ensure that character variables are not stored as numeric, and that numeric variables are stored with the correct numeric type, not as character or factor.
 
 ```{r}
-#| label: glimpse
+#| label: check-types
 
 glimpse(gad_phq)
 ```
@@ -95,29 +222,34 @@ Anxiety and depression frequently coexist due to shared biological mechanisms an
 
 **Spearman Correlation**:
 
-Since GAD and PHQ scores are ordered but not continuous, spearman correlation here would be a better choice than pearson since it measures monotonic association between two variables by comparing their ranks, we will add the argument `use = "complete.obs"` to ignore rows with missing values.
+Since GAD and PHQ scores are ordered but not continuous, spearman correlation here would be a better choice than pearson since it measures monotonic association between two variables by comparing their ranks, we will set `method = "spearman"` and add `use = "complete.obs"` to ignore rows with missing values.
 
 ```{r}
-#| label: stats
+#| label: correlation
 
-cor(gad_phq$imputed_gad_score, gad_phq$imputed_phq_score, use = "complete.obs")
+cor(
+  gad_phq$imputed_gad_score,
+  gad_phq$phq_score,
+  method = "spearman",
+  use = "complete.obs"
+)
 ```
 
-As expected we see a very strong correlation between anxiety and depression within the A2CPS cohort i.e. 0.76. Let's visualize these results with a simple boxplot.
+As expected we see a strong positive correlation between anxiety and depression within the A2CPS cohort, around 0.73. Let's visualize these results with a simple boxplot.
 
 ```{r}
-#| label: plot
+#| label: gad-phq-boxplot
 
 # Remove rows with NA in either column
 gad_phq_clean <- gad_phq |>
-  filter(!is.na(imputed_gad_score), !is.na(imputed_phq_score))
+  filter(!is.na(imputed_gad_score), !is.na(phq_score))
 
 # Create the plot
 ggplot(
   gad_phq_clean,
   aes(
     x = factor(imputed_gad_score),
-    y = imputed_phq_score,
+    y = phq_score,
     fill = factor(imputed_gad_score)
   )
 ) +
@@ -125,10 +257,11 @@ ggplot(
   labs(
     title = "PHQ Score Distribution by GAD Score",
     x = "GAD Score (Imputed)",
-    y = "PHQ Score (Imputed)",
+    y = "PHQ Score",
     fill = "GAD Score"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  stat_summary(aes(group = 1), fun = median, geom = "line", linewidth = 1) 
 ```
 
 We see that there is a positive association between Anxiety and Depression scores.
@@ -137,15 +270,15 @@ We see that there is a positive association between Anxiety and Depression score
 
 ### Data Generation
 
-Self-reported assessments are collected electronically through a variety of surveys using Research Electronic Data Capture (REDCap™) and/or MyDataHelps™ (RKStudio™, CareEvolution, LLC, Ann Arbor, MI). A2CPS includes the core psychosocial assessments and associated HEAL CDEs for harmonization. Remote assessments have been implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessment and a mood assessment.
+Self-reported psychosocial assessments were collected electronically from participants. A2CPS includes the core psychosocial assessments and associated HEAL Common Data Elements for harmonization, and remote assessments were implemented for both English and Spanish-speaking participants. Of note: two psychosocial items were also collected during brain-imaging sessions, a pain assessment and a mood assessment.
 
 ### Data Quality
 
-The data were exported from REDCap and may contain errors or missing values. Therefore, to ensure high-quality data, the data were cleaned and reformatted. For details, see @sec-psychosocial-methods. There are individual reformatted files as well as a combined file for psychosocial data (look for files ending in TKA and/or Thoracic).
+Like all self-reported data, these assessments may contain errors or missing values, and the responses were cleaned and checked before being deposited in NDA. Each instrument is provided as its own file, and the cohort is recovered from `record_id` as shown above.
 
 ### Cross-Modality Links
 
-All files include `record_id` and `guid`, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.
+Each file includes `record_id` along with NDA's `subjectkey`, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.
 
 ### Missing Data
 
