@@ -193,50 +193,75 @@ chromosomes <- c(1:22, "X")
 for (chr in chromosomes) {
   folder <- paste0("chr_", chr)
   file_path <- file.path(folder, paste0("chr", chr, ".info.gz"))
-  
+
   dose <- fread(file_path)
-  
-  dose[, c("AF", "MAF", "AVG_CS", "R2") := {
-    af      <- sub(".*AF=([^;]*).*", "\\1", INFO)
-    maf     <- sub(".*MAF=([^;]*).*", "\\1", INFO)
-    avg.cs  <- sub(".*AVG_CS=([^;]*).*", "\\1", INFO)
-    r2      <- sub(".*R2=([^;]*).*", "\\1", INFO)
-    list(as.numeric(af), as.numeric(maf), as.numeric(avg.cs), as.numeric(r2))
-  }]
-  
-  maf.001 <- dose[MAF > 0.01]
-  r2.03 <- maf.001[R2 > 0.3]
-  setnames(r2.03, "#CHROM", "CHROM", skip_absent=TRUE)
-  r2.03[, chr := sub("^chr", "", CHROM)]
-  r2.03[, start := POS]
-  r2.03[, end := POS]
-  
-  keep_ranges <- r2.03[, .(chr, start, end)]
-  
-  fwrite(keep_ranges, file.path(folder, "keep_ranges.txt"), sep = "\t", col.names = FALSE, quote = FALSE)
+
+  dose[,
+    c("AF", "MAF", "AVG_CS", "R2") := {
+      af <- sub(".*AF=([^;]*).*", "\\1", INFO)
+      maf <- sub(".*MAF=([^;]*).*", "\\1", INFO)
+      avg_cs <- sub(".*AVG_CS=([^;]*).*", "\\1", INFO)
+      r2 <- sub(".*R2=([^;]*).*", "\\1", INFO)
+      list(as.numeric(af), as.numeric(maf), as.numeric(avg_cs), as.numeric(r2))
+    }
+  ]
+
+  common <- dose[MAF > 0.01]
+  well_imputed <- common[R2 > 0.3]
+  setnames(well_imputed, "#CHROM", "CHROM", skip_absent = TRUE)
+  well_imputed[, chr := sub("^chr", "", CHROM)]
+  well_imputed[, start := POS]
+  well_imputed[, end := POS]
+
+  keep_ranges <- well_imputed[, .(chr, start, end)]
+
+  fwrite(
+    keep_ranges,
+    file.path(folder, "keep_ranges.txt"),
+    sep = "\t",
+    col.names = FALSE,
+    quote = FALSE
+  )
 }
 
-# Update IDs 
+# Update IDs
 fam <- fread("./chr_1/chr1_dose.fam")
 
-OldFID <- fam$V1
-OldIID <- fam$V2
+old_fid <- fam$V1
+old_iid <- fam$V2
 
-NewFID <- sub("^(.*?)_.*", "\\1", OldIID)
-NewIID <- sub(".*?_(.*)", "\\1", OldIID)
+new_fid <- sub("^(.*?)_.*", "\\1", old_iid)
+new_iid <- sub(".*?_(.*)", "\\1", old_iid)
 
-update_ids <- data.table(OldFID, OldIID, NewFID, NewIID)
-fwrite(update_ids, "update_ids.txt", sep = "\t", col.names = FALSE, quote = FALSE)
+update_ids <- data.table(old_fid, old_iid, new_fid, new_iid)
+fwrite(
+  update_ids,
+  "update_ids.txt",
+  sep = "\t",
+  col.names = FALSE,
+  quote = FALSE
+)
 
 # Update Sexes
-fam.og <- fread("./A2CPS_RL1-5_For_Imputation_F2.fam")
-update_sexes <- data.table(fam.og$V1, fam.og$V2, fam.og$V5)
-fwrite(update_sexes, "update_sexes.txt", sep = "\t", col.names = FALSE, quote = FALSE)
+fam_og <- fread("./A2CPS_RL1-5_For_Imputation_F2.fam")
+update_sexes <- data.table(fam_og$V1, fam_og$V2, fam_og$V5)
+fwrite(
+  update_sexes,
+  "update_sexes.txt",
+  sep = "\t",
+  col.names = FALSE,
+  quote = FALSE
+)
 
-fam.og <- fread("./A2CPS_RL1-5_For_Imputation_F2.fam")
-fam.now <- fread("./chr1_dose.fam")
-update_sexes <- data.table(fam.now$V1, fam.now$V2, fam.og$V5)
-fwrite(update_sexes, "update_sexes_X.txt", sep = "\t", col.names = FALSE, quote = FALSE)
+fam_now <- fread("./chr1_dose.fam")
+update_sexes <- data.table(fam_now$V1, fam_now$V2, fam_og$V5)
+fwrite(
+  update_sexes,
+  "update_sexes_X.txt",
+  sep = "\t",
+  col.names = FALSE,
+  quote = FALSE
+)
 ```
 </details>
 
@@ -246,21 +271,29 @@ fwrite(update_sexes, "update_sexes_X.txt", sep = "\t", col.names = FALSE, quote 
 library(data.table)
 setwd("./Imputation_Results/Imputation_QCed/")
 
-combined_data <- data.table(V1=character(), V2=character(), V4=integer())
+combined_data <- data.table(V1 = character(), V2 = character(), V4 = integer())
 
 for (chr in c(1:22, "X")) {
   file_name <- paste0("chr", chr, "_imputed_qced.bim")
-  dt <- fread(file_name, select = c(1,2,4), header = FALSE)
-  combined_data <- rbindlist(list(combined_data, dt), use.names = TRUE, fill = TRUE)
+  dt <- fread(file_name, select = c(1, 2, 4), header = FALSE)
+  combined_data <- rbindlist(
+    list(combined_data, dt),
+    use.names = TRUE,
+    fill = TRUE
+  )
 }
 
-dup_pos <- combined_data[, .N, by=.(V1, V4)][N > 1]
-snps_dup_pos <- combined_data[dup_pos, on=.(V1, V4), nomatch=0, V2]
-dup_snps <- combined_data[, .N, by=V2][N > 1, V2]
+dup_pos <- combined_data[, .N, by = .(V1, V4)][N > 1]
+snps_dup_pos <- combined_data[dup_pos, on = .(V1, V4), nomatch = 0, V2]
+dup_snps <- combined_data[, .N, by = V2][N > 1, V2]
 
 snps_to_exclude <- unique(c(snps_dup_pos, dup_snps))
 
-fwrite(as.data.table(snps_to_exclude), "duplicate_snp_list.txt", col.names = FALSE)
+fwrite(
+  as.data.table(snps_to_exclude),
+  "duplicate_snp_list.txt",
+  col.names = FALSE
+)
 ```
 </details>
 

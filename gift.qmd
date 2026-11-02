@@ -3,13 +3,13 @@
 ```{r}
 #| label: setup
 
-library(RNifti)
 library(dplyr)
+library(fs)
+library(ggplot2)
+library(purrr)
+library(RNifti)
 library(roll)
 library(tidyr)
-library(purrr)
-library(ggplot2)
-library(fs)
 ```
 
 Independent Component Analysis (ICA) is a method for identifying "components" that are spatial regions of the brain exhibiting distinctly correlated activity over time\ [@calhoun_method_2001]. These components can be thought of as functional brain networks (e.g., the Default Mode Network, the Salience Network). For functional connectivity research, the timeseries of these ICA-derived networks are often correlated with each other to assess inter-network correlations, enabling investigators to study how these independent brain systems interact and communicate with one another.
@@ -125,7 +125,7 @@ Many analyses will be based on either these spatial maps or timecourses\ [but se
 First, define a helper function for estimating the rolling correlation. We'll use a window of 25 timepoints, which, given the 0.8 second Repetition Time, corresponds to 20 seconds.
 
 ```{r}
-#| label: helpercor
+#| label: helper-cor
 
 do_cor <- function(x, y, width = 25) {
   rho <- roll_cor(x, y, width = width)
@@ -136,7 +136,7 @@ do_cor <- function(x, y, width = 25) {
 Next, add a helper function for calculating the total correlation:
 
 ```{r}
-#| label: helpertimecourse
+#| label: helper-timecourse
 
 get_total_correlation <- function(file) {
   timecourse <- readNifti(file)
@@ -146,11 +146,11 @@ get_total_correlation <- function(file) {
       correlations = map2(
         src,
         dst,
-        ~ do_cor(timecourse[, .x], timecourse[, .y])
+        \(x, y) do_cor(timecourse[, x], timecourse[, y])
       )
     ) |>
     unnest(correlations) |>
-    na.omit() |> # NAs caused by not having enough timepoints for window
+    drop_na() |> # NAs caused by not having enough timepoints for window
     summarise(total_connectivity = sum(atanh(rho)), .by = t)
 }
 ```
@@ -174,7 +174,7 @@ d <- crossing(
 And now, plot.
 
 ```{r}
-#| label: mainplot
+#| label: main-plot
 #| fig-cap: "Median Total Connectivity. Total connectivity is the sum of the atanh of all pairs of correlations. The median is taken across scans."
 
 d |>
@@ -182,8 +182,7 @@ d |>
   summarise(med_total_connectivity = median(total_connectivity), .by = t) |>
   ggplot(aes(x = t, y = med_total_connectivity)) +
   geom_line() +
-  ylab("Total Connectivity") +
-  xlab("Time (seconds)")
+  labs(x = "Time (seconds)", y = "Total Connectivity")
 ```
 
 For the REST1 scans, the sum of connectivity appears to increase by around $150/130 = 15\%$, which is consistent with the presence of systematic low-frequency oscillations.

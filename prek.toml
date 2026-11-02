@@ -3,12 +3,14 @@
 [[repos]]
 hooks = [ {id = "codespell"} ]
 repo = "https://github.com/codespell-project/codespell"
-rev = "v2.4.2"
+rev = "v2.4.3"
 
+# Keep rev in step with panache in pixi.toml. Panache 2.x indents grid tables, which
+# pandoc then renders as a paragraph of dashes and pipes.
 [[repos]]
 hooks = [ {id = "panache-format"}, {id = "panache-lint"} ]
 repo = "https://github.com/jolars/panache-pre-commit"
-rev = "v2.43.1"
+rev = "v3.0.2"
 
 # Shortcodes are not expanded inside executable cells, where they would ship to the
 # page as literal text. The render succeeds either way, so nothing else catches this.

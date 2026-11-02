@@ -4,6 +4,8 @@ format:
     df-print: tibble
 ---
 
+# Prior Neural Pain Signature Responses {#sec-neural-pain-signatures}
+
 ```{r}
 #| label: setup
 
@@ -11,8 +13,6 @@ library(arrow)
 library(dplyr)
 library(tidyr)
 ```
-
-# Prior Neural Pain Signature Responses {#sec-neural-pain-signatures}
 
 A "neural signature" is a multivariate pattern of brain activity that has been statistically optimized to predict a specific mental state or symptom---in this case, pain. Rather than looking at activity in a single brain region, these signatures use predefined weight maps across the whole brain. By calculating the dot product (or spatial correlation) between a participant's fMRI scan and these established weight maps, we can estimate a single scalar response value that reflects how strongly the participant's brain activity matches the signature. Two prominent examples used in A2CPS are the Neurologic Pain Signature (NPS) and the Signature of Intact Nociception and Pain (SIIPS1).
 
@@ -129,46 +129,6 @@ open_dataset(
   collect() |>
   pivot_wider(names_from = signature) |>
   rename(SIIPS1 = `137subjmap_weighted_mean`, NPS = `grouppred_cvpcr`)
-```
-
-In python, a good choice is the [`polars`](https://docs.pola.rs/) library
-
-```python
-import polars as pl
-
-pl.read_parquet("data/pre-surgery/mris/derivatives/signatures/signatures-by-run").filter(
-    pl.col("signature").is_in(["grouppred_cvpcr", "137subjmap_weighted_mean"])
-).filter(pl.col("task") == "cuff", pl.col("run") == 1).rename(
-    {"correlation": "value"}
-).select(
-    "signature",
-    "value",
-    "sub",
-    "ses",
-).pivot(on="signature", index=["sub", "ses"]).rename(
-    {"grouppred_cvpcr": "NPS", "137subjmap_weighted_mean": "SIIPS1"}
-)
-```
-
-```bash
-shape: (716, 4)
-┌───────┬─────┬───────────┬───────────┐
-│ sub   ┆ ses ┆ SIIPS1    ┆ NPS       │
-│ ---   ┆ --- ┆ ---       ┆ ---       │
-│ i64   ┆ str ┆ f64       ┆ f64       │
-╞═══════╪═════╪═══════════╪═══════════╡
-│ 10003 ┆ V1  ┆ -0.001619 ┆ 0.033091  │
-│ 10008 ┆ V1  ┆ -0.040698 ┆ -0.058134 │
-│ 10010 ┆ V1  ┆ -0.061107 ┆ -0.019997 │
-│ 10011 ┆ V1  ┆ -0.006518 ┆ -0.074017 │
-│ 10013 ┆ V1  ┆ -0.027933 ┆ 0.023413  │
-│ …     ┆ …   ┆ …         ┆ …         │
-│ 25266 ┆ V1  ┆ -0.058184 ┆ -0.032597 │
-│ 25271 ┆ V1  ┆ -0.039983 ┆ -0.092517 │
-│ 25273 ┆ V1  ┆ -0.038248 ┆ -0.02306  │
-│ 25275 ┆ V1  ┆ -0.052387 ┆ -0.06732  │
-│ 25277 ┆ V1  ┆ 0.023143  ┆ -0.063882 │
-└───────┴─────┴───────────┴───────────┘
 ```
 
 ## Considerations While Working on the Project

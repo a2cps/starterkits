@@ -1,6 +1,12 @@
 # NDA Download Example, MRI {#sec-nda-mri}
 
-This page describes the A2CPS rawdata as downloaded from the NDA. 
+```{r}
+#| label: setup
+
+library(tibble)
+```
+
+This page describes the A2CPS rawdata as downloaded from the NDA.
 
 If you do not yet have access to the NDA and plan to download data from the NDA, please follow the instructions on the A2CPS For Researchers page ([Accessing our Data](https://a2cps.org/researchers/accessing-our-data/)) and the linked tutorials.
 
@@ -58,7 +64,7 @@ The rawdata folder includes an "experiments" folder, which provides some informa
 ```{r}
 #| echo: false
 
-tibble::tribble(
+tribble(
   ~"Experiment"             , ~"Files"                                                                                                                                                                                           ,
   "experiment_2652 (rfMRI)" , '{{< downloadthis assets/nda/experiment_2652.xml dname="experiment_2652" label="experiment_2652.xml" >}} {{< downloadthis assets/nda/A2CPS_rest.txt dname="A2CPS_rest" label="A2CPS_rest.txt" >}}' ,
   "experiment_2655 (tfMRI)" , '{{< downloadthis assets/nda/experiment_2655.xml dname="experiment_2655" label="experiment_2655.xml" >}} {{< downloadthis assets/nda/A2CPS_cuff.txt dname="A2CPS_cuff" label="A2CPS_cuff.txt" >}}'
@@ -72,7 +78,7 @@ The rest of the files are metadata associated with the storage of the dataset in
 ```{r}
 #| echo: false
 
-tibble::tribble(
+tribble(
   ~`File/Directory`                                                                                                                                   , ~`Description/Notes`                                                                                                                                                                                                                                                                               ,
   '{{< downloadthis assets/nda/dataset_collection.txt dname="dataset_collection" label="dataset_collection.txt" >}}'                                  , "Table with identifiers relating to how the data were uploaded"                                                                                                                                                                                                                                    ,
   '{{< downloadthis assets/nda/datastructure_manifest.txt dname="datastructure_manifest" label="datastructure_manifest.txt" >}}'                      , "Table with partial information about how the files are stored on the NDA AWS S3 bucket. This example file contains the first 10 rows."                                                                                                                                                            ,
