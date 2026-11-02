@@ -17,17 +17,33 @@ The switcher itself is [assets/js/version.js](assets/js/version.js), styled by [
 $ scripts/build-site-index.sh path/to/gh-pages assets/pages /starterkits
 ```
 
-Release-specific values (the version number, the release directory on TACC, the [a2cps/snapshot](https://github.com/a2cps/snapshot) tag, the BIDS version) all live in [_variables.yml](_variables.yml), referenced from the kits as `{{{< var release.version >}}}` and friends. Bumping that one file updates every kit.
+Release-specific values (the version number, the release directory on TACC, where the kits expect the NDA Data Package and the path that NDA files land under, the [a2cps/snapshot](https://github.com/a2cps/snapshot) tag, the BIDS version) all live in [_variables.yml](_variables.yml), referenced from the kits as `{{{< var release.version >}}}` and friends. Bumping that one file updates every kit.
 
 ## Styleguide & Scope
 
 When writing or updating a starter kit, please adhere to the following guidelines:
 
 - **Target Audience:** Kits should be targeted at expert researchers who may be very familiar with their own domain but might not understand the specific datatype discussed in the kit (e.g., a genetics expert reading an MRI kit).
-- **Didactic Tone:** The aim of each kit is to be didactic. Explain *why* certain data processing or extraction steps are taken, not just *how* to run code.
+- **Didactic Tone:** Explain *why* certain data processing or extraction steps are taken, not just *how* to run code.
 - **Background Knowledge:** Do not reinvent the wheel for basic background knowledge (e.g., explaining the physics of fMRI). Instead, point to existing, high-quality external tutorials or review papers.
 - **Complexity:** Avoid writing overly complicated code chunks. If a kit needs a complex example or figure, suggest it with a placeholder or plain English explanation. The main focus should be on clear prose.
-- **Structural Consistency:** Kits must adhere to the structure defined in `_template.qmd`. See the template for the required sections: "Starting Project" (Locate Data, Extract Data, Data Quality, Cross-Modality Links) and "Considerations While Working on the Project" (Data Generation, Other, Citations).
+- **Structural Consistency:** Kits should adhere to the structure defined in `_template.qmd`. See the template for the required sections: "Starting Project" (Locate Data, Extract Data, Data Quality, Cross-Modality Links) and "Considerations While Working on the Project" (Data Generation, Other, Citations).
+
+## `R` Style
+
+The kits are read as much as they are run, so the code is part of the prose. Please follow the [tidyverse style guide](https://style.tidyverse.org/), plus the conventions below. Formatting (indentation, line width, `<-`) is handled automatically by [`air`](https://posit-dev.github.io/air/) via the [`prek` hooks](#pre-commit-hooks). Here are a few other guidelines that help keep things consistent across the kits.
+
+- **Use the native pipe `|>`**, not `%>%`. Nothing in the book needs magrittr.
+- **Load every package in one `setup` chunk**, placed immediately after the chapter's `#` heading and labelled `#| label: setup`. List the packages alphabetically, and only the ones the chapter actually uses.
+- **Do not call `pkg::fun()`.** If a chapter uses a function, it loads that function's package. Namespacing a single call is the thing the `setup` chunk exists to avoid.
+- **Prefer current `dplyr`/`tidyr` idiom** over the superseded forms: `slice_max()` over `top_n()`, `across()` over `mutate_all()`, `.default =` over a trailing `TRUE ~`, `if_else()` over `ifelse()`, `drop_na()` over `na.omit()`, `separate_wider_delim()` over `separate()`, and `pick()` over the magrittr `select(., ...)`.
+- **Write anonymous functions as `\(x)`**, not as a `~ .x` formula.
+- **Set axis titles with `labs()`**, not `xlab()`/`ylab()`.
+- **When labeling a chunk, use kebab-case**, and pick a name that describes what the chunk does. Labels end up in figure filenames and error messages, so avoid ones that shadow a function (`filter`, `image`, `session`) or that run words together (`loadfalff`). Labeling is not required --- `missing-chunk-labels` is switched off in [.panache.toml](.panache.toml) --- but a chunk that produces a figure is worth naming, because otherwise its output is `unnamed-chunk-N-1.png` and the `N` shifts whenever a chunk is added above it.
+- **Reach files under `data/` with `here()`** rather than a relative path, so a chunk works regardless of where it is run from.
+- **Use a plain fence for code that only illustrates** a path or command. See [Code blocks and shortcodes](#code-blocks-and-shortcodes) --- an executable cell with `#| eval: false` looks equivalent but silently breaks `{{{< var >}}}` shortcodes.
+
+Note that `read.csv()` appears deliberately in a few of the CRF appendices, where `read_csv()` reports parsing errors on the raw exports; those are paired with `hablar::retype()` and should be left alone.
 
 ## To Update
 
@@ -64,6 +80,8 @@ $ git add *qmd _freeze
 $ git commit -m "Update book"
 ```
 
+The commit runs the [pre-commit hooks](#pre-commit-hooks). If a formatter rewrites a file, the commit stops; `git add` the result and run it again.
+
 - Push changes to the remote
 
 ```{shell}
@@ -99,6 +117,7 @@ release:
   dir: "pre-surgery-release-2-2-0"
 ```
 
+- If the release was uploaded to the NDA under a different path, update `nda.prefix` as well. The path is in the `associated_file` column of a package's `datastructure_manifest.txt`. Code chunks spell this path out rather than using the variable, so a change to `nda.prefix` also means updating the paths in the kits that read from the package and re-rendering them.
 - Re-render and check the result. `var` shortcodes are expanded after the frozen output is restored, so a change to [_variables.yml](_variables.yml) reaches every kit without re-executing any code.
 
 ```{shell}
@@ -121,6 +140,42 @@ The tag builds `/v/2_2_0/`, copies it to [`/latest/`](https://a2cps.github.io/st
 
 The environment is managed with [`pixi`](https://pixi.prefix.dev/latest/), which was chosen because it manages not only `R` packages, the system-level packages required to make those `R` ones run, as well as others (e.g., packages used in development, like the formatters). Therefore, when making substantial changes in this repo (e.g., adding a new kit, re-rendering a qmd), you will need to have `pixi` installed.
 
+### Pre-commit Hooks
+
+Spelling and formatting are checked by hooks that run on `git commit`, managed by [`prek`](https://github.com/j178/prek). Nothing needs to be installed separately for this. `prek` is a `pixi` dependency like everything else, as are the tools it runs (`codespell`, `panache`, `air`), so an environment that can render the book can also run the hooks.
+
+The hooks do nothing in a fresh clone until they are installed once:
+
+```{shell}
+$ pixi run prek install
+```
+
+That writes `.git/hooks/pre-commit`. 
+
+Note that the hooks may rewrite files. Nothing is lost: read the diff, `git add` the reformatted files, and commit again.
+
+The first commit after installing is slow, because `prek` builds an isolated copy of each hook it pulls from a remote repository, pinned to the `rev` recorded in [prek.toml](prek.toml) and independent of the `pixi` copies. Those are cached, so later commits are quick.
+
+To sweep the whole repository without committing (worth doing after a large change):
+
+```{shell}
+$ pixi run prek run --all-files
+```
+
+Naming a hook runs only that one, which is quicker while chasing down a single complaint:
+
+```{shell}
+$ pixi run prek run --all-files codespell
+```
+
+Each tool reads its own configuration rather than taking arguments from [prek.toml](prek.toml):
+
+- [.codespellrc](.codespellrc): paths to skip (`_freeze`, `bib`, generated output) and words to leave alone (`EHR`, `PROMIS`, `notin`). A false positive belongs in `ignore-words-list`, rather than being reworded around.
+- [.panache.toml](.panache.toml): the markdown line width, and which formatter and linter handle the code inside chunks. `panache` carries those tools internally, so naming them there does not mean they have to be installed.
+- [.air.toml](.air.toml): the `R` formatting that `panache` applies: two-space indents, 80 columns, `<-` for assignment. An editor with [air](https://posit-dev.github.io/air/) integration reads the same file, so format-on-save agrees with the hook.
+
+`git commit --no-verify` skips the hooks. That is reasonable for a checkpoint commit on a branch, but the hooks should run before a pull request is merged.
+
 ### Quarto
 
 The `quarto` commands can be triggered through pre-configured [`pixi` tasks](https://pixi.prefix.dev/latest/workspace/advanced_tasks/). To view changes, use `pixi run preview`, which renders the `qmd` files into `html`, opens up a copy of the starter kits in a browser, and automatically re-renders files when changes are saved.
@@ -132,8 +187,8 @@ Note that the version menu is hidden during a local preview. It only appears onc
 `{{{< include >}}}` is resolved before code is executed, which means the included text is baked into the frozen output. Editing anything in `_snippets/` therefore has *no effect* on chapters that include it until their frozen output is cleared:
 
 ```{shell}
-# after editing _snippets/mri-location.qmd
-$ for f in $(grep -l "_snippets/mri-location" *.qmd); do rm -rf "_freeze/${f%.qmd}"; done
+# after editing _snippets/nda-location.qmd
+$ for f in $(grep -l "_snippets/nda-location" *.qmd); do rm -rf "_freeze/${f%.qmd}"; done
 $ pixi run render
 ```
 
@@ -152,14 +207,14 @@ This repo comes with a template for new kits: [_template.qmd](_template.qmd).
 By default, all tables are rendered into markdown with [`knitr::kable`](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html)[^kable], which will attempt to render the entire table. For tables larger than a few rows, this is likely not what is wanted; adding many rows will make the website very large and slow, and we do not want to accidentally share an entire dataset. Here are three options to consider, in no particular order
 
 - For an individual `*qmd`, change the default formatter to something that prints only a few rows 
-  - For example, [freesurfer.qmd](freesurfer.qmd)
+  - For example, [bids-qc-joining.qmd](bids-qc-joining.qmd)
   - For a list of options, see: https://quarto.org/docs/reference/formats/html.html#tables
 - Manually print individual tables using a different formatter 
   - For example, [DT](https://rstudio.github.io/DT/)
 - Print only a part of of the table
   - For example, `head(df)` instead of `df`
 
-[^kable]: The default table formatting configured in [_quarto.yml](starterkits/_quarto.yml).
+[^kable]: The default table formatting configured in [_quarto.yml](_quarto.yml).
 
 ## Resources
 

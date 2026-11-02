@@ -1,4 +1,6 @@
 [codespell]
 # reference: https://github.com/codespell-project/codespell#using-a-config-file
-skip = .git,*.pdf,*.svg,*.lock,.codespellrc,_book,*_files,*_cache,renv,data,_freeze,_extensions,*bib,*js,*js.map
+# A bare directory name only prunes a directory walk. prek passes each file by path, so
+# tracked directories also need a `dir/*` pattern.
+skip = .git,*.pdf,*.svg,*.lock,.codespellrc,_book,*_files,*_cache,renv,data,_freeze,_freeze/*,_extensions,_extensions/*,*bib,*js,*js.map
 ignore-words-list = EHR,ehr,PROMIS,MAPP,notin,COO

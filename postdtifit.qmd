@@ -3,14 +3,14 @@
 ```{r}
 #| label: setup
 
-library(readr)
+library(agree)
 library(dplyr)
-library(ggplot2)
 library(duckplyr)
 library(fs)
+library(ggplot2)
+library(readr)
 library(stringr)
 library(tidyr)
-library(agree)
 ```
 
 The @sec-reconstruction products provide voxel-wise outputs in a raw format that will be familiar to many diffusion imaging experts. To facilitate analyses, A2CPS has extracted those voxel-wise maps into regional summary statistics and repackaged them into a tabular format. This kit covers the repackaged structure.
@@ -23,14 +23,12 @@ As a brief primer, the diffusion tensor model produces several scalar metrics th
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The derivatives are underneath `derivatives/postdtifit`. Let's take a look.
+The derivatives are referenced by `fmriresults01`, underneath `mris/derivatives/postdtifit`. Let's take a look.
 
-```{bash}
-#| eval: false
-
-$ ls postdtifit/
+```bash
+$ ls mris/derivatives/postdtifit/
 diffusion_regional  diffusion_regional_stats  diffusion_regional_stats.json
 ```
 
@@ -38,7 +36,7 @@ diffusion_regional  diffusion_regional_stats  diffusion_regional_stats.json
 
 The tabular data is in `diffusion_regional_stats`. As usual, the tables are in [parquet files](https://parquet.apache.org/) that have been partitioned in a [hive style](https://hive.apache.org/). Let's take a look at the data dictionary `diffusion_regional_stats.json`.
 
-```{json}
+```json
 {
     "index": {
         "LongName": "Index",
@@ -101,10 +99,19 @@ The tabular data is in `diffusion_regional_stats`. As usual, the tables are in [
 Next, peak at the table. 
 
 ```{r}
-#| label: loadstats
+#| label: load-stats
+
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
 
 diffusion_regional_stats <- read_parquet_duckdb(
-  "data/pre-surgery/mris/derivatives/postdtifit/diffusion_regional_stats"
+  file.path(
+    fmriresults01,
+    "mris/derivatives/postdtifit/diffusion_regional_stats"
+  )
 ) |>
   collect()
 
@@ -125,7 +132,7 @@ shell_comparison <- diffusion_regional_stats |>
 head(shell_comparison)
 ```
 
-To get a very high-level overview of the data, generate a [BA plot](https://en.wikipedia.org/wiki/Bland--Altman_plot). 
+To get a very high-level overview of the data, generate a [BA plot](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot). 
 
 ::: {#fig-shell-comparison}
 ```{r}
@@ -155,13 +162,19 @@ A few potential sources for those differences may spring to mind: participant di
 ```{r}
 #| label: shell-comparison-not-red
 
+# files referenced by image03 in the NDA package (see Locate Data)
+image03 <- file.path(
+  "data/nda/image03",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 red_dmri <- read_tsv(
-  dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
+  dir_ls(file.path(image03, "mris/bids"), glob = "*scans.tsv", recurse = TRUE),
   na = "n/a"
 ) |>
   filter(str_detect(filename, "dwi.nii.gz")) |>
   mutate(
-    sub = str_extract(filename, "(?<=sub-)[[:digit:]]+") |> as.numeric()
+    sub = str_extract(filename, "(?<=sub-)[[:digit:]]+") |> as.integer()
   ) |>
   filter(rating == "red")
 

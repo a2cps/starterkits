@@ -1,5 +1,12 @@
 # ID Information {#sec-ids}
 
+```{r}
+#| label: setup
+
+library(DT)
+library(tibble)
+```
+
 A2CPS relies on several different schemes for labeling and describing metadata entities. This appendix describes those schemes to facilitate linking entities across data modalities. 
 
 ## Location
@@ -40,7 +47,7 @@ The following table may be used for mapping across datatypes.
 ```{r}
 #| echo: false
 
-tibble::tribble(
+tribble(
   ~`location (VBR)`                                              , ~`Site Code: LongName (Imaging)`            ,
   "Default"                                                      , ""                                          ,
   "Receiving: University of California San Diego"                , ""                                          ,
@@ -64,7 +71,7 @@ tibble::tribble(
   "ODGC-Metabolomics/Lipidomics: University of California Davis" , ""                                          ,
   "MCC2: Wayne State"                                            , '"WS": "Wayne State University"'
 ) |>
-  DT::datatable(
+  datatable(
     extensions = "Buttons",
     options = list(
       buttons = c("copy", "csv", "excel", "pdf"),
@@ -83,7 +90,7 @@ tibble::tribble(
 #| echo: false
 #| tbl-cap: "Terminology Mapping"
 
-tibble::tribble(
+tribble(
   ~Terminology                 , ~Venue     , ~Notes                                                                                                                                                                                                                                                                                                                                                                                                                      ,
   "subject"                    , "Imaging"  , "In Imaging, “subject” is used interchangeably with “participant“ and both are equivalent to “record”"                                                                                                                                                                                                                                                                                                                      ,
   "participant"                , "Imaging"  , "In Imaging, “participant” is used interchangeably with “subject“ and both are equivalent to “record”"                                                                                                                                                                                                                                                                                                                      ,
@@ -101,7 +108,7 @@ tibble::tribble(
 #| echo: false
 #| tbl-cap: "Terminology Mapping"
 
-tibble::tribble(
+tribble(
   ~Terminology    , ~Venue         , ~Notes                                                                                                                     ,
   "session"       , "Imaging"      , ""                                                                                                                         ,
   "visit"         , "NDA, Imaging" , "[image03](https://nda.nih.gov/data-structure/image03)"                                                                    ,
@@ -114,10 +121,10 @@ tibble::tribble(
 The following table may be used for mapping across datatypes.
 
 ```{r}
-#| label: visitsmapping
+#| label: visits-mapping
 #| echo: false
 
-tibble::tribble(
+tribble(
   ~`Protocol (VBR)`         , ~`visit,session (NDA, Imaging)` ,
   "undefined_protocol"      , ""                              ,
   "screening"               , ""                              ,
@@ -162,7 +169,7 @@ tibble::tribble(
   "quality_control"         , ""                              ,
   "processing"              , ""
 ) |>
-  DT::datatable(
+  datatable(
     extensions = "Buttons",
     options = list(
       buttons = c("copy", "csv", "excel", "pdf"),
