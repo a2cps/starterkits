@@ -25,6 +25,8 @@ book:
     - index.qmd
     - Psychosocial_starter_kit.qmd
     - Functional_starter_kit.qmd
+    - Demographics_starter_kit.qmd
+    - QST_starter_kit.qmd
     - genetic_variants.qmd
     - genomic_imputation.qmd
     - mri-idps.qmd
@@ -51,7 +53,7 @@ book:
   appendices:
     - bids-qc-joining.qmd
     - ids.qmd
-    - nda-mri.qmd
+    - nda.qmd
     - mri-harmonization.qmd
     - psycho_social_biomarker_impute.qmd
     - biospecimenCRF_quality_checks_and_reformat.qmd
