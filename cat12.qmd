@@ -8,9 +8,9 @@ Voxel-Based Morphometry is an automated technique that uses statistics to identi
 
 ### Locate data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The morphometry measures are underneath `derivatives/cat12`.
+The morphometry measures are referenced by `fmriresults01`, underneath `mris/derivatives/cat12`.
 
 ### Extract data
 

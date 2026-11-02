@@ -23,12 +23,12 @@ As a brief primer, extracting functional networks via ICA allows researchers to 
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The derivatives are underneath `derivatives/postgift`. Let's take a look.
+The derivatives are referenced by `fmriresults01`, underneath `mris/derivatives/postgift`. Let's take a look.
 
 ```bash
-$ ls postgift
+$ ls mris/derivatives/postgift
 amplitude  amplitude.json  biomarkers  biomarkers.json  connectivity  connectivity.json
 ```
 
@@ -45,9 +45,15 @@ Let's take a look at just the amplitudes.
 ```{r}
 #| label: load-falff
 
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 amplitude <- read_parquet_duckdb(
   dir_ls(
-    "data/pre-surgery/mris/derivatives/postgift/amplitude",
+    file.path(fmriresults01, "mris/derivatives/postgift/amplitude"),
     recurse = TRUE,
     glob = "*parquet"
   ),
@@ -74,8 +80,14 @@ head(run1_amplitudes)
 To get a very high-level overview of the data, generate the [MA plot](https://en.wikipedia.org/wiki/MA_plot). Let's exclude the "red" scans to determine whether those are driving the difference.
 
 ```{r}
+# files referenced by image03 in the NDA package (see Locate Data)
+image03 <- file.path(
+  "data/nda/image03",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 red_run1_scans <- read_tsv(
-  dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
+  dir_ls(file.path(image03, "mris/bids"), glob = "*scans.tsv", recurse = TRUE),
   na = "n/a"
 ) |>
   filter(rating == "red", str_detect(filename, "cuff_run-0[12]")) |>

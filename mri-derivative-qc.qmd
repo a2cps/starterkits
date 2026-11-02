@@ -18,9 +18,9 @@ As of Release 3.0, a subset of the neuroimaging derivatives have undergone manua
 
 ## Starting Project
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The Derivative QC metrics are underneath `derivatives/qc`. They consist of four tables.
+The Derivative QC metrics are referenced by `fmriresults01`, underneath `mris/derivatives/qc`. They consist of four tables.
 
 ```bash
 $ ls mris/derivatives/qc/
@@ -40,7 +40,16 @@ This table contains information about the rating session (e.g., helpful for dete
 ```{r}
 #| label: qc-session
 
-read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/session.parquet") |>
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
+read_parquet_duckdb(file.path(
+  fmriresults01,
+  "mris/derivatives/qc/session.parquet"
+)) |>
   head()
 ```
 
@@ -61,7 +70,10 @@ This table contains information about the to-be rated targets.
 ```{r}
 #| label: qc-image
 
-read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
+read_parquet_duckdb(file.path(
+  fmriresults01,
+  "mris/derivatives/qc/image.parquet"
+)) |>
   select(-img) |> # just for display purposes, so this webpage is not too big
   head()
 ```
@@ -90,7 +102,10 @@ This table contains the ratings given as "overall" scores. They apply to ratings
 ```{r}
 #| label: qc-rating
 
-read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/rating.parquet") |>
+read_parquet_duckdb(file.path(
+  fmriresults01,
+  "mris/derivatives/qc/rating.parquet"
+)) |>
   head()
 ```
 
@@ -113,7 +128,7 @@ This table contains the coordinates that were clicked during reviews, locations 
 #| label: qc-coordinate
 
 read_parquet_duckdb(
-  "data/pre-surgery/mris/derivatives/qc/coordinate.parquet"
+  file.path(fmriresults01, "mris/derivatives/qc/coordinate.parquet")
 ) |>
   head()
 ```
@@ -136,14 +151,14 @@ Let's see how we can display the rated images. As an example, we'll look one of 
 ```{r}
 # grab images associated with spatial normalization
 spatial_norm_images <- read_parquet_duckdb(
-  "data/pre-surgery/mris/derivatives/qc/image.parquet"
+  file.path(fmriresults01, "mris/derivatives/qc/image.parquet")
 ) |>
   filter(step == 1, display == 0) |>
   select(id, img)
 
 # grab image with lots of clicks
 img_with_many_clicks <- read_parquet_duckdb(
-  "data/pre-surgery/mris/derivatives/qc/coordinate.parquet"
+  file.path(fmriresults01, "mris/derivatives/qc/coordinate.parquet")
 ) |>
   filter(!is.na(x)) |>
   semi_join(spatial_norm_images, by = join_by(img_id == id)) |>
@@ -179,7 +194,10 @@ Now, return to the image.parquet file, do a filter join to get just a single row
 #| label: show-image
 
 # now show the associated blob
-read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
+read_parquet_duckdb(file.path(
+  fmriresults01,
+  "mris/derivatives/qc/image.parquet"
+)) |>
   semi_join(img_with_many_clicks, by = join_by(id == img_id)) |>
   pluck("img", 1) |>
   readPNG() |>
@@ -196,7 +214,10 @@ By referring back to img.parquet file, we can see metadata about the source file
 ```{r}
 #| label: image-metadata
 
-read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
+read_parquet_duckdb(file.path(
+  fmriresults01,
+  "mris/derivatives/qc/image.parquet"
+)) |>
   semi_join(img_with_many_clicks, by = join_by(id == img_id)) |>
   select(-img)
 ```
@@ -208,14 +229,14 @@ These ratings can be used to exclude images from analyses. Here, we show how to 
 ```{r}
 # grab all fieldmap images
 fmap_coregistration_images <- read_parquet_duckdb(
-  "data/pre-surgery/mris/derivatives/qc/image.parquet"
+  file.path(fmriresults01, "mris/derivatives/qc/image.parquet")
 ) |>
   filter(step == 3) |>
   select(id, file1, file2, display)
 
 # search for all coregistrations that were marked as having failed
 definite_coregistration_failures <- read_parquet_duckdb(
-  "data/pre-surgery/mris/derivatives/qc/rating.parquet"
+  file.path(fmriresults01, "mris/derivatives/qc/rating.parquet")
 ) |>
   inner_join(fmap_coregistration_images, by = join_by(img_id == id)) |>
   filter(rating == 2) |>

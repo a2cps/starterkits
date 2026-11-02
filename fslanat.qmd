@@ -25,13 +25,9 @@ The A2CPS pipeline calls FIRST as a part of the FSL standard pipeline for proces
 
 ### Locate data
 
-In the release, data are stored underneath the `mris/derivatives` folder:
+{{< include _snippets/nda-location.qmd >}}
 
-```bash
-{{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/fslanat
-```
-
-This folder contains all of the outputs for every participant, with subject folders of the form `sub-[recordid]_ses-[protocolid]_T1w.anat`. Detailed descriptions of the outputs are available in the [`fsl_anat` documentation](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html#outputs).
+The `fsl_anat` derivatives are referenced by `fmriresults01`, underneath `mris/derivatives/fslanat`. This folder contains all of the outputs for every participant, with subject folders of the form `sub-[recordid]_ses-[protocolid]_T1w.anat`. Detailed descriptions of the outputs are available in the [`fsl_anat` documentation](https://fsl.fmrib.ox.ac.uk/fsl/docs/structural/fsl_anat.html#outputs).
 
 Many users will not need the raw `fsl_anat` outputs and can instead rely a table in which the subcortical measures have been aggregated: `fslanat.tsv`. A data dictionary for this table is available in the `fslanat.json` file, and also [ online](https://github.com/a2cps/snapshot/blob/{{< var snapshot.tag >}}/src/snapshot/data/fslanat.json).
 
@@ -44,8 +40,14 @@ First, load in the cortical volumes provided by FSL.
 ```{r}
 #| label: load
 
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 fslanat <- read_tsv(
-  "data/pre-surgery/mris/derivatives/fslanat/fslanat.tsv",
+  file.path(fmriresults01, "mris/derivatives/fslanat/fslanat.tsv"),
   show_col_types = FALSE
 )
 head(fslanat)
@@ -78,7 +80,7 @@ Now, grab the equivalent information from FreeSurfer.
 #| label: subcort-freesurfer
 
 subcort_freesurfer <- read_tsv(
-  "data/pre-surgery/mris/derivatives/freesurfer/aseg.tsv",
+  file.path(fmriresults01, "mris/derivatives/freesurfer/aseg.tsv"),
   show_col_types = FALSE
 ) |>
   filter(str_detect(

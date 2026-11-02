@@ -23,12 +23,12 @@ As a brief primer, the diffusion tensor model produces several scalar metrics th
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The derivatives are underneath `derivatives/postdtifit`. Let's take a look.
+The derivatives are referenced by `fmriresults01`, underneath `mris/derivatives/postdtifit`. Let's take a look.
 
 ```bash
-$ ls postdtifit/
+$ ls mris/derivatives/postdtifit/
 diffusion_regional  diffusion_regional_stats  diffusion_regional_stats.json
 ```
 
@@ -101,8 +101,17 @@ Next, peak at the table.
 ```{r}
 #| label: load-stats
 
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 diffusion_regional_stats <- read_parquet_duckdb(
-  "data/pre-surgery/mris/derivatives/postdtifit/diffusion_regional_stats"
+  file.path(
+    fmriresults01,
+    "mris/derivatives/postdtifit/diffusion_regional_stats"
+  )
 ) |>
   collect()
 
@@ -153,8 +162,14 @@ A few potential sources for those differences may spring to mind: participant di
 ```{r}
 #| label: shell-comparison-not-red
 
+# files referenced by image03 in the NDA package (see Locate Data)
+image03 <- file.path(
+  "data/nda/image03",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 red_dmri <- read_tsv(
-  dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
+  dir_ls(file.path(image03, "mris/bids"), glob = "*scans.tsv", recurse = TRUE),
   na = "n/a"
 ) |>
   filter(str_detect(filename, "dwi.nii.gz")) |>

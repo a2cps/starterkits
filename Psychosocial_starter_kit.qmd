@@ -25,11 +25,15 @@ These assessments include:
 
 ### Locate Data
 
-Where are the relevant files?
+{{< include _snippets/nda-location.qmd >}}
+
+On the NDA, the GAD-7 and PHQ-9 are the `cde_gad701` and `cde_phq901` structures. This kit instead starts from the reformatted tables that A2CPS distributes in its internal releases on TACC, which are not part of the NDA package:
 
 ```bash
-$ {{< var release.root >}}/{{< var release.dir >}}/psychosocial/reformatted
+{{< var release.root >}}/{{< var release.dir >}}/psychosocial/reformatted
 ```
+
+The code below reads a local copy of that folder, `data/pre-surgery/psychosocial/reformatted`.
 
 ### Extract Data
 

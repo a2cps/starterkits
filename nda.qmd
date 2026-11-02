@@ -1,4 +1,9 @@
-# NDA Download Example, MRI {#sec-nda-mri}
+---
+aliases:
+  - nda-mri.html
+---
+
+# NDA Data Packages {#sec-nda}
 
 ```{r}
 #| label: setup
@@ -6,44 +11,71 @@
 library(tibble)
 ```
 
-This page describes the A2CPS rawdata as downloaded from the NDA.
+The starter kits assume that the A2CPS data were downloaded from the NIMH Data Archive (NDA). This page describes what a download contains and where the kits expect to find it.
 
 If you do not yet have access to the NDA and plan to download data from the NDA, please follow the instructions on the A2CPS For Researchers page ([Accessing our Data](https://a2cps.org/researchers/accessing-our-data/)) and the linked tutorials.
 
-## Data Overview
+## Data Packages
 
-This starter kit will assume that the data have been downloaded using [nda-tools](https://github.com/NDAR/nda-tools). In this example, a Data Package has been created that includes the rawdata. You will see a list of files like the following
+The starter kits assume that the data have been downloaded as a Data Package using [nda-tools](https://github.com/NDAR/nda-tools), and that the package was saved to `{{< var nda.dir >}}` inside the project folder. For example, a package that includes the MRI data, the genetic variant data, the demographics, and a few questionnaires looks like this (abridged):
 
 ```bash
-$ tree -L 2
-.
+$ tree {{< var nda.dir >}}
+{{< var nda.dir >}}
 ├── dataset_collection.txt
 ├── datastructure_manifest.txt
 ├── experiments
-│   ├── experiment_2652
-│   └── experiment_2655
+│   ├── experiment_2652
+│   └── experiment_2655
+├── fmriresults01
+│   ├── {{< var nda.prefix >}}
+│   │   └── mris
+│   │       ├── derivatives
+│   │       └── idp
+│   └── manifest-files
+├── fmriresults01.txt
+├── genomics_sample03
+│   └── submission-85830
+├── genomics_sample03.txt
+├── genomics_subject02.txt
+├── heal_demographics01.txt
 ├── image03
-│   ├── corral-secure
-│   └── manifest-files
+│   ├── {{< var nda.prefix >}}
+│   │   └── mris
+│   │       └── bids
+│   └── manifest-files
 ├── image03.txt
 ├── md5_values.txt
+├── oai_koos_womac01.txt
 ├── package_file_metadata_1235008.txt.gz
+├── package_file_metadata_1235916.txt.gz
+├── package_file_metadata_1235927.txt.gz
+├── package_file_metadata_1238107.txt.gz
 ├── package_info.txt
+├── prsupport01.txt
 └── README.pdf
 ```
 
 ## Data Structures
 
-This is raw imaging data, and so it is stored in the [image03 Data Structure](https://nda.nih.gov/data-structure/image03) (link goes to data dictionary). Metadata is stored in the `image03.txt`. This is where you will find information such as participant age, participant sex, and scan acquisition date. 
+A package holds one tab-separated table per NDA data structure, named after the structure (for example, `image03.txt` or `heal_demographics01.txt`). Each structure has a data dictionary on the NDA website (for example, [heal_demographics01](https://nda.nih.gov/data-structure/heal_demographics01)). The first line of every table is the column header, the second line includes a partial data dictionary, and the third line contains the first row of data.
 
-Note that, as with downloads of all NDA data structures, the second line of this table includes a partial data dictionary. That is, the header is on the first line, and the first row of data is on the third line.
+Every table identifies participants by `subjectkey` (the NDA GUID) and `src_subject_id` (the A2CPS record ID), so these columns link one structure to another (see @sec-ids).
 
-## Imaging Files
+## Files
 
-The imaging files are underneath `image03`. 
+Some structures also reference files, such as the NIfTI images referenced by `image03`, the derivatives referenced by `fmriresults01`, or the genotypes referenced by `genomics_sample03`. Those files are downloaded into a folder named after the structure. Within that folder, the MRI files keep the path they had when A2CPS uploaded them, `{{< var nda.prefix >}}`, while the genotype files are in a folder named after the NDA submission that delivered them, `submission-85830`. Other structures, such as `prsupport01`, are only tables.
+
+When a starter kit names a file or runs a shell command, the path starts from the folder that holds the structure's files. For example, `mris/derivatives` refers to `{{< var nda.dir >}}/fmriresults01/{{< var nda.prefix >}}/mris/derivatives`. Code chunks spell out the full path from the project folder.
+
+## MRI
+
+### Raw Data
+
+Raw imaging data are stored in the [image03 Data Structure](https://nda.nih.gov/data-structure/image03) (link goes to data dictionary). Metadata are stored in `image03.txt`. This is where you will find information such as participant age, participant sex, and scan acquisition date. The imaging files are underneath `image03`.
 
 ```bash
-$ ls image03{{< var release.root >}}/{{< var release.dir >}}/mris/bids/ | head
+$ ls image03/{{< var nda.prefix >}}/mris/bids/ | head
 dataset_description.json
 README
 sessions.json
@@ -57,9 +89,13 @@ sub-10013
 
 The contents of that folder match the contents described in @sec-raw-mri (note that the aggregated table `participants.tsv` is not included in the NDA download, as the information is available in `image03.txt`).
 
-## Experiments
+### Derivatives
 
-The rawdata folder includes an "experiments" folder, which provides some information on how the two types of fMRI scans were collected.
+The MRI derivatives are referenced by the [fmriresults01 Data Structure](https://nda.nih.gov/data-structure/fmriresults01), and so they are underneath `fmriresults01/{{< var nda.prefix >}}/mris/derivatives`, in one folder per pipeline. The image-derived phenotypes described in @sec-mri-idps are underneath `fmriresults01/{{< var nda.prefix >}}/mris/idp`.
+
+### Experiments
+
+A package with fMRI data includes an "experiments" folder, which provides some information on how the two types of fMRI scans were collected.
 
 ```{r}
 #| echo: false
@@ -70,6 +106,10 @@ tribble(
   "experiment_2655 (tfMRI)" , '{{< downloadthis assets/nda/experiment_2655.xml dname="experiment_2655" label="experiment_2655.xml" >}} {{< downloadthis assets/nda/A2CPS_cuff.txt dname="A2CPS_cuff" label="A2CPS_cuff.txt" >}}'
 )
 ```
+
+## Genomics
+
+The genetic variant data, including the imputed genotypes, are referenced by the [genomics_sample03 Data Structure](https://nda.nih.gov/data-structure/genomics_sample03), and so they are underneath `genomics_sample03/submission-85830`. Subject-level information about the genotyping is in `genomics_subject02.txt`. For more on these files, see @sec-snps and @sec-genomics.
 
 ## Additional NDA Metadata
 

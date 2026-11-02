@@ -21,29 +21,21 @@ Genetic variant data captures individual variation in the human genome with sing
 
 ### Locate Data
 
-On TACC, the data are stored underneath the releases. For example, data release `v{{< var release.version >}}` is underneath
+{{< include _snippets/nda-location.qmd >}}
+
+The genetic variant data are referenced by the `genomics_sample03` structure, whose table also holds sample-level information about the genotyping. Subject-level information is in the `genomics_subject02` table. The genotype files are underneath `genomics_sample03/submission-85830`:
 
 ```bash
-{{< var release.root >}}/{{< var release.dir >}}/omics/gene_variants
+$ tree {{< var nda.dir >}}/genomics_sample03
+{{< var nda.dir >}}/genomics_sample03
+└── submission-85830
+    ├── GV_Genotypes_Runlists_1-5_QC_freeze2.bed
+    ├── GV_Genotypes_Runlists_1-5_QC_freeze2.bim
+    ├── GV_Genotypes_Runlists_1-5_QC_freeze2.fam
+    └── GV_Genotypes_Runlists_1-5_QC_freeze2.vcf.gz
 ```
 
-The genetic variant data are underneath the `omics/gene_variants` folder
-
-```bash
-$ ls omics/gene_variants
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bed
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bim
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.fam
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.log
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.log
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.nosex
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_PCA_Ind_Info.csv
-```
-
-These files are in the [PLINK](https://www.cog-genomics.org/plink/1.9/) format.
+Shell examples in this kit run from the `submission-85830` folder. The `.bed`, `.bim`, and `.fam` files are a [PLINK](https://www.cog-genomics.org/plink/1.9/) binary file set, and the `.vcf.gz` file is in the [Variant Call Format](https://samtools.github.io/hts-specs/).
 
 ## Plink Binary File Set
 
@@ -52,8 +44,7 @@ These files are in the [PLINK](https://www.cog-genomics.org/plink/1.9/) format.
 Each row in this file specifics a genetic variant and provides extended information on its location and alleles.
 
 ```bash
-$ cd omics/gene_variants
-$ head -5 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
+$ head -5 GV_Genotypes_Runlists_1-5_QC_freeze2.bim
 ```
 ```{r}
 #| echo: false
@@ -114,7 +105,7 @@ tribble(
 Each row in this file specifics a participant and provides extended information on its identifiers, family, and gender.
 
 ```bash
-$ head -5 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam
+$ head -5 GV_Genotypes_Runlists_1-5_QC_freeze2.fam
 ```
 ```{r}
 #| echo: false
@@ -199,7 +190,7 @@ The `plink` command can then use that file to create a table of the minor allele
 
 ```shell
 $ ./plink \
-  --bfile 2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2 \
+  --bfile GV_Genotypes_Runlists_1-5_QC_freeze2 \
   --extract snps.txt \
   --freq \
   --out snp_frequencies 

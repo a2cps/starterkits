@@ -19,9 +19,9 @@ Part of the A2CPS MRI quality control procedure\ [@sec-raw-mri-quality] relies d
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The MRIQC metrics are underneath `derivatives/mriqc`. 
+The MRIQC metrics are referenced by `fmriresults01`, underneath `mris/derivatives/mriqc`.
 
 ### Extract Data
 
@@ -50,7 +50,16 @@ For example, here are all of the metrics available for the functional data.
 ```{r}
 #| label: load
 
-group_bold <- read_tsv("data/pre-surgery/mris/derivatives/mriqc/group_bold.tsv")
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
+group_bold <- read_tsv(file.path(
+  fmriresults01,
+  "mris/derivatives/mriqc/group_bold.tsv"
+))
 group_bold |> head()
 ```
 

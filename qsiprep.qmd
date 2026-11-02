@@ -10,9 +10,9 @@ The A2CPS project performs this specialized preprocessing using [QSIPrep](https:
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The QSIPrep derivatives are underneath `derivatives/qsiprep-V1`. Let's take a look.
+The QSIPrep derivatives are referenced by `fmriresults01`, underneath `mris/derivatives/qsiprep-V1`. Let's take a look.
 
 ```bash
 $ ls mris/derivatives/qsiprep-V1 | head
