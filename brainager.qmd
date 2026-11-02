@@ -225,7 +225,7 @@ It is in principle possible to replicate the processing that was used in a relea
 
 ### Citations
 
-If you use the brainageR materials, please follow the instructions for citing the brainageR package: https://github.com/james-cole/brainageR?tab=readme-ov-file#citations.
+If you use the brainageR materials, please follow the instructions for citing the brainageR package: <https://github.com/james-cole/brainageR?tab=readme-ov-file#citations>.
 
 {{< include _snippets/a2cps_citations.qmd >}}
 

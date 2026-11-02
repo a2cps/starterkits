@@ -45,7 +45,7 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/session.parquet") |>
 ```
 
 - `id`: ID of session
-- `step`: ID indicating the kind of target being rated (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L9-L14)
+- `step`: ID indicating the kind of target being rated (<https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L9-L14>)
   - MASK = 0
   - SPATIAL_NORMALIZATION = 1
   - SURFACE_LOCALIZATION = 2
@@ -71,11 +71,11 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/image.parquet") |>
 - `slice`: indicator for which part of the image was displayed
 - `file1`: the main source file from which the image was derived (e.g., the name of the mask)
 - `file2`: supplementary file used to make the to-be-rated image (e.g., anatomical underlay)
-- `display`: ID indicating the orientation of the image (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L23-L26)
+- `display`: ID indicating the orientation of the image (<https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L23-L26>)
   - X = 0
   - Y = 1
   - Z = 2
-- `step`: ID indicating the kind of target (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L9-L14)
+- `step`: ID indicating the kind of target (<https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L9-L14>)
   - MASK = 0
   - SPATIAL_NORMALIZATION = 1
   - SURFACE_LOCALIZATION = 2
@@ -96,7 +96,7 @@ read_parquet_duckdb("data/pre-surgery/mris/derivatives/qc/rating.parquet") |>
 
 - `id`: ID of each rating
 - `source_data_issue`: boolean indicating whether the reviewer noticed an issue with the raw data quality
-- `rating`: the rating provided (https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L17-L20)
+- `rating`: the rating provided (<https://github.com/psadil/django-qcapp-ratings/blob/1080ae40304c067fec283fc04bd956834c61d99c/src/django_qcapp_ratings/models.py#L17-L20>)
   - PASS = 0
   - UNSURE = 1
   - FAIL = 2
@@ -250,7 +250,7 @@ definite_coregistration_failures |> head()
 
 Derivative QC is a work in progress, and so we expect substantial improvements in subsequent releases. As of this release, only fieldmaps coregistrations have been exhaustively checked. In future releases, we expect more targets to be reviewed.
 
-Quality control was done with the A2CPS Derivative Image Review Tool (DIRT), which is under active development here: https://github.com/psadil/django-qcapp-ratings/tree/main/src/django_qcapp_ratings. 
+Quality control was done with the A2CPS Derivative Image Review Tool (DIRT), which is under active development here: <https://github.com/psadil/django-dirt-ratings/tree/main/src/django_dirt_ratings>. 
 
 ### Citations
 

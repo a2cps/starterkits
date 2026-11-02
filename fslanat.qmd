@@ -190,7 +190,7 @@ A subset of cases exhibited poor alignment to the standard space, with the misal
 
 ### Citations
 
-The fsl_anat pipeline relies on several tools that are the products of research by the FMRIB team. If you use these derivatives in your analyses, please follow the instructions for citations here: https://fsl.fmrib.ox.ac.uk/fsl/docs/index.html.
+The fsl_anat pipeline relies on several tools that are the products of research by the FMRIB team. If you use these derivatives in your analyses, please follow the instructions for citations here: <https://fsl.fmrib.ox.ac.uk/fsl/docs/index.html>.
 
 {{< include _snippets/a2cps_citations.qmd >}}
 
