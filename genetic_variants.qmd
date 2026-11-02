@@ -15,7 +15,7 @@ This page provides considerations for A2CPS projects that involve the Genetic Va
 
 Genetic variant data captures individual variation in the human genome with single-nucleotide resolution. Our released SNP array data includes 690,126 genetic loci across all 22 autosomes, the X / Y (sex) chromosomes, and mitochondrial DNA for 1375 participants. At each locus, there is a more common "reference" (REF) allele and a less common "alternate" (ALT) allele, also referred to as the major and minor alleles, respectively. Because humans are diploid, we carry two copies of each chromosome, and thus two alleles at each locus, which may be both REF, both ALT, or one of each (heterozygous). This data enables researchers to examine allele-level variation across the genome at precisely selected sites for each participant. Below, we expand with more granularity how to work with these data, and the quality control measures that were used to create them. Notably, we also used the quality controlled data to impute whole genome sequences using TOPMed's Imputation Server, information that is included in the "Imputed Genomics" starter kit.
 
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 ## Starting Project
 
@@ -180,7 +180,7 @@ A binary file, unviewable through command line commands such as "cat". This cont
 
 To see all files types in plink, go here: [File format reference - PLINK 1.9](https://www.cog-genomics.org/plink/1.9/formats).
 
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 ### Extract Data
 
@@ -245,7 +245,7 @@ tribble(
 - MAF = minor allele frequency (calculated # minor allele observations / # total allele observations)
 - NCHROBS = total number of allele observations (2 * number of participants)
 
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 ## Quality Control
 
@@ -935,7 +935,7 @@ fwrite(
 
 </details>
 
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 ### Principal Component Analysis
 
@@ -1103,7 +1103,7 @@ fwrite(
 
 ![A2CPS PCA Plot](assets/images/A2CPS_Freeze2_PCA_Plot.png){fig-alt="A2CPS PCA Plot" width=750px #fig-pcaplot}
 
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 ### Sex Typing
 
@@ -1111,7 +1111,7 @@ This procedure confirms the gender of each participant as documented in the stud
 
 ![A2CPS Sex Typing Plot](assets/images/A2CPS_QC_Sex_Typing.png){fig-alt="A2CPS Sex Typing" width=500px #fig-sextyping}
 
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 ### Relatedness
 
@@ -1119,7 +1119,7 @@ Allele-sharing percentages, determined during identity-by descent analyses, can 
 
 ![A2CPS Relatedness Plot](assets/images/A2CPS_QC_Relatedness.png){fig-alt="A2CPS Relatedness" width=500px #fig-relatedness}
 
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 ### Imputation
 
