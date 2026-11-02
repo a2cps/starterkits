@@ -12,9 +12,9 @@ These outputs are the result of a minimal preprocessing stream using [fMRIPrep](
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The fMRIPrep derivatives are underneath `derivatives/fmriprep`. Let's take a look.
+The fMRIPrep derivatives are referenced by `fmriresults01`, underneath `mris/derivatives/fmriprep`. Let's take a look.
 
 ```bash
 $ ls mris/derivatives/fmriprep/ | head

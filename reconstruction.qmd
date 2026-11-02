@@ -8,9 +8,9 @@ There are many different mathematical models for reconstructing these functions 
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-These outputs are under `mris/derivatives/qsirecon_fsl_dtifit`. There are three groups of outputs.
+These outputs are referenced by `fmriresults01`, underneath `mris/derivatives/qsirecon_fsl_dtifit`. There are three groups of outputs.
 
 ```bash
 $ ls mris/derivatives/qsirecon_fsl_dtifit

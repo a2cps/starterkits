@@ -18,29 +18,21 @@ Following imputation in this dataset, the number of genetic loci increased from 
 
 ### Locate Data
 
-On TACC, the data are stored underneath the releases. For example, data release `v{{< var release.version >}}` is underneath
+{{< include _snippets/nda-location.qmd >}}
+
+The imputed genotypes are distributed with the genetic variant data (@sec-snps), which are referenced by the `genomics_sample03` structure. That structure's table holds sample-level information about the genotyping, and subject-level information is in the `genomics_subject02` table. The files are underneath `genomics_sample03/submission-85830`:
 
 ```bash
-{{< var release.root >}}/{{< var release.dir >}}/omics/gene_variants
+$ tree {{< var nda.dir >}}/genomics_sample03
+{{< var nda.dir >}}/genomics_sample03
+└── submission-85830
+    ├── GV_Genotypes_Runlists_1-5_QC_freeze2.bed
+    ├── GV_Genotypes_Runlists_1-5_QC_freeze2.bim
+    ├── GV_Genotypes_Runlists_1-5_QC_freeze2.fam
+    └── GV_Genotypes_Runlists_1-5_QC_freeze2.vcf.gz
 ```
 
-The single-nucleotide polymorphisms are underneath the `omics/gene_variants` folder
-
-```bash
-$ ls omics/gene_variants
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bed
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.bim
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.fam
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_Imputed_Genomics.log
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.log
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.nosex
-2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2_PCA_Ind_Info.csv
-```
-
-These files are in the [PLINK](https://www.cog-genomics.org/plink/1.9/) format.
+The `.bed`, `.bim`, and `.fam` files are a [PLINK](https://www.cog-genomics.org/plink/1.9/) binary file set, and the `.vcf.gz` file is in the [Variant Call Format](https://samtools.github.io/hts-specs/).
 
 ### Extract Data
 
@@ -60,9 +52,9 @@ Researchers can choose to filter out variants based on other, standard QC measur
 
 The below procedures were performed with these data:
 
-- `2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bed`
-- `2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.bim`
-- `2025-06-02_UCSD_GV_Genotypes_Runlists_1-5_QC_freeze2.fam`
+- `GV_Genotypes_Runlists_1-5_QC_freeze2.bed`
+- `GV_Genotypes_Runlists_1-5_QC_freeze2.bim`
+- `GV_Genotypes_Runlists_1-5_QC_freeze2.fam`
 
 *(Note: These files originally had the base name A2CPS_Freeze_2, as reflected in the code below)*
 

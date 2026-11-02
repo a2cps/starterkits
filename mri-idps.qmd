@@ -19,9 +19,9 @@ These IDPs include:
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The primary IDP table, `mri.tsv`, is located underneath the `idp` folder. Let's take a look.
+The IDP tables are referenced by `fmriresults01`. The primary IDP table, `mri.tsv`, is located underneath `mris/idp`. Let's take a look.
 
 ```bash
 $ ls mris/idp/
@@ -42,8 +42,14 @@ Because this table is saved as a tab-separated values (`tsv`) file, any software
 For example, if we are only interested in the resting state (REST1) fALFF measurements for our participants, we can select just the `sub` (participant identifier) column and any column matching that specific functional task.
 
 ```{r}
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 read_tsv(
-  "data/pre-surgery/mris/idp/mri.tsv",
+  file.path(fmriresults01, "mris/idp/mri.tsv"),
   col_select = c("sub", matches("task_rest_run_1.*falff"))
 ) |>
   head()

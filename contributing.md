@@ -17,7 +17,7 @@ The switcher itself is [assets/js/version.js](assets/js/version.js), styled by [
 $ scripts/build-site-index.sh path/to/gh-pages assets/pages /starterkits
 ```
 
-Release-specific values (the version number, the release directory on TACC, the [a2cps/snapshot](https://github.com/a2cps/snapshot) tag, the BIDS version) all live in [_variables.yml](_variables.yml), referenced from the kits as `{{{< var release.version >}}}` and friends. Bumping that one file updates every kit.
+Release-specific values (the version number, the release directory on TACC, where the kits expect the NDA Data Package and the path that NDA files land under, the [a2cps/snapshot](https://github.com/a2cps/snapshot) tag, the BIDS version) all live in [_variables.yml](_variables.yml), referenced from the kits as `{{{< var release.version >}}}` and friends. Bumping that one file updates every kit.
 
 ## Styleguide & Scope
 
@@ -117,6 +117,7 @@ release:
   dir: "pre-surgery-release-2-2-0"
 ```
 
+- If the release was uploaded to the NDA under a different path, update `nda.prefix` as well. The path is in the `associated_file` column of a package's `datastructure_manifest.txt`. Code chunks spell this path out rather than using the variable, so a change to `nda.prefix` also means updating the paths in the kits that read from the package and re-rendering them.
 - Re-render and check the result. `var` shortcodes are expanded after the frozen output is restored, so a change to [_variables.yml](_variables.yml) reaches every kit without re-executing any code.
 
 ```{shell}
@@ -186,8 +187,8 @@ Note that the version menu is hidden during a local preview. It only appears onc
 `{{{< include >}}}` is resolved before code is executed, which means the included text is baked into the frozen output. Editing anything in `_snippets/` therefore has *no effect* on chapters that include it until their frozen output is cleared:
 
 ```{shell}
-# after editing _snippets/mri-location.qmd
-$ for f in $(grep -l "_snippets/mri-location" *.qmd); do rm -rf "_freeze/${f%.qmd}"; done
+# after editing _snippets/nda-location.qmd
+$ for f in $(grep -l "_snippets/nda-location" *.qmd); do rm -rf "_freeze/${f%.qmd}"; done
 $ pixi run render
 ```
 

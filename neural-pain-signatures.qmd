@@ -20,9 +20,9 @@ A "neural signature" is a multivariate pattern of brain activity that has been s
 
 ### Locate data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The signature response are underneath `derivatives/signatures`
+The signature responses are referenced by `fmriresults01`, underneath `mris/derivatives/signatures`.
 
 ```bash
 $ ls mris/derivatives/signatures/
@@ -120,8 +120,14 @@ To load the whole dataset, the parquet files may be read individually or using a
 ```{r}
 #| label: load
 
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 open_dataset(
-  "data/pre-surgery/mris/derivatives/signatures/signatures-by-run"
+  file.path(fmriresults01, "mris/derivatives/signatures/signatures-by-run")
 ) |>
   filter(signature %in% c("grouppred_cvpcr", "137subjmap_weighted_mean")) |>
   filter(task == "cuff", run == 1) |>
