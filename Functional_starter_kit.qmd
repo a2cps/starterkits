@@ -6,89 +6,73 @@ authors:
 
 # Functional Testing {#sec-functional-testing}
 
-Functional testing (also called performance-based testing) is an objective measure of a participant's physical functionality and complements self-reported pain and disability. Before surgery, the Acute to Chronic Pain Signatures Study (A2CPS) collects a short battery of standardized functional tasks and records the pain a participant reports right before and right after each task. The change in pain across a task gives us a measure of **movement-evoked pain (MEP)**, pain that is provoked by movement rather than pain at rest. MEP is increasingly recognized as its own meaningful construct.
-
-The battery is tailored to each surgical cohort:
-
-- **Knee arthroplasty (TKA) cohort**: lower-limb function is assessed with two tasks.
-  - The **10-meter walk test (10MWT)**, a standard measure of gait speed. Participants rate their pain before and after walking.
-  - The **5-times sit-to-stand test (5TSTS)**, which measures lower-limb strength and mobility by timing five repetitions of rising from a chair. Pain is again rated before and after the task.
-- **Thoracic (thoracic surgery) cohort**: since the surgical site is the chest wall, function is assessed with a deep breathing and coughing task, carried in a separate file.
-
-This kit builds on the **knee** cohort, which has the two lower-limb tasks. The file comes from the NIMH Data Archive (NDA) using NDA's own short field names, which we rename to the HEAL Common Data Element names\ [@wandner_nih_2022] so the measures match across HEAL studies. For each task the movement-evoked pain is the final pain rating minus the initial rating, so higher values mean more pain was evoked by the movement.
-
-## Starting Project
-
-### Locate Data
-
-The functional measure arrives from NDA as one file per cohort. We use the knee file. After downloading the functional-testing structure from your NDA data package, place it under `NDA_data/` so the project looks like this:
-
-```bash
-NDA_data/
-└── functional/
-    └── functional_knee.csv
-```
-
-The code below reaches this file with `here()`, which resolves paths from the project root, so a chunk runs the same regardless of the working directory.
-
-### Extract Data
-
-The file is a plain CSV. We use a small set of tidyverse packages.
-
 ```{r}
 #| label: setup
 
 library(dplyr)
 library(ggplot2)
-library(here)
 library(readr)
 ```
 
-We read the file, convert `record_id` to a number, and drop any exact duplicate rows so that a participant appears only once. We then derive the surgical cohort from `record_id`; every record here is TKA.
+Functional testing (also called performance-based testing) is an objective measure of a participant's physical functionality and complements self-reported pain and disability. Before surgery, the Acute to Chronic Pain Signatures Study (A2CPS) collects a short battery of standardized functional tasks and records the pain a participant reports right before and right after each task. The change in pain across a task gives us a measure of **movement-evoked pain (MEP)**, pain that is provoked by movement rather than pain at rest. MEP is increasingly recognized as its own meaningful construct\ [@corbett_movement_2019].
+
+The battery is tailored to each surgical cohort\ [@berardi_multi_2022]:
+
+- **Knee arthroplasty (TKA) cohort**: lower-limb function is assessed with two tasks.
+  - The **10-meter walk test (10MWT)**, a standard measure of gait speed. Participants rate their pain before and after walking.
+  - The **5-times sit-to-stand test (5TSTS)**, which measures lower-limb strength and mobility by timing five repetitions of rising from a chair. Pain is again rated before and after the task.
+- **Thoracic (thoracic surgery) cohort**: since the surgical site is the chest wall, function is assessed with a deep breathing and coughing task, carried in a separate table.
+
+This kit builds on the **knee** cohort, which has the two lower-limb tasks. The NIMH Data Archive (NDA) table for this cohort uses NDA's own short field names, which we rename to the HEAL Common Data Element names\ [@wandner_nih_2022] so the measures match across HEAL studies. For each task the movement-evoked pain is the final pain rating minus the initial rating, so higher values mean more pain was evoked by the movement.
+
+## Starting Project
+
+### Locate Data
+
+{{< include _snippets/nda-location.qmd >}}
+
+Functional testing is one NDA structure per cohort: `heal_ft_tka01` for the TKA cohort and `heal_ft_thoracic01` for the thoracic cohort. This kit uses the knee table:
+
+```bash
+{{< var nda.dir >}}/heal_ft_tka01.txt
+```
+
+### Extract Data
+
+The file is a tab-separated table. We read it without its line of column descriptions, convert `record_id` to a number, and drop any exact duplicate rows so that a participant appears only once. We then derive the surgical cohort from `record_id`; every record here is TKA.
 
 ```{r}
 #| label: load-func
 
-func <- read_csv(here("NDA_data", "functional", "functional_knee.csv"), skip = 1) |>
+func_file <- "data/nda/heal_ft_tka01.txt"
+
+# line 2 of an NDA table describes each column, so take names from line 1 and data from line 3
+func_names <- names(read_tsv(func_file, n_max = 0, show_col_types = FALSE))
+func <- read_tsv(func_file, skip = 2, col_names = func_names) |>
   rename(record_id = src_subject_id) |>
-  mutate(record_id = as.numeric(record_id))
-
-# guard: every record_id must parse to a number before filtering and cohort assignment
-if (any(is.na(func$record_id))) {
-  stop(sum(is.na(func$record_id)), " record_id value(s) did not parse to a number")
-}
-
-test_records <- c(10000, 15000, 20000, 25000, 40000, 50000,
-                  60000, 70000, 80000, 90000, 100000, 110000, 120000)
-
-func <- func |>
-  distinct() |>
-  filter(!record_id %in% test_records) |>
-  mutate(cohort = case_when(
-    record_id >= 10000 & record_id < 15000 | record_id >= 25000 ~ "TKA",
-    .default = "Thoracic"
-  ))
+  mutate(record_id = as.numeric(record_id)) |>
+  distinct()
 ```
 
-The downloaded file uses NDA's short field names (`walk10finalpainscl`, `tstsprepainscl`, and so on). We rename them to the HEAL Common Data Element names using the A2CPS crosswalk. The 5TSTS fields begin with a digit, so they need backticks when referenced in R.
+The downloaded file uses NDA's short field names (`walk10finalpainscl`, `fivetstsprepainscl`, and so on). We rename them to the HEAL Common Data Element names using the A2CPS crosswalk. The 5TSTS fields begin with a digit, so they need backticks when referenced in R.
 
 ```{r}
 #| label: rename-func
 
 func_crosswalk <- c(
-  Walk10InitialPainScl   = "walk10initialpainscl",
-  Walk10finalPainScl     = "walk10finalpainscl",
-  Walk10time             = "walk10time",
-  Walk10CompleteYN       = "walk10completeyn",
+  Walk10InitialPainScl = "walk10initialpainscl",
+  Walk10finalPainScl = "walk10finalpainscl",
+  Walk10time = "walk10time",
+  Walk10CompleteYN = "walk10completeyn",
   Walk10IncompleteReason = "walk10incompletereason",
-  `5TSTSbpscreen`        = "tstsbpscreen",
-  `5TSTSprePainScl`      = "tstsprepainscl",
-  `5TSTSpostPainScl`     = "tstspostpainscl",
-  `5TSTStime`            = "tststime",
-  `5TSTSCompleteYN`      = "tstscompleteyn",
-  `5TSTSNonReasonYN`     = "tstsnonreasonyn",
-  `5TSTSnumbRepsYN`      = "tstsnumbrepsyn",
-  `5TSTSassistYN`        = "tstsassistyn"
+  `5TSTSbpscreen` = "fivetstsbpscreen",
+  `5TSTSprePainScl` = "fivetstsprepainscl",
+  `5TSTSpostPainScl` = "fivetstspostpainscl",
+  `5TSTStime` = "fivetststime",
+  `5TSTSCompleteYN` = "fivetstscompleteyn",
+  `5TSTSNonReasonYN` = "fivetstsnonreasonyn",
+  `5TSTSnumbRepsYN` = "fivetstsnumbrepsyn",
+  `5TSTSassistYN` = "fivetstsassistyn"
 )
 
 func <- func |>
@@ -102,7 +86,7 @@ NDA provides the raw pain ratings rather than the movement-evoked pain scores, s
 
 func <- func |>
   mutate(
-    mep_walk  = Walk10finalPainScl - Walk10InitialPainScl,
+    mep_walk = Walk10finalPainScl - Walk10InitialPainScl,
     mep_5tsts = `5TSTSpostPainScl` - `5TSTSprePainScl`
   )
 ```
@@ -113,9 +97,15 @@ A look at the pain ratings and the two movement-evoked pain scores.
 #| label: peek
 
 func |>
-  select(record_id,
-         Walk10InitialPainScl, Walk10finalPainScl, mep_walk,
-         `5TSTSprePainScl`, `5TSTSpostPainScl`, mep_5tsts) |>
+  select(
+    record_id,
+    Walk10InitialPainScl,
+    Walk10finalPainScl,
+    mep_walk,
+    `5TSTSprePainScl`,
+    `5TSTSpostPainScl`,
+    mep_5tsts
+  ) |>
   head()
 ```
 
@@ -125,7 +115,7 @@ Check that the pain ratings and scores are stored as numbers.
 #| label: check-types
 
 func |>
-  select(record_id, cohort, mep_walk, mep_5tsts) |>
+  select(record_id, mep_walk, mep_5tsts) |>
   glimpse()
 ```
 
@@ -138,27 +128,14 @@ The movement-evoked pain scores need both endpoints: `mep_walk` and `mep_5tsts` 
 
 func |>
   summarise(
-    mep_walk_n  = sum(!is.na(mep_walk)),
+    mep_walk_n = sum(!is.na(mep_walk)),
     mep_5tsts_n = sum(!is.na(mep_5tsts))
   )
 ```
 
 ### Cross-Modality Links
 
-Every file includes `record_id` and `subjectkey`, which uniquely identify a participant and let you link functional data to other A2CPS modalities. To show the join running, we simulate a table standing in for another modality: it carries the shared identifiers plus a made-up `grip_strength`. We set a seed so the simulated values are reproducible, and join on the shared identifiers, which `intersect()` finds automatically.
-
-```{r}
-#| label: cross-modality
-
-# a simulated table standing in for another modality:
-# every participant's identifiers plus a made-up grip-strength value
-set.seed(1)
-other_modality <- func |>
-  select(record_id, subjectkey) |>
-  mutate(grip_strength = sample(20:50, n(), replace = TRUE))
-
-inner_join(other_modality, func, by = intersect(names(other_modality), names(func)))
-```
+{{< include _snippets/ids.qmd >}}
 
 ## Exploratory data analysis
 
@@ -173,7 +150,11 @@ func |>
   summarise(
     across(
       c(mep_walk, mep_5tsts),
-      list(n = \(x) sum(!is.na(x)), mean = \(x) mean(x, na.rm = TRUE), sd = \(x) sd(x, na.rm = TRUE))
+      list(
+        n = \(x) sum(!is.na(x)),
+        mean = \(x) mean(x, na.rm = TRUE),
+        sd = \(x) sd(x, na.rm = TRUE)
+      )
     )
   )
 ```
@@ -207,12 +188,12 @@ func |>
 
 ### Data Generation
 
-Functional tasks are administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the walk course, the sit-to-stand protocol, and the timing of the pre- and post-task pain ratings. NDA stores the raw pain ratings, so the movement-evoked pain scores are computed from them as shown above.
+Functional tasks are administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the walk course, the sit-to-stand protocol, and the timing of the pre- and post-task pain ratings. NDA stores the raw pain ratings, so the movement-evoked pain scores are computed from them as shown above. The checks that A2CPS runs on the functional testing case report forms are described in [Functional CRF Data Quality Checks](FuntionalCRF_data_quality_checks_and_reformat.qmd).
 
 ### Other
 
 - **Movement-evoked pain, not resting pain.** The scores are change scores tied to a specific task, so they behave differently from resting or clinical pain measures. A score can be negative if pain fell across the task.
-- **Cohort-specific batteries.** The knee and thoracic cohorts do not share tasks, so `mep_walk` and `mep_5tsts` appear only for the knee cohort; the thoracic file carries the deep breathing and coughing measures instead.
+- **Cohort-specific batteries.** The knee and thoracic cohorts do not share tasks, so `mep_walk` and `mep_5tsts` appear only for the knee cohort; the thoracic table (`heal_ft_thoracic01`) carries the deep breathing and coughing measures instead.
 - **Sample size after merging.** Joining with other modalities can shrink the effective sample size, so the counts are worth a glance after each merge.
 
 ### Citations

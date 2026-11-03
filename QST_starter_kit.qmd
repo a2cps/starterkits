@@ -212,6 +212,10 @@ qst |>
   ))
 ```
 
+### Cross-Modality Links
+
+{{< include _snippets/ids.qmd >}}
+
 ## Exploratory data analysis
 
 The three assays are meant to capture different pain-processing mechanisms: static sensitivity (PPT), facilitation (MTS), and inhibition (CPM). We reshape the primary biomarkers into a long format and plot their distributions. Note the different scales: PPT and MTS are on a pressure or pain scale, while CPM percent change is unbounded and heavy-tailed.

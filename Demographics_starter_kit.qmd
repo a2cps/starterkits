@@ -115,6 +115,10 @@ demo |>
   )
 ```
 
+### Cross-Modality Links
+
+{{< include _snippets/ids.qmd >}}
+
 ## Exploratory data analysis
 
 Since the two surgical cohorts are recruited separately, a useful way to get oriented is to compare their basic demographics, because the differences here shape the interpretation of cohort comparisons. We look at age and pain duration.
