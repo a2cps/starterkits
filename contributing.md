@@ -194,6 +194,12 @@ $ pixi run render
 
 This does not apply to [_variables.yml](_variables.yml), whose `var` shortcodes are expanded on every render.
 
+### Figures in `_freeze`
+
+When a chapter runs, knitr writes its figures to the local `<name>_files/figure-html/`, and Quarto copies everything in that directory into `_freeze/<name>/figure-html/`. Nothing clears `<name>_files/` between renders, so a figure from a chunk label that has since been renamed, or from an `unnamed-chunk-N` whose `N` has shifted, is copied along with the current ones. The page never shows it, so the render does not catch it, but `git add _freeze` commits it and the site publishes it.
+
+The `check-freeze-figures` [pre-commit hook](#pre-commit-hooks) refuses a commit that would leave such a figure in `_freeze`, that is, a file in `_freeze/<name>/figure-html/` that `_freeze/<name>/execute-results/html.json` does not reference. Remove each figure it lists with `git rm -f`, and delete the copy in `<name>_files/figure-html/` as well, or the next render of that chapter will copy it back. Delete only the listed figures rather than the whole directory: knitr does not redraw the figure of a chunk that it finds in its cache.
+
 ### Code blocks and shortcodes
 
 Shortcodes are expanded in plain fenced blocks (```` ```bash ````) but not in executable cells (```` ```{bash} ````), where the content is handed to the engine verbatim. Use a plain fence when a block only illustrates a path or command.

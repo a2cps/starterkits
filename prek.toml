@@ -19,3 +19,12 @@ hooks = [
     {id = "check-var-shortcodes", entry = "python3 scripts/check_var_shortcodes.py", files = '\.qmd$', language = "system", name = "no {{< var >}} shortcodes in executable Quarto cells"},
 ]
 repo = "local"
+
+# Quarto copies everything in a chapter's local <name>_files/figure-html/ into _freeze,
+# including figures from chunk labels since renamed. The page never shows them, so the
+# render does not catch them either.
+[[repos]]
+hooks = [
+    {id = "check-freeze-figures", entry = "python3 scripts/check_freeze_figures.py", files = '^_freeze/.+/(figure-html/[^/]+|execute-results/html\.json)$', language = "system", name = "no unused figures in _freeze", pass_filenames = false},
+]
+repo = "local"
