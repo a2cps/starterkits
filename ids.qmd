@@ -7,7 +7,7 @@ library(DT)
 library(tibble)
 ```
 
-A2CPS relies on several different schemes for labeling and describing metadata entities. This appendix describes those schemes to facilitate linking entities across data modalities. 
+A2CPS relies on several different schemes for labeling and describing metadata entities. This appendix describes those schemes to facilitate linking entities across data modalities.
 
 ## Location
 
@@ -42,7 +42,7 @@ Location refers to where the data were collected.
 </table>
 ```
 
-The following table may be used for mapping across datatypes. 
+The following table may be used for mapping across datatypes.
 
 ```{r}
 #| echo: false
@@ -83,7 +83,7 @@ tribble(
   )
 ```
 
-## Participants
+## Participants {#sec-participants}
 
 ```{r}
 #| label: participants
@@ -92,12 +92,15 @@ tribble(
 
 tribble(
   ~Terminology                 , ~Venue     , ~Notes                                                                                                                                                                                                                                                                                                                                                                                                                      ,
-  "subject"                    , "Imaging"  , "In Imaging, “subject” is used interchangeably with “participant“ and both are equivalent to “record”"                                                                                                                                                                                                                                                                                                                      ,
+  "subject"                    , "Imaging"  , "In Imaging, “subject” is used interchangeably with “participant“ and both are equivalent to record”"                                                                                                                                                                                                                                                                                                                       ,
   "participant"                , "Imaging"  , "In Imaging, “participant” is used interchangeably with “subject“ and both are equivalent to “record”"                                                                                                                                                                                                                                                                                                                      ,
   "subject_guid"               , "VBR"      , "In the VBR, “subject_guid” refers to the same entity as “NDA GUID” in Imaging, but the format is a UUID"                                                                                                                                                                                                                                                                                                                   ,
   "record"                     , "REDCap"   , "10000-14999: MCC1 TKA; 15000-19999: MCC1 Thoracic; 20000-24999: MCC2 Thoracic; 25000-29999: MCC2 TKA"                                                                                                                                                                                                                                                                                                                      ,
+
   "Individual ID"              , "Genetics" , "@sec-snps"                                                                                                                                                                                                                                                                                                                                                                                                                 ,
-  "Globally Unique ID (GUID*)" , "NDA"      , "The GUIDs used in A2CPS are not typical GUIDs but “pseudo-GUIDs“. A decision to upload to the NDA was made partway through the project, at which time it was too late to collect the information that would be required to make typical GUIDs. In practice, this means that the GUIDs used by A2CPS cannot be used to link these participants to other studies within the NDA. https://nda.nih.gov/nda/using-the-nda-guid"
+  "Globally Unique ID (GUID*)" , "NDA"      , "The GUIDs used in A2CPS are not typical GUIDs but “pseudo-GUIDs“. A decision to upload to the NDA was made partway through the project, at which time it was too late to collect the information that would be required to make typical GUIDs. In practice, this means that the GUIDs used by A2CPS cannot be used to link these participants to other studies within the NDA. https://nda.nih.gov/nda/using-the-nda-guid" ,
+  "subjectkey"                 , "NDA"      , "This is a field in several NDA data structures that holds the NDA GUID."                                                                                                                                                                                                                                                                                                                                                   ,
+  "src_subject_id"             , "NDA"      , "This is a field in several NDA data structures. It is equivalent to “record”, described above."
 )
 ```
 
