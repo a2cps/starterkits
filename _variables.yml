@@ -16,3 +16,10 @@ snapshot:
 bids:
   # Version of the BIDS specification the raw data conform to
   version: "v1.9.0"
+
+nda:
+  # Where the kits expect the NDA Data Package, relative to the project root
+  dir: "data/nda"
+  # Path under a file-carrying structure's folder (e.g. image03/) where A2CPS files land.
+  # It mirrors the TACC path at upload time, which has no release suffix.
+  prefix: "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"

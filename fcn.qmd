@@ -17,7 +17,7 @@ library(tidyr)
 
 Functional connectivity is a measurement of how activity in different regions of the brain relates to one another over time. It is calculated by reducing the voxel-wise BOLD timeseries into a smaller set of regional timecourses, and then calculating a measure of correlation between those regional timecourses.
 
-To define these regions, researchers rely on "brain parcellations" or atlases. Some atlases divide the brain into discrete, non-overlapping anatomical regions. Other methods, like [Dictionary Learning for Functional Regions (DiFuMo)](https://nilearn.github.io/modules/generated/nilearn.regions.fetch_atlas_difumo.html), do not create a strict parcellation. Instead, DiFuMo extracts a set of "soft", overlapping functional networks based on massive amounts of fMRI data. When using these different approaches, it is important to remember that you are correlating activity between fundamentally different kinds of brain divisions.
+To define these regions, researchers rely on "brain parcellations" or atlases. Some atlases divide the brain into discrete, non-overlapping anatomical regions. Other methods, like [Dictionary Learning for Functional Regions (DiFuMo)](https://nilearn.github.io/stable/modules/generated/nilearn.datasets.fetch_atlas_difumo.html), do not create a strict parcellation. Instead, DiFuMo extracts a set of "soft", overlapping functional networks based on massive amounts of fMRI data. When using these different approaches, it is important to remember that you are correlating activity between fundamentally different kinds of brain divisions.
 
 This kit reviews the A2CPS functional connectivity derivatives that have been created by pre-defined parcellations and soft atlases. For functional connectivity derived from subject-specific independent components, see @sec-gift.
 
@@ -25,9 +25,9 @@ This kit reviews the A2CPS functional connectivity derivatives that have been cr
 
 ### Locate data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The functional connectivity derivatives are underneath `mris/derivatives/fcn`
+The functional connectivity derivatives are referenced by `fmriresults01`, underneath `mris/derivatives/fcn`.
 
 ```bash
 $ ls mris/derivatives/fcn/
@@ -73,7 +73,16 @@ Most users will start with the functional connectivity data. For example, here w
 ```{r}
 #| label: dmn
 
-dmn <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
+dmn <- open_dataset(file.path(
+  fmriresults01,
+  "mris/derivatives/fcn/connectivity"
+)) |>
   filter(atlas == "dmn") |>
   filter(estimator == "empirical") |>
   arrange(sub, ses, task, run, source, target) |> # for reproducibility
@@ -121,7 +130,7 @@ First, we need a list of participants that have all four scan types.
 #| label: sub-w-all-runs
 
 subs_with_all_runs <- open_dataset(
-  "data/pre-surgery/mris/derivatives/fcn/connectivity"
+  file.path(fmriresults01, "mris/derivatives/fcn/connectivity")
 ) |>
   distinct(sub, task, run) |>
   count(sub) |>
@@ -135,8 +144,14 @@ As usual, we should also restrict analyses to only those runs that are not "red"
 ```{r}
 #| label: red-fmri
 
+# files referenced by image03 in the NDA package (see Locate Data)
+image03 <- file.path(
+  "data/nda/image03",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 red_fmri <- read_tsv(
-  dir_ls("data/pre-surgery/mris/bids", glob = "*scans.tsv", recurse = TRUE),
+  dir_ls(file.path(image03, "mris/bids"), glob = "*scans.tsv", recurse = TRUE),
   na = "n/a"
 ) |>
   filter(str_detect(filename, "task")) |>
@@ -162,7 +177,10 @@ Use this to filter the connectivity results. We'll select just one of the smalle
 ```{r}
 #| label: fcn-nested
 
-fcn <- open_dataset("data/pre-surgery/mris/derivatives/fcn/connectivity") |>
+fcn <- open_dataset(file.path(
+  fmriresults01,
+  "mris/derivatives/fcn/connectivity"
+)) |>
   filter(atlas == "difumo_dimension-64_resolution-2mm") |>
   filter(estimator == "empirical") |>
   semi_join(subs_with_all_runs_ok, by = join_by(sub)) |>
@@ -267,7 +285,7 @@ We can use those labels to remap the existing source and target columns, as in t
 
 ```{r}
 open_dataset(
-  "data/pre-surgery/mris/derivatives/fcn/connectivity"
+  file.path(fmriresults01, "mris/derivatives/fcn/connectivity")
 ) |>
   filter(atlas == "schaefer_nrois-400_resolution-2_networks-7") |>
   left_join(label_mapping, by = join_by(source == current)) |>

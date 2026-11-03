@@ -22,13 +22,13 @@ Note: if all you need are estimates of functional connectivity between ICA compo
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The GIFT derivatives are underneath `mris/derivatives/gift`. This structure follows the [BIDS method of storing derived datasets](https://bids-specification.readthedocs.io/en/stable/common-principles.html#storage-of-derived-datasets). Inputs to GIFT are stored underneath the top-level "sub-\[record_id\]" directories. 
+The GIFT derivatives are referenced by `fmriresults01`, underneath `mris/derivatives/gift`. This structure follows the [BIDS method of storing derived datasets](https://bids-specification.readthedocs.io/en/stable/common-principles.html#storage-of-derived-datasets). Inputs to GIFT are stored underneath the top-level "sub-\[record_id\]" directories. 
 
 ```bash
 $ tree mris/derivatives/gift/sub-10003
-gift/sub-10003
+mris/derivatives/gift/sub-10003
 └── ses-V1
     └── func
         ├── sub-10003_ses-V1_task-cuff_run-01_bold.nii.gz
@@ -160,9 +160,18 @@ Use these helper functions to calculate the total connectivity for each REST1 sc
 ```{r}
 #| label: main
 
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 d <- crossing(
   file = dir_ls(
-    "data/pre-surgery/mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi",
+    file.path(
+      fmriresults01,
+      "mris/derivatives/gift/derivatives/gift-neuromark_fmri_2.1_modelorder-multi"
+    ),
     recurse = TRUE,
     glob = "*rest_run-01*timecourses.nii.gz"
   )

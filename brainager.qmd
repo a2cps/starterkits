@@ -6,7 +6,7 @@ format:
 
 # Brain Age {#sec-brainager}
 
-This starter kit walks through the "Brain Age" outputs that have been derived from the anatomical scans. The examples in the kit rely on `bash` and `R`. 
+This starter kit walks through the "Brain Age" outputs that have been derived from the anatomical scans. The examples in the kit rely on `bash` and `R`.
 
 ```{r}
 #| label: setup
@@ -24,18 +24,16 @@ Fundamentally, `brainager` calculations are about producing an estimated age bas
 
 ### Locate data
 
-In the release folder, data are stored underneath the `mris/derivatives` folder:
+{{< include _snippets/nda-location.qmd >}}
 
-```bash
-{{< var release.root >}}/{{< var release.dir >}}/mris/derivatives/brainager
-```
+The brain age estimates are referenced by `fmriresults01`, underneath `mris/derivatives/brainager`.
 
 ### Extract data
 
 Data for each participant are stored in a sub-directory.
 
 ```bash
-$ ls | head
+$ ls mris/derivatives/brainager | head
 sub-10003
 sub-10005
 sub-10008
@@ -85,9 +83,15 @@ Here is an example of how these files could be loaded using `R`.
 ```{r}
 #| label: files
 
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 # list all files
 files <- dir_ls(
-  "data/pre-surgery/mris/derivatives/brainager",
+  file.path(fmriresults01, "mris/derivatives/brainager"),
   glob = "*T1w.tsv",
   recurse = TRUE
 )
@@ -121,15 +125,22 @@ ages_with_sub
 
 ### Calculating the Brain Age Gap
 
-Predicted ages are neat, but these values are most useful when compared against a participant's chronological age. These can be found in the `demographics` portion of the release.
+Predicted ages are neat, but these values are most useful when compared against a participant's chronological age. These can be found in the `heal_demographics01` table of the NDA package, where `interview_age` is recorded in months.
 
 ```{r}
 #| label: baseline-ages
 
-baseline_ages <- read_csv(
-  "data/pre-surgery/demographics/demographics-2025-01-10.csv",
-  col_select = c("record_id", "age")
-)
+demo_file <- "data/nda/heal_demographics01.txt"
+
+# line 2 of an NDA table describes each column, so take names from line 1 and data from line 3
+baseline_ages <- read_tsv(
+  demo_file,
+  skip = 2,
+  col_names = names(read_tsv(demo_file, n_max = 0, show_col_types = FALSE)),
+  col_select = c("src_subject_id", "interview_age")
+) |>
+  transmute(record_id = as.integer(src_subject_id), age = interview_age / 12) |>
+  distinct()
 
 brainage <- ages_with_sub |>
   left_join(baseline_ages, by = join_by(sub == record_id)) |>
@@ -180,7 +191,7 @@ brainage |>
 
 ### Correction
 
-Note that using the raw Brain Age Gap can be problematic, and, for final analyses, it is typical to calculate a derivative that has been "corrected". The issue is that the predictions tend to be worse for the youngest and oldest people -- and so the gap is related to age (e.g., a relationship with larger raw gaps partly reflects a relationship with true age). 
+Note that using the raw Brain Age Gap can be problematic, and, for final analyses, it is typical to calculate a derivative that has been "corrected". The issue is that the predictions tend to be worse for the youngest and oldest people -- and so the gap is related to age (e.g., a relationship with larger raw gaps partly reflects a relationship with true age).
 
 ```{r}
 #| label: brainage-corrected
@@ -217,7 +228,7 @@ There are many models for calculating Brain Age. The values that have been pre-c
 
 ### Methods
 
-For additional documentation on the files and a detailed description of the methods, please see the official [brainageR repo](https://github.com/james-cole/brainageR). 
+For additional documentation on the files and a detailed description of the methods, please see the official [brainageR repo](https://github.com/james-cole/brainageR).
 
 It is in principle possible to replicate the processing that was used in a release by running the brainageR container[^docker] on the raw data. However, A2CPS Releases 1.0.0, 1.1.0, and 2.0.0 have not included raw T1w files for privacy reasons, and thus the end result may differ from the released version, which was generated on the raw images.
 
@@ -225,7 +236,7 @@ It is in principle possible to replicate the processing that was used in a relea
 
 ### Citations
 
-If you use the brainageR materials, please follow the instructions for citing the brainageR package: https://github.com/james-cole/brainageR?tab=readme-ov-file#citations.
+If you use the brainageR materials, please follow the instructions for citing the brainageR package: <https://github.com/james-cole/brainageR?tab=readme-ov-file#citations>.
 
 {{< include _snippets/a2cps_citations.qmd >}}
 

@@ -20,9 +20,9 @@ Diffusion MRI (dMRI) is highly sensitive to macroscopic head motion and to eddy 
 
 ### Locate Data
 
-{{< include _snippets/mri-location.qmd >}}
+{{< include _snippets/nda-location.qmd >}}
 
-The outputs are organized by participant and session[^structure].
+The outputs are referenced by `fmriresults01`, underneath `mris/derivatives/eddyqc`, and are organized by participant and session[^structure].
 
 [^structure]: Note that the directory structure varies across participants, with some participants matching `sub-[recordid]/ses-[visit]/[contents]` and others matching `sub-[recordid]/ses-[visit]/eddyqc/[contents]`.
 
@@ -71,9 +71,15 @@ Let's collate the QC metrics into a single table. To do so, we recursively searc
 ```{r}
 #| label: qc-json-paths
 
+# files referenced by fmriresults01 in the NDA package (see Locate Data)
+fmriresults01 <- file.path(
+  "data/nda/fmriresults01",
+  "corral-secure/projects/A2CPS/products/consortium-data/pre-surgery"
+)
+
 qcs <- tibble(
   src = dir_ls(
-    "data/pre-surgery/mris/derivatives/eddyqc",
+    file.path(fmriresults01, "mris/derivatives/eddyqc"),
     recurse = TRUE,
     glob = "*qc.json"
   )
