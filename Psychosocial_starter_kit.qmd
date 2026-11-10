@@ -145,7 +145,7 @@ Self-reported assessments are collected electronically through a variety of surv
 
 ### Data Quality
 
-The data were exported from REDCap and may contain errors or missing values. Therefore, to ensure high-quality data, the data were cleaned and reformatted. For details, see @sec-psychosocial-methods. There are individual reformatted files as well as a combined file for psychosocial data (look for files ending in TKA and/or Thoracic).
+{{< include _snippets/nda-data-quality-caveat.qmd >}}
 
 ### Cross-Modality Links
 

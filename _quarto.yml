@@ -55,11 +55,6 @@ book:
     - ids.qmd
     - nda.qmd
     - mri-harmonization.qmd
-    - psycho_social_biomarker_impute.qmd
-    - biospecimenCRF_quality_checks_and_reformat.qmd
-    - FuntionalCRF_data_quality_checks_and_reformat.qmd
-    - ImagingCRF_data_quality_checks_and_reformat.qmd
-    - QSTCRF_data_quality_checks_and_reformat.qmd
 
 bibliography: bib/references.bib
 csl: apa.csl
