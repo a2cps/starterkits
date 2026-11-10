@@ -263,7 +263,11 @@ The pattern is informative. The two MTS sites are strongly correlated (around 0.
 
 ### Data Generation
 
-QST is administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the algometer and Neuropen procedures, the cold-water CPM protocol, and the index and remote testing locations. NDA stores the raw per-trial ratings, so the PPT, MTS, and CPM biomarkers are computed from those trials as shown above. The checks that A2CPS runs on the QST case report forms are described in [QST CRF Data Quality Checks](QSTCRF_data_quality_checks_and_reformat.qmd).
+QST is administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the algometer and Neuropen procedures, the cold-water CPM protocol, and the index and remote testing locations. NDA stores the raw per-trial ratings, so the PPT, MTS, and CPM biomarkers are computed from those trials as shown above.
+
+### Data Quality
+
+{{< include _snippets/nda-data-quality-caveat.qmd >}}
 
 ### Other
 

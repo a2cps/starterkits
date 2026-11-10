@@ -172,7 +172,11 @@ The takeaway for planning is that the cohorts are not demographically interchang
 
 ### Data Generation
 
-Demographic information is self-reported by participants at baseline, following the A2CPS Manual of Procedures. NDA stores these fields as raw values, so any recoding, derivation, or plausibility checking is left to the end user.
+Demographic information is self-reported by participants at baseline, following the A2CPS Manual of Procedures.
+
+### Data Quality
+
+{{< include _snippets/nda-data-quality-caveat.qmd >}}
 
 ### Other
 

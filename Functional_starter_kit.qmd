@@ -188,7 +188,11 @@ func |>
 
 ### Data Generation
 
-Functional tasks are administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the walk course, the sit-to-stand protocol, and the timing of the pre- and post-task pain ratings. NDA stores the raw pain ratings, so the movement-evoked pain scores are computed from them as shown above. The checks that A2CPS runs on the functional testing case report forms are described in [Functional CRF Data Quality Checks](FuntionalCRF_data_quality_checks_and_reformat.qmd).
+Functional tasks are administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the walk course, the sit-to-stand protocol, and the timing of the pre- and post-task pain ratings.
+
+### Data Quality
+
+{{< include _snippets/nda-data-quality-caveat.qmd >}}
 
 ### Other
 

@@ -1,0 +1,1 @@
+Initial internal versions of this dataset were stored and processed in a different environment than the NDA. The NDA data are relatively more raw, and several additional quality checks are warranted. The A2CPS DIRC is working on producing a workflow describing the checks that we recommend for the NDA data.
