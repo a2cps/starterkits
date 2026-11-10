@@ -581,36 +581,6 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
  <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">MRI Harmonization</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./psycho_social_biomarker_impute.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Psychosocial Data Imputation and Biomarker calculations</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./biospecimenCRF_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./FuntionalCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Functional CRF Data Quality Checks</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./ImagingCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Imaging CRF Data Quality Checks</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./QSTCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">QST CRF Data Quality Checks</span></span></a>
-  </div>
-</li>
       </ul>
   </li>
     </ul>
@@ -634,8 +604,9 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
   <li><a href="#considerations-while-working-on-the-project" id="toc-considerations-while-working-on-the-project" class="nav-link" data-scroll-target="#considerations-while-working-on-the-project"><span class="header-section-number">2.3</span> Considerations While Working on the Project</a>
   <ul class="collapse">
   <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">2.3.1</span> Data Generation</a></li>
-  <li><a href="#other" id="toc-other" class="nav-link" data-scroll-target="#other"><span class="header-section-number">2.3.2</span> Other</a></li>
-  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">2.3.3</span> Citations</a></li>
+  <li><a href="#data-quality-1" id="toc-data-quality-1" class="nav-link" data-scroll-target="#data-quality-1"><span class="header-section-number">2.3.2</span> Data Quality</a></li>
+  <li><a href="#other" id="toc-other" class="nav-link" data-scroll-target="#other"><span class="header-section-number">2.3.3</span> Other</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">2.3.4</span> Citations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -967,18 +938,22 @@ $ mep_5tsts &lt;dbl&gt; 6.0, 2.0, 0.5, 0.5, 1.5, 2.0, 2.0, -1.0, 0.0, 0.0, 4.0, 
 <h2 data-number="2.3" class="anchored" data-anchor-id="considerations-while-working-on-the-project"><span class="header-section-number">2.3</span> Considerations While Working on the Project</h2>
 <section id="data-generation" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="data-generation"><span class="header-section-number">2.3.1</span> Data Generation</h3>
-<p>Functional tasks are administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the walk course, the sit-to-stand protocol, and the timing of the pre- and post-task pain ratings. NDA stores the raw pain ratings, so the movement-evoked pain scores are computed from them as shown above. The checks that A2CPS runs on the functional testing case report forms are described in <a href="./FuntionalCRF_data_quality_checks_and_reformat.html">Functional CRF Data Quality Checks</a>.</p>
+<p>Functional tasks are administered in person by trained study staff, following the A2CPS Manual of Procedures, which specifies the walk course, the sit-to-stand protocol, and the timing of the pre- and post-task pain ratings.</p>
 </section>
-<section id="other" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="other"><span class="header-section-number">2.3.2</span> Other</h3>
+<section id="data-quality-1" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="data-quality-1"><span class="header-section-number">2.3.2</span> Data Quality</h3>
+<p>Initial internal versions of this dataset were stored and processed in a different environment than the NDA. The NDA data are relatively more raw, and several additional quality checks are warranted. The A2CPS DIRC is working on producing a workflow describing the checks that we recommend for the NDA data.</p>
+</section>
+<section id="other" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="other"><span class="header-section-number">2.3.3</span> Other</h3>
 <ul>
 <li><strong>Movement-evoked pain, not resting pain.</strong> The scores are change scores tied to a specific task, so they behave differently from resting or clinical pain measures. A score can be negative if pain fell across the task.</li>
 <li><strong>Cohort-specific batteries.</strong> The knee and thoracic cohorts do not share tasks, so <code>mep_walk</code> and <code>mep_5tsts</code> appear only for the knee cohort; the thoracic table (<code>heal_ft_thoracic01</code>) carries the deep breathing and coughing measures instead.</li>
 <li><strong>Sample size after merging.</strong> Joining with other modalities can shrink the effective sample size, so the counts are worth a glance after each merge.</li>
 </ul>
 </section>
-<section id="citations" class="level3 page-columns page-full" data-number="2.3.3">
-<h3 data-number="2.3.3" class="anchored" data-anchor-id="citations"><span class="header-section-number">2.3.3</span> Citations</h3>
+<section id="citations" class="level3 page-columns page-full" data-number="2.3.4">
+<h3 data-number="2.3.4" class="anchored" data-anchor-id="citations"><span class="header-section-number">2.3.4</span> Citations</h3>
 <p>In publications or presentations including data from A2CPS, please include the following statement as attribution:</p>
 <blockquote class="blockquote">
 <p>Data were provided (in part) by the A2CPS Consortium funded by the National Institutes of Health (NIH) Common Fund, which is managed by the Office of the Director (OD)/Office of Strategic Coordination (OSC). Consortium components and their associated funding sources include Clinical Coordinating Center (U24NS112873), Data Integration and Resource Center (U54DA049110), Omics Data Generation Centers (U54DA049116, U54DA049115, U54DA049113), Multi-site Clinical Center 1 (MCC1) (UM1NS112874), and Multi-site Clinical Center 2 (MCC2) (UM1NS118922).</p>

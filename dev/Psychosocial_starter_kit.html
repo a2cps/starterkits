@@ -594,36 +594,6 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
  <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">MRI Harmonization</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./psycho_social_biomarker_impute.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Psychosocial Data Imputation and Biomarker calculations</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./biospecimenCRF_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Biospecimen Collection CRF Data Quality Checks</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./FuntionalCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Functional CRF Data Quality Checks</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./ImagingCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Imaging CRF Data Quality Checks</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./QSTCRF_data_quality_checks_and_reformat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">QST CRF Data Quality Checks</span></span></a>
-  </div>
-</li>
       </ul>
   </li>
     </ul>
@@ -683,6 +653,12 @@ gtag('config', 'G-K3383Z78V7', { 'anonymize_ip': true});
 </header>
 
 
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>Psychosocial data help researchers understand the complex relationship between psychological, emotional, behavioral, and social aspects of life and their influence on health outcomes. The Acute to Chronic Pain Signatures Study (A2CPS) includes several psychosocial assessments and associated Helping End Addiction Long-term (HEAL) Common Data Elements&nbsp;<span class="citation" data-cites="wandner_nih_2022">(<a href="references.html#ref-wandner_nih_2022" role="doc-biblioref">Wandner et al., 2022</a>)</span> to gain a comprehensive understanding of chronic pain&nbsp;<span class="citation" data-cites="berardi_multi_2022">(<a href="references.html#ref-berardi_multi_2022" role="doc-biblioref">Berardi et al., 2022</a>)</span>. For a general introduction to psychosocial assessments in clinical research, see resources such as the <a href="https://heal.nih.gov/data/common-data-elements">NIH HEAL Initiative Common Data Elements</a>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-wandner_nih_2022" class="csl-entry" role="listitem">
 Wandner, L. D., Domenichiello, A. F., Beierlein, J., Pogorzala, L., Aquino, G., Siddons, A., Porter, L., Atkinson, J., &amp; Institute, N. P. C. (2022). NIH’s helping to end addiction long-termSM initiative (NIH HEAL initiative) clinical pain management common data element program. <em>The Journal of Pain</em>, <em>23</em>(3), 370–378. <a href="https://doi.org/10.1016/j.jpain.2021.08.005">https://doi.org/10.1016/j.jpain.2021.08.005</a>
@@ -741,19 +717,13 @@ Soto, C. J., &amp; John, O. P. (2017). Short and extra-short forms of the big fi
 <h3 data-number="1.1.1" class="anchored" data-anchor-id="locate-data"><span class="header-section-number">1.1.1</span> Locate Data</h3>
 <p>We assume that the data were downloaded from the NIMH Data Archive (NDA) as a Data Package and saved to <code>data/nda</code> inside the project folder (<a href="nda.html" class="quarto-xref"><span>Appendix C</span></a> describes what a package contains). Each NDA data structure is a table, <code>&lt;structure&gt;.txt</code>, and any files that the structure references are underneath a folder of the same name, <code>&lt;structure&gt;/</code>. Paths in the text start from the folder that holds the structure’s files (for the MRI data, <code>&lt;structure&gt;/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery</code>), while code chunks spell out the full path from the project folder.</p>
 <p>On the NDA, the GAD-7 and PHQ-9 are the <code>cde_gad701</code> and <code>cde_phq901</code> structures. This kit instead starts from the reformatted tables that A2CPS distributes in its internal releases on TACC, which are not part of the NDA package:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/psychosocial/reformatted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-2-1-0/psychosocial/reformatted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The code below reads a local copy of that folder, <code>data/pre-surgery/psychosocial/reformatted</code>.</p>
 </section>
 <section id="extract-data" class="level3" data-number="1.1.2">
 <h3 data-number="1.1.2" class="anchored" data-anchor-id="extract-data"><span class="header-section-number">1.1.2</span> Extract Data</h3>
 <p>Often, researchers want to examine the relationship between different psychosocial measures. For example, Anxiety (GAD-7) and Depression (PHQ-9) frequently coexist due to shared biological mechanisms.</p>
 <p>To explore this, we first load the relevant datasets.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gad <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data"</span>,</span>
@@ -1129,11 +1099,11 @@ Kircanski, K., LeMoult, J., Ordaz, S., &amp; Gotlib, I. H. (2017). Investigating
 </section>
 <section id="data-quality" class="level3" data-number="1.3.2">
 <h3 data-number="1.3.2" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">1.3.2</span> Data Quality</h3>
-<p>The data were exported from REDCap and may contain errors or missing values. Therefore, to ensure high-quality data, the data were cleaned and reformatted. For details, see <a href="psycho_social_biomarker_impute.html" class="quarto-xref"><span>Appendix E</span></a>. There are individual reformatted files as well as a combined file for psychosocial data (look for files ending in TKA and/or Thoracic).</p>
+<p>Initial internal versions of this dataset were stored and processed in a different environment than the NDA. The NDA data are relatively more raw, and several additional quality checks are warranted. The A2CPS DIRC is working on producing a workflow describing the checks that we recommend for the NDA data.</p>
 </section>
 <section id="cross-modality-links" class="level3" data-number="1.3.3">
 <h3 data-number="1.3.3" class="anchored" data-anchor-id="cross-modality-links"><span class="header-section-number">1.3.3</span> Cross-Modality Links</h3>
-<p>All files include <code>record_id</code> and <code>guid</code>, which serve as unique identifiers and enable linkage across psychosocial data files as well as other data modalities.</p>
+<p>A2CPS relies on several different schemes for labeling and describing metadata entities. For example, across modalities, participants are identified by Record ID, Subject GUID, Individual ID, and NDA GUID. In NDA data structures, the NDA GUID is often stored in a field called <code>subjectkey</code>, and the Record ID is stored in <code>src_subject_id</code>. For more details on how these identifiers relate, see <a href="ids.html" class="quarto-xref"><span>Appendix B</span></a>.</p>
 </section>
 <section id="missing-data" class="level3" data-number="1.3.4">
 <h3 data-number="1.3.4" class="anchored" data-anchor-id="missing-data"><span class="header-section-number">1.3.4</span> Missing Data</h3>
